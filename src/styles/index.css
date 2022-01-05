@@ -1,0 +1,8 @@
+/* tailwindcss */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* antd */
+@import '~antd/dist/antd.css';
+@import '~@ant-design/pro-form/dist/form.css';
