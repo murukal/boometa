@@ -85,7 +85,10 @@ const SiderMenu = () => {
       <Menu mode='inline' theme='dark' defaultSelectedKeys={mappedMenuKeys.defaultSelectedKeys} defaultOpenKeys={mappedMenuKeys.defaultOpenedKeys}>
         {renderMenu(store.getState().menus)}
       </Menu>
-      <div className='text-center text-white mb-1'>浙ICP备2021003835号</div>
+
+      <a className='text-center text-white mb-1' href='http://ythzxfw.miit.gov.cn/index'>
+        浙ICP备2021003835号
+      </a>
     </div>
   )
 }

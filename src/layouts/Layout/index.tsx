@@ -14,6 +14,8 @@ const Layout = () => {
   const store = useStore()
   const isLogin = store.getState().userProfile.isLogin
 
+  console.log('isLogin====', isLogin)
+
   return isLogin ? (
     <AntdLayout className='h-full w-full'>
       <Header>

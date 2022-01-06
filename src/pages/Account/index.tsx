@@ -62,7 +62,9 @@ const Account = () => {
         <Button type='link' onClick={onSwitch}>
           {isLoginHandle ? '前往注册' : '前往登陆'}
         </Button>
-        <div className='text-center mt-auto mb-1'>浙ICP备2021003835号</div>
+        <a className='text-center mt-auto mb-1' href='http://ythzxfw.miit.gov.cn/index'>
+          浙ICP备2021003835号
+        </a>
       </div>
 
       <SwitchTransition>
