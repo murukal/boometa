@@ -13,7 +13,7 @@ export interface fetchCallbacks<T> {
 
 export const getInitialPagination = (): TablePaginationConfig => ({
   current: 1,
-  pageSize: 10,
+  pageSize: 2,
   showSizeChanger: true,
   pageSizeOptions: ['10', '20', '30']
 })
@@ -33,6 +33,7 @@ export const getFetchHandler =
       pagination: getInitialPagination()
     }
   ) => {
+    // 分页参数重构
     // 分页参数由前端统一转换为后端要求的字段
     const pagination: PaginateOptions = {
       page: queryParams.pagination.current,

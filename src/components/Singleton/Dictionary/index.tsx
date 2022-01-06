@@ -3,26 +3,26 @@ import { ChangeEvent, forwardRef } from 'react'
 // antd
 import { Form, FormInstance, Input, InputNumber } from 'antd'
 import { useState } from 'react'
-import { Dictionary as DictionaryType } from '../../../typings/dictionary'
 import { create, update } from '../../../apis/dictionary'
 import { responseNotification } from '../../../utils/notification'
 import { useEffect } from 'react'
-
-interface Props {
-  singleton?: DictionaryType
-  onSubmitted?: Function
-}
+import { getInitialSingleton, Props } from './assets'
 
 const { Item } = Form
 
 const Dictionary = forwardRef<FormInstance, Props>((props, formRef) => {
-  const [description, setDescription] = useState('')
-  const [sort, setSort] = useState(0)
+  const singleton = getInitialSingleton()
+  const [description, setDescription] = useState(singleton.description)
+  const [sort, setSort] = useState(singleton.sort)
+  const [code, setCode] = useState(singleton.code)
 
   useEffect(() => {
-    setDescription(props.singleton?.description || '')
-    setSort(props.singleton?.sort || 0)
+    setDescription(props.singleton.description)
+    setSort(props.singleton.sort)
+    setCode(props.singleton.code)
   }, [props.singleton])
+
+  const onCodeChange = (e: ChangeEvent<HTMLInputElement>) => setCode(e.target.value)
 
   const onDescriptionChange = (e: ChangeEvent<HTMLInputElement>) => setDescription(e.target.value)
 
@@ -30,17 +30,18 @@ const Dictionary = forwardRef<FormInstance, Props>((props, formRef) => {
 
   const onSubmit = async () => {
     const params = {
+      code,
       sort,
       description
     }
 
     const handlerMap = {
       create: () => create(params),
-      update: () => update(props.singleton?._id as string, params)
+      update: () => update(props.singleton._id as string, params)
     }
 
     // 表单提交
-    const handler = handlerMap[props.singleton?._id ? 'update' : 'create']
+    const handler = handlerMap[props.singleton._id ? 'update' : 'create']
     const res = await handler()
     responseNotification(res)
     !res.code && props.onSubmitted && props.onSubmitted()
@@ -48,6 +49,10 @@ const Dictionary = forwardRef<FormInstance, Props>((props, formRef) => {
 
   return (
     <Form ref={formRef} onFinish={onSubmit}>
+      <Item label='字典Code'>
+        <Input value={code} onChange={onCodeChange} />
+      </Item>
+
       <Item label='字典描述'>
         <Input value={description} onChange={onDescriptionChange} />
       </Item>

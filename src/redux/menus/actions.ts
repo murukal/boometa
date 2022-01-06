@@ -1,4 +1,4 @@
-import { MenuTreeNodes } from '../../typings/menu'
+import { MenuTreeNode } from '../../typings/menu'
 
 export enum ActionType {
   SET_MENUS = 'SET_MENUS'
@@ -6,10 +6,10 @@ export enum ActionType {
 
 export interface Action {
   type: ActionType
-  data: MenuTreeNodes
+  data: MenuTreeNode[]
 }
 
-export const setMenus = (menus: MenuTreeNodes): Action => ({
+export const setMenus = (menus: MenuTreeNode[]): Action => ({
   type: ActionType.SET_MENUS,
   data: menus
 })

@@ -1,11 +1,14 @@
+// qs
+import { stringify } from 'qs'
+// project
 import { request } from '.'
-import { PaginateResult } from '../typings/api'
+import { PaginateResult, QueryOptions } from '../typings/api'
 import { CreateDictionary, Dictionary, UpdateDictionary } from '../typings/dictionary'
 
-export const getDictionaries = () =>
+export const getDictionaries = (query: QueryOptions) =>
   request<PaginateResult<Dictionary>>({
     method: 'GET',
-    url: '/api/dictionary'
+    url: `/api/dictionary?${stringify(query)}`
   })
 
 export const create = (data: CreateDictionary) =>

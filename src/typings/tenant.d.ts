@@ -1,18 +1,15 @@
 export type TenantCode = string
 
-export interface CreateTenant {
+export interface Tenant {
+  _id: string
   code: TenantCode
   description: string
-}
-
-export interface Tenant extends CreateTenant {
-  _id: string
   publicKey: string
   privateKey?: string
-  createdAt: string
-  updatedAt: string
+  createdAt?: string
+  updatedAt?: string
 }
 
-export type Tenants = Tenant[]
+export interface CreateTenant extends Omit<Tenant, '_id' | 'publicKey' | 'privateKey' | 'createdAt' | 'updatedAt'> {}
 
 export interface UpdateTenant extends Omit<CreateTenant, 'code'> {}

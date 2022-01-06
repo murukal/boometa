@@ -2,6 +2,7 @@ import { DictionaryEnum } from './dictionaryEnum'
 
 export interface Dictionary {
   _id: string
+  code: string
   description: string
   sort: number
   enums?: DictionaryEnum[]

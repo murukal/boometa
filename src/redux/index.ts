@@ -1,7 +1,7 @@
 import { createStore } from 'redux'
 import reducer from './reducer'
 import { TenantState } from './tenant/store'
-import { MenuTreeNodes } from '../typings/menu'
+import { MenuTreeNode } from '../typings/menu'
 import { UserProfile } from './userProfile/store'
 
 /**
@@ -9,7 +9,7 @@ import { UserProfile } from './userProfile/store'
  */
 export interface State {
   tenant: TenantState
-  menus: MenuTreeNodes
+  menus: MenuTreeNode[]
   userProfile: UserProfile
 }
 

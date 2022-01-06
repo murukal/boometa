@@ -3,22 +3,18 @@ import { forwardRef, useEffect, useState, ChangeEvent } from 'react'
 // antd
 import { Col, Form, FormInstance, Input, Row } from 'antd'
 // project
-import { Tenant as TenantType } from '../../../typings/tenant'
 import { create, update } from '../../../apis/tenant'
 import { responseNotification } from '../../../utils/notification'
-
-interface Props {
-  singleton?: TenantType
-  onSubmitted?: Function
-}
+import { getInitialSingleton, Props } from './assets'
 
 const Tenant = forwardRef<FormInstance, Props>((props, formRef) => {
-  const [code, setCode] = useState('')
-  const [description, setDescription] = useState('')
+  const singleton = getInitialSingleton()
+  const [code, setCode] = useState(singleton.code)
+  const [description, setDescription] = useState(singleton.description)
 
   useEffect(() => {
-    setCode(props.singleton?.code || '')
-    setDescription(props.singleton?.description || '')
+    setCode(props.singleton.code)
+    setDescription(props.singleton.description)
   }, [props.singleton])
 
   const onSubmit = async () => {
@@ -28,11 +24,11 @@ const Tenant = forwardRef<FormInstance, Props>((props, formRef) => {
           description,
           code
         }),
-      update: () => update(props.singleton?._id as string, { description })
+      update: () => update(props.singleton._id as string, { description })
     }
 
     // 表单提交
-    const handler = handlerMap[props.singleton?._id ? 'update' : 'create']
+    const handler = handlerMap[props.singleton._id ? 'update' : 'create']
     const res = await handler()
     responseNotification(res)
     !res.code && props.onSubmitted && props.onSubmitted()

@@ -19,7 +19,7 @@ export const IconSelector = (props: Props) => {
           <Option key={key} value={key}>
             <div className='flex items-center'>
               {createElement(Icons[key as keyof typeof Icons])}
-              <p className='ml-1'>{key}</p>
+              <p className='ml-1 mb-0'>{key}</p>
             </div>
           </Option>
         )

@@ -6,7 +6,7 @@ import { stringify } from 'qs'
 export const getDictionaryEnums = (query: QueryOptions) =>
   request({
     method: 'GET',
-    url: `/api/dictionary-enum/${stringify(query)}`
+    url: `/api/dictionary-enum?${stringify(query)}`
   })
 
 export const create = (data: CreateDictionaryEnum) =>

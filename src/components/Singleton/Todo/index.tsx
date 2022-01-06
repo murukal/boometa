@@ -3,22 +3,19 @@ import { ChangeEvent, forwardRef, useEffect, useState } from 'react'
 // antd
 import { Col, Form, FormInstance, Input, Row, Select } from 'antd'
 // project
-import { Status, Todo as TodoType, UpdateTodo } from '../../../typings/todo'
+import { Status, UpdateTodo } from '../../../typings/todo'
 import { create, update } from '../../../apis/todo'
 import { responseNotification } from '../../../utils/notification'
-
-interface Props {
-  singleton?: TodoType
-  onSubmitted?: Function
-}
+import { getInitialSingleton, Props } from './assets'
 
 const Todo = forwardRef<FormInstance, Props>((props, formRef) => {
-  const [description, setDescription] = useState('')
-  const [status, setStatus] = useState<Status>('opened')
+  const singleton = getInitialSingleton()
+  const [description, setDescription] = useState(singleton.description)
+  const [status, setStatus] = useState<Status>(singleton.status)
 
   useEffect(() => {
-    setDescription(props.singleton?.description || '')
-    setStatus(props.singleton?.status || 'opened')
+    setDescription(props.singleton.description)
+    setStatus(props.singleton.status)
   }, [props.singleton])
 
   const onSubmit = async () => {
@@ -29,11 +26,11 @@ const Todo = forwardRef<FormInstance, Props>((props, formRef) => {
 
     const handlerMap = {
       create: () => create(todo),
-      update: () => update(props.singleton?._id as string, todo)
+      update: () => update(props.singleton._id as string, todo)
     }
 
     // 表单提交
-    const handler = handlerMap[props.singleton?._id ? 'update' : 'create']
+    const handler = handlerMap[props.singleton._id ? 'update' : 'create']
     const res = await handler()
     responseNotification(res)
     !res.code && props.onSubmitted && props.onSubmitted()

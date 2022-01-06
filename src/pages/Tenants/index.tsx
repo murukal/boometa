@@ -5,16 +5,17 @@ import { Button, Divider, FormInstance, Popconfirm, Space, Table } from 'antd'
 // project
 import { getColumns } from './assets'
 import { getTenants, remove } from '../../apis/tenant'
-import { Tenant as TenantType, Tenants as TenantsType } from '../../typings/tenant'
+import { Tenant as TenantType } from '../../typings/tenant'
 import Tenant from '../../components/Singleton/Tenant'
 import { responseNotification } from '../../utils/notification'
 import Toolbar from '../../components/Toolbar'
 import Singleton from '../../components/Singleton'
+import { getInitialSingleton } from '../../components/Singleton/Tenant/assets'
 
 const Tenants = () => {
   const [isOpened, setIsOpened] = useState(false)
-  const [tenants, setTenants] = useState<TenantsType>([])
-  const [tenant, setTenant] = useState<TenantType>()
+  const [tenants, setTenants] = useState<TenantType[]>([])
+  const [tenant, setTenant] = useState<TenantType>(getInitialSingleton())
 
   // 抽屉表单
   const formRef = createRef<FormInstance>()
@@ -57,12 +58,12 @@ const Tenants = () => {
   }
 
   // 抽屉打开事件
-  const onOpen = (tenant?: TenantType) => {
-    return () => {
+  const onOpen =
+    (tenant: TenantType = getInitialSingleton()) =>
+    () => {
       setTenant(tenant)
       setIsOpened(true)
     }
-  }
 
   // 删除客户端
   const onDelete = (_id: string) => {

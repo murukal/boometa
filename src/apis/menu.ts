@@ -1,12 +1,12 @@
 // project
-import { CreateMenu, Menu, MenuTree, MenuTrees, UpdateMenu } from '../typings/menu'
+import { CreateMenu, Menu, MenuTree, UpdateMenu } from '../typings/menu'
 import { request } from '.'
 
 /**
  * 获取单个客户端对应的菜单树
  */
 export const getMenuTree = (tenant: string) =>
-  request<MenuTree | null>({
+  request<MenuTree>({
     method: 'GET',
     url: `/api/menu/menu-tree/${tenant}`
   })
@@ -15,7 +15,7 @@ export const getMenuTree = (tenant: string) =>
  * 批量获取客户端对应的菜单树
  */
 export const getMenuTrees = (tenants: string[]) =>
-  request<MenuTrees | null>({
+  request<MenuTree[]>({
     method: 'GET',
     url: '/api/menu/menu-tree',
     params: {

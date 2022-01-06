@@ -8,7 +8,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { Menu } from 'antd'
 import * as Icons from '@ant-design/icons/lib/icons'
 // project
-import { MenuTreeNodes } from '../../typings/menu'
+import { MenuTreeNode } from '../../typings/menu'
 
 const { Item, SubMenu } = Menu
 
@@ -22,7 +22,7 @@ const SiderMenu = () => {
     const defaultOpenedKeys: string[] = []
 
     // 路由匹配菜单
-    const mapRoute = (menus: MenuTreeNodes): boolean => {
+    const mapRoute = (menus: MenuTreeNode[]): boolean => {
       let isMapped = false
 
       for (let index = 0; index < menus.length; index++) {
@@ -59,7 +59,7 @@ const SiderMenu = () => {
    * @param menuItems
    * @returns
    */
-  const renderMenu = (menuItems: MenuTreeNodes) => {
+  const renderMenu = (menuItems: MenuTreeNode[]) => {
     return (
       <>
         {menuItems.map((menu) => {

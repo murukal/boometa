@@ -5,7 +5,7 @@ import { useStore } from 'react-redux'
 // router
 import { RouteObject, useRoutes } from 'react-router-dom'
 // projetc
-import { MenuTreeNodes } from '../../typings/menu'
+import { MenuTreeNode } from '../../typings/menu'
 import Loadable from '../../components/Loadable'
 import { accountRoutes } from './Account'
 
@@ -13,7 +13,7 @@ const Router = () => {
   const store = useStore()
 
   const routes = useMemo((): RouteObject => {
-    const menusToRoutes = (menus: MenuTreeNodes, routes: RouteObject[] = []) => {
+    const menusToRoutes = (menus: MenuTreeNode[], routes: RouteObject[] = []) => {
       return menus.reduce((total, menu) => {
         // 存在子节点递归
         menu.children && menusToRoutes(menu.children, total)

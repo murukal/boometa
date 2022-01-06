@@ -11,9 +11,10 @@ import Singleton from '../../components/Singleton'
 import Toolbar from '../../components/Toolbar'
 import Todo from '../../components/Singleton/Todo'
 import { getFetchHandler, getInitialPagination, getTableChangeHandler } from '../../utils/table'
+import { getInitialSingleton } from '../../components/Singleton/Todo/assets'
 
 const Todos = () => {
-  const [todo, setTodo] = useState<TodoType>()
+  const [todo, setTodo] = useState<TodoType>(getInitialSingleton())
   const [todos, setTodos] = useState<TodosType>([])
   const [isOpened, setIsOpened] = useState(false)
   const formRef = createRef<FormInstance>()
@@ -44,10 +45,12 @@ const Todos = () => {
     setPagination
   })
 
-  const onOpen = (todo?: TodoType) => () => {
-    setTodo(todo)
-    setIsOpened(true)
-  }
+  const onOpen =
+    (todo: TodoType = getInitialSingleton()) =>
+    () => {
+      setTodo(todo)
+      setIsOpened(true)
+    }
 
   const onDelete = (id: string) => async () => {
     const res = await remove(id)

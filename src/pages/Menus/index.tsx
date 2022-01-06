@@ -8,19 +8,20 @@ import { getColumns as getTenantColumns } from '../Tenants/assets'
 import Menu from '../../components/Singleton/Menu'
 import { getTenants } from '../../apis/tenant'
 import { useEffect } from 'react'
-import { Tenant, Tenants } from '../../typings/tenant'
-import { MenuTreeNode, MenuTrees } from '../../typings/menu'
+import { Tenant } from '../../typings/tenant'
+import { MenuTreeNode, MenuTree } from '../../typings/menu'
 import { getMenuTrees, remove } from '../../apis/menu'
 import { responseNotification } from '../../utils/notification'
 import Singleton from '../../components/Singleton'
+import { getInitialSingleton } from '../../components/Singleton/Menu/assets'
 
 const Menus = () => {
   const [isOpened, setIsOpened] = useState(false)
-  const [tenants, setTenants] = useState<Tenants>([])
+  const [tenants, setTenants] = useState<Tenant[]>([])
   const [tenantId, setTenantId] = useState('')
   const [parentId, setParentId] = useState<string>()
-  const [menuTrees, setMenuTrees] = useState<MenuTrees>([])
-  const [menuTreeNode, setMenuTreeNode] = useState<MenuTreeNode>()
+  const [menuTrees, setMenuTrees] = useState<MenuTree[]>([])
+  const [menuTreeNode, setMenuTreeNode] = useState<MenuTreeNode>(getInitialSingleton())
 
   // 抽屉表单
   const formRef = createRef<FormInstance>()
@@ -97,15 +98,15 @@ const Menus = () => {
   /**
    * 抽屉打开事件
    */
-  const onOpen = (tenantId: string, parentId?: string, menuTreeNode?: MenuTreeNode) => {
-    return () => {
+  const onOpen =
+    (tenantId: string, parentId?: string, menuTreeNode: MenuTreeNode = getInitialSingleton()) =>
+    () => {
       // 重置state
       setMenuTreeNode(menuTreeNode)
       setTenantId(tenantId)
       setParentId(parentId)
       setIsOpened(true)
     }
-  }
 
   /**
    * 抽屉提交事件

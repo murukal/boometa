@@ -5,31 +5,26 @@ import { useState, forwardRef, useEffect, ChangeEvent } from 'react'
 // antd
 import { Col, Form, FormInstance, Input, InputNumber, Row, Select } from 'antd'
 // project
-import { MenuTreeNode, UpdateMenu } from '../../../typings/menu'
+import { UpdateMenu } from '../../../typings/menu'
 import { create, update } from '../../../apis/menu'
 import { responseNotification } from '../../../utils/notification'
 import IconSelector from '../../IconSelector'
-
-export interface Props {
-  tenantId: string
-  parentId?: string
-  singleton?: MenuTreeNode
-  onSubmitted?: Function
-}
+import { Props, getInitialSingleton } from './assets'
 
 const Menu = forwardRef<FormInstance, Props>((props, formRef) => {
-  const [description, setDescription] = useState('')
-  const [sort, setSort] = useState(0)
-  const [componentPath, setComponentPath] = useState('')
-  const [icon, setIcon] = useState('')
-  const [to, setTo] = useState('')
+  const singleton = getInitialSingleton()
+  const [description, setDescription] = useState(singleton.description)
+  const [sort, setSort] = useState(singleton.sort)
+  const [componentPath, setComponentPath] = useState(singleton.componentPath)
+  const [icon, setIcon] = useState(singleton.icon)
+  const [to, setTo] = useState(singleton.to)
 
   useEffect(() => {
-    setDescription(props.singleton?.description || '')
-    setSort(props.singleton?.sort || 0)
-    setComponentPath(props.singleton?.componentPath || '')
-    setIcon(props.singleton?.icon || '')
-    setTo(props.singleton?.to || '')
+    setDescription(props.singleton.description)
+    setSort(props.singleton.sort)
+    setComponentPath(props.singleton.componentPath)
+    setIcon(props.singleton.icon)
+    setTo(props.singleton.to)
   }, [props.singleton])
 
   /**
@@ -39,7 +34,7 @@ const Menu = forwardRef<FormInstance, Props>((props, formRef) => {
     .context('../../../pages/', true, /tsx$/)
     .keys()
     .map((componentPath) => {
-      const actualPath = path.join('pages', path.dirname(componentPath), path.basename(componentPath, '.tsx'))
+      const actualPath = path.join('pages', path.dirname(componentPath))
 
       return {
         label: actualPath,
@@ -103,11 +98,11 @@ const Menu = forwardRef<FormInstance, Props>((props, formRef) => {
           ...menu,
           tenant: props.tenantId
         }),
-      update: () => update(props.singleton?._id as string, menu)
+      update: () => update(props.singleton._id as string, menu)
     }
 
     // 提交表单
-    const handler = handlerMap[props.singleton?._id ? 'update' : 'create']
+    const handler = handlerMap[props.singleton._id ? 'update' : 'create']
     const res = await handler()
     responseNotification(res)
     !res.code && props.onSubmitted && props.onSubmitted()

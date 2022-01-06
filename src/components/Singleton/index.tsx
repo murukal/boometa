@@ -8,7 +8,6 @@ interface Props {
   isOpened: boolean
   onSubmit?: () => void
   onClose?: () => void
-
   children?: ReactChild | never[]
 }
 
@@ -19,7 +18,7 @@ const Singleton = (props: Props) => {
         title={props.title}
         placement='right'
         closable={false}
-        size='large'
+        size='default'
         onClose={props.onClose}
         visible={props.isOpened}
         extra={

@@ -9,7 +9,7 @@ import { CreateTodo, Todo, UpdateTodo } from '../typings/todo'
  * 获取全部的待办事项
  */
 export const getTodos = (query: QueryOptions) =>
-  request<PaginateResult<Todo> | null>({
+  request<PaginateResult<Todo>>({
     method: 'GET',
     url: `/api/todo?${stringify(query)}`
   })
@@ -18,7 +18,7 @@ export const getTodos = (query: QueryOptions) =>
  * 创建待办事项
  */
 export const create = (todo: CreateTodo) =>
-  request<Todo | null>({
+  request<Todo>({
     method: 'POST',
     url: `/api/todo`,
     data: todo
@@ -28,7 +28,7 @@ export const create = (todo: CreateTodo) =>
  * 删除待办事项
  */
 export const remove = (id: string) =>
-  request<Todo | null>({
+  request<Todo>({
     method: 'DELETE',
     url: `/api/todo/${id}`
   })
@@ -37,7 +37,7 @@ export const remove = (id: string) =>
  * 更新待办
  */
 export const update = (id: string, todo: UpdateTodo) =>
-  request<Todo | null>({
+  request<Todo>({
     method: 'PATCH',
     url: `/api/todo/${id}`,
     data: todo
