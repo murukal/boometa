@@ -1,11 +1,10 @@
 // react
-import { ChangeEvent, forwardRef } from 'react'
+import { ChangeEvent, forwardRef, useState, useEffect } from 'react'
 // antd
 import { Form, FormInstance, Input, InputNumber } from 'antd'
-import { useState } from 'react'
+// project
 import { create, update } from '../../../apis/dictionary'
 import { responseNotification } from '../../../utils/notification'
-import { useEffect } from 'react'
 import { getInitialSingleton, Props } from './assets'
 
 const { Item } = Form
@@ -48,7 +47,7 @@ const Dictionary = forwardRef<FormInstance, Props>((props, formRef) => {
   }
 
   return (
-    <Form ref={formRef} onFinish={onSubmit}>
+    <Form ref={formRef} onFinish={onSubmit} labelCol={{ span: 6 }}>
       <Item label='字典Code'>
         <Input value={code} onChange={onCodeChange} />
       </Item>

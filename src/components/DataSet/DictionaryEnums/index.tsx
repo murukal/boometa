@@ -1,5 +1,5 @@
 // react
-import { createRef, useEffect, useState } from 'react'
+import { createRef, useCallback, useEffect, useState } from 'react'
 // antd
 import { Button, Divider, FormInstance, Popconfirm, Space, Table } from 'antd'
 // project
@@ -43,10 +43,22 @@ const DictionaryEnums = (props: Props) => {
     }
   ])
 
-  const onFetch = getFetchHandler(getDictionaryEnums, {
-    setResults: setDictionaryEnums,
-    setPagination
-  })
+  const onFetch = useCallback(
+    (currentPagination = pagination) => {
+      const handler = getFetchHandler(getDictionaryEnums, {
+        setResults: setDictionaryEnums,
+        setPagination
+      })
+
+      handler({
+        pagination: currentPagination,
+        filter: {
+          belongTo: props.dictionaryId
+        }
+      })
+    },
+    [pagination, props.dictionaryId]
+  )
 
   const onClose = () => {
     setIsOpened(false)
@@ -57,10 +69,7 @@ const DictionaryEnums = (props: Props) => {
   }
 
   const onSubmitted = () => {
-    onFetch({
-      pagination: getInitialPagination(),
-      belongTo: props.dictionaryId
-    })
+    onFetch()
     onClose()
   }
 
@@ -78,10 +87,7 @@ const DictionaryEnums = (props: Props) => {
   }
 
   useEffect(() => {
-    onFetch({
-      pagination: getInitialPagination(),
-      belongTo: props.dictionaryId
-    })
+    onFetch()
   }, [props.dictionaryId])
 
   return (

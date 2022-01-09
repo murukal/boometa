@@ -51,7 +51,7 @@ const DictionaryEnum = forwardRef<FormInstance, Props>((props, formRef) => {
 
   return (
     <>
-      <Form ref={formRef} onFinish={onSubmit}>
+      <Form ref={formRef} onFinish={onSubmit} labelCol={{ span: 6 }}>
         <Item label='枚举描述'>
           <Input value={description} onChange={onDescriptionChange} />
         </Item>

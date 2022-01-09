@@ -9,11 +9,13 @@ import { FetchAPI, PaginateOptions, QueryParams } from '../typings/api'
 export interface fetchCallbacks<T> {
   setResults?: Dispatch<SetStateAction<T[]>>
   setPagination?: Dispatch<SetStateAction<TablePaginationConfig>>
+  setSorter?: Dispatch<SetStateAction<any>>
+  setFilter?: Dispatch<SetStateAction<any>>
 }
 
 export const getInitialPagination = (): TablePaginationConfig => ({
   current: 1,
-  pageSize: 2,
+  pageSize: 10,
   showSizeChanger: true,
   pageSizeOptions: ['10', '20', '30']
 })
@@ -28,16 +30,13 @@ export type FetchHandler<T> = (queryParams?: QueryParams<T>) => Promise<void>
  */
 export const getFetchHandler =
   <T>(fetchAPI: FetchAPI<T>, callbacks?: fetchCallbacks<T>): FetchHandler<T> =>
-  async (
-    queryParams = {
-      pagination: getInitialPagination()
-    }
-  ) => {
+  async (queryParams) => {
+    const initialPagination = getInitialPagination()
     // 分页参数重构
     // 分页参数由前端统一转换为后端要求的字段
     const pagination: PaginateOptions = {
-      page: queryParams.pagination.current,
-      limit: queryParams.pagination.pageSize
+      page: queryParams?.pagination?.current || initialPagination.current,
+      limit: queryParams?.pagination?.pageSize || initialPagination.pageSize
     }
 
     const res = await fetchAPI({
@@ -47,12 +46,22 @@ export const getFetchHandler =
 
     if (!res.data) return
 
-    callbacks?.setResults && callbacks.setResults(res.data.docs)
+    // 分页查询的结果放在docs中
+    // 非分页查询的结果直接放在data中
+    callbacks?.setResults && callbacks.setResults(res.data.docs || res.data)
+
+    // 设置分页state
     callbacks?.setPagination &&
       callbacks.setPagination({
-        ...queryParams.pagination,
+        ...queryParams?.pagination,
         total: res.data.totalDocs
       })
+
+    // 设置排序state
+    callbacks?.setSorter && callbacks?.setSorter(queryParams?.sorter)
+
+    // 设置筛选state
+    callbacks?.setFilter && callbacks?.setFilter(queryParams?.filter)
   }
 
 /**
