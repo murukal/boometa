@@ -30,4 +30,4 @@ export interface QueryOptions<RecordType = any> {
 /**
  * GET的请求函数
  */
-export type FetchAPI<T> = (queryOptions: QueryOptions) => Promise<ApiResponse<PaginateResult<T> | null>>
+export type FetchAPI<T> = (queryOptions: QueryOptions) => Promise<ApiResponse<PaginateResult<T> | T[] | null>>
