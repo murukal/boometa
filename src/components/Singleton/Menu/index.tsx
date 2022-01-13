@@ -109,7 +109,7 @@ const Menu = forwardRef<FormInstance, Props>((props, formRef) => {
   }
 
   return (
-    <Form labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} onFinish={onSubmit} ref={formRef}>
+    <Form labelCol={{ span: 6 }} onFinish={onSubmit} ref={formRef}>
       <Row>
         <Col span={24}>
           <Form.Item label='菜单描述'>

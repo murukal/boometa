@@ -43,11 +43,11 @@ const Tenant = forwardRef<FormInstance, Props>((props, formRef) => {
   }
 
   return (
-    <Form labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} onFinish={onSubmit} ref={formRef}>
+    <Form labelCol={{ span: 6 }} onFinish={onSubmit} ref={formRef}>
       <Row>
         <Col span={24}>
           <Form.Item label='租户代码'>
-            <Input disabled={!!props.singleton} value={code} onChange={onCodeChange} />
+            <Input disabled={!!props.singleton._id} value={code} onChange={onCodeChange} />
           </Form.Item>
         </Col>
       </Row>

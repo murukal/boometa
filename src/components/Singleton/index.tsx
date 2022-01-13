@@ -18,9 +18,9 @@ const Singleton = (props: Props) => {
         title={props.title}
         placement='right'
         closable={false}
-        size='default'
         onClose={props.onClose}
         visible={props.isOpened}
+        width={500}
         extra={
           <Space>
             <Button onClick={props.onClose}>关闭</Button>
