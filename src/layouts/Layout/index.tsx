@@ -1,7 +1,7 @@
 // router
 import { Navigate, Outlet } from 'react-router-dom'
 // redux
-import { useStore } from 'react-redux'
+import { useSelector } from 'react-redux'
 // antd
 import { Card, Layout as AntdLayout } from 'antd'
 // project
@@ -11,8 +11,7 @@ import HeaderBar from '../HeaderBar'
 const { Sider, Content, Header } = AntdLayout
 
 const Layout = () => {
-  const store = useStore()
-  const isLogin = store.getState().userProfile.isLogin
+  const isLogin = useSelector((state) => state.userProfile.isLogin)
 
   return isLogin ? (
     <AntdLayout className='h-full w-full'>

@@ -1,9 +1,7 @@
 // react
 import { ChangeEvent, CSSProperties, useState } from 'react'
 // redux
-import { useDispatch, useStore } from 'react-redux'
-// router
-import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 // antd
 import { Button, Space, Tabs } from 'antd'
 import { LoginForm, ProFormCheckbox, ProFormText } from '@ant-design/pro-form'
@@ -29,10 +27,8 @@ const Login = () => {
   const [captcha, setCaptcha] = useState('')
   const [loginType, setLoginType] = useState<LoginType>('account')
 
-  const navigate = useNavigate()
-  const store = useStore()
   const dispatch = useDispatch()
-  const tenant = store.getState().tenant
+  const tenant = useSelector((state) => state.tenant)
 
   const onLoginTypeChange = (activeKey: string) => {
     setLoginType(activeKey as LoginType)
@@ -70,12 +66,7 @@ const Login = () => {
 
     const handler = handlerMap[loginType]
     const res = await handler()
-
     res.data && dispatch(await authenticate(res.data))
-
-    // 登录成功的状态下，回调页面至首页
-    store.getState().userProfile.isLogin && navigate('/')
-
     responseNotification(res)
   }
 

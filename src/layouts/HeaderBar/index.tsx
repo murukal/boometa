@@ -1,7 +1,5 @@
 // redux
-import { useDispatch, useStore } from 'react-redux'
-// router
-import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 // antd
 import { Avatar, Dropdown, Menu } from 'antd'
 import { EditOutlined, ApiOutlined } from '@ant-design/icons'
@@ -9,16 +7,11 @@ import { EditOutlined, ApiOutlined } from '@ant-design/icons'
 import { logout } from '../../redux/userProfile/actions'
 
 const HeaderBar = () => {
-  const navigate = useNavigate()
-  const store = useStore()
   const dispatch = useDispatch()
-  const state = store.getState()
-  const user = state.userProfile.user
+  const user = useSelector((state) => state.userProfile.user)
 
   const onLogout = () => {
     dispatch(logout())
-    // 重定向至登录页面
-    navigate('/account/login')
   }
 
   const getMenu = () => {

@@ -6,7 +6,7 @@ import { SwitchTransition, CSSTransition } from 'react-transition-group'
 // router
 import { Navigate, Outlet, useNavigate, useLocation } from 'react-router-dom'
 // redux
-import { useStore } from 'react-redux'
+import { useSelector } from 'react-redux'
 // antd
 import { Button } from 'antd'
 // project
@@ -18,10 +18,9 @@ enum Handle {
 }
 
 const Account = () => {
-  const store = useStore()
   const navigate = useNavigate()
   const location = useLocation()
-  const isLogin = store.getState().userProfile.isLogin
+  const isLogin = useSelector((state) => state.userProfile.isLogin)
 
   const [handle, setHandle] = useState<Handle>(Handle[path.basename(location.pathname) as Handle])
 
