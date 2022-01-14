@@ -1,4 +1,6 @@
+// redux
 import { createStore } from 'redux'
+// project
 import reducer from './reducer'
 import { TenantState } from './tenant/store'
 import { MenuTreeNode } from '../typings/menu'
