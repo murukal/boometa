@@ -6,8 +6,3 @@ export const getInitialSingleton = (): Blog => ({
   createdBy: '',
   title: ''
 })
-
-export interface Props {
-  singleton: Blog
-  onSubmitted?: Function
-}

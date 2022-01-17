@@ -1,25 +1,21 @@
 // react
-import { createRef, useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 // antd
-import { Button, Divider, FormInstance, Popconfirm, Space, Table } from 'antd'
+import { Button, Divider, Popconfirm, Space, Table } from 'antd'
 // project
 import { Blog as BlogType } from '../../typings/blog'
 import { getColumns } from './assets'
 import { getFetchHandler, getInitialPagination, getTableChangeHandler } from '../../utils/table'
 import { getBlogs, remove } from '../../apis/blog'
-import Singleton from '../../components/Singleton'
-import Blog from '../../components/Singleton/Blog'
 import { responseNotification } from '../../utils/notification'
 import Toolbar from '../../components/Toolbar'
-import { getInitialSingleton } from '../../components/Singleton/Blog/assets'
+import { useNavigate } from 'react-router-dom'
 
 const Blogs = () => {
   const [blogs, setBlogs] = useState<BlogType[]>([])
   const [pagination, setPagination] = useState(getInitialPagination)
-  const [isOpened, setIsOpened] = useState(false)
-  const [blog, setBlog] = useState(getInitialSingleton())
 
-  const formRef = createRef<FormInstance>()
+  const navigate = useNavigate()
 
   const columns = getColumns([
     {
@@ -28,7 +24,7 @@ const Blogs = () => {
       align: 'center',
       render: (value, blog) => (
         <Space>
-          <Button type='link' onClick={onOpen(blog)} size='small'>
+          <Button type='link' onClick={onNavigate(blog._id)} size='small'>
             修改
           </Button>
           <Divider type='vertical' />
@@ -63,18 +59,6 @@ const Blogs = () => {
     onFetch()
   }, [])
 
-  // 打开抽屉
-  const onOpen =
-    (blog = getInitialSingleton()) =>
-    () => {
-      setBlog(blog)
-      setIsOpened(true)
-    }
-
-  const onClose = () => {
-    setIsOpened(false)
-  }
-
   // 删除博客
   const onDelete = (id: string) => async () => {
     const res = await remove(id)
@@ -82,24 +66,16 @@ const Blogs = () => {
     !res.code && onFetch(pagination)
   }
 
-  const onSubmitted = () => {
-    onFetch(pagination)
-    onClose()
-  }
-
-  const onSubmit = () => {
-    formRef.current?.submit()
-  }
+  const onNavigate =
+    (id = '') =>
+    () => {
+      navigate(`/blog${id ? `/${id}` : ''}`)
+    }
 
   return (
     <>
-      <Toolbar onAdd={onOpen()} />
-
+      <Toolbar onAdd={onNavigate()} />
       <Table rowKey='_id' dataSource={blogs} columns={columns} bordered pagination={pagination} onChange={onTableChange} />
-
-      <Singleton isOpened={isOpened} title='博客' onClose={onClose} onSubmit={onSubmit}>
-        <Blog singleton={blog} onSubmitted={onSubmitted} ref={formRef} />
-      </Singleton>
     </>
   )
 }

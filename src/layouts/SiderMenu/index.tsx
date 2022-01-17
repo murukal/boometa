@@ -1,7 +1,7 @@
 // react
 import { useMemo, createElement } from 'react'
 // redux
-import { useStore } from 'react-redux'
+import { useSelector } from 'react-redux'
 // react
 import { Link, useLocation } from 'react-router-dom'
 // antd
@@ -13,7 +13,7 @@ import { MenuTreeNode } from '../../typings/menu'
 const { Item, SubMenu } = Menu
 
 const SiderMenu = () => {
-  const store = useStore()
+  const menus = useSelector((state) => state.menus)
   const route = useLocation()
 
   // 渲染默认选中的条目
@@ -45,14 +45,14 @@ const SiderMenu = () => {
     }
 
     // 调用
-    mapRoute(store.getState().menus)
+    mapRoute(menus)
 
     // 调用
     return {
       defaultSelectedKeys,
       defaultOpenedKeys
     }
-  }, [route, store])
+  }, [route, menus])
 
   /**
    * menu的子项需要递归渲染
@@ -83,7 +83,7 @@ const SiderMenu = () => {
   return (
     <div className='h-full flex flex-col justify-between'>
       <Menu mode='inline' theme='dark' defaultSelectedKeys={mappedMenuKeys.defaultSelectedKeys} defaultOpenKeys={mappedMenuKeys.defaultOpenedKeys}>
-        {renderMenu(store.getState().menus)}
+        {renderMenu(menus)}
       </Menu>
 
       <a className='text-center text-white mb-1' href='http://ythzxfw.miit.gov.cn/index'>
