@@ -7,7 +7,8 @@ import { RouteObject, useRoutes } from 'react-router-dom'
 // projetc
 import { MenuTreeNode } from '../../typings/menu'
 import Loadable from '../../components/Loadable'
-import { accountRoutes } from './Account'
+import { accounts } from './accounts'
+import { customizes } from './customizes'
 
 const Router = () => {
   const store = useStore()
@@ -32,11 +33,11 @@ const Router = () => {
     return {
       path: '/',
       element: Loadable('layouts/Layout'),
-      children: menusToRoutes(store.getState().menus)
+      children: menusToRoutes(store.getState().menus).concat(customizes)
     }
   }, [store])
 
-  return useRoutes([routes, accountRoutes])
+  return useRoutes([routes, accounts])
 }
 
 export default Router
