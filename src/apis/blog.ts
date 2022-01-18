@@ -17,7 +17,7 @@ export const create = (data: CreateBlog) =>
 
 export const update = (id: string, data: UpdateBlog) =>
   request({
-    url: '/api/blog',
+    url: `/api/blog/${id}`,
     method: 'PATCH',
     data
   })
