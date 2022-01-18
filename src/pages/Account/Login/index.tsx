@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Button, Space, Tabs } from 'antd'
 import { LoginForm, ProFormCheckbox, ProFormText } from '@ant-design/pro-form'
 import { AlipayCircleOutlined, TaobaoCircleOutlined, WeiboCircleOutlined, UserOutlined, LockOutlined } from '@ant-design/icons'
+import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 // project
 import PhoneFormItem from '../../../components/Form/PhoneFormItem'
 import CaptchaFormItem from '../../../components/Form/CaptchaFormItem'
@@ -13,7 +14,6 @@ import { LoginType } from '../../../typings/user'
 import { login, loginByPhone } from '../../../apis/account'
 import { responseNotification } from '../../../utils/notification'
 import { authenticate } from '../../../redux/userProfile/actions'
-import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 
 const IconStyle: CSSProperties = {
   marginLeft: 16,

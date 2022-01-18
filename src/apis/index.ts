@@ -1,5 +1,8 @@
+// axios
 import Axios, { AxiosResponse } from 'axios'
 import { AxiosRequestConfig } from 'axios'
+// project
+import { TOKEN } from '../assets'
 import { ApiResponse } from '../typings/api'
 
 // 生成一个axios实例
@@ -10,7 +13,7 @@ const axios = Axios.create()
  */
 axios.interceptors.request.use((config: AxiosRequestConfig) => {
   // 从localStorage中获取token信息
-  const token = localStorage.getItem('BOOM_AUTH_TOKEN') || sessionStorage.getItem('BOOM_AUTH_TOKEN')
+  const token = localStorage.getItem(TOKEN) || sessionStorage.getItem(TOKEN)
 
   if (token && config.headers) {
     config.headers['Authorization'] = `Bearer ${token}`

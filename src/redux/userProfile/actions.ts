@@ -1,5 +1,7 @@
+// project
 import { UserProfile } from './store'
 import { Authentication, getUser } from '../../apis/account'
+import { TOKEN } from '../../assets'
 
 export enum ActionType {
   AUTHENTICATE = 'AUTHENTICATE',
@@ -14,19 +16,19 @@ export interface Action {
 // 获取到token之后，进行用户的认证
 export const authenticate = async (
   authenticate: Authentication = {
-    token: localStorage.getItem('BOOM_AUTH_TOKEN') || ''
+    token: localStorage.getItem(TOKEN) || sessionStorage.removeItem(TOKEN) || ''
   },
   isAutoLogin: boolean = false
 ): Promise<Action> => {
   // 设置浏览器内存
-  localStorage.removeItem('BOOM_AUTH_TOKEN')
-  sessionStorage.removeItem('BOOM_AUTH_TOKEN')
+  localStorage.removeItem(TOKEN)
+  sessionStorage.removeItem(TOKEN)
 
   // 自动登录，设置长期有效的token
   if (isAutoLogin) {
-    localStorage.setItem('BOOM_AUTH_TOKEN', authenticate.token)
+    localStorage.setItem(TOKEN, authenticate.token)
   } else {
-    sessionStorage.setItem('BOOM_AUTH_TOKEN', authenticate.token)
+    sessionStorage.setItem(TOKEN, authenticate.token)
   }
 
   // 读取用户信息
@@ -44,7 +46,8 @@ export const authenticate = async (
 
 export const logout = (): Action => {
   // 清楚浏览器的缓存
-  localStorage.removeItem('BOOM_AUTH_TOKEN')
+  sessionStorage.removeItem(TOKEN)
+  localStorage.removeItem(TOKEN)
 
   return {
     type: ActionType.LOGOUT,
