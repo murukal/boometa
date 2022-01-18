@@ -1,12 +1,9 @@
+// npm
+import { stringify } from 'qs'
 // project
-import { Login, PhoneLogin, Register, User } from '../typings/user'
+import { Authentication, Login, PhoneLogin, Register, User } from '../typings/user'
 import { request } from '.'
 import { PaginateResult, QueryOptions } from '../typings/api'
-import { stringify } from 'qs'
-
-export interface Authentication {
-  token: string
-}
 
 /**
  * 换取用户信息
