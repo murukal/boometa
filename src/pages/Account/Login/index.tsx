@@ -13,6 +13,7 @@ import { LoginType } from '../../../typings/user'
 import { login, loginByPhone } from '../../../apis/account'
 import { responseNotification } from '../../../utils/notification'
 import { authenticate } from '../../../redux/userProfile/actions'
+import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 
 const IconStyle: CSSProperties = {
   marginLeft: 16,
@@ -25,6 +26,7 @@ const Login = () => {
   const [password, setPassword] = useState('')
   const [phone, setPhone] = useState('')
   const [captcha, setCaptcha] = useState('')
+  const [isAutoLogin, setIsAutoLogin] = useState(false)
   const [loginType, setLoginType] = useState<LoginType>('account')
 
   const dispatch = useDispatch()
@@ -39,6 +41,9 @@ const Login = () => {
   const onPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value)
   }
+  const onIsAutoLoginChange = (e: CheckboxChangeEvent) => {
+    setIsAutoLogin(e.target.checked)
+  }
 
   // 执行登录
   const onLogin = async () => {
@@ -46,7 +51,7 @@ const Login = () => {
     // 登录方式不同，提交表单的格式也不同
     // 账户关键字 + 密码登录
     const handlerMap = {
-      account() {
+      account: () => {
         // 利用公钥对密码进行加密
         const encryptedPassword = tenant.encrypter.encrypt(password)
 
@@ -56,17 +61,16 @@ const Login = () => {
           password: encryptedPassword.toString()
         })
       },
-      phone() {
-        return loginByPhone({
+      phone: () =>
+        loginByPhone({
           phone,
           captcha
         })
-      }
     }
 
     const handler = handlerMap[loginType]
     const res = await handler()
-    res.data && dispatch(await authenticate(res.data))
+    res.data && dispatch(await authenticate(res.data, isAutoLogin))
     responseNotification(res)
   }
 
@@ -135,7 +139,13 @@ const Login = () => {
       )}
 
       <div className='mb-5'>
-        <ProFormCheckbox noStyle name='autoLogin'>
+        <ProFormCheckbox
+          noStyle
+          fieldProps={{
+            checked: isAutoLogin,
+            onChange: onIsAutoLoginChange
+          }}
+        >
           自动登录
         </ProFormCheckbox>
 

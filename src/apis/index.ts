@@ -10,7 +10,7 @@ const axios = Axios.create()
  */
 axios.interceptors.request.use((config: AxiosRequestConfig) => {
   // 从localStorage中获取token信息
-  const token = localStorage.getItem('BOOM_AUTH_TOKEN')
+  const token = localStorage.getItem('BOOM_AUTH_TOKEN') || sessionStorage.getItem('BOOM_AUTH_TOKEN')
 
   if (token && config.headers) {
     config.headers['Authorization'] = `Bearer ${token}`

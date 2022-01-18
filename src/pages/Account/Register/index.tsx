@@ -1,9 +1,7 @@
 // react
 import { ChangeEvent, useState } from 'react'
 // redux
-import { useDispatch, useStore } from 'react-redux'
-// router
-import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 // antd
 import { LoginForm, ProFormText } from '@ant-design/pro-form'
 import { ConfigProvider, createIntl } from '@ant-design/pro-provider'
@@ -19,10 +17,8 @@ const Register = () => {
   const [phone, setPhone] = useState('')
   const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')
-  const navigate = useNavigate()
-  const store = useStore()
   const dispatch = useDispatch()
-  const tenant = store.getState().tenant
+  const tenant = useSelector((state) => state.tenant)
 
   const intl = createIntl('zh_CN', {
     loginForm: {
@@ -56,10 +52,6 @@ const Register = () => {
     })
 
     res.data && dispatch(await authenticate(res.data))
-
-    // 登录成功的状态下，回调页面至首页
-    store.getState().userProfile.isLogin && navigate('/')
-
     responseNotification(res)
   }
 

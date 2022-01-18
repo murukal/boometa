@@ -15,11 +15,19 @@ export interface Action {
 export const authenticate = async (
   authenticate: Authentication = {
     token: localStorage.getItem('BOOM_AUTH_TOKEN') || ''
-  }
+  },
+  isAutoLogin: boolean = false
 ): Promise<Action> => {
   // 设置浏览器内存
   localStorage.removeItem('BOOM_AUTH_TOKEN')
-  localStorage.setItem('BOOM_AUTH_TOKEN', authenticate.token)
+  sessionStorage.removeItem('BOOM_AUTH_TOKEN')
+
+  // 自动登录，设置长期有效的token
+  if (isAutoLogin) {
+    localStorage.setItem('BOOM_AUTH_TOKEN', authenticate.token)
+  } else {
+    sessionStorage.setItem('BOOM_AUTH_TOKEN', authenticate.token)
+  }
 
   // 读取用户信息
   const res = await getUser()
