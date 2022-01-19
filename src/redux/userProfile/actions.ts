@@ -2,7 +2,6 @@
 import { UserProfile } from './store'
 import { getUser } from '../../apis/account'
 import { TOKEN } from '../../assets'
-import { Authentication } from '../../typings/user'
 
 export enum ActionType {
   AUTHENTICATE = 'AUTHENTICATE',
