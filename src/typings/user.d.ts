@@ -30,3 +30,7 @@ export interface Register {
   phone: string
   password: string
 }
+
+export interface Authentication {
+  token: string
+}
