@@ -35,7 +35,7 @@ const Account = () => {
   }
 
   // 获取重定向的url
-  const redirectUrl = useSearchParams()[0].get('redirectUrl') || ''
+  const redirect = useSearchParams()[0].get('redirect') || ''
 
   // 动画结束，跳转路由
   const onExited = () => {
@@ -49,12 +49,14 @@ const Account = () => {
     const sessionToken = sessionStorage.getItem(TOKEN)
 
     const params = {
-      is_once: !localToken,
-      token: localToken || sessionToken
+      authentication: JSON.stringify({
+        token: localToken || sessionToken,
+        is_once: !localToken
+      })
     }
 
-    if (redirectUrl) {
-      window.location.replace(`${redirectUrl}?${stringify(params)}`)
+    if (redirect) {
+      window.location.replace(`${redirect}?${stringify(params)}`)
     } else {
       navigate('/', { replace: true })
     }

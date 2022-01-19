@@ -14,6 +14,7 @@ import { LoginType } from '../../../typings/user'
 import { login, loginByPhone } from '../../../apis/account'
 import { responseNotification } from '../../../utils/notification'
 import { authenticate } from '../../../redux/userProfile/actions'
+import { setToken } from '../../../utils/app'
 
 const IconStyle: CSSProperties = {
   marginLeft: 16,
@@ -26,7 +27,7 @@ const Login = () => {
   const [password, setPassword] = useState('')
   const [phone, setPhone] = useState('')
   const [captcha, setCaptcha] = useState('')
-  const [isAutoLogin, setIsAutoLogin] = useState(false)
+  const [isAutoLogin, setIsAutoLogin] = useState(true)
   const [loginType, setLoginType] = useState<LoginType>('account')
 
   const dispatch = useDispatch()
@@ -70,7 +71,8 @@ const Login = () => {
 
     const handler = handlerMap[loginType]
     const res = await handler()
-    res.data && dispatch(await authenticate(res.data, isAutoLogin))
+    res.data && setToken(res.data.token, isAutoLogin)
+    res.data && dispatch(await authenticate())
     responseNotification(res)
   }
 
