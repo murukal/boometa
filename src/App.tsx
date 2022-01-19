@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 // redux
 import { useDispatch, useStore } from 'react-redux'
 // project
-import Router from './routes/Router'
+import Router from './routes'
 import { getTenant } from './apis/tenant'
 import { setTenant } from './redux/tenant/actions'
 import { getMenuTree } from './apis/menu'

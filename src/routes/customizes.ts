@@ -1,7 +1,7 @@
 // router
 import { RouteObject } from 'react-router-dom'
 // project
-import Loadable from '../../components/Loadable'
+import Loadable from '../components/Loadable'
 
 export const customizes: RouteObject[] = [
   {

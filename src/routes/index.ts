@@ -5,10 +5,11 @@ import { useStore } from 'react-redux'
 // router
 import { RouteObject, useRoutes } from 'react-router-dom'
 // projetc
-import { MenuTreeNode } from '../../typings/menu'
-import Loadable from '../../components/Loadable'
+import { MenuTreeNode } from '../typings/menu'
+import Loadable from '../components/Loadable'
 import { accounts } from './accounts'
 import { customizes } from './customizes'
+import { roadmaps } from './roadmaps'
 
 const Router = () => {
   const store = useStore()
@@ -37,7 +38,7 @@ const Router = () => {
     }
   }, [store])
 
-  return useRoutes([routes, accounts])
+  return useRoutes([routes, accounts, roadmaps])
 }
 
 export default Router
