@@ -99,3 +99,7 @@
 .fade-register-exit-active {
   transition: opacity 0.3s, left 0.3s;
 }
+
+.sss {
+  stroke-width: 5px;
+}

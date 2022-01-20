@@ -1,7 +1,7 @@
 // antd
-import { TablePaginationConfig } from 'antd'
+import type { TablePaginationConfig } from 'antd'
 // npm
-export { PaginateOptions, PaginateResult } from 'mongoose'
+export type { PaginateOptions, PaginateResult } from 'mongoose'
 
 export interface ApiResponse<T = any> {
   code: number
