@@ -1,5 +1,5 @@
 // react
-import { createElement } from 'react'
+import { createElement, useCallback, useState } from 'react'
 import type { Dispatch, SetStateAction, MouseEventHandler, ReactNode } from 'react'
 // antd
 import { Button, Divider, Popconfirm, Space } from 'antd'
@@ -9,11 +9,11 @@ import type { FilterValue, SorterResult } from 'antd/lib/table/interface'
 import type { FetchAPI, PaginateOptions, QueryParams } from '../typings/api'
 import type { ButtonType } from 'antd/lib/button'
 
-export interface fetchCallbacks<T> {
+export interface FetchCallbacks<T> {
   setResults?: Dispatch<SetStateAction<T[]>>
   setPagination?: Dispatch<SetStateAction<TablePaginationConfig>>
   setSorter?: Dispatch<SetStateAction<any>>
-  setFilter?: Dispatch<SetStateAction<any>>
+  setFilters?: Dispatch<SetStateAction<any>>
 }
 
 export interface TableRowHandler {
@@ -31,7 +31,7 @@ export const getInitialPagination = (): TablePaginationConfig => ({
   pageSizeOptions: ['10', '20', '30']
 })
 
-export type FetchHandler<T> = (queryParams?: QueryParams<T>) => Promise<void>
+export type FetchHandler<T> = (queryParams?: QueryParams<T>) => Promise<void> | void
 
 /**
  * 获取页面的fetch事件
@@ -40,7 +40,7 @@ export type FetchHandler<T> = (queryParams?: QueryParams<T>) => Promise<void>
  * @returns
  */
 export const getFetchHandler =
-  <T>(fetchAPI: FetchAPI<T>, callbacks?: fetchCallbacks<T>): FetchHandler<T> =>
+  <T>(fetchAPI: FetchAPI<T>, callbacks?: FetchCallbacks<T>): FetchHandler<T> =>
   async (queryParams) => {
     const initialPagination = getInitialPagination()
     // 分页参数重构
@@ -72,7 +72,7 @@ export const getFetchHandler =
     callbacks?.setSorter && callbacks?.setSorter(queryParams?.sorter)
 
     // 设置筛选state
-    callbacks?.setFilter && callbacks?.setFilter(queryParams?.filter)
+    callbacks?.setFilters && callbacks?.setFilters(queryParams?.filters)
   }
 
 /**
@@ -87,7 +87,7 @@ export const getTableChangeHandler =
       // 分页参数
       pagination,
       // 筛选条件
-      ...filters,
+      filters,
       // 排序
       sorter
     })
@@ -145,4 +145,61 @@ export const getTableRowHandler = (handlers: TableRowHandler[]) => {
   })
 
   return createElement(Space, null, nodes)
+}
+
+/**
+ * 创建一个自定义的hooks，该hooks能被表格实例使用
+ */
+export const useTable = <T>(fetchAPI: FetchAPI<T>) => {
+  const [results, setResults] = useState<T[]>([])
+  const [pagination, setPagination] = useState(getInitialPagination())
+  const [filters, setFilters] = useState<Record<string, FilterValue>>()
+  const [sorter, setSorter] = useState<SorterResult<T> | SorterResult<T>[]>()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const onFetch = useCallback(
+    async (
+      queryParams: QueryParams<T> = {
+        pagination,
+        filters,
+        sorter
+      }
+    ) => {
+      // 表格的加载状态 --开始加载
+      setIsLoading(true)
+
+      const handler = getFetchHandler<T>(fetchAPI, {
+        setResults,
+        setPagination,
+        setFilters,
+        setSorter
+      })
+
+      await handler({
+        pagination: queryParams.pagination,
+        filters: queryParams.filters,
+        sorter: queryParams.sorter
+      })
+
+      // 表格的加载状态 --结束加载
+      setIsLoading(false)
+    },
+    [pagination]
+  )
+
+  const onTableChange = getTableChangeHandler<T>(onFetch)
+
+  return {
+    handlers: {
+      onFetch,
+      onTableChange
+    },
+    props: {
+      results,
+      pagination,
+      filters,
+      sorter,
+      isLoading
+    }
+  }
 }

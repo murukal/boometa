@@ -52,7 +52,7 @@ const DictionaryEnums = (props: Props) => {
 
       handler({
         pagination: currentPagination,
-        filter: {
+        filters: {
           belongTo: props.dictionaryId
         }
       })

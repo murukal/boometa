@@ -9,8 +9,6 @@ export interface User {
   avatar: string
 }
 
-export type Users = User[]
-
 export type LoginType = 'phone' | 'account'
 
 export interface Login {

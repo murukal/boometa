@@ -3,7 +3,7 @@ import { Navigate, Outlet } from 'react-router-dom'
 // redux
 import { useSelector } from 'react-redux'
 // antd
-import { Card, Layout as AntdLayout } from 'antd'
+import { Layout as AntdLayout } from 'antd'
 // project
 import SiderMenu from '../SiderMenu'
 import HeaderBar from '../HeaderBar'
@@ -23,9 +23,7 @@ const Layout = () => {
           <SiderMenu />
         </Sider>
         <Content className='p-3 overflow-auto'>
-          <Card className='h-full w-full'>
-            <Outlet />
-          </Card>
+          <Outlet />
         </Content>
       </AntdLayout>
     </AntdLayout>

@@ -1,7 +1,7 @@
 // react
 import { useState, createRef } from 'react'
 // antd
-import { Button, Divider, Space, Table, FormInstance, Popconfirm } from 'antd'
+import { Button, Divider, Space, Table, FormInstance, Popconfirm, Card } from 'antd'
 // project
 import { getColumns as getMenuColumns } from './assets'
 import { getColumns as getTenantColumns } from '../Tenants/assets'
@@ -135,13 +135,13 @@ const Menus = () => {
   }
 
   return (
-    <>
+    <Card>
       <Table rowKey='_id' columns={tenantColumns} dataSource={tenants} bordered={true} expandable={{ expandedRowRender }} pagination={false} />
 
       <Singleton title='菜单' isOpened={isOpened} onClose={onClose} onSubmit={onSubmit}>
         <Menu tenantId={tenantId} parentId={parentId} singleton={menuTreeNode} ref={ref} onSubmitted={onSubmitted} />
       </Singleton>
-    </>
+    </Card>
   )
 }
 

@@ -1,7 +1,7 @@
 // react
 import { createRef, useState, useEffect } from 'react'
 // antd
-import { Button, Divider, FormInstance, Popconfirm, Space, Table } from 'antd'
+import { Button, Card, Divider, FormInstance, Popconfirm, Space, Table } from 'antd'
 // project
 import { getColumns } from './assets'
 import { Todo as TodoType, Todos as TodosType } from '../../typings/todo'
@@ -78,7 +78,7 @@ const Todos = () => {
   }, [])
 
   return (
-    <>
+    <Card>
       <Toolbar onAdd={onOpen()} />
 
       <Table rowKey='_id' columns={columns} dataSource={todos} bordered={true} pagination={pagination} onChange={onTableChange} />
@@ -86,7 +86,7 @@ const Todos = () => {
       <Singleton title='待办事项' isOpened={isOpened} onClose={onClose} onSubmit={onSubmit}>
         <Todo singleton={todo} ref={ref} onSubmitted={onSubmitted} />
       </Singleton>
-    </>
+    </Card>
   )
 }
 

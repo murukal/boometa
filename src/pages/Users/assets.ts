@@ -2,9 +2,14 @@
 import { createElement } from 'react'
 // antd
 import { Avatar } from 'antd'
-import { ColumnsType } from 'antd/lib/table'
+import type { ColumnsType } from 'antd/lib/table'
 // project
-import { User } from '../../typings/user'
+import type { User } from '../../typings/user'
+
+export interface Props {
+  ids?: string[]
+  isSetting?: boolean
+}
 
 /**
  * 获取的用户清单的列

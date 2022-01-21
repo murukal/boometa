@@ -3,7 +3,7 @@ import { ChangeEvent, useEffect, useState } from 'react'
 // router
 import { useNavigate, useParams } from 'react-router-dom'
 // antd
-import { Button, Form, Input } from 'antd'
+import { Button, Card, Form, Input } from 'antd'
 // project
 import { getInitialSingleton } from './assets'
 import { create, getBlogById, update } from '../../apis/blog'
@@ -56,7 +56,7 @@ const Blog = () => {
   }
 
   return (
-    <>
+    <Card>
       <Form onFinish={onSubmit} labelCol={{ span: 6 }}>
         <Item label='博客标题'>
           <Input value={title} onChange={onTitleChange} />
@@ -72,7 +72,7 @@ const Blog = () => {
           </Button>
         </Item>
       </Form>
-    </>
+    </Card>
   )
 }
 

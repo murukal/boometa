@@ -1,7 +1,7 @@
 // react
 import { useEffect, useState, createRef } from 'react'
 // antd
-import { Button, Space, Table, Divider, Popconfirm, Drawer } from 'antd'
+import { Button, Space, Table, Divider, Popconfirm, Drawer, Card } from 'antd'
 import { FormInstance } from 'antd/lib/form/Form'
 // project
 import { getFetchHandler, getInitialPagination, getTableChangeHandler } from '../../utils/table'
@@ -95,7 +95,7 @@ const Dictionaries = () => {
   }, [])
 
   return (
-    <>
+    <Card>
       <Toolbar onAdd={onOpen()} />
 
       <Table rowKey='_id' dataSource={dictionaries} columns={columns} bordered pagination={pagination} onChange={onTableChange} />
@@ -109,7 +109,7 @@ const Dictionaries = () => {
       <Drawer title='枚举配置' visible={isEnumOpened} onClose={onEnumClose} size='large' closable={false}>
         <DictionaryEnums dictionaryId={dictionaryId} />
       </Drawer>
-    </>
+    </Card>
   )
 }
 

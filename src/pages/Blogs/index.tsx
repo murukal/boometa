@@ -1,7 +1,7 @@
 // react
 import { useCallback, useEffect, useState } from 'react'
 // antd
-import { Button, Divider, Popconfirm, Space, Table } from 'antd'
+import { Button, Card, Divider, Popconfirm, Space, Table } from 'antd'
 // project
 import { Blog as BlogType } from '../../typings/blog'
 import { getColumns } from './assets'
@@ -73,10 +73,10 @@ const Blogs = () => {
     }
 
   return (
-    <>
+    <Card>
       <Toolbar onAdd={onNavigate()} />
       <Table rowKey='_id' dataSource={blogs} columns={columns} bordered pagination={pagination} onChange={onTableChange} />
-    </>
+    </Card>
   )
 }
 

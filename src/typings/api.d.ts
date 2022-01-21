@@ -15,7 +15,7 @@ export interface ApiResponse<T = any> {
 export interface QueryParams<RecordType = any> {
   pagination?: TablePaginationConfig
   sorter?: SorterResult<RecordType> | SorterResult<RecordType>[]
-  filter?: Record<string, FilterValue>
+  filters?: Record<string, FilterValue>
 }
 
 /**

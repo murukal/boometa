@@ -1,7 +1,7 @@
 // react
 import { createRef, useEffect, useState } from 'react'
 // antd
-import type { FormInstance } from 'antd'
+import { Card, FormInstance } from 'antd'
 import { Table } from 'antd'
 // project
 import type { Tenant as TenantType } from '../../typings/tenant'
@@ -92,7 +92,7 @@ const Tenants = () => {
   }
 
   return (
-    <>
+    <Card>
       <Toolbar onAdd={onOpen()} onDelete={() => {}} />
 
       <Table rowKey='_id' columns={columns} dataSource={tenants} bordered={true} pagination={false} />
@@ -100,7 +100,7 @@ const Tenants = () => {
       <Singleton title='客户端' isOpened={isOpened} onSubmit={onSubmit} onClose={onClose}>
         <Tenant ref={ref} singleton={tenant} onSubmitted={onSubmitted} />
       </Singleton>
-    </>
+    </Card>
   )
 }
 

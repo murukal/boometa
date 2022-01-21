@@ -1,12 +1,15 @@
+// npm
+import { stringify } from 'qs'
 // project
 import { request } from '.'
+import { QueryOptions } from '../typings/api'
 import type { CreateRole, UpdateRole } from '../typings/role'
 
 const url = '/api/role'
 
-export const getRoles = () =>
+export const getRoles = (queryOptions: QueryOptions) =>
   request({
-    url,
+    url: `${url}?${stringify(queryOptions)}`,
     method: 'GET'
   })
 
