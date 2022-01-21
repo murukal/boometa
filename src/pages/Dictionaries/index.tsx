@@ -41,7 +41,7 @@ const Dictionaries = () => {
     }
   ])
 
-  const formRef = createRef<FormInstance>()
+  const ref = createRef<FormInstance>()
   const [isOpened, setIsOpened] = useState(false)
   const [dictionary, setDictionary] = useState<DictionaryType>(getInitialSingleton())
   const [dictionaries, setDictionaries] = useState<DictionariesType>([])
@@ -65,7 +65,7 @@ const Dictionaries = () => {
   const onClose = () => setIsOpened(false)
 
   const onSubmit = () => {
-    formRef.current?.submit()
+    ref.current?.submit()
   }
 
   const onSubmitted = () => {
@@ -102,7 +102,7 @@ const Dictionaries = () => {
 
       {/* 字典的单例抽屉 */}
       <Singleton title='字典' isOpened={isOpened} onClose={onClose} onSubmit={onSubmit}>
-        <Dictionary ref={formRef} singleton={dictionary} onSubmitted={onSubmitted} />
+        <Dictionary ref={ref} singleton={dictionary} onSubmitted={onSubmitted} />
       </Singleton>
 
       {/* 枚举的展现抽屉 */}

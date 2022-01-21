@@ -9,7 +9,7 @@ import { getInitialSingleton, Props } from './assets'
 
 const { Item } = Form
 
-const Dictionary = forwardRef<FormInstance, Props>((props, formRef) => {
+const Dictionary = forwardRef<FormInstance, Props>((props, ref) => {
   const singleton = getInitialSingleton()
   const [description, setDescription] = useState(singleton.description)
   const [sort, setSort] = useState(singleton.sort)
@@ -47,7 +47,7 @@ const Dictionary = forwardRef<FormInstance, Props>((props, formRef) => {
   }
 
   return (
-    <Form ref={formRef} onFinish={onSubmit} labelCol={{ span: 6 }}>
+    <Form ref={ref} onFinish={onSubmit} labelCol={{ span: 6 }}>
       <Item label='字典Code'>
         <Input value={code} onChange={onCodeChange} />
       </Item>

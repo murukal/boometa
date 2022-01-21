@@ -11,7 +11,7 @@ import { responseNotification } from '../../../utils/notification'
 import IconSelector from '../../IconSelector'
 import { Props, getInitialSingleton } from './assets'
 
-const Menu = forwardRef<FormInstance, Props>((props, formRef) => {
+const Menu = forwardRef<FormInstance, Props>((props, ref) => {
   const singleton = getInitialSingleton()
   const [description, setDescription] = useState(singleton.description)
   const [sort, setSort] = useState(singleton.sort)
@@ -109,7 +109,7 @@ const Menu = forwardRef<FormInstance, Props>((props, formRef) => {
   }
 
   return (
-    <Form labelCol={{ span: 6 }} onFinish={onSubmit} ref={formRef}>
+    <Form labelCol={{ span: 6 }} onFinish={onSubmit} ref={ref}>
       <Row>
         <Col span={24}>
           <Form.Item label='菜单描述'>

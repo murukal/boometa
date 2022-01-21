@@ -8,7 +8,7 @@ import { create, update } from '../../../apis/todo'
 import { responseNotification } from '../../../utils/notification'
 import { getInitialSingleton, Props } from './assets'
 
-const Todo = forwardRef<FormInstance, Props>((props, formRef) => {
+const Todo = forwardRef<FormInstance, Props>((props, ref) => {
   const singleton = getInitialSingleton()
   const [description, setDescription] = useState(singleton.description)
   const [status, setStatus] = useState<Status>(singleton.status)
@@ -43,7 +43,7 @@ const Todo = forwardRef<FormInstance, Props>((props, formRef) => {
   }
 
   return (
-    <Form labelCol={{ span: 6 }} onFinish={onSubmit} ref={formRef}>
+    <Form labelCol={{ span: 6 }} onFinish={onSubmit} ref={ref}>
       <Row>
         <Col span={24}>
           <Form.Item label='待办描述'>

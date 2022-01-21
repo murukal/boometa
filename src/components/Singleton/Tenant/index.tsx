@@ -7,7 +7,7 @@ import { create, update } from '../../../apis/tenant'
 import { responseNotification } from '../../../utils/notification'
 import { getInitialSingleton, Props } from './assets'
 
-const Tenant = forwardRef<FormInstance, Props>((props, formRef) => {
+const Tenant = forwardRef<FormInstance, Props>((props, ref) => {
   const singleton = getInitialSingleton()
   const [code, setCode] = useState(singleton.code)
   const [description, setDescription] = useState(singleton.description)
@@ -43,7 +43,7 @@ const Tenant = forwardRef<FormInstance, Props>((props, formRef) => {
   }
 
   return (
-    <Form labelCol={{ span: 6 }} onFinish={onSubmit} ref={formRef}>
+    <Form labelCol={{ span: 6 }} onFinish={onSubmit} ref={ref}>
       <Row>
         <Col span={24}>
           <Form.Item label='租户代码'>

@@ -10,7 +10,7 @@ import { getInitialSingleton, Props } from './assets'
 
 const { Item } = Form
 
-const DictionaryEnum = forwardRef<FormInstance, Props>((props, formRef) => {
+const DictionaryEnum = forwardRef<FormInstance, Props>((props, ref) => {
   const singleton = getInitialSingleton()
   const [description, setDescription] = useState(singleton.description)
   const [code, setCode] = useState(singleton.code)
@@ -51,7 +51,7 @@ const DictionaryEnum = forwardRef<FormInstance, Props>((props, formRef) => {
 
   return (
     <>
-      <Form ref={formRef} onFinish={onSubmit} labelCol={{ span: 6 }}>
+      <Form ref={ref} onFinish={onSubmit} labelCol={{ span: 6 }}>
         <Item label='枚举描述'>
           <Input value={description} onChange={onDescriptionChange} />
         </Item>

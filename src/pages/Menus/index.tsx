@@ -24,7 +24,7 @@ const Menus = () => {
   const [menuTreeNode, setMenuTreeNode] = useState<MenuTreeNode>(getInitialSingleton())
 
   // 抽屉表单
-  const formRef = createRef<FormInstance>()
+  const ref = createRef<FormInstance>()
 
   const tenantColumns = getTenantColumns([
     {
@@ -112,7 +112,7 @@ const Menus = () => {
    * 抽屉提交事件
    */
   const onSubmit = () => {
-    formRef.current?.submit()
+    ref.current?.submit()
   }
 
   /**
@@ -139,7 +139,7 @@ const Menus = () => {
       <Table rowKey='_id' columns={tenantColumns} dataSource={tenants} bordered={true} expandable={{ expandedRowRender }} pagination={false} />
 
       <Singleton title='菜单' isOpened={isOpened} onClose={onClose} onSubmit={onSubmit}>
-        <Menu tenantId={tenantId} parentId={parentId} singleton={menuTreeNode} ref={formRef} onSubmitted={onSubmitted} />
+        <Menu tenantId={tenantId} parentId={parentId} singleton={menuTreeNode} ref={ref} onSubmitted={onSubmitted} />
       </Singleton>
     </>
   )

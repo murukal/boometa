@@ -1,16 +1,27 @@
 // react
-import { Dispatch, SetStateAction } from 'react'
+import { createElement } from 'react'
+import type { Dispatch, SetStateAction, MouseEventHandler, ReactNode } from 'react'
 // antd
-import { TablePaginationConfig } from 'antd'
-import { FilterValue, SorterResult } from 'antd/lib/table/interface'
+import { Button, Divider, Popconfirm, Space } from 'antd'
+import type { TablePaginationConfig, PopconfirmProps } from 'antd'
+import type { FilterValue, SorterResult } from 'antd/lib/table/interface'
 // project
-import { FetchAPI, PaginateOptions, QueryParams } from '../typings/api'
+import type { FetchAPI, PaginateOptions, QueryParams } from '../typings/api'
+import type { ButtonType } from 'antd/lib/button'
 
 export interface fetchCallbacks<T> {
   setResults?: Dispatch<SetStateAction<T[]>>
   setPagination?: Dispatch<SetStateAction<TablePaginationConfig>>
   setSorter?: Dispatch<SetStateAction<any>>
   setFilter?: Dispatch<SetStateAction<any>>
+}
+
+export interface TableRowHandler {
+  label: string
+  type?: ButtonType
+  onClick?: MouseEventHandler<HTMLElement>
+  danger?: boolean
+  popconfirmProps?: PopconfirmProps
 }
 
 export const getInitialPagination = (): TablePaginationConfig => ({
@@ -81,3 +92,57 @@ export const getTableChangeHandler =
       sorter
     })
   }
+
+/**
+ * 动态生成表格的操作按钮
+ * @param handlers
+ * @returns
+ */
+export const getTableRowHandler = (handlers: TableRowHandler[]) => {
+  const nodes: ReactNode[] = []
+
+  handlers.forEach((handler, index) => {
+    // 生成按钮的dom元素
+    const button = createElement(
+      Button,
+      {
+        type: handler.type || 'link',
+        size: 'small',
+        onClick: handler.popconfirmProps ? undefined : handler.onClick,
+        key: `${handler.label}-button`,
+        danger: handler.danger
+      },
+      handler.label
+    )
+
+    // 生成确认框的dom元素
+    handler.popconfirmProps
+      ? nodes.push(
+          createElement(
+            Popconfirm,
+            {
+              ...handler.popconfirmProps,
+              onConfirm: (e) => {
+                e && handler.onClick && handler.onClick(e)
+              },
+              key: `${handler.label}-confirm`
+            },
+            // 按钮作为子元素
+            button
+          )
+        )
+      : nodes.push(button)
+
+    // 每个元素后面添加一个分割线
+    if (index < handlers.length - 1) {
+      nodes.push(
+        createElement(Divider, {
+          type: 'vertical',
+          key: `${handler.label}-divider`
+        })
+      )
+    }
+  })
+
+  return createElement(Space, null, nodes)
+}

@@ -17,7 +17,7 @@ const Todos = () => {
   const [todo, setTodo] = useState<TodoType>(getInitialSingleton())
   const [todos, setTodos] = useState<TodosType>([])
   const [isOpened, setIsOpened] = useState(false)
-  const formRef = createRef<FormInstance>()
+  const ref = createRef<FormInstance>()
   const [pagination, setPagination] = useState(getInitialPagination())
   const columns = getColumns([
     {
@@ -63,7 +63,7 @@ const Todos = () => {
   }
 
   const onSubmit = () => {
-    formRef.current?.submit()
+    ref.current?.submit()
   }
 
   const onSubmitted = () => {
@@ -84,7 +84,7 @@ const Todos = () => {
       <Table rowKey='_id' columns={columns} dataSource={todos} bordered={true} pagination={pagination} onChange={onTableChange} />
 
       <Singleton title='待办事项' isOpened={isOpened} onClose={onClose} onSubmit={onSubmit}>
-        <Todo singleton={todo} ref={formRef} onSubmitted={onSubmitted} />
+        <Todo singleton={todo} ref={ref} onSubmitted={onSubmitted} />
       </Singleton>
     </>
   )

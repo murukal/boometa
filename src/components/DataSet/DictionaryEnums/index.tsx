@@ -14,7 +14,7 @@ import Toolbar from '../../Toolbar'
 import { getInitialSingleton } from '../../Singleton/DictionaryEnum/assets'
 
 const DictionaryEnums = (props: Props) => {
-  const formRef = createRef<FormInstance>()
+  const ref = createRef<FormInstance>()
   const [isOpened, setIsOpened] = useState(false)
   const [dictionaryEnums, setDictionaryEnums] = useState<DictionaryEnumType[]>([])
   const [dictionaryEnum, setDictionaryEnum] = useState<DictionaryEnumType>(getInitialSingleton())
@@ -65,7 +65,7 @@ const DictionaryEnums = (props: Props) => {
   }
 
   const onSubmit = () => {
-    formRef.current?.submit()
+    ref.current?.submit()
   }
 
   const onSubmitted = () => {
@@ -97,7 +97,7 @@ const DictionaryEnums = (props: Props) => {
       <Table rowKey='_id' bordered={true} dataSource={dictionaryEnums} columns={columns} pagination={pagination} />
 
       <Singleton title='字典' isOpened={isOpened} onClose={onClose} onSubmit={onSubmit}>
-        <DictionaryEnum ref={formRef} dictionaryId={props.dictionaryId} singleton={dictionaryEnum} onSubmitted={onSubmitted} />
+        <DictionaryEnum ref={ref} dictionaryId={props.dictionaryId} singleton={dictionaryEnum} onSubmitted={onSubmitted} />
       </Singleton>
     </>
   )

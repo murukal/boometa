@@ -1,16 +1,18 @@
 // react
 import { createRef, useEffect, useState } from 'react'
 // antd
-import { Button, Divider, FormInstance, Popconfirm, Space, Table } from 'antd'
+import type { FormInstance } from 'antd'
+import { Table } from 'antd'
 // project
+import type { Tenant as TenantType } from '../../typings/tenant'
 import { getColumns } from './assets'
 import { getTenants, remove } from '../../apis/tenant'
-import { Tenant as TenantType } from '../../typings/tenant'
 import Tenant from '../../components/Singleton/Tenant'
 import { responseNotification } from '../../utils/notification'
 import Toolbar from '../../components/Toolbar'
 import Singleton from '../../components/Singleton'
 import { getInitialSingleton } from '../../components/Singleton/Tenant/assets'
+import { getTableRowHandler } from '../../utils/table'
 
 const Tenants = () => {
   const [isOpened, setIsOpened] = useState(false)
@@ -18,26 +20,30 @@ const Tenants = () => {
   const [tenant, setTenant] = useState<TenantType>(getInitialSingleton())
 
   // 抽屉表单
-  const formRef = createRef<FormInstance>()
+  const ref = createRef<FormInstance>()
 
   const columns = getColumns([
     {
       title: '操作',
       align: 'center',
-      render: (text, tenant) => (
-        <Space>
-          <Button type='link' size='small' onClick={onOpen(tenant)}>
-            修改
-          </Button>
-          <Divider type='vertical' />
-          <Popconfirm title='确认删除当前条目？' okText='确认' cancelText='取消' onConfirm={onDelete(tenant._id)}>
-            <Button type='link' size='small' danger>
-              删除
-            </Button>
-          </Popconfirm>
-        </Space>
-      ),
-      width: 100
+      width: 100,
+      render: (text, tenant) =>
+        getTableRowHandler([
+          {
+            label: '修改',
+            onClick: onOpen(tenant)
+          },
+          {
+            popconfirmProps: {
+              title: '确认删除当前条目？',
+              okText: '确认',
+              cancelText: '取消'
+            },
+            label: '删除',
+            danger: true,
+            onClick: onDelete(tenant._id)
+          }
+        ])
     }
   ])
 
@@ -76,7 +82,7 @@ const Tenants = () => {
 
   // 抽屉提交事件
   const onSubmit = () => {
-    formRef.current?.submit()
+    ref.current?.submit()
   }
 
   // 抽屉提交后的事件
@@ -92,7 +98,7 @@ const Tenants = () => {
       <Table rowKey='_id' columns={columns} dataSource={tenants} bordered={true} pagination={false} />
 
       <Singleton title='客户端' isOpened={isOpened} onSubmit={onSubmit} onClose={onClose}>
-        <Tenant ref={formRef} singleton={tenant} onSubmitted={onSubmitted} />
+        <Tenant ref={ref} singleton={tenant} onSubmitted={onSubmitted} />
       </Singleton>
     </>
   )
