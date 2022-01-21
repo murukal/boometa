@@ -47,8 +47,9 @@ export const register = (data: Register) =>
 /**
  * 获取用户清单
  */
-export const getUsers = (query: QueryOptions) =>
-  request<PaginateResult<User>>({
+export const getUsers = (query: QueryOptions) => {
+  return request<PaginateResult<User>>({
     method: 'GET',
     url: `/api/auth/user?${stringify(query)}`
   })
+}

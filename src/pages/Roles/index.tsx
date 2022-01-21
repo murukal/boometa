@@ -13,6 +13,7 @@ import Singleton from '../../components/Singleton'
 import Role from '../../components/Singleton/Role'
 import { getInitialSingleton } from '../../components/Singleton/Role/assets'
 import Toolbar from '../../components/Toolbar'
+import Users from '../Users'
 
 const Roles = () => {
   const [role, setRole] = useState(getInitialSingleton())
@@ -92,6 +93,7 @@ const Roles = () => {
   return (
     <div className='flex'>
       <Card
+        className='overflow-auto'
         style={{
           width: isShow ? '50%' : '100%',
           marginRight: isShow ? '6px' : '0'
@@ -108,7 +110,7 @@ const Roles = () => {
 
       {isShow && (
         <Card className='w-1/2 ml-1.5' tabList={tabs} activeTabKey={actived} onTabChange={onTabChange}>
-          <Toolbar onAddUser={() => {}} />
+          {actived === 'user' && <Users ids={role.users} isSetting />}
         </Card>
       )}
     </div>

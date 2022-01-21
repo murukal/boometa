@@ -10,5 +10,3 @@ export interface Todo extends CreateTodo {
 }
 
 export interface UpdateTodo extends CreateTodo {}
-
-export type Todos = Todo[]

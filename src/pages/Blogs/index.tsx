@@ -1,20 +1,17 @@
 // react
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect } from 'react'
 // antd
-import { Button, Card, Divider, Popconfirm, Space, Table } from 'antd'
+import { Card, Table } from 'antd'
 // project
-import { Blog as BlogType } from '../../typings/blog'
+import type { Blog as BlogType } from '../../typings/blog'
 import { getColumns } from './assets'
-import { getFetchHandler, getInitialPagination, getTableChangeHandler } from '../../utils/table'
+import { getTableRowHandler, useTable } from '../../utils/table'
 import { getBlogs, remove } from '../../apis/blog'
 import { responseNotification } from '../../utils/notification'
 import Toolbar from '../../components/Toolbar'
 import { useNavigate } from 'react-router-dom'
 
 const Blogs = () => {
-  const [blogs, setBlogs] = useState<BlogType[]>([])
-  const [pagination, setPagination] = useState(getInitialPagination)
-
   const navigate = useNavigate()
 
   const columns = getColumns([
@@ -22,37 +19,30 @@ const Blogs = () => {
       title: '操作',
       width: 100,
       align: 'center',
-      render: (value, blog) => (
-        <Space>
-          <Button type='link' onClick={onNavigate(blog._id)} size='small'>
-            修改
-          </Button>
-          <Divider type='vertical' />
-          <Popconfirm title='确认删除当前条目？' okText='确认' cancelText='取消' onConfirm={onDelete(blog._id)}>
-            <Button type='link' danger size='small'>
-              删除
-            </Button>
-          </Popconfirm>
-        </Space>
-      )
+      render: (value, blog) =>
+        getTableRowHandler([
+          {
+            label: '修改',
+            onClick: onNavigate(blog._id)
+          },
+          {
+            label: '删除',
+            onClick: onDelete(blog._id),
+            danger: true,
+            popconfirmProps: {
+              title: '确认删除当前条目？',
+              okText: '确认',
+              cancelText: '取消'
+            }
+          }
+        ])
     }
   ])
 
-  const onFetch = useCallback(
-    async (currentPagination = pagination) => {
-      const handler = getFetchHandler(getBlogs, {
-        setPagination,
-        setResults: setBlogs
-      })
-
-      handler({
-        pagination: currentPagination
-      })
-    },
-    [pagination]
-  )
-
-  const onTableChange = getTableChangeHandler<BlogType>(onFetch)
+  const {
+    handlers: { onTableChange, onFetch },
+    props: { results: blogs, pagination, isLoading }
+  } = useTable<BlogType>(getBlogs)
 
   // 渲染
   useEffect(() => {
@@ -63,7 +53,7 @@ const Blogs = () => {
   const onDelete = (id: string) => async () => {
     const res = await remove(id)
     responseNotification(res)
-    !res.code && onFetch(pagination)
+    !res.code && onFetch()
   }
 
   const onNavigate =
@@ -75,7 +65,8 @@ const Blogs = () => {
   return (
     <Card>
       <Toolbar onAdd={onNavigate()} />
-      <Table rowKey='_id' dataSource={blogs} columns={columns} bordered pagination={pagination} onChange={onTableChange} />
+
+      <Table rowKey='_id' dataSource={blogs} columns={columns} bordered pagination={pagination} onChange={onTableChange} loading={isLoading} />
     </Card>
   )
 }

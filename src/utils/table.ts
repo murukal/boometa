@@ -1,13 +1,12 @@
 // react
-import { createElement, useCallback, useState } from 'react'
 import type { Dispatch, SetStateAction, MouseEventHandler, ReactNode } from 'react'
+import { createElement, useCallback, useState } from 'react'
 // antd
-import { Button, Divider, Popconfirm, Space } from 'antd'
 import type { TablePaginationConfig, PopconfirmProps } from 'antd'
 import type { FilterValue, SorterResult } from 'antd/lib/table/interface'
+import { Button, Divider, Popconfirm, Space } from 'antd'
 // project
 import type { FetchAPI, PaginateOptions, QueryParams } from '../typings/api'
-import type { ButtonType } from 'antd/lib/button'
 
 export interface FetchCallbacks<T> {
   setResults?: Dispatch<SetStateAction<T[]>>
@@ -18,7 +17,6 @@ export interface FetchCallbacks<T> {
 
 export interface TableRowHandler {
   label: string
-  type?: ButtonType
   onClick?: MouseEventHandler<HTMLElement>
   danger?: boolean
   popconfirmProps?: PopconfirmProps
@@ -39,7 +37,7 @@ export type FetchHandler<T> = (queryParams?: QueryParams<T>) => Promise<void> | 
  * @param callbacks
  * @returns
  */
-export const getFetchHandler =
+const getFetchHandler =
   <T>(fetchAPI: FetchAPI<T>, callbacks?: FetchCallbacks<T>): FetchHandler<T> =>
   async (queryParams) => {
     const initialPagination = getInitialPagination()
@@ -55,17 +53,15 @@ export const getFetchHandler =
       pagination
     })
 
-    if (!res.data) return
-
     // 分页查询的结果放在docs中
     // 非分页查询的结果直接放在data中
-    callbacks?.setResults && callbacks.setResults(res.data.docs || res.data)
+    callbacks?.setResults && callbacks.setResults(res.data?.docs || res.data || [])
 
     // 设置分页state
     callbacks?.setPagination &&
       callbacks.setPagination({
         ...queryParams?.pagination,
-        total: res.data.totalDocs
+        total: res.data?.totalDocs || 0
       })
 
     // 设置排序state
@@ -80,7 +76,7 @@ export const getFetchHandler =
  * @param onFetch
  * @returns
  */
-export const getTableChangeHandler =
+const getTableChangeHandler =
   <T>(fetchHandler: FetchHandler<T>) =>
   (pagination: TablePaginationConfig, filters: Record<string, FilterValue | null>, sorter: SorterResult<T> | SorterResult<T>[]) => {
     fetchHandler({
@@ -106,7 +102,7 @@ export const getTableRowHandler = (handlers: TableRowHandler[]) => {
     const button = createElement(
       Button,
       {
-        type: handler.type || 'link',
+        type: 'link',
         size: 'small',
         onClick: handler.popconfirmProps ? undefined : handler.onClick,
         key: `${handler.label}-button`,

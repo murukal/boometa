@@ -1,33 +1,39 @@
 // react
-import { useState, useEffect, useCallback, useContext } from 'react'
+import { useEffect } from 'react'
 // antd
 import { Card, Table } from 'antd'
 // project
 import type { User as UserType } from '../../typings/user'
 import type { Props } from './assets'
+import type { QueryOptions } from '../../typings/api'
+
 import { getColumns } from './assets'
-import { getFetchHandler, getInitialPagination, getTableChangeHandler } from '../../utils/table'
+import { useTable } from '../../utils/table'
 import { getUsers } from '../../apis/account'
-import { QueryParams } from '../../typings/api'
+import Toolbar from '../../components/Toolbar'
 
 const Users = (props: Props) => {
-  const [users, setUsers] = useState<UserType[]>([])
-  const [pagination, setPagination] = useState(getInitialPagination())
-
   const columns = getColumns()
 
-  const onFetch = useCallback((query: QueryParams = {}) => {
-    console.log('query', query)
+  const {
+    handlers: { onFetch, onTableChange },
+    props: { results: users, pagination, isLoading }
+  } = useTable<UserType>(async (query: QueryOptions) => {
+    // setting的场景下，ids不存在或者数组长度为空时，均代表不需要取数。默认为空
+    if (props.isSetting && (!props.ids || !props.ids.length))
+      return {
+        data: []
+      }
 
-    const handler = getFetchHandler(getUsers, {
-      setResults: setUsers,
-      setPagination
+    // 其余场景请求后端数据
+    // 固定筛选条件的注入
+    return await getUsers({
+      ...query,
+      _id: {
+        $in: props.ids
+      }
     })
-
-    handler()
-  }, [])
-
-  const onTableChange = getTableChangeHandler<UserType>(onFetch)
+  })
 
   // 初始化渲染
   useEffect(() => {
@@ -35,8 +41,10 @@ const Users = (props: Props) => {
   }, [])
 
   return (
-    <Card>
-      <Table rowKey='_id' columns={columns} dataSource={users} bordered={true} pagination={pagination} onChange={onTableChange} />
+    <Card className='overflow-auto'>
+      {props.isSetting && <Toolbar onAddUser={() => {}} />}
+
+      <Table rowKey='_id' columns={columns} dataSource={users} bordered={true} pagination={pagination} onChange={onTableChange} loading={isLoading} />
     </Card>
   )
 }

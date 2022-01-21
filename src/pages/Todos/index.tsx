@@ -1,49 +1,54 @@
 // react
 import { createRef, useState, useEffect } from 'react'
 // antd
-import { Button, Card, Divider, FormInstance, Popconfirm, Space, Table } from 'antd'
+import type { FormInstance } from 'antd'
+import { Card, Table } from 'antd'
 // project
+import type { Todo as TodoType } from '../../typings/todo'
 import { getColumns } from './assets'
-import { Todo as TodoType, Todos as TodosType } from '../../typings/todo'
 import { getTodos, remove } from '../../apis/todo'
 import { responseNotification } from '../../utils/notification'
 import Singleton from '../../components/Singleton'
 import Toolbar from '../../components/Toolbar'
 import Todo from '../../components/Singleton/Todo'
-import { getFetchHandler, getInitialPagination, getTableChangeHandler } from '../../utils/table'
+import { getTableRowHandler, useTable } from '../../utils/table'
 import { getInitialSingleton } from '../../components/Singleton/Todo/assets'
 
 const Todos = () => {
   const [todo, setTodo] = useState<TodoType>(getInitialSingleton())
-  const [todos, setTodos] = useState<TodosType>([])
   const [isOpened, setIsOpened] = useState(false)
+
   const ref = createRef<FormInstance>()
-  const [pagination, setPagination] = useState(getInitialPagination())
+
   const columns = getColumns([
     {
       title: '操作',
       align: 'center',
-      render: (text, todo) => (
-        <Space>
-          <Button type='link' size='small' onClick={onOpen(todo)}>
-            修改
-          </Button>
-          <Divider type='vertical' />
-          <Popconfirm title='确认删除当前条目？' okText='确认' cancelText='取消' onConfirm={onDelete(todo._id)}>
-            <Button type='link' size='small' danger>
-              删除
-            </Button>
-          </Popconfirm>
-        </Space>
-      ),
+      render: (text, todo) =>
+        getTableRowHandler([
+          {
+            label: '修改',
+            onClick: onOpen(todo)
+          },
+          {
+            label: '删除',
+            onClick: onDelete(todo._id),
+            danger: true,
+            popconfirmProps: {
+              okText: '确认',
+              cancelText: '取消',
+              title: '确认删除当前条目？'
+            }
+          }
+        ]),
       width: 100
     }
   ])
 
-  const onFetch = getFetchHandler(getTodos, {
-    setResults: setTodos,
-    setPagination
-  })
+  const {
+    handlers: { onFetch, onTableChange },
+    props: { results: todos, pagination, isLoading }
+  } = useTable<TodoType>(getTodos)
 
   const onOpen =
     (todo: TodoType = getInitialSingleton()) =>
@@ -71,8 +76,6 @@ const Todos = () => {
     onFetch()
   }
 
-  const onTableChange = getTableChangeHandler(onFetch)
-
   useEffect(() => {
     onFetch()
   }, [])
@@ -81,7 +84,7 @@ const Todos = () => {
     <Card>
       <Toolbar onAdd={onOpen()} />
 
-      <Table rowKey='_id' columns={columns} dataSource={todos} bordered={true} pagination={pagination} onChange={onTableChange} />
+      <Table rowKey='_id' columns={columns} dataSource={todos} bordered={true} pagination={pagination} onChange={onTableChange} loading={isLoading} />
 
       <Singleton title='待办事项' isOpened={isOpened} onClose={onClose} onSubmit={onSubmit}>
         <Todo singleton={todo} ref={ref} onSubmitted={onSubmitted} />

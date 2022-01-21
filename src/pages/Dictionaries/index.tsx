@@ -1,15 +1,15 @@
 // react
 import { useEffect, useState, createRef } from 'react'
 // antd
-import { Button, Space, Table, Divider, Popconfirm, Drawer, Card } from 'antd'
-import { FormInstance } from 'antd/lib/form/Form'
+import type { FormInstance } from 'antd'
+import { Table, Drawer, Card } from 'antd'
 // project
-import { getFetchHandler, getInitialPagination, getTableChangeHandler } from '../../utils/table'
+import type { Dictionary as DictionaryType } from '../../typings/dictionary'
+import { getTableRowHandler, useTable } from '../../utils/table'
 import { getColumns } from './assets'
 import Toolbar from '../../components/Toolbar'
 import Singleton from '../../components/Singleton'
 import { responseNotification } from '../../utils/notification'
-import { Dictionaries as DictionariesType, Dictionary as DictionaryType } from '../../typings/dictionary'
 import Dictionary from '../../components/Singleton/Dictionary'
 import { getDictionaries, remove } from '../../apis/dictionary'
 import DictionaryEnums from '../../components/DataSet/DictionaryEnums'
@@ -21,39 +21,41 @@ const Dictionaries = () => {
       title: '操作',
       width: 100,
       align: 'center',
-      render: (value, dictionary) => (
-        <Space>
-          <Button type='link' onClick={onOpen(dictionary)} size='small'>
-            修改
-          </Button>
-          <Divider type='vertical' />
-          <Button type='link' size='small' onClick={onEnumOpen(dictionary._id)}>
-            枚举配置
-          </Button>
-          <Divider type='vertical' />
-          <Popconfirm title='确认删除当前条目？' okText='确认' cancelText='取消' onConfirm={onDelete(dictionary._id)}>
-            <Button type='link' danger size='small'>
-              删除
-            </Button>
-          </Popconfirm>
-        </Space>
-      )
+      render: () =>
+        getTableRowHandler([
+          {
+            label: '修改',
+            onClick: onOpen(dictionary)
+          },
+          {
+            label: '枚举配置',
+            onClick: onEnumOpen(dictionary._id)
+          },
+          {
+            label: '删除',
+            danger: true,
+            onClick: onDelete(dictionary._id),
+            popconfirmProps: {
+              okText: '确认',
+              cancelText: '取消',
+              title: '确认删除当前条目？'
+            }
+          }
+        ])
     }
   ])
 
   const ref = createRef<FormInstance>()
   const [isOpened, setIsOpened] = useState(false)
   const [dictionary, setDictionary] = useState<DictionaryType>(getInitialSingleton())
-  const [dictionaries, setDictionaries] = useState<DictionariesType>([])
-  const [pagination, setPagination] = useState(getInitialPagination())
 
   const [dictionaryId, setDictionaryId] = useState('')
   const [isEnumOpened, setIsEnumOpened] = useState(false)
 
-  const onFetch = getFetchHandler(getDictionaries, {
-    setResults: setDictionaries,
-    setPagination: setPagination
-  })
+  const {
+    handlers: { onFetch, onTableChange },
+    props: { results: dictionaries, pagination, isLoading }
+  } = useTable<DictionaryType>(getDictionaries)
 
   const onOpen =
     (dictionary: DictionaryType = getInitialSingleton()) =>
@@ -88,8 +90,6 @@ const Dictionaries = () => {
     setIsEnumOpened(false)
   }
 
-  const onTableChange = getTableChangeHandler(onFetch)
-
   useEffect(() => {
     onFetch()
   }, [])
@@ -98,7 +98,7 @@ const Dictionaries = () => {
     <Card>
       <Toolbar onAdd={onOpen()} />
 
-      <Table rowKey='_id' dataSource={dictionaries} columns={columns} bordered pagination={pagination} onChange={onTableChange} />
+      <Table rowKey='_id' dataSource={dictionaries} columns={columns} bordered pagination={pagination} onChange={onTableChange} loading={isLoading} />
 
       {/* 字典的单例抽屉 */}
       <Singleton title='字典' isOpened={isOpened} onClose={onClose} onSubmit={onSubmit}>

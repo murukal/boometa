@@ -4,8 +4,8 @@ import type { TablePaginationConfig } from 'antd'
 export type { PaginateOptions, PaginateResult } from 'mongoose'
 
 export interface ApiResponse<T = any> {
-  code: number
-  message: string
+  code?: number
+  message?: string
   data: T | null
 }
 

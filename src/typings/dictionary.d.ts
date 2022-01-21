@@ -11,5 +11,3 @@ export interface Dictionary {
 export interface CreateDictionary extends Omit<Dictionary, '_id' | 'enums'> {}
 
 export interface UpdateDictionary extends CreateDictionary {}
-
-export type Dictionaries = Dictionary[]
