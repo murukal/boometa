@@ -1,9 +1,9 @@
 // npm
 import { stringify } from 'qs'
 // project
-import { Authentication, Login, PhoneLogin, Register, User } from '../typings/user'
+import type { PaginateResult, QueryOptions } from '../typings/api'
+import type { Authentication, Login, PhoneLogin, Register, User } from '../typings/user'
 import { request } from '.'
-import { PaginateResult, QueryOptions } from '../typings/api'
 
 /**
  * 换取用户信息

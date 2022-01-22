@@ -2,10 +2,10 @@
 import { createRef, useEffect, useState } from 'react'
 // antd
 import type { FormInstance } from 'antd'
-import type { CardTabListType } from 'antd/lib/card'
 import { Card, Table } from 'antd'
 // project
 import type { Role as RoleType } from '../../typings/role'
+import type { AuthType } from '../../components/Roles4Auth/assets'
 import { getTableRowHandler, useTable } from '../../utils/table'
 import { getColumns } from './assets'
 import { getRoles } from '../../apis/role'
@@ -13,14 +13,13 @@ import Singleton from '../../components/Singleton'
 import Role from '../../components/Singleton/Role'
 import { getInitialSingleton } from '../../components/Singleton/Role/assets'
 import Toolbar from '../../components/Toolbar'
-import Users from '../Users'
+import Roles4Auth from '../../components/Roles4Auth'
 
 const Roles = () => {
   const [role, setRole] = useState(getInitialSingleton())
   const [isOpened, setIsOpened] = useState(false)
-
   const [isShow, setIsShow] = useState(false)
-  const [actived, setActived] = useState('user')
+  const [actived, setActived] = useState<AuthType>('user')
 
   const ref = createRef<FormInstance>()
 
@@ -37,11 +36,11 @@ const Roles = () => {
           },
           {
             label: '授权',
-            onClick: onShow('auth')
+            onClick: onShow(role, 'menu')
           },
           {
             label: '用户',
-            onClick: onShow('user')
+            onClick: onShow(role, 'user')
           }
         ])
     }
@@ -72,18 +71,16 @@ const Roles = () => {
     onClose()
   }
 
-  const onShow = (key: string) => () => {
-    onTabChange(key)
+  /** 展现右侧数据卡片 */
+  const onShow = (role: RoleType, actived: AuthType) => () => {
+    setRole(role)
+    setActived(actived)
     setIsShow(true)
   }
 
-  const tabs: CardTabListType[] = [
-    { key: 'user', tab: '用户' },
-    { key: 'auth', tab: '授权' }
-  ]
-
-  const onTabChange = (key: string) => {
-    setActived(key)
+  /** 页签变更 */
+  const onTabChange = (actived: string) => {
+    setActived(actived as AuthType)
   }
 
   useEffect(() => {
@@ -108,11 +105,7 @@ const Roles = () => {
         </Singleton>
       </Card>
 
-      {isShow && (
-        <Card className='w-1/2 ml-1.5' tabList={tabs} activeTabKey={actived} onTabChange={onTabChange}>
-          {actived === 'user' && <Users ids={role.users} isSetting />}
-        </Card>
-      )}
+      {isShow && <Roles4Auth className='w-1/2 overflow-auto' roleId={role._id} title={role.name} actived={actived} onTabChange={onTabChange} />}
     </div>
   )
 }

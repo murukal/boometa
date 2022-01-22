@@ -6,7 +6,7 @@ import type { TablePaginationConfig, PopconfirmProps } from 'antd'
 import type { FilterValue, SorterResult } from 'antd/lib/table/interface'
 import { Button, Divider, Popconfirm, Space } from 'antd'
 // project
-import type { FetchAPI, PaginateOptions, QueryParams } from '../typings/api'
+import type { FetchAPI, PaginateOptions, PaginateResult, QueryParams } from '../typings/api'
 
 export interface FetchCallbacks<T> {
   setResults?: Dispatch<SetStateAction<T[]>>
@@ -26,7 +26,7 @@ export const getInitialPagination = (): TablePaginationConfig => ({
   current: 1,
   pageSize: 10,
   showSizeChanger: true,
-  pageSizeOptions: ['10', '20', '30']
+  pageSizeOptions: ['1', '10', '20', '30']
 })
 
 export type FetchHandler<T> = (queryParams?: QueryParams<T>) => Promise<void> | void
@@ -55,13 +55,13 @@ const getFetchHandler =
 
     // 分页查询的结果放在docs中
     // 非分页查询的结果直接放在data中
-    callbacks?.setResults && callbacks.setResults(res.data?.docs || res.data || [])
+    callbacks?.setResults && callbacks.setResults((res.data as PaginateResult<T>).docs || res.data || [])
 
     // 设置分页state
     callbacks?.setPagination &&
       callbacks.setPagination({
         ...queryParams?.pagination,
-        total: res.data?.totalDocs || 0
+        total: (res.data as PaginateResult<T>).totalDocs || 0
       })
 
     // 设置排序state
@@ -180,7 +180,7 @@ export const useTable = <T>(fetchAPI: FetchAPI<T>) => {
       // 表格的加载状态 --结束加载
       setIsLoading(false)
     },
-    [pagination]
+    [pagination, filters, sorter, fetchAPI]
   )
 
   const onTableChange = getTableChangeHandler<T>(onFetch)

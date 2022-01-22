@@ -1,14 +1,16 @@
 // react
 import { createElement } from 'react'
 // antd
-import { Avatar } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
+import type { TableRowSelection } from 'antd/lib/table/interface'
+import { Avatar } from 'antd'
 // project
-import type { User } from '../../typings/user'
+import type { User } from '../../../typings/user'
 
 export interface Props {
   ids?: string[]
-  isSetting?: boolean
+  excludeIds?: string[]
+  rowSelection?: TableRowSelection<User>
 }
 
 /**
