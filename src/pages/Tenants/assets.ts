@@ -10,12 +10,12 @@ import { Tenant } from '../../typings/tenant'
  */
 export const getColumns = <T = Tenant>(columns?: ColumnsType<T>): ColumnsType<T> => [
   {
-    title: '客户端代号',
+    title: '租户代码',
     dataIndex: 'code',
     width: 100
   },
   {
-    title: '客户端描述',
+    title: '租户描述',
     dataIndex: 'description',
     width: 100
   },

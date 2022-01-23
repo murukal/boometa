@@ -13,5 +13,6 @@ export const getInitialSingleton = (): MenuTreeNode => ({
   description: '',
   icon: '',
   sort: 0,
-  to: ''
+  to: '',
+  permission: undefined
 })

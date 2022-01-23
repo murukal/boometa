@@ -3,28 +3,35 @@ import { QueryOptions } from '../typings/api'
 import { CreateDictionaryEnum, UpdateDictionaryEnum } from '../typings/dictionaryEnum'
 import { stringify } from 'qs'
 
+const url = '/api/dictionary-enum'
+
 export const getDictionaryEnums = (query: QueryOptions) =>
   request({
     method: 'GET',
-    url: `/api/dictionary-enum?${stringify(query)}`
+    url: `${url}?${stringify(query)}`
   })
 
 export const create = (data: CreateDictionaryEnum) =>
   request({
     method: 'POST',
-    url: '/api/dictionary-enum',
+    url,
     data
   })
 
 export const update = (id: string, data: UpdateDictionaryEnum) =>
   request({
     method: 'PATCH',
-    url: `/api/dictionary-enum/${id}`,
+    url: `${url}/${id}`,
     data
   })
 
 export const remove = (id: string) =>
   request({
     method: 'DELETE',
-    url: `/api/dictionary-enum/${id}`
+    url: `${url}/${id}`
+  })
+
+export const getDictionaryEnumsByDictionaryCode = (dictionaryCode: string) =>
+  request({
+    url: `${url}/${dictionaryCode}`
   })

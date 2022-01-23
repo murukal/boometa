@@ -1,23 +1,31 @@
 // npm
 import path from 'path-browserify'
 // react
-import { useState, forwardRef, useEffect, ChangeEvent } from 'react'
+import { ChangeEvent } from 'react'
+import { useState, forwardRef, useEffect } from 'react'
 // antd
-import { Col, Form, FormInstance, Input, InputNumber, Row, Select } from 'antd'
+import type { FormInstance } from 'antd'
+import { Form, Input, InputNumber, Select } from 'antd'
 // project
-import { UpdateMenu } from '../../../typings/menu'
+import type { UpdateMenu } from '../../../typings/menu'
+import type { Props } from './assets'
 import { create, update } from '../../../apis/menu'
 import { responseNotification } from '../../../utils/notification'
 import IconSelector from '../../IconSelector'
-import { Props, getInitialSingleton } from './assets'
+import { getInitialSingleton } from './assets'
+import { DictionaryEnum } from '../../../typings/dictionaryEnum'
 
 const Menu = forwardRef<FormInstance, Props>((props, ref) => {
   const singleton = getInitialSingleton()
+
   const [description, setDescription] = useState(singleton.description)
   const [sort, setSort] = useState(singleton.sort)
   const [componentPath, setComponentPath] = useState(singleton.componentPath)
   const [icon, setIcon] = useState(singleton.icon)
   const [to, setTo] = useState(singleton.to)
+  const [permission, setPermission] = useState(singleton.permission)
+
+  const [permissions, setPermissions] = useState<Array<Pick<DictionaryEnum, 'code' | 'description'>>>([])
 
   useEffect(() => {
     setDescription(props.singleton.description)
@@ -25,7 +33,17 @@ const Menu = forwardRef<FormInstance, Props>((props, ref) => {
     setComponentPath(props.singleton.componentPath)
     setIcon(props.singleton.icon)
     setTo(props.singleton.to)
+    setPermission(props.singleton.permission)
   }, [props.singleton])
+
+  useEffect(() => {
+    setPermissions([
+      {
+        code: '12321',
+        description: '1231Ï2'
+      }
+    ])
+  }, [])
 
   /**
    * 组件的路径
@@ -79,6 +97,11 @@ const Menu = forwardRef<FormInstance, Props>((props, ref) => {
     setIcon(value)
   }
 
+  /** 选择权限 */
+  const onPermissionChange = (value: Array<string>) => {
+    setPermission(value)
+  }
+
   /**
    * 表单提交事件
    */
@@ -110,45 +133,39 @@ const Menu = forwardRef<FormInstance, Props>((props, ref) => {
 
   return (
     <Form labelCol={{ span: 6 }} onFinish={onSubmit} ref={ref}>
-      <Row>
-        <Col span={24}>
-          <Form.Item label='菜单描述'>
-            <Input onChange={onDescriptionChange} value={description} />
-          </Form.Item>
-        </Col>
-      </Row>
+      <Form.Item label='菜单描述'>
+        <Input onChange={onDescriptionChange} value={description} />
+      </Form.Item>
 
-      <Row>
-        <Col span={24}>
-          <Form.Item label='菜单排序码'>
-            <InputNumber className='w-full' onChange={onSortChange} value={sort} />
-          </Form.Item>
-        </Col>
-      </Row>
+      <Form.Item label='菜单排序码'>
+        <InputNumber className='w-full' onChange={onSortChange} value={sort} />
+      </Form.Item>
 
-      <Row>
-        <Col span={24}>
-          <Form.Item label='菜单组件路径'>
-            <Select onChange={onComponentPathChange} options={componentPaths} value={componentPath} />
-          </Form.Item>
-        </Col>
-      </Row>
+      <Form.Item label='菜单组件路径'>
+        <Select onChange={onComponentPathChange} options={componentPaths} value={componentPath} />
+      </Form.Item>
 
-      <Row>
-        <Col span={24}>
-          <Form.Item label='菜单路由'>
-            <Input onChange={onToChange} value={to} />
-          </Form.Item>
-        </Col>
-      </Row>
+      <Form.Item label='菜单路由'>
+        <Input onChange={onToChange} value={to} />
+      </Form.Item>
 
-      <Row>
-        <Col span={24}>
-          <Form.Item label='菜单图标'>
-            <IconSelector value={icon} onChange={onIconChange} />
-          </Form.Item>
-        </Col>
-      </Row>
+      <Form.Item label='菜单图标'>
+        <IconSelector value={icon} onChange={onIconChange} />
+      </Form.Item>
+
+      <Form.Item label='菜单权限通行证'>
+        <Select
+          mode='multiple'
+          allowClear
+          value={permission}
+          onChange={onPermissionChange}
+          options={permissions}
+          fieldNames={{
+            label: 'description',
+            value: 'code'
+          }}
+        />
+      </Form.Item>
     </Form>
   )
 })

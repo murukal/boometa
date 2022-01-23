@@ -13,6 +13,7 @@ import { getTableRowHandler, useTable } from '../../../utils/table'
 import { responseNotification } from '../../../utils/notification'
 import Toolbar from '../../Toolbar'
 import { getInitialSingleton } from '../../Singleton/DictionaryEnum/assets'
+import { QueryOptions } from '../../../typings/api'
 
 const DictionaryEnums = (props: Props) => {
   const ref = createRef<FormInstance>()
@@ -47,7 +48,12 @@ const DictionaryEnums = (props: Props) => {
   const {
     handlers: { onFetch, onTableChange },
     props: { results: dictionaryEnums, pagination, isLoading }
-  } = useTable<DictionaryEnumType>(getDictionaryEnums)
+  } = useTable<DictionaryEnumType>((query: QueryOptions) =>
+    getDictionaryEnums({
+      belongTo: props.dictionaryId,
+      ...query
+    })
+  )
 
   const onClose = () => {
     setIsOpened(false)

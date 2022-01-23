@@ -21,7 +21,7 @@ const Dictionaries = () => {
       title: '操作',
       width: 100,
       align: 'center',
-      render: () =>
+      render: (value, dictionary) =>
         getTableRowHandler([
           {
             label: '修改',

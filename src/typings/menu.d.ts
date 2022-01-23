@@ -7,6 +7,7 @@ export interface Menu {
   componentPath: string
   parent?: Menu | string
   tenant: string
+  permission?: Array<string>
 }
 
 export interface MenuTreeNode extends Omit<Menu, 'parent' | 'tenant'> {
