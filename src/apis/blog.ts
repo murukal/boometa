@@ -1,35 +1,15 @@
 // project
-import { request } from '.'
-import { Blog, CreateBlog, UpdateBlog } from '../typings/blog'
+import { get, post, patch, shift } from '.'
+import type { Blog, CreateBlog, UpdateBlog } from '../typings/blog'
 
-export const getBlogs = () =>
-  request({
-    url: '/api/blog',
-    method: 'GET'
-  })
+const url = '/api/blog'
 
-export const create = (data: CreateBlog) =>
-  request({
-    url: '/api/blog',
-    method: 'POST',
-    data
-  })
+export const getBlogs = () => get(url)
 
-export const update = (id: string, data: UpdateBlog) =>
-  request({
-    url: `/api/blog/${id}`,
-    method: 'PATCH',
-    data
-  })
+export const create = (data: CreateBlog) => post(url, data)
 
-export const remove = (id: string) =>
-  request({
-    url: `/api/blog/${id}`,
-    method: 'DELETE'
-  })
+export const update = (id: string, data: UpdateBlog) => patch(`${url}/${id}`, data)
 
-export const getBlogById = (id: string) =>
-  request<Blog>({
-    url: `/api/blog/${id}`,
-    method: 'GET'
-  })
+export const remove = (id: string) => shift(`${url}/${id}`)
+
+export const getBlogById = (id: string) => get<Blog>(`${url}/${id}`)

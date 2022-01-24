@@ -1,23 +1,19 @@
 // project
-import { CreateMenu, Menu, MenuTree, UpdateMenu } from '../typings/menu'
-import { request } from '.'
+import type { CreateMenu, Menu, MenuTree, UpdateMenu } from '../typings/menu'
+import { get, patch, post, shift } from '.'
+
+const url = '/api/menu'
 
 /**
  * 获取单个客户端对应的菜单树
  */
-export const getMenuTree = (tenant: string) =>
-  request<MenuTree>({
-    method: 'GET',
-    url: `/api/menu/menu-tree/${tenant}`
-  })
+export const getMenuTree = (tenant: string) => get(`${url}/menu-tree/${tenant}`)
 
 /**
  * 批量获取客户端对应的菜单树
  */
 export const getMenuTrees = (tenants: string[]) =>
-  request<MenuTree[]>({
-    method: 'GET',
-    url: '/api/menu/menu-tree',
+  get<MenuTree[]>(`${url}/menu-tree`, {
     params: {
       tenants
     }
@@ -26,28 +22,14 @@ export const getMenuTrees = (tenants: string[]) =>
 /**
  * 创建菜单
  */
-export const create = (menu: CreateMenu) =>
-  request<Menu>({
-    method: 'POST',
-    url: '/api/menu',
-    data: menu
-  })
+export const create = (menu: CreateMenu) => post<Menu>('/api/menu', menu)
 
 /**
  * 删除菜单
  */
-export const remove = (_id: string) =>
-  request<Menu>({
-    method: 'DELETE',
-    url: `/api/menu/${_id}`
-  })
+export const remove = (id: string) => shift<Menu>(`${url}/${id}`)
 
 /**
  * 更新菜单
  */
-export const update = (_id: string, menu: UpdateMenu) =>
-  request<Menu>({
-    method: 'PATCH',
-    url: `/api/menu/${_id}`,
-    data: menu
-  })
+export const update = (id: string, menu: UpdateMenu) => patch(`${url}/${id}`, menu)

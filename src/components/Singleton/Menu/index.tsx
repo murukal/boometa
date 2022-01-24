@@ -9,11 +9,14 @@ import { Form, Input, InputNumber, Select } from 'antd'
 // project
 import type { UpdateMenu } from '../../../typings/menu'
 import type { Props } from './assets'
+import type { DefaultOptionType } from 'antd/lib/select'
+
 import { create, update } from '../../../apis/menu'
 import { responseNotification } from '../../../utils/notification'
 import IconSelector from '../../IconSelector'
 import { getInitialSingleton } from './assets'
-import { DictionaryEnum } from '../../../typings/dictionaryEnum'
+import { getDictionaryEnumsByDictionaryCode } from '../../../apis/dictionaryEnum'
+import { DICTIONARY_CODE_PERMISSION_KEY } from '../Dictionary/assets'
 
 const Menu = forwardRef<FormInstance, Props>((props, ref) => {
   const singleton = getInitialSingleton()
@@ -23,9 +26,9 @@ const Menu = forwardRef<FormInstance, Props>((props, ref) => {
   const [componentPath, setComponentPath] = useState(singleton.componentPath)
   const [icon, setIcon] = useState(singleton.icon)
   const [to, setTo] = useState(singleton.to)
-  const [permission, setPermission] = useState(singleton.permission)
+  const [permissionKeys, setPermissionKeys] = useState(singleton.permissionKeys)
 
-  const [permissions, setPermissions] = useState<Array<Pick<DictionaryEnum, 'code' | 'description'>>>([])
+  const [permissionKeyEnums, setPermissionKeyEnums] = useState<DefaultOptionType[]>([])
 
   useEffect(() => {
     setDescription(props.singleton.description)
@@ -33,21 +36,21 @@ const Menu = forwardRef<FormInstance, Props>((props, ref) => {
     setComponentPath(props.singleton.componentPath)
     setIcon(props.singleton.icon)
     setTo(props.singleton.to)
-    setPermission(props.singleton.permission)
+    setPermissionKeys(props.singleton.permissionKeys)
   }, [props.singleton])
 
   useEffect(() => {
-    setPermissions([
-      {
-        code: '12321',
-        description: '1231Ï2'
-      }
-    ])
+    getDictionaryEnumsByDictionaryCode(DICTIONARY_CODE_PERMISSION_KEY).then((res) => {
+      setPermissionKeyEnums(
+        (res.data || []).map((dictionaryEnum) => ({
+          label: dictionaryEnum.description,
+          value: dictionaryEnum.code
+        }))
+      )
+    })
   }, [])
 
-  /**
-   * 组件的路径
-   */
+  /** 组件的路径 */
   const componentPaths = require
     .context('../../../pages/', true, /tsx$/)
     .keys()
@@ -60,51 +63,37 @@ const Menu = forwardRef<FormInstance, Props>((props, ref) => {
       }
     })
 
-  /**
-   * 菜单描述变更
-   * @param e
-   */
+  /** 菜单描述变更 */
   const onDescriptionChange = (e: ChangeEvent<HTMLInputElement>) => {
     setDescription(e.target.value)
   }
 
-  /**
-   * 排序码变更
-   * @param value
-   */
+  /** 排序码变更 */
   const onSortChange = (value: number) => {
     setSort(value)
   }
 
-  /**
-   * 菜单路由发生变更
-   */
+  /** 菜单路由发生变更 */
   const onToChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTo(e.target.value)
   }
 
-  /**
-   * 菜单组件路径变更
-   */
+  /** 菜单组件路径变更 */
   const onComponentPathChange = (value: string) => {
     setComponentPath(value)
   }
 
-  /**
-   * 图标发生变更
-   */
+  /** 图标发生变更 */
   const onIconChange = (value: string) => {
     setIcon(value)
   }
 
   /** 选择权限 */
-  const onPermissionChange = (value: Array<string>) => {
-    setPermission(value)
+  const onPermissionKeysChange = (value: Array<string>) => {
+    setPermissionKeys(value)
   }
 
-  /**
-   * 表单提交事件
-   */
+  /** 表单提交事件 */
   const onSubmit = async () => {
     const menu: UpdateMenu = {
       description,
@@ -112,7 +101,8 @@ const Menu = forwardRef<FormInstance, Props>((props, ref) => {
       to,
       sort,
       parent: props.parentId,
-      icon
+      icon,
+      permissionKeys
     }
 
     const handlerMap = {
@@ -154,17 +144,7 @@ const Menu = forwardRef<FormInstance, Props>((props, ref) => {
       </Form.Item>
 
       <Form.Item label='菜单权限通行证'>
-        <Select
-          mode='multiple'
-          allowClear
-          value={permission}
-          onChange={onPermissionChange}
-          options={permissions}
-          fieldNames={{
-            label: 'description',
-            value: 'code'
-          }}
-        />
+        <Select mode='multiple' allowClear value={permissionKeys} onChange={onPermissionKeysChange} options={permissionKeyEnums} />
       </Form.Item>
     </Form>
   )

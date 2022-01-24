@@ -1,37 +1,16 @@
-import { request } from '.'
-import { QueryOptions } from '../typings/api'
-import { CreateDictionaryEnum, UpdateDictionaryEnum } from '../typings/dictionaryEnum'
-import { stringify } from 'qs'
+// project
+import type { QueryOptions } from '../typings/api'
+import type { CreateDictionaryEnum, DictionaryEnum, UpdateDictionaryEnum } from '../typings/dictionaryEnum'
+import { get, patch, post, shift } from '.'
 
 const url = '/api/dictionary-enum'
 
-export const getDictionaryEnums = (query: QueryOptions) =>
-  request({
-    method: 'GET',
-    url: `${url}?${stringify(query)}`
-  })
+export const getDictionaryEnums = (query: QueryOptions) => get(url, { params: query })
 
-export const create = (data: CreateDictionaryEnum) =>
-  request({
-    method: 'POST',
-    url,
-    data
-  })
+export const create = (data: CreateDictionaryEnum) => post(url, data)
 
-export const update = (id: string, data: UpdateDictionaryEnum) =>
-  request({
-    method: 'PATCH',
-    url: `${url}/${id}`,
-    data
-  })
+export const update = (id: string, data: UpdateDictionaryEnum) => patch(`${url}/${id}`, data)
 
-export const remove = (id: string) =>
-  request({
-    method: 'DELETE',
-    url: `${url}/${id}`
-  })
+export const remove = (id: string) => shift(`${url}/${id}`)
 
-export const getDictionaryEnumsByDictionaryCode = (dictionaryCode: string) =>
-  request({
-    url: `${url}/${dictionaryCode}`
-  })
+export const getDictionaryEnumsByDictionaryCode = (dictionaryCode: string) => get<DictionaryEnum[]>(`${url}/dictionary-code/${dictionaryCode}`)

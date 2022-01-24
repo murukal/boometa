@@ -1,55 +1,29 @@
-// npm
-import { stringify } from 'qs'
 // project
 import type { PaginateResult, QueryOptions } from '../typings/api'
 import type { Authentication, Login, PhoneLogin, Register, User } from '../typings/user'
-import { request } from '.'
+import { get, post } from '.'
+
+const url = '/api/auth'
 
 /**
  * 换取用户信息
  */
-export const getUser = () =>
-  request<User>({
-    method: 'GET',
-    url: '/api/auth'
-  })
+export const getUser = () => get<User>(url)
 
 /**
  * 常规登录
  */
-export const login = (data: Login) =>
-  request<Authentication>({
-    method: 'POST',
-    url: '/api/auth/login',
-    data
-  })
-
-/**
- * 手机号登录
- */
-export const loginByPhone = (data: PhoneLogin) =>
-  request<Authentication>({
-    method: 'POST',
-    url: '/api/auth/login',
-    data
-  })
+export const login = (data: Login | PhoneLogin) => post<Authentication>(`${url}/login`, data)
 
 /**
  * 注册
  */
-export const register = (data: Register) =>
-  request<Authentication>({
-    method: 'POST',
-    url: '/api/auth/register',
-    data
-  })
+export const register = (data: Register) => post<Authentication>(`${url}/register`, data)
 
 /**
  * 获取用户清单
  */
-export const getUsers = (query: QueryOptions) => {
-  return request<PaginateResult<User>>({
-    method: 'GET',
-    url: `/api/auth/user?${stringify(query)}`
+export const getUsers = (params: QueryOptions) =>
+  get<PaginateResult<User>>(`${url}/user`, {
+    params
   })
-}

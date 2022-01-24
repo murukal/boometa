@@ -11,7 +11,7 @@ import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import PhoneFormItem from '../../../components/Form/PhoneFormItem'
 import CaptchaFormItem from '../../../components/Form/CaptchaFormItem'
 import { LoginType } from '../../../typings/user'
-import { login, loginByPhone } from '../../../apis/account'
+import { login } from '../../../apis/account'
 import { responseNotification } from '../../../utils/notification'
 import { authenticate } from '../../../redux/userProfile/actions'
 import { setToken } from '../../../utils/app'
@@ -63,7 +63,7 @@ const Login = () => {
         })
       },
       phone: () =>
-        loginByPhone({
+        login({
           phone,
           captcha
         })

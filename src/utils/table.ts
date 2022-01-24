@@ -143,9 +143,7 @@ export const getTableRowHandler = (handlers: TableRowHandler[]) => {
   return createElement(Space, null, nodes)
 }
 
-/**
- * 创建一个自定义的hooks，该hooks能被表格实例使用
- */
+/** 创建一个自定义的hooks，该hooks能被表格实例使用 */
 export const useTable = <T>(fetchAPI: FetchAPI<T>) => {
   const [results, setResults] = useState<T[]>([])
   const [pagination, setPagination] = useState(getInitialPagination())

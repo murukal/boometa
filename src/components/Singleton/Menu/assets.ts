@@ -14,5 +14,5 @@ export const getInitialSingleton = (): MenuTreeNode => ({
   icon: '',
   sort: 0,
   to: '',
-  permission: undefined
+  permissionKeys: undefined
 })
