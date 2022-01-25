@@ -2,11 +2,9 @@
 import { UserProfile } from './store'
 import { getUser } from '../../apis/account'
 import { TOKEN } from '../../assets'
+import store from '..'
 
-export enum ActionType {
-  AUTHENTICATE = 'AUTHENTICATE',
-  LOGOUT = 'LOGOUT'
-}
+export type ActionType = 'AUTHENTICATE' | 'LOGOUT' | 'PASS_TOKEN'
 
 export interface Action {
   type: ActionType
@@ -20,21 +18,36 @@ export const authenticate = async (): Promise<Action> => {
 
   // 生成token
   return {
-    type: ActionType.AUTHENTICATE,
+    type: 'AUTHENTICATE',
     data: {
       isLogin: !res.code,
-      user: res.data
+      user: res.data,
+      token: store.getState().userProfile.token
     }
   }
 }
 
 export const logout = (): Action => {
   // 清楚浏览器的缓存
-  sessionStorage.removeItem(TOKEN)
   localStorage.removeItem(TOKEN)
+  sessionStorage.removeItem(TOKEN)
 
   return {
-    type: ActionType.LOGOUT,
-    data: { isLogin: false, user: null }
+    type: 'LOGOUT',
+    data: { isLogin: false, user: null, token: '' }
+  }
+}
+
+// 将客户端的token初始化到redux中
+export const passToken = (): Action => {
+  const token = localStorage.getItem(TOKEN) || sessionStorage.getItem(TOKEN)
+
+  return {
+    type: 'PASS_TOKEN',
+    data: {
+      isLogin: false,
+      user: null,
+      token: token || ''
+    }
   }
 }

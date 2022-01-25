@@ -4,7 +4,7 @@ import Axios from 'axios'
 import { stringify } from 'qs'
 // project
 import type { ApiResponse } from '../typings/api'
-import { TOKEN } from '../assets'
+import store from '../redux'
 
 // 生成一个axios实例
 const axios = Axios.create()
@@ -13,8 +13,8 @@ const axios = Axios.create()
  * 请求拦截器
  */
 axios.interceptors.request.use((config: AxiosRequestConfig) => {
-  // 从localStorage中获取token信息
-  const token = localStorage.getItem(TOKEN) || sessionStorage.getItem(TOKEN)
+  // 获取token信息
+  const token = store.getState().userProfile.token
 
   if (token && config.headers) {
     config.headers['Authorization'] = `Bearer ${token}`

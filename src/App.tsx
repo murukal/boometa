@@ -8,7 +8,7 @@ import { getTenant } from './apis/tenant'
 import { setTenant } from './redux/tenant/actions'
 import { getMenuTree } from './apis/menu'
 import { setMenus } from './redux/menus/actions'
-import { authenticate } from './redux/userProfile/actions'
+import { authenticate, passToken } from './redux/userProfile/actions'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -16,6 +16,9 @@ const App = () => {
   const [isReady, setIsReady] = useState(false)
 
   const onFetch = async () => {
+    // 将客户端的token存储到redux中
+    store.dispatch(passToken())
+
     // 获取租户信息
     const tenantRes = await getTenant(store.getState().tenant.code)
     // 租户未入驻
