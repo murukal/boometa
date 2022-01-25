@@ -56,14 +56,14 @@ const Blog = () => {
   }
 
   return (
-    <Card>
+    <Card className='h-full'>
       <Form onFinish={onSubmit} labelCol={{ span: 6 }}>
         <Item label='博客标题'>
           <Input value={title} onChange={onTitleChange} />
         </Item>
 
         <Item label='博客正文'>
-          <Input.TextArea showCount maxLength={100} value={content} onChange={onContentChange} />
+          <Input.TextArea showCount value={content} onChange={onContentChange} />
         </Item>
 
         <Item>
