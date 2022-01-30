@@ -8,12 +8,12 @@ import { LoginForm, ProFormCheckbox, ProFormText } from '@ant-design/pro-form'
 import { AlipayCircleOutlined, TaobaoCircleOutlined, WeiboCircleOutlined, UserOutlined, LockOutlined } from '@ant-design/icons'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 // project
+import type { LoginType } from '../../../typings/user'
 import PhoneFormItem from '../../../components/Form/PhoneFormItem'
 import CaptchaFormItem from '../../../components/Form/CaptchaFormItem'
-import { LoginType } from '../../../typings/user'
 import { login } from '../../../apis/account'
 import { responseNotification } from '../../../utils/notification'
-import { authenticate } from '../../../redux/userProfile/actions'
+import { authenticate, passToken } from '../../../redux/userProfile/actions'
 import { setToken } from '../../../utils/app'
 
 const IconStyle: CSSProperties = {
@@ -71,8 +71,11 @@ const Login = () => {
 
     const handler = handlerMap[loginType]
     const res = await handler()
-    res.data && setToken(res.data.token, isAutoLogin)
-    res.data && dispatch(await authenticate())
+    if (res.data) {
+      setToken(res.data.token, isAutoLogin)
+      dispatch(passToken())
+      dispatch(await authenticate())
+    }
     responseNotification(res)
   }
 

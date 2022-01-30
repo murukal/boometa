@@ -2,9 +2,15 @@ import { ParsedUrlQuery } from 'querystring'
 import { TOKEN } from '../assets'
 
 export const storeQueryParams = (queryParams: ParsedUrlQuery) => {
+  let isRedirct = false
   const authentication = JSON.parse(queryParams.authentication?.toString() || JSON.stringify(null))
 
-  authentication && setToken(authentication.token, !authentication.is_once)
+  if (authentication) {
+    isRedirct = true
+    setToken(authentication.token, !authentication.is_once)
+  }
+
+  return isRedirct
 }
 
 export const setToken = (token: string, isAutoLogin: boolean) => {
