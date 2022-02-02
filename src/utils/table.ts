@@ -6,7 +6,7 @@ import type { TablePaginationConfig, PopconfirmProps } from 'antd'
 import type { FilterValue, SorterResult } from 'antd/lib/table/interface'
 import { Button, Divider, Popconfirm, Space } from 'antd'
 // project
-import type { FetchAPI, PaginateOptions, PaginateResult, QueryParams } from '../typings/api'
+import type { ApiResponse, FetchAPI, PaginateOptions, PaginateResult, QueryParams } from '../typings/api'
 
 export interface FetchCallbacks<T> {
   setResults?: Dispatch<SetStateAction<T[]>>
@@ -19,7 +19,7 @@ export interface TableRowHandler {
   label: string
   onClick?: MouseEventHandler<HTMLElement>
   danger?: boolean
-  popconfirmProps?: PopconfirmProps
+  popconfirmProps?: Omit<PopconfirmProps, 'onConfirm'>
 }
 
 export const getInitialPagination = (): TablePaginationConfig => ({
@@ -40,27 +40,19 @@ export type FetchHandler<T> = (queryParams?: QueryParams<T>) => Promise<void> | 
 const getFetchHandler =
   <T>(fetchAPI: FetchAPI<T>, callbacks?: FetchCallbacks<T>): FetchHandler<T> =>
   async (queryParams) => {
-    const initialPagination = getInitialPagination()
-    // 分页参数重构
-    // 分页参数由前端统一转换为后端要求的字段
-    const pagination: PaginateOptions = {
-      page: queryParams?.pagination?.current || initialPagination.current,
-      limit: queryParams?.pagination?.pageSize || initialPagination.pageSize
-    }
-
-    const res = await fetchAPI({
-      ...queryParams,
-      pagination
-    })
+    // 删除条目后，可能导致分页查询出现异常
+    // 调用一个可信任的函数处理
+    const { response: res, pagination } = await uTrustFetchHandler(fetchAPI, queryParams)
 
     // 分页查询的结果放在docs中
     // 非分页查询的结果直接放在data中
     callbacks?.setResults && callbacks.setResults((res.data as PaginateResult<T>).docs || res.data || [])
 
     // 设置分页state
-    callbacks?.setPagination &&
+    if (callbacks?.setPagination)
       callbacks.setPagination({
         ...queryParams?.pagination,
+        current: pagination.page,
         total: (res.data as PaginateResult<T>).totalDocs || 0
       })
 
@@ -78,7 +70,11 @@ const getFetchHandler =
  */
 const getTableChangeHandler =
   <T>(fetchHandler: FetchHandler<T>) =>
-  (pagination: TablePaginationConfig, filters: Record<string, FilterValue | null>, sorter: SorterResult<T> | SorterResult<T>[]) => {
+  (
+    pagination: TablePaginationConfig,
+    filters: Record<string, FilterValue | null>,
+    sorter: SorterResult<T> | SorterResult<T>[]
+  ) => {
     fetchHandler({
       // 分页参数
       pagination,
@@ -194,6 +190,59 @@ export const useTable = <T>(fetchAPI: FetchAPI<T>) => {
       filters,
       sorter,
       isLoading
+    }
+  }
+}
+
+/**
+ * 处理异常后的查询
+ * @param fetchAPI
+ * @param queryParams
+ * @returns
+ */
+const uTrustFetchHandler = async <T>(
+  fetchAPI: FetchAPI<T>,
+  queryParams?: QueryParams<T>
+): Promise<{
+  response: ApiResponse<PaginateResult<T> | T[] | null>
+  pagination: PaginateOptions
+}> => {
+  // 初始化分页参数
+  const initialPagination = getInitialPagination()
+  const limit = queryParams?.pagination?.pageSize || initialPagination.pageSize
+  let page = queryParams?.pagination?.current || initialPagination.current
+
+  let res = await fetchAPI({
+    ...queryParams,
+    pagination: {
+      page,
+      limit
+    }
+  })
+
+  // 分页的场景下，在异常范围内，需要重新处理
+  const docs = (res.data as PaginateResult<T>).docs
+  const hasPrevPage = (res.data as PaginateResult<T>).hasPrevPage
+  const totalPages = (res.data as PaginateResult<T>).totalPages
+
+  if (docs && !docs.length && hasPrevPage && page && page > 1) {
+    page--
+    page = page > totalPages ? totalPages : page
+
+    res = await fetchAPI({
+      ...queryParams,
+      pagination: {
+        page,
+        limit
+      }
+    })
+  }
+
+  return {
+    response: res,
+    pagination: {
+      page,
+      limit
     }
   }
 }

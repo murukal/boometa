@@ -11,7 +11,7 @@ import PhoneFormItem from '../../../components/Form/PhoneFormItem'
 import CaptchaFormItem from '../../../components/Form/CaptchaFormItem'
 import { register } from '../../../apis/account'
 import { easyNotification, responseNotification } from '../../../utils/notification'
-import { authenticate } from '../../../redux/userProfile/actions'
+import { authenticate, passToken } from '../../../redux/userProfile/actions'
 import { setToken } from '../../../utils/app'
 
 const Register = () => {
@@ -51,8 +51,12 @@ const Register = () => {
       username,
       password: encryptedPassword
     })
-    res.data && setToken(res.data.token, false)
-    res.data && dispatch(await authenticate())
+
+    if (res.data) {
+      setToken(res.data.token, false)
+      dispatch(passToken())
+      dispatch(await authenticate())
+    }
     responseNotification(res)
   }
 

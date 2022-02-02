@@ -18,7 +18,7 @@ const Tenant = forwardRef<FormInstance, Props>((props, ref) => {
   }, [props.singleton])
 
   const onSubmit = async () => {
-    const handlerMap = {
+    const handlers = {
       create: () =>
         create({
           description,
@@ -28,7 +28,7 @@ const Tenant = forwardRef<FormInstance, Props>((props, ref) => {
     }
 
     // 表单提交
-    const handler = handlerMap[props.singleton._id ? 'update' : 'create']
+    const handler = handlers[props.singleton._id ? 'update' : 'create']
     const res = await handler()
     responseNotification(res)
     !res.code && props.onSubmitted && props.onSubmitted()

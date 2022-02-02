@@ -5,7 +5,13 @@ import { useDispatch, useSelector } from 'react-redux'
 // antd
 import { Button, Space, Tabs } from 'antd'
 import { LoginForm, ProFormCheckbox, ProFormText } from '@ant-design/pro-form'
-import { AlipayCircleOutlined, TaobaoCircleOutlined, WeiboCircleOutlined, UserOutlined, LockOutlined } from '@ant-design/icons'
+import {
+  AlipayCircleOutlined,
+  TaobaoCircleOutlined,
+  WeiboCircleOutlined,
+  UserOutlined,
+  LockOutlined
+} from '@ant-design/icons'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 // project
 import type { LoginType } from '../../../typings/user'
@@ -51,7 +57,7 @@ const Login = () => {
     // 执行登录
     // 登录方式不同，提交表单的格式也不同
     // 账户关键字 + 密码登录
-    const handlerMap = {
+    const handlers = {
       account: () => {
         // 利用公钥对密码进行加密
         const encryptedPassword = tenant.encrypter.encrypt(password)
@@ -69,7 +75,7 @@ const Login = () => {
         })
     }
 
-    const handler = handlerMap[loginType]
+    const handler = handlers[loginType]
     const res = await handler()
     if (res.data) {
       setToken(res.data.token, isAutoLogin)

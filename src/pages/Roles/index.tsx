@@ -8,12 +8,13 @@ import type { Role as RoleType } from '../../typings/role'
 import type { AuthType } from '../../components/Roles4Auth/assets'
 import { getTableRowHandler, useTable } from '../../utils/table'
 import { getColumns } from './assets'
-import { getRoles } from '../../apis/role'
+import { getRoles, remove } from '../../apis/role'
 import Singleton from '../../components/Singleton'
 import Role from '../../components/Singleton/Role'
 import { getInitialSingleton } from '../../components/Singleton/Role/assets'
 import Toolbar from '../../components/Toolbar'
 import Roles4Auth from '../../components/Roles4Auth'
+import { responseNotification } from '../../utils/notification'
 
 const Roles = () => {
   const [role, setRole] = useState(getInitialSingleton())
@@ -41,6 +42,16 @@ const Roles = () => {
           {
             label: '用户',
             onClick: onShow(role, 'user')
+          },
+          {
+            label: '删除',
+            danger: true,
+            onClick: onDelete(role._id),
+            popconfirmProps: {
+              title: '确认删除当前条目？',
+              okText: '确认',
+              cancelText: '取消'
+            }
           }
         ])
     }
@@ -83,6 +94,13 @@ const Roles = () => {
     setActived(actived as AuthType)
   }
 
+  /** 删除角色 */
+  const onDelete = (id: string) => async () => {
+    const res = await remove(id)
+    res.code && responseNotification(res)
+    !res.code && onFetch()
+  }
+
   useEffect(() => {
     onFetch()
   }, [])
@@ -98,14 +116,30 @@ const Roles = () => {
       >
         <Toolbar onAdd={onOpen()} />
 
-        <Table rowKey='_id' columns={columns} dataSource={roles} bordered={true} pagination={pagination} onChange={onTableChange} loading={isLoading} />
+        <Table
+          rowKey='_id'
+          columns={columns}
+          dataSource={roles}
+          bordered={true}
+          pagination={pagination}
+          onChange={onTableChange}
+          loading={isLoading}
+        />
 
         <Singleton title='角色' isOpened={isOpened} onClose={onClose} onSubmit={onSubmit}>
           <Role singleton={role} ref={ref} onSubmitted={onSubmitted} />
         </Singleton>
       </Card>
 
-      {isShow && <Roles4Auth className='w-1/2 overflow-auto' roleId={role._id} title={role.name} actived={actived} onTabChange={onTabChange} />}
+      {isShow && (
+        <Roles4Auth
+          className='w-1/2 overflow-auto'
+          roleId={role._id}
+          title={role.name}
+          actived={actived}
+          onTabChange={onTabChange}
+        />
+      )}
     </div>
   )
 }

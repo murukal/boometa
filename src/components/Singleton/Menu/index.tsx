@@ -105,7 +105,7 @@ const Menu = forwardRef<FormInstance, Props>((props, ref) => {
       permissionKeys
     }
 
-    const handlerMap = {
+    const handlers = {
       create: () =>
         create({
           ...menu,
@@ -115,7 +115,7 @@ const Menu = forwardRef<FormInstance, Props>((props, ref) => {
     }
 
     // 提交表单
-    const handler = handlerMap[props.singleton._id ? 'update' : 'create']
+    const handler = handlers[props.singleton._id ? 'update' : 'create']
     const res = await handler()
     responseNotification(res)
     !res.code && props.onSubmitted && props.onSubmitted()
@@ -144,7 +144,13 @@ const Menu = forwardRef<FormInstance, Props>((props, ref) => {
       </Form.Item>
 
       <Form.Item label='菜单权限通行证'>
-        <Select mode='multiple' allowClear value={permissionKeys} onChange={onPermissionKeysChange} options={permissionKeyEnums} />
+        <Select
+          mode='multiple'
+          allowClear
+          value={permissionKeys}
+          onChange={onPermissionKeysChange}
+          options={permissionKeyEnums}
+        />
       </Form.Item>
     </Form>
   )

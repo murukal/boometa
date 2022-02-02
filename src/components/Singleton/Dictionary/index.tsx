@@ -34,13 +34,13 @@ const Dictionary = forwardRef<FormInstance, Props>((props, ref) => {
       description
     }
 
-    const handlerMap = {
+    const handlers = {
       create: () => create(params),
       update: () => update(props.singleton._id as string, params)
     }
 
     // 表单提交
-    const handler = handlerMap[props.singleton._id ? 'update' : 'create']
+    const handler = handlers[props.singleton._id ? 'update' : 'create']
     const res = await handler()
     responseNotification(res)
     !res.code && props.onSubmitted && props.onSubmitted()

@@ -24,13 +24,13 @@ const Todo = forwardRef<FormInstance, Props>((props, ref) => {
       status
     }
 
-    const handlerMap = {
+    const handlers = {
       create: () => create(todo),
       update: () => update(props.singleton._id as string, todo)
     }
 
     // 表单提交
-    const handler = handlerMap[props.singleton._id ? 'update' : 'create']
+    const handler = handlers[props.singleton._id ? 'update' : 'create']
     const res = await handler()
     responseNotification(res)
     !res.code && props.onSubmitted && props.onSubmitted()

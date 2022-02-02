@@ -42,12 +42,12 @@ const Blog = () => {
       content
     }
 
-    const handlerMap = {
+    const handlers = {
       create: () => create(blog),
       update: () => update(id, blog)
     }
 
-    const handler = handlerMap[id ? 'update' : 'create']
+    const handler = handlers[id ? 'update' : 'create']
     const res = await handler()
     responseNotification(res)
     !res.code && navigate('/blogs')
