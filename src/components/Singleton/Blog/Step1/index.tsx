@@ -52,7 +52,7 @@ const Step1 = forwardRef<FormInstance, Props>((props, ref) => {
       </Item>
 
       <Item label='博客封面' name='fileList' valuePropName='fileList' getValueFromEvent={getValueFromEvent}>
-        <Upload listType='picture-card'>
+        <Upload action='http://admin.r2boom.com/api/object-storage/cos' listType='picture-card'>
           <PlusOutlined />
         </Upload>
       </Item>
