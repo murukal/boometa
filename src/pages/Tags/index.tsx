@@ -1,7 +1,6 @@
 // react
-import { createRef, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 // antd
-import type { FormInstance } from 'antd'
 import { Table } from 'antd'
 // project
 import type { Tag as TagType } from '../../typings/tag'
@@ -17,8 +16,6 @@ import Toolbar from '../../components/Toolbar'
 const Tags = () => {
   const [isOpened, setIsOpened] = useState(false)
   const [tag, setTag] = useState<TagType>(getInitialSingleton())
-
-  const ref = createRef<FormInstance>()
 
   /** table hooks */
   const {
@@ -72,9 +69,10 @@ const Tags = () => {
     !res.code && onFetch()
   }
 
-  /** 提交 */
-  const onSubmit = () => {
-    ref.current?.submit()
+  /** 表单提交后的回调 */
+  const onSubmitted = () => {
+    onFetch()
+    setIsOpened(false)
   }
 
   /** 初次渲染 */
@@ -96,9 +94,14 @@ const Tags = () => {
         loading={isLoading}
       />
 
-      <Singleton title='标签' isOpened={isOpened} onClose={onClose} onSubmit={onSubmit}>
-        <Tag ref={ref} singleton={tag} />
-      </Singleton>
+      <Singleton
+        title='标签'
+        isOpened={isOpened}
+        onClose={onClose}
+        singleton={tag}
+        singletonComponent={Tag}
+        onSubmitted={onSubmitted}
+      />
     </>
   )
 }

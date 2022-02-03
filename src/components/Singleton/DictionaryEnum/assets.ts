@@ -1,9 +1,7 @@
 import { DictionaryEnum } from '../../../typings/dictionaryEnum'
 
-export interface Props {
+export interface ExtraProps {
   dictionaryId: string
-  singleton: DictionaryEnum
-  onSubmitted?: Function
 }
 
 export const getInitialSingleton = (): DictionaryEnum => ({

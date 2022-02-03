@@ -1,20 +1,23 @@
 // react
-import { ChangeEvent, forwardRef, useEffect, useState } from 'react'
+import type { ChangeEvent } from 'react'
+import { forwardRef, useEffect, useState } from 'react'
 // antd
 import { Form, FormInstance, Input, InputNumber } from 'antd'
 // project
-import { CreateDictionaryEnum } from '../../../typings/dictionaryEnum'
+import type { ExtraProps } from './assets'
+import { CreateDictionaryEnum, DictionaryEnum as DictionaryEnumType } from '../../../typings/dictionaryEnum'
 import { create, update } from '../../../apis/dictionaryEnum'
 import { responseNotification } from '../../../utils/notification'
-import { getInitialSingleton, Props } from './assets'
+import { getInitialSingleton } from './assets'
+import { SingletonProps } from '../assets'
 
 const { Item } = Form
 
-const DictionaryEnum = forwardRef<FormInstance, Props>((props, ref) => {
-  const singleton = getInitialSingleton()
-  const [description, setDescription] = useState(singleton.description)
-  const [code, setCode] = useState(singleton.code)
-  const [sort, setSort] = useState(singleton.sort)
+const DictionaryEnum = forwardRef<FormInstance, SingletonProps<DictionaryEnumType, ExtraProps>>((props, ref) => {
+  const initialDictionaryEnum = getInitialSingleton()
+  const [description, setDescription] = useState(initialDictionaryEnum.description)
+  const [code, setCode] = useState(initialDictionaryEnum.code)
+  const [sort, setSort] = useState(initialDictionaryEnum.sort)
 
   useEffect(() => {
     setDescription(props.singleton.description)
@@ -35,7 +38,7 @@ const DictionaryEnum = forwardRef<FormInstance, Props>((props, ref) => {
       description,
       code,
       sort,
-      belongTo: props.dictionaryId
+      belongTo: props.extraProps.dictionaryId
     }
 
     const handlers = {

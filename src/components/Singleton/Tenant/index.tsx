@@ -3,11 +3,13 @@ import { forwardRef, useEffect, useState, ChangeEvent } from 'react'
 // antd
 import { Col, Form, FormInstance, Input, Row } from 'antd'
 // project
+import type { SingletonProps } from '../assets'
+import type { Tenant as TenantType } from '../../../typings/tenant'
 import { create, update } from '../../../apis/tenant'
 import { responseNotification } from '../../../utils/notification'
-import { getInitialSingleton, Props } from './assets'
+import { getInitialSingleton } from './assets'
 
-const Tenant = forwardRef<FormInstance, Props>((props, ref) => {
+const Tenant = forwardRef<FormInstance, SingletonProps<TenantType>>((props, ref) => {
   const singleton = getInitialSingleton()
   const [code, setCode] = useState(singleton.code)
   const [description, setDescription] = useState(singleton.description)

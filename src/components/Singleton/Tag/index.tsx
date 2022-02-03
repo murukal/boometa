@@ -1,45 +1,48 @@
 // react
-import { ChangeEvent, useEffect } from 'react'
-import { forwardRef, useState } from 'react'
+import { useEffect, useMemo, forwardRef, useState } from 'react'
 // antd
 import type { FormInstance } from 'antd'
 import type { UploadChangeParam } from 'antd/lib/upload'
-import type { UploadFile } from 'antd/lib/upload/interface'
 import { Form, Input, Upload } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
+import { useForm } from 'antd/lib/form/Form'
 // project
-import type { ApiResponse } from '../../../typings/api'
-import { getInitialSingleton, Props } from './assets'
+import type { Tag as TagType } from '../../../typings/tag'
 import { responseNotification } from '../../../utils/notification'
 import { create, update } from '../../../apis/tag'
+import { SingletonProps } from '../assets'
+import { getUploadParam } from '../../../utils/upload'
 
 const { Item } = Form
 
-const Tag = forwardRef<FormInstance, Props>((props, ref) => {
-  const initialTag = getInitialSingleton()
+const Tag = forwardRef<FormInstance, SingletonProps<TagType>>((props, ref) => {
+  const [form] = useForm()
 
-  const [name, setName] = useState(initialTag.name)
-  const [cover, setCover] = useState(initialTag.cover)
-  const [fileList, setFileList] = useState<UploadFile[]>([])
-
-  /** 监听传入对象的变更 */
-  useEffect(() => {
-    setName(props.singleton.name)
-    setCover(props.singleton.cover)
-    setFileList([
-      {
-        uid: props.singleton._id,
+  const initialValues = useMemo((): {
+    name: string
+    uploadParam?: UploadChangeParam
+  } => {
+    return {
+      name: props.singleton.name,
+      uploadParam: getUploadParam({
+        id: props.singleton._id,
         name: props.singleton.name,
         url: props.singleton.cover
-      }
-    ])
+      })
+    }
+  }, [props.singleton])
+
+  const [model, setModel] = useState(initialValues)
+
+  useEffect(() => {
+    setModel(initialValues)
   }, [props.singleton])
 
   /** 表单提交事件 */
   const onSubmit = async () => {
     const params = {
-      name,
-      cover
+      name: model.name,
+      cover: model.uploadParam?.file.response.data
     }
 
     const handlers = {
@@ -50,31 +53,26 @@ const Tag = forwardRef<FormInstance, Props>((props, ref) => {
     const handler = handlers[props.singleton._id ? 'update' : 'create']
     const res = await handler()
     responseNotification(res)
+    props.onSubmitted && props.onSubmitted()
   }
 
-  /** 名称变更 */
-  const onNameChange = (e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)
-
-  /** 封面变更 */
-  const onCoverChange = (param: UploadChangeParam) => {
-    setFileList(param.fileList)
-
-    const res: ApiResponse | undefined = param.file.response
-
-    res?.data && setCover(res.data)
-    res?.code && responseNotification(res)
-  }
-
-  /** 删除封面 */
-  const onCoverRemove = () => {
-    setCover('')
+  /** 表单数据变更 */
+  const onValuesChange = (changedValues: any, values: any) => {
+    setModel(values)
   }
 
   return (
     <>
-      <Form ref={ref} onFinish={onSubmit} labelCol={{ span: 6 }}>
+      <Form
+        form={form}
+        ref={ref}
+        onFinish={onSubmit}
+        labelCol={{ span: 6 }}
+        initialValues={initialValues}
+        onValuesChange={onValuesChange}
+      >
         <Item
-          label='角色名称'
+          label='标签名称'
           name='name'
           rules={[
             {
@@ -82,25 +80,26 @@ const Tag = forwardRef<FormInstance, Props>((props, ref) => {
             }
           ]}
         >
-          <Input value={name} onChange={onNameChange}></Input>
+          <Input />
         </Item>
 
         <Item
           label='封面图'
-          name='cover'
+          name='uploadParam'
           rules={[
             {
-              required: true
+              required: true,
+              validator: async (_, value?: UploadChangeParam) => {
+                if (!value || value.fileList.length === 0) throw new Error('请输入封面图')
+              }
             }
           ]}
         >
           <Upload
             listType='picture-card'
             action='http://admin.r2boom.com/api/object-storage/cos'
-            fileList={fileList}
-            onChange={onCoverChange}
+            fileList={model.uploadParam?.fileList}
             maxCount={1}
-            onRemove={onCoverRemove}
           >
             <PlusOutlined />
           </Upload>

@@ -1,7 +1,6 @@
 // react
-import { useEffect, useState, createRef } from 'react'
+import { useEffect, useState } from 'react'
 // antd
-import type { FormInstance } from 'antd'
 import { Table, Drawer, Card } from 'antd'
 // project
 import type { Dictionary as DictionaryType } from '../../typings/dictionary'
@@ -45,7 +44,6 @@ const Dictionaries = () => {
     }
   ])
 
-  const ref = createRef<FormInstance>()
   const [isOpened, setIsOpened] = useState(false)
   const [dictionary, setDictionary] = useState<DictionaryType>(getInitialSingleton())
 
@@ -65,10 +63,6 @@ const Dictionaries = () => {
     }
 
   const onClose = () => setIsOpened(false)
-
-  const onSubmit = () => {
-    ref.current?.submit()
-  }
 
   const onSubmitted = () => {
     onFetch()
@@ -98,12 +92,25 @@ const Dictionaries = () => {
     <Card>
       <Toolbar onAdd={onOpen()} />
 
-      <Table rowKey='_id' dataSource={dictionaries} columns={columns} bordered pagination={pagination} onChange={onTableChange} loading={isLoading} />
+      <Table
+        rowKey='_id'
+        dataSource={dictionaries}
+        columns={columns}
+        bordered
+        pagination={pagination}
+        onChange={onTableChange}
+        loading={isLoading}
+      />
 
       {/* 字典的单例抽屉 */}
-      <Singleton title='字典' isOpened={isOpened} onClose={onClose} onSubmit={onSubmit}>
-        <Dictionary ref={ref} singleton={dictionary} onSubmitted={onSubmitted} />
-      </Singleton>
+      <Singleton
+        title='字典'
+        isOpened={isOpened}
+        onClose={onClose}
+        singleton={dictionary}
+        onSubmitted={onSubmitted}
+        singletonComponent={Dictionary}
+      />
 
       {/* 枚举的展现抽屉 */}
       <Drawer title='枚举配置' visible={isEnumOpened} onClose={onEnumClose} size='large' closable={false}>

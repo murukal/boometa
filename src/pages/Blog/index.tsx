@@ -1,69 +1,84 @@
 // react
-import { ChangeEvent, useEffect, useMemo, useState } from 'react'
+import { createRef, useEffect, useState } from 'react'
 // router
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 // antd
-import type { Status } from 'rc-steps/lib/interface'
-import { Button, Card, Form, Steps } from 'antd'
-import { UserOutlined, SolutionOutlined, LoadingOutlined, SmileOutlined } from '@ant-design/icons'
+import { Button, Card, Steps, Result, Space } from 'antd'
+import { UserOutlined, SolutionOutlined, SmileOutlined } from '@ant-design/icons'
+import type { FormInstance } from 'antd'
 // project
 import { getInitialSingleton } from './assets'
-import { create, getBlogById, update } from '../../apis/blog'
-import { responseNotification } from '../../utils/notification'
+import { getBlogById } from '../../apis/blog'
 import Step1 from '../../components/Singleton/Blog/Step1'
+import { getTags } from '../../apis/tag'
+import Step2 from '../../components/Singleton/Blog/Step2'
+import type { Tag } from '../../typings/tag'
+import type { Blog as BlogType } from '../../typings/blog'
+import type { Model as Step1Model } from '../../components/Singleton/Blog/Step1/assets'
+import type { Model as Step2Model } from '../../components/Singleton/Blog/Step2/assets'
 
-const { Item } = Form
 const { Step } = Steps
 
 const Blog = () => {
   const [step, setStep] = useState(0)
-  const [title, setTitle] = useState(getInitialSingleton().title)
-  const [content, setContent] = useState(getInitialSingleton().content)
-  const [id, setId] = useState(useParams().id || getInitialSingleton()._id)
+  const [tags, setTags] = useState<Tag[]>([])
+  const [blog, setBlog] = useState<BlogType>(getInitialSingleton())
 
-  const navigate = useNavigate()
+  // 步骤1model
+  const [step1Model, setStep1Model] = useState<Step1Model>()
+  // 步骤2model
+  const [step2Model, setStep2Model] = useState<Step2Model>()
+
+  const urlParams = useParams()
+  const refs = [createRef<FormInstance>(), createRef<FormInstance>()]
 
   const onFetch = async () => {
-    if (!id) return
-    const res = await getBlogById(id)
+    if (urlParams.id) {
+      const res = await getBlogById(urlParams.id)
+      setBlog(res.data || getInitialSingleton())
+    }
 
-    setId(res.data?._id || getInitialSingleton()._id)
-    setTitle(res.data?.title || getInitialSingleton().title)
-    setContent(res.data?.content || getInitialSingleton().content)
+    // 获取标签
+    const tagsRes = await getTags({
+      pagination: {
+        pagination: false
+      }
+    })
+    setTags(tagsRes.data?.docs || [])
   }
 
   useEffect(() => {
     onFetch()
   }, [])
 
-  const onSubmit = async () => {
-    const blog = {
-      title,
-      content
-    }
-
-    const handlers = {
-      create: () => create(blog),
-      update: () => update(id, blog)
-    }
-
-    const handler = handlers[id ? 'update' : 'create']
-    const res = await handler()
-    responseNotification(res)
-    !res.code && navigate('/blogs')
-  }
-
-  const onContentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(e.target.value)
-  }
-
-  const onTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value)
-  }
-
   /** 进入下一个步骤条 */
-  const onNextStep = () => {
+  const onNextStep = async () => {
+    const ref = refs[step]
+
+    // 仅当表单对象存在时发起校验
+    if (ref.current) {
+      const res = await ref.current?.validateFields().catch(() => false)
+      if (!res) return
+    }
+
     setStep(step + 1)
+  }
+
+  /** 退回上一步 */
+  const onPrevStep = () => {
+    setStep(step - 1)
+  }
+
+  /** 表单发生变更 */
+  const onFormChange = (changedValues: any, values: any) => {
+    switch (step) {
+      case 0:
+        setStep1Model(values)
+        break
+      case 1:
+        setStep2Model(values)
+        break
+    }
   }
 
   return (
@@ -76,36 +91,55 @@ const Blog = () => {
       }}
     >
       <Steps current={step}>
-        <Step title='博客摘要' icon={step === 0 ? <LoadingOutlined /> : <UserOutlined />} />
-        <Step title='博客正文' icon={step === 1 ? <LoadingOutlined /> : <SolutionOutlined />} />
+        <Step title='博客摘要' icon={<UserOutlined />} />
+        <Step title='博客正文' icon={<SolutionOutlined />} />
         <Step title='发布完成' icon={<SmileOutlined />} />
       </Steps>
 
-      <div className='flex-1'>
-        {step === 0 && <Step1 />}
-        {step === 1 && <Step1 />}
-        {step === 2 && <Step1 />}
+      <div className='flex-1 h-0'>
+        <Step1
+          style={{
+            display: step === 0 ? undefined : 'none'
+          }}
+          ref={refs[0]}
+          blog={blog}
+          tags={tags}
+          model={step1Model}
+          onFormChange={onFormChange}
+        />
+        <Step2
+          style={{
+            display: step === 1 ? undefined : 'none'
+          }}
+          ref={refs[1]}
+          blog={blog}
+          model={step2Model}
+          onFormChange={onFormChange}
+        />
+        <Result
+          style={{
+            display: step === 2 ? undefined : 'none'
+          }}
+          status='success'
+          title='Successfully Purchased Cloud Server ECS!'
+          subTitle='Order number: 2017182818828182881 Cloud server configuration takes 1-5 minutes, please wait.'
+          extra={[
+            <Button type='primary' key='console'>
+              Go Console
+            </Button>,
+            <Button key='buy'>Buy Again</Button>
+          ]}
+        />
       </div>
 
-      <div className='flex justify-end'>
-        <Button onClick={onNextStep}>下一步</Button>
-      </div>
-
-      {/* <Form onFinish={onSubmit} labelCol={{ span: 6 }}>
-        <Item label='博客标题'>
-          <Input value={title} onChange={onTitleChange} />
-        </Item>
-
-        <Item label='博客正文'>
-          <Input.TextArea showCount value={content} onChange={onContentChange} />
-        </Item>
-
-        <Item>
-          <Button type='primary' htmlType='submit'>
-            Submit
-          </Button>
-        </Item>
-      </Form> */}
+      {step < 2 && (
+        <div className='flex justify-end'>
+          <Space>
+            {step > 0 && <Button onClick={onPrevStep}>上一步</Button>}
+            <Button onClick={onNextStep}>下一步</Button>
+          </Space>
+        </div>
+      )}
     </Card>
   )
 }

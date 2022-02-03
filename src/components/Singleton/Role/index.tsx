@@ -5,14 +5,14 @@ import { forwardRef, useState } from 'react'
 import type { FormInstance } from 'antd'
 import { Form, Input } from 'antd'
 // project
-import { Props } from './assets'
+import type { CreateRole, Role as RoleType } from '../../../typings/role'
 import { create, update } from '../../../apis/role'
-import type { CreateRole } from '../../../typings/role'
 import { responseNotification } from '../../../utils/notification'
+import { SingletonProps } from '../assets'
 
 const { Item } = Form
 
-const Role = forwardRef<FormInstance, Props>((props, ref) => {
+const Role = forwardRef<FormInstance, SingletonProps<RoleType>>((props, ref) => {
   const [name, setName] = useState(props.singleton.name)
 
   const onNameChange = (e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)

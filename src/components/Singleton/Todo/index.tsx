@@ -3,12 +3,13 @@ import { ChangeEvent, forwardRef, useEffect, useState } from 'react'
 // antd
 import { Col, Form, FormInstance, Input, Row, Select } from 'antd'
 // project
-import { Status, UpdateTodo } from '../../../typings/todo'
+import type { Status, Todo as TodoType, UpdateTodo } from '../../../typings/todo'
 import { create, update } from '../../../apis/todo'
 import { responseNotification } from '../../../utils/notification'
-import { getInitialSingleton, Props } from './assets'
+import { getInitialSingleton } from './assets'
+import { SingletonProps } from '../assets'
 
-const Todo = forwardRef<FormInstance, Props>((props, ref) => {
+const Todo = forwardRef<FormInstance, SingletonProps<TodoType>>((props, ref) => {
   const singleton = getInitialSingleton()
   const [description, setDescription] = useState(singleton.description)
   const [status, setStatus] = useState<Status>(singleton.status)

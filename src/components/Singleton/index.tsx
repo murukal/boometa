@@ -1,17 +1,31 @@
 // react
-import { ReactChild } from 'react'
+import { createRef } from 'react'
 // antd
+import type { FormInstance } from 'antd'
 import { Button, Drawer, Space } from 'antd'
-
-interface Props {
-  title?: string
-  isOpened: boolean
-  onSubmit?: () => void
-  onClose?: () => void
-  children?: ReactChild | never[]
-}
+// project
+import { Props } from './assets'
 
 const Singleton = (props: Props) => {
+  const ref = createRef<FormInstance>()
+
+  const onSubmit = () => {
+    ref.current?.submit()
+  }
+
+  const onReset = () => {
+    ref.current?.resetFields()
+  }
+
+  /** 抽屉切换 */
+  const afterVisibleChange = (isOpened: boolean) => {
+    if (isOpened) {
+      onReset()
+    }
+  }
+
+  const Instance = props.singletonComponent
+
   return (
     <>
       <Drawer
@@ -20,17 +34,25 @@ const Singleton = (props: Props) => {
         closable={false}
         onClose={props.onClose}
         visible={props.isOpened}
+        afterVisibleChange={afterVisibleChange}
         width={500}
         extra={
           <Space>
             <Button onClick={props.onClose}>关闭</Button>
-            <Button type='primary' onClick={props.onSubmit}>
+            <Button type='primary' onClick={onSubmit}>
               提交
             </Button>
           </Space>
         }
       >
-        {props.children}
+        {Instance ? (
+          <Instance
+            singleton={props.singleton}
+            ref={ref}
+            extraProps={props.extraProps}
+            onSubmitted={props.onSubmitted}
+          />
+        ) : null}
       </Drawer>
     </>
   )

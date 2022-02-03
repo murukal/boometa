@@ -4,5 +4,6 @@ export const getInitialSingleton = (): Blog => ({
   _id: '',
   content: '',
   createdBy: '',
-  title: ''
+  title: '',
+  tags: []
 })

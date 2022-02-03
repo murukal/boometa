@@ -1,7 +1,6 @@
 // react
-import { createRef, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 // antd
-import type { FormInstance } from 'antd'
 import { Card, Table } from 'antd'
 // project
 import type { Role as RoleType } from '../../typings/role'
@@ -21,8 +20,6 @@ const Roles = () => {
   const [isOpened, setIsOpened] = useState(false)
   const [isShow, setIsShow] = useState(false)
   const [actived, setActived] = useState<AuthType>('user')
-
-  const ref = createRef<FormInstance>()
 
   const columns = getColumns([
     {
@@ -71,10 +68,6 @@ const Roles = () => {
 
   const onClose = () => {
     setIsOpened(false)
-  }
-
-  const onSubmit = () => {
-    ref.current?.submit()
   }
 
   const onSubmitted = () => {
@@ -126,9 +119,14 @@ const Roles = () => {
           loading={isLoading}
         />
 
-        <Singleton title='角色' isOpened={isOpened} onClose={onClose} onSubmit={onSubmit}>
-          <Role singleton={role} ref={ref} onSubmitted={onSubmitted} />
-        </Singleton>
+        <Singleton
+          title='角色'
+          isOpened={isOpened}
+          onClose={onClose}
+          onSubmitted={onSubmitted}
+          singleton={role}
+          singletonComponent={Role}
+        />
       </Card>
 
       {isShow && (

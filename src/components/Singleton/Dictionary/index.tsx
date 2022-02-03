@@ -3,17 +3,19 @@ import { ChangeEvent, forwardRef, useState, useEffect } from 'react'
 // antd
 import { Form, FormInstance, Input, InputNumber } from 'antd'
 // project
+import type { Dictionary as DictionaryType } from '../../../typings/dictionary'
 import { create, update } from '../../../apis/dictionary'
 import { responseNotification } from '../../../utils/notification'
-import { getInitialSingleton, Props } from './assets'
+import { getInitialSingleton } from './assets'
+import { SingletonProps } from '../assets'
 
 const { Item } = Form
 
-const Dictionary = forwardRef<FormInstance, Props>((props, ref) => {
-  const singleton = getInitialSingleton()
-  const [description, setDescription] = useState(singleton.description)
-  const [sort, setSort] = useState(singleton.sort)
-  const [code, setCode] = useState(singleton.code)
+const Dictionary = forwardRef<FormInstance, SingletonProps<DictionaryType>>((props, ref) => {
+  const initialDictionary = getInitialSingleton()
+  const [description, setDescription] = useState(initialDictionary.description)
+  const [sort, setSort] = useState(initialDictionary.sort)
+  const [code, setCode] = useState(initialDictionary.code)
 
   useEffect(() => {
     setDescription(props.singleton.description)

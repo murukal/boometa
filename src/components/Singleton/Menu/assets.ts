@@ -1,10 +1,8 @@
 import { MenuTreeNode } from '../../../typings/menu'
 
-export interface Props {
+export interface ExtraProps {
   tenantId: string
-  singleton: MenuTreeNode
   parentId?: string
-  onSubmitted?: Function
 }
 
 export const getInitialSingleton = (): MenuTreeNode => ({

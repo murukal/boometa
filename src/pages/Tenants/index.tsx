@@ -1,7 +1,7 @@
 // react
-import { createRef, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 // antd
-import { Card, FormInstance } from 'antd'
+import { Card } from 'antd'
 import { Table } from 'antd'
 // project
 import type { Tenant as TenantType } from '../../typings/tenant'
@@ -18,9 +18,6 @@ const Tenants = () => {
   const [isOpened, setIsOpened] = useState(false)
   const [tenants, setTenants] = useState<TenantType[]>([])
   const [tenant, setTenant] = useState<TenantType>(getInitialSingleton())
-
-  // 抽屉表单
-  const ref = createRef<FormInstance>()
 
   const columns = getColumns([
     {
@@ -80,11 +77,6 @@ const Tenants = () => {
     }
   }
 
-  // 抽屉提交事件
-  const onSubmit = () => {
-    ref.current?.submit()
-  }
-
   // 抽屉提交后的事件
   const onSubmitted = () => {
     onFetch()
@@ -97,9 +89,14 @@ const Tenants = () => {
 
       <Table rowKey='_id' columns={columns} dataSource={tenants} bordered={true} pagination={false} />
 
-      <Singleton title='客户端' isOpened={isOpened} onSubmit={onSubmit} onClose={onClose}>
-        <Tenant ref={ref} singleton={tenant} onSubmitted={onSubmitted} />
-      </Singleton>
+      <Singleton
+        title='客户端'
+        isOpened={isOpened}
+        onClose={onClose}
+        singleton={tenant}
+        singletonComponent={Tenant}
+        onSubmitted={onSubmitted}
+      />
     </Card>
   )
 }

@@ -7,8 +7,8 @@ import { useState, forwardRef, useEffect } from 'react'
 import type { FormInstance } from 'antd'
 import { Form, Input, InputNumber, Select } from 'antd'
 // project
-import type { UpdateMenu } from '../../../typings/menu'
-import type { Props } from './assets'
+import type { MenuTreeNode, UpdateMenu } from '../../../typings/menu'
+import type { ExtraProps } from './assets'
 import type { DefaultOptionType } from 'antd/lib/select'
 
 import { create, update } from '../../../apis/menu'
@@ -17,8 +17,9 @@ import IconSelector from '../../IconSelector'
 import { getInitialSingleton } from './assets'
 import { getDictionaryEnumsByDictionaryCode } from '../../../apis/dictionaryEnum'
 import { DICTIONARY_CODE_PERMISSION_KEY } from '../Dictionary/assets'
+import { SingletonProps } from '../assets'
 
-const Menu = forwardRef<FormInstance, Props>((props, ref) => {
+const Menu = forwardRef<FormInstance, SingletonProps<MenuTreeNode, ExtraProps>>((props, ref) => {
   const singleton = getInitialSingleton()
 
   const [description, setDescription] = useState(singleton.description)
@@ -100,7 +101,7 @@ const Menu = forwardRef<FormInstance, Props>((props, ref) => {
       componentPath,
       to,
       sort,
-      parent: props.parentId,
+      parent: props.extraProps.parentId,
       icon,
       permissionKeys
     }
@@ -109,7 +110,7 @@ const Menu = forwardRef<FormInstance, Props>((props, ref) => {
       create: () =>
         create({
           ...menu,
-          tenant: props.tenantId
+          tenant: props.extraProps.tenantId
         }),
       update: () => update(props.singleton._id as string, menu)
     }

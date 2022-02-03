@@ -1,15 +1,14 @@
 // react
-import { useState, createRef } from 'react'
+import { useState, useEffect } from 'react'
 // antd
-import { Button, Divider, Space, Table, FormInstance, Popconfirm, Card } from 'antd'
+import { Button, Divider, Space, Table, Popconfirm, Card } from 'antd'
 // project
+import type { MenuTreeNode, MenuTree } from '../../typings/menu'
+import type { Tenant } from '../../typings/tenant'
 import { getColumns as getMenuColumns } from './assets'
 import { getColumns as getTenantColumns } from '../Tenants/assets'
 import Menu from '../../components/Singleton/Menu'
 import { getTenants } from '../../apis/tenant'
-import { useEffect } from 'react'
-import { Tenant } from '../../typings/tenant'
-import { MenuTreeNode, MenuTree } from '../../typings/menu'
 import { getMenuTrees, remove } from '../../apis/menu'
 import { responseNotification } from '../../utils/notification'
 import Singleton from '../../components/Singleton'
@@ -22,9 +21,6 @@ const Menus = () => {
   const [parentId, setParentId] = useState<string>()
   const [menuTrees, setMenuTrees] = useState<MenuTree[]>([])
   const [menuTreeNode, setMenuTreeNode] = useState<MenuTreeNode>(getInitialSingleton())
-
-  // 抽屉表单
-  const ref = createRef<FormInstance>()
 
   const tenantColumns = getTenantColumns([
     {
@@ -109,13 +105,6 @@ const Menus = () => {
     }
 
   /**
-   * 抽屉提交事件
-   */
-  const onSubmit = () => {
-    ref.current?.submit()
-  }
-
-  /**
    * 抽屉提交完成后的回调事件
    */
   const onSubmitted = () => {
@@ -136,11 +125,27 @@ const Menus = () => {
 
   return (
     <Card>
-      <Table rowKey='_id' columns={tenantColumns} dataSource={tenants} bordered={true} expandable={{ expandedRowRender }} pagination={false} />
+      <Table
+        rowKey='_id'
+        columns={tenantColumns}
+        dataSource={tenants}
+        bordered={true}
+        expandable={{ expandedRowRender }}
+        pagination={false}
+      />
 
-      <Singleton title='菜单' isOpened={isOpened} onClose={onClose} onSubmit={onSubmit}>
-        <Menu tenantId={tenantId} parentId={parentId} singleton={menuTreeNode} ref={ref} onSubmitted={onSubmitted} />
-      </Singleton>
+      <Singleton
+        title='菜单'
+        isOpened={isOpened}
+        onClose={onClose}
+        extraProps={{
+          tenantId,
+          parentId
+        }}
+        singletonComponent={Menu}
+        singleton={menuTreeNode}
+        onSubmitted={onSubmitted}
+      />
     </Card>
   )
 }

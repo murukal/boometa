@@ -1,7 +1,6 @@
 // react
-import { createRef, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 // antd
-import type { FormInstance } from 'antd'
 import { Card, Table } from 'antd'
 // project
 import type { Todo as TodoType } from '../../typings/todo'
@@ -17,8 +16,6 @@ import { getInitialSingleton } from '../../components/Singleton/Todo/assets'
 const Todos = () => {
   const [todo, setTodo] = useState<TodoType>(getInitialSingleton())
   const [isOpened, setIsOpened] = useState(false)
-
-  const ref = createRef<FormInstance>()
 
   const columns = getColumns([
     {
@@ -67,10 +64,6 @@ const Todos = () => {
     setIsOpened(false)
   }
 
-  const onSubmit = () => {
-    ref.current?.submit()
-  }
-
   const onSubmitted = () => {
     onClose()
     onFetch()
@@ -84,11 +77,24 @@ const Todos = () => {
     <Card>
       <Toolbar onAdd={onOpen()} />
 
-      <Table rowKey='_id' columns={columns} dataSource={todos} bordered={true} pagination={pagination} onChange={onTableChange} loading={isLoading} />
+      <Table
+        rowKey='_id'
+        columns={columns}
+        dataSource={todos}
+        bordered={true}
+        pagination={pagination}
+        onChange={onTableChange}
+        loading={isLoading}
+      />
 
-      <Singleton title='待办事项' isOpened={isOpened} onClose={onClose} onSubmit={onSubmit}>
-        <Todo singleton={todo} ref={ref} onSubmitted={onSubmitted} />
-      </Singleton>
+      <Singleton
+        title='待办事项'
+        isOpened={isOpened}
+        onClose={onClose}
+        singleton={todo}
+        singletonComponent={Todo}
+        onSubmitted={onSubmitted}
+      />
     </Card>
   )
 }
