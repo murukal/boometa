@@ -26,9 +26,9 @@ const Step1 = forwardRef<FormInstance, Props>((props, ref) => {
     }
   }, [props.blog])
 
-  // useEffect(() => {
-  //   form.setFieldsValue(props.model)
-  // }, [])
+  useEffect(() => {
+    form.setFieldsValue(initialValues)
+  }, [initialValues])
 
   return (
     <Form
@@ -37,7 +37,6 @@ const Step1 = forwardRef<FormInstance, Props>((props, ref) => {
       ref={ref}
       initialValues={initialValues}
       labelCol={{ span: 4 }}
-      onValuesChange={props.onFormChange}
       style={props.style}
     >
       <Item

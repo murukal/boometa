@@ -1,4 +1,4 @@
-import { forwardRef, useMemo, useState } from 'react'
+import { forwardRef, useEffect, useMemo, useState } from 'react'
 // antd
 import type { FormInstance } from 'antd'
 import type { RuleObject } from 'antd/lib/form'
@@ -8,16 +8,24 @@ import { Form, Input } from 'antd'
 import ReactMarkdown from 'react-markdown'
 // project
 import type { Props } from './assets'
+import { useForm } from 'antd/lib/form/Form'
 
 const { Item } = Form
 const { TextArea } = Input
 
 const Step2 = forwardRef<FormInstance, Props>((props, ref) => {
+  const [form] = useForm()
+
   const initialValues = useMemo(() => {
     return {
       content: props.blog.content
     }
   }, [props.blog])
+
+  useEffect(() => {
+    form.setFieldsValue(initialValues)
+    setModel(initialValues)
+  }, [initialValues])
 
   const [model, setModel] = useState(initialValues)
   const [validateFailedMessage, setValidateFailedMessage] = useState<string>()
@@ -25,7 +33,6 @@ const Step2 = forwardRef<FormInstance, Props>((props, ref) => {
   /** 表单的修改事件 */
   const onFormChange = (changedValues: any, values: any) => {
     setModel(values)
-    props.onFormChange && props.onFormChange(changedValues, values)
   }
 
   /** md文本的校验 */
@@ -48,6 +55,7 @@ const Step2 = forwardRef<FormInstance, Props>((props, ref) => {
     >
       <Form
         ref={ref}
+        form={form}
         className='w-1/2'
         initialValues={initialValues}
         labelCol={{ span: 24 }}

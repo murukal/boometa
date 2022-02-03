@@ -8,14 +8,13 @@ import { UserOutlined, SolutionOutlined, SmileOutlined } from '@ant-design/icons
 import type { FormInstance } from 'antd'
 // project
 import { getInitialSingleton } from './assets'
-import { getBlogById } from '../../apis/blog'
+import { create, getBlogById, update } from '../../apis/blog'
 import Step1 from '../../components/Singleton/Blog/Step1'
 import { getTags } from '../../apis/tag'
 import Step2 from '../../components/Singleton/Blog/Step2'
+import { responseNotification } from '../../utils/notification'
 import type { Tag } from '../../typings/tag'
 import type { Blog as BlogType } from '../../typings/blog'
-import type { Model as Step1Model } from '../../components/Singleton/Blog/Step1/assets'
-import type { Model as Step2Model } from '../../components/Singleton/Blog/Step2/assets'
 
 const { Step } = Steps
 
@@ -23,11 +22,6 @@ const Blog = () => {
   const [step, setStep] = useState(0)
   const [tags, setTags] = useState<Tag[]>([])
   const [blog, setBlog] = useState<BlogType>(getInitialSingleton())
-
-  // 步骤1model
-  const [step1Model, setStep1Model] = useState<Step1Model>()
-  // 步骤2model
-  const [step2Model, setStep2Model] = useState<Step2Model>()
 
   const urlParams = useParams()
   const refs = [createRef<FormInstance>(), createRef<FormInstance>()]
@@ -61,24 +55,41 @@ const Blog = () => {
       if (!res) return
     }
 
+    if (step >= 1) {
+      // 提交
+      const res = await onSubmit()
+      if (!res) return
+    }
+
     setStep(step + 1)
+  }
+
+  /** 提交 */
+  const onSubmit = async () => {
+    const form1 = refs[0].current?.getFieldsValue()
+    const form2 = refs[1].current?.getFieldsValue()
+
+    const params = {
+      title: form1.title,
+      tags: form1.tags,
+      cover: form1.fileList && form1.fileList[0]?.response.data,
+      content: form2.content
+    }
+
+    const handlers = {
+      create: () => create(params),
+      update: () => update(blog._id, params)
+    }
+
+    const handler = handlers[blog._id ? 'update' : 'create']
+    const res = await handler()
+    res.code && responseNotification(res)
+    return !res.code
   }
 
   /** 退回上一步 */
   const onPrevStep = () => {
     setStep(step - 1)
-  }
-
-  /** 表单发生变更 */
-  const onFormChange = (changedValues: any, values: any) => {
-    switch (step) {
-      case 0:
-        setStep1Model(values)
-        break
-      case 1:
-        setStep2Model(values)
-        break
-    }
   }
 
   return (
@@ -104,8 +115,6 @@ const Blog = () => {
           ref={refs[0]}
           blog={blog}
           tags={tags}
-          model={step1Model}
-          onFormChange={onFormChange}
         />
         <Step2
           style={{
@@ -113,8 +122,6 @@ const Blog = () => {
           }}
           ref={refs[1]}
           blog={blog}
-          model={step2Model}
-          onFormChange={onFormChange}
         />
         <Result
           style={{
@@ -136,7 +143,9 @@ const Blog = () => {
         <div className='flex justify-end'>
           <Space>
             {step > 0 && <Button onClick={onPrevStep}>上一步</Button>}
-            <Button onClick={onNextStep}>下一步</Button>
+            <Button type='primary' onClick={onNextStep}>
+              {step >= 1 ? '提交' : '下一步'}
+            </Button>
           </Space>
         </div>
       )}
