@@ -7,6 +7,7 @@ export interface Blog {
   title: string
   content: string
   createdBy: string | User
+  createdAt: string
   tags: Array<Tag | string>
   cover?: string
 }
@@ -14,3 +15,14 @@ export interface Blog {
 export interface CreateBlog extends Omit<Blog, '_id' | 'createdBy'> {}
 
 export interface UpdateBlog extends CreateBlog {}
+
+export interface PublishRecord {
+  _id: number
+  count: number
+}
+
+export type CreativeTop5 = {
+  _id: string
+  count: number
+  users: User[]
+}[]
