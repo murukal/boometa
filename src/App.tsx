@@ -1,7 +1,7 @@
 // react
 import { useEffect, useState } from 'react'
 // redux
-import { useDispatch, useStore } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 // project
 import Router from './routes'
 import { getTenant } from './apis/tenant'
@@ -12,15 +12,15 @@ import { authenticate, passToken } from './redux/userProfile/actions'
 
 const App = () => {
   const dispatch = useDispatch()
-  const store = useStore()
+  const tenantCode = useSelector((state) => state.tenant.code)
   const [isReady, setIsReady] = useState(false)
 
   const onFetch = async () => {
     // 将客户端的token存储到redux中
-    store.dispatch(passToken())
+    dispatch(passToken())
 
     // 获取租户信息
-    const tenantRes = await getTenant(store.getState().tenant.code)
+    const tenantRes = await getTenant(tenantCode)
     // 租户未入驻
     if (!tenantRes.data) return
     // 租户已入驻

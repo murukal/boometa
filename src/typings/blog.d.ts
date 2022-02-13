@@ -7,7 +7,7 @@ export interface Blog {
   title: string
   content: string
   createdBy: string | User
-  createdAt: string
+  createdAt?: string
   tags: Array<Tag | string>
   cover?: string
 }
