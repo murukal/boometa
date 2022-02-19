@@ -1,11 +1,11 @@
-// npm
-import path from 'path-browserify'
 // react
 import { ChangeEvent } from 'react'
 import { useState, forwardRef, useEffect } from 'react'
 // antd
 import type { FormInstance } from 'antd'
 import { Form, Input, InputNumber, Select } from 'antd'
+// third
+import path from 'path-browserify'
 // project
 import type { MenuTreeNode, UpdateMenu } from '../../../typings/menu'
 import type { ExtraProps } from './assets'

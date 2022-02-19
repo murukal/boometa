@@ -6,20 +6,37 @@ import { useDispatch, useSelector } from 'react-redux'
 import { LoginForm, ProFormText } from '@ant-design/pro-form'
 import { ConfigProvider, createIntl } from '@ant-design/pro-provider'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
+// third
+import { useMutation } from '@apollo/client'
 // project
 import PhoneFormItem from '../../../components/Form/PhoneFormItem'
 import CaptchaFormItem from '../../../components/Form/CaptchaFormItem'
-import { register } from '../../../apis/account'
+import { REGISTER } from '../../../apis/account'
 import { easyNotification, responseNotification } from '../../../utils/notification'
 import { authenticate, passToken } from '../../../redux/userProfile/actions'
 import { setToken } from '../../../utils/app'
+import { Register, User } from '../../../typings/user'
 
 const Register = () => {
   const [phone, setPhone] = useState('')
   const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')
+
   const dispatch = useDispatch()
   const tenant = useSelector((state) => state.tenant)
+  const [register] = useMutation<
+    { Register: User },
+    {
+      register: Register
+    }
+  >(REGISTER, {
+    onCompleted: () => {
+      console.log('123213131')
+    },
+    onError: () => {
+      console.log('eroooooooo')
+    }
+  })
 
   const intl = createIntl('zh_CN', {
     loginForm: {
@@ -38,26 +55,31 @@ const Register = () => {
 
   // 用户注册
   const onRegister = async () => {
-    const encryptedPassword = tenant.encrypter.encrypt(password)
+    // 利用公钥加密密码
+    const encryptedPassword = tenant.encryptor.encrypt(password)
 
     if (!encryptedPassword) {
       easyNotification('密码加密失败', 'error')
       return
     }
 
-    const res = await register({
-      tenantCode: tenant.code,
-      phone,
-      username,
-      password: encryptedPassword
+    register({
+      variables: {
+        register: {
+          tenantCode: tenant.code,
+          phone,
+          username,
+          password: encryptedPassword
+        }
+      }
     })
 
-    if (res.data) {
-      setToken(res.data.token, false)
-      dispatch(passToken())
-      dispatch(await authenticate())
-    }
-    responseNotification(res)
+    // if (res.data) {
+    //   setToken(res.data.token, false)
+    //   dispatch(passToken())
+    //   dispatch(await authenticate())
+    // }
+    // responseNotification(res)
   }
 
   return (
@@ -67,7 +89,12 @@ const Register = () => {
         valueTypeMap: {}
       }}
     >
-      <LoginForm className='flex flex-col justify-center' title='BOOMETA' subTitle='这里可能有一些你感兴趣的' onFinish={onRegister}>
+      <LoginForm
+        className='flex flex-col justify-center'
+        title='BOOMETA'
+        subTitle='这里可能有一些你感兴趣的'
+        onFinish={onRegister}
+      >
         <ProFormText
           name='username'
           fieldProps={{

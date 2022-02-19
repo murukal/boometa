@@ -5,7 +5,7 @@ import { Tenant } from '../../typings/tenant'
 
 // store 在原先的数据结构基础上 补充
 export interface TenantState extends Tenant {
-  encrypter: JSEncrypt
+  encryptor: JSEncrypt
 }
 
 const getInitialState = (): TenantState => ({
@@ -19,7 +19,7 @@ const getInitialState = (): TenantState => ({
   updatedAt: '',
 
   // 加密器
-  encrypter: new JSEncrypt()
+  encryptor: new JSEncrypt()
 })
 
 export default getInitialState

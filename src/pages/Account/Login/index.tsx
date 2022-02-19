@@ -17,10 +17,11 @@ import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import type { LoginType } from '../../../typings/user'
 import PhoneFormItem from '../../../components/Form/PhoneFormItem'
 import CaptchaFormItem from '../../../components/Form/CaptchaFormItem'
-import { login } from '../../../apis/account'
+import { LOGIN } from '../../../apis/account'
 import { responseNotification } from '../../../utils/notification'
 import { authenticate, passToken } from '../../../redux/userProfile/actions'
 import { setToken } from '../../../utils/app'
+import { useMutation } from '@apollo/client'
 
 const IconStyle: CSSProperties = {
   marginLeft: 16,
@@ -38,6 +39,7 @@ const Login = () => {
 
   const dispatch = useDispatch()
   const tenant = useSelector((state) => state.tenant)
+  const [login] = useMutation(LOGIN)
 
   const onLoginTypeChange = (activeKey: string) => {
     setLoginType(activeKey as LoginType)
@@ -60,19 +62,11 @@ const Login = () => {
     const handlers = {
       account: () => {
         // 利用公钥对密码进行加密
-        const encryptedPassword = tenant.encrypter.encrypt(password)
+        const encryptedPassword = tenant.encryptor.encrypt(password)
 
-        return login({
-          tenantCode: tenant.code,
-          keyword,
-          password: encryptedPassword.toString()
-        })
+        return login()
       },
-      phone: () =>
-        login({
-          phone,
-          captcha
-        })
+      phone: () => login()
     }
 
     const handler = handlers[loginType]

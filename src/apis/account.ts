@@ -1,29 +1,26 @@
 // project
 import type { PaginateResult, QueryOptions } from '../typings/api'
 import type { Authentication, Login, PhoneLogin, Register, User } from '../typings/user'
-import { get, post } from '.'
-
-const url = '/api/auth'
-
-/**
- * 换取用户信息
- */
-export const getUser = () => get<User>(url)
-
-/**
- * 常规登录
- */
-export const login = (data: Login | PhoneLogin) => post<Authentication>(`${url}/login`, data)
+import { gql } from '@apollo/client'
 
 /**
  * 注册
  */
-export const register = (data: Register) => post<Authentication>(`${url}/register`, data)
+export const REGISTER = gql`
+  mutation Register($register: RegisterInput!) {
+    register(register: $register) {
+      _id
+    }
+  }
+`
 
 /**
- * 获取用户清单
+ * 登陆
  */
-export const getUsers = (params: QueryOptions) =>
-  get<PaginateResult<User>>(`${url}/user`, {
-    params
-  })
+export const LOGIN = gql`
+  mutation Login($login: LoginInput!) {
+    login(login: $login) {
+      _id
+    }
+  }
+`
