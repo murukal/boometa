@@ -9,7 +9,7 @@ export type { PaginateOptions, PaginateResult }
 export interface ApiResponse<T = any> {
   code: number
   message?: string
-  data: T | null
+  data?: T | null
 }
 
 export type Sorter<T> = SorterResult<T> | SorterResult<T>[]
