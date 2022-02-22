@@ -21,7 +21,6 @@ import { LOGIN } from '../../../apis/account'
 import { responseNotification } from '../../../utils/notification'
 import { authenticate, passToken } from '../../../redux/userProfile/actions'
 import { setToken } from '../../../utils/app'
-import { useMutation } from '@apollo/client'
 
 const IconStyle: CSSProperties = {
   marginLeft: 16,
@@ -39,7 +38,6 @@ const Login = () => {
 
   const dispatch = useDispatch()
   const tenant = useSelector((state) => state.tenant)
-  const [login] = useMutation(LOGIN)
 
   const onLoginTypeChange = (activeKey: string) => {
     setLoginType(activeKey as LoginType)
