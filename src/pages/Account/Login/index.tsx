@@ -5,20 +5,14 @@ import { useDispatch, useSelector } from 'react-redux'
 // antd
 import { Button, Space, Tabs } from 'antd'
 import { LoginForm, ProFormCheckbox, ProFormText } from '@ant-design/pro-form'
-import {
-  AlipayCircleOutlined,
-  TaobaoCircleOutlined,
-  WeiboCircleOutlined,
-  UserOutlined,
-  LockOutlined
-} from '@ant-design/icons'
+import { AlipayCircleOutlined, TaobaoCircleOutlined, WeiboCircleOutlined, UserOutlined, LockOutlined } from '@ant-design/icons'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 // project
 import type { LoginType } from '../../../typings/user'
 import PhoneFormItem from '../../../components/Form/PhoneFormItem'
 import CaptchaFormItem from '../../../components/Form/CaptchaFormItem'
-import { LOGIN } from '../../../apis/account'
-import { responseNotification } from '../../../utils/notification'
+import { login } from '../../../apis/account'
+import { easyNotification, responseNotification } from '../../../utils/notification'
 import { authenticate, passToken } from '../../../redux/userProfile/actions'
 import { setToken } from '../../../utils/app'
 
@@ -42,12 +36,15 @@ const Login = () => {
   const onLoginTypeChange = (activeKey: string) => {
     setLoginType(activeKey as LoginType)
   }
+
   const onKeywordChange = (e: ChangeEvent<HTMLInputElement>) => {
     setKeyword(e.target.value)
   }
+
   const onPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value)
   }
+
   const onIsAutoLoginChange = (e: CheckboxChangeEvent) => {
     setIsAutoLogin(e.target.checked)
   }
@@ -62,18 +59,36 @@ const Login = () => {
         // 利用公钥对密码进行加密
         const encryptedPassword = tenant.encryptor.encrypt(password)
 
-        return login()
+        if (!encryptedPassword) {
+          easyNotification('密码加密失败', 'error')
+          return
+        }
+
+        return login({
+          tenantCode: tenant.code,
+          keyword: keyword,
+          password: encryptedPassword
+        })
       },
-      phone: () => login()
+      phone: () =>
+        login({
+          tenantCode: tenant.code,
+          keyword: keyword,
+          password
+        })
     }
 
-    const handler = handlers[loginType]
-    const res = await handler()
+    const res = await handlers[loginType]()
+
+    // 加密失败
+    if (!res) return
+
     if (res.data) {
-      setToken(res.data.token, isAutoLogin)
+      setToken(res.data, isAutoLogin)
       dispatch(passToken())
       dispatch(await authenticate())
     }
+
     responseNotification(res)
   }
 

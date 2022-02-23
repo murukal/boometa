@@ -1,9 +1,9 @@
-import { Action, ActionType } from './actions'
+import { Action } from './actions'
 import getInitialState from './store'
 
 const reducer = (state = getInitialState(), action: Action) => {
   switch (action.type) {
-    case ActionType.SET_MENUS:
+    case 'GET_MENUS':
       // 获取菜单数据
       return action.data
     default:

@@ -8,7 +8,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { Menu } from 'antd'
 import * as Icons from '@ant-design/icons/lib/icons'
 // project
-import { MenuTreeNode } from '../../typings/menu'
+import type { MenuTreeNode } from '../../typings/menu'
 
 const { Item, SubMenu } = Menu
 
@@ -68,10 +68,10 @@ const SiderMenu = () => {
 
           return !menu.children ? (
             <Item key={menu._id} icon={Icon}>
-              <Link to={menu.to || '/404'}>{menu.description}</Link>
+              <Link to={menu.to || '/404'}>{menu.name}</Link>
             </Item>
           ) : (
-            <SubMenu key={menu._id} title={menu.description} icon={Icon}>
+            <SubMenu key={menu._id} title={menu.name} icon={Icon}>
               {renderMenu(menu.children)}
             </SubMenu>
           )

@@ -8,7 +8,7 @@ export interface ExtraProps {
 export const getInitialSingleton = (): MenuTreeNode => ({
   _id: '',
   componentPath: '',
-  description: '',
+  name: '',
   icon: '',
   sort: 0,
   to: '',

@@ -18,9 +18,9 @@ const Step2 = forwardRef<FormInstance, Props>((props, ref) => {
 
   const initialValues = useMemo(() => {
     return {
-      content: props.blog.content
+      content: props.essay.content
     }
-  }, [props.blog])
+  }, [props.essay])
 
   useEffect(() => {
     form.setFieldsValue(initialValues)
@@ -53,14 +53,7 @@ const Step2 = forwardRef<FormInstance, Props>((props, ref) => {
         ...props.style
       }}
     >
-      <Form
-        ref={ref}
-        form={form}
-        className='w-1/2'
-        initialValues={initialValues}
-        labelCol={{ span: 24 }}
-        onValuesChange={onFormChange}
-      >
+      <Form ref={ref} form={form} className='w-1/2' initialValues={initialValues} labelCol={{ span: 24 }} onValuesChange={onFormChange}>
         <Item
           name='content'
           rules={[
@@ -92,9 +85,7 @@ const Step2 = forwardRef<FormInstance, Props>((props, ref) => {
           </p>
         )}
       </Form>
-      <ReactMarkdown className='w-1/2 ml-2 overflow-auto border border-solid border-slate-400'>
-        {model.content}
-      </ReactMarkdown>
+      <ReactMarkdown className='w-1/2 ml-2 overflow-auto border border-solid border-slate-400'>{model.content}</ReactMarkdown>
     </div>
   )
 })

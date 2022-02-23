@@ -2,7 +2,7 @@ import type { User } from '../../typings/user'
 
 export interface UserProfile {
   isLogin: boolean
-  user: User | null
+  user?: User | null
   token: string
 }
 

@@ -22,7 +22,7 @@ import { SingletonProps } from '../assets'
 const Menu = forwardRef<FormInstance, SingletonProps<MenuTreeNode, ExtraProps>>((props, ref) => {
   const singleton = getInitialSingleton()
 
-  const [description, setDescription] = useState(singleton.description)
+  const [name, setName] = useState(singleton.name)
   const [sort, setSort] = useState(singleton.sort)
   const [componentPath, setComponentPath] = useState(singleton.componentPath)
   const [icon, setIcon] = useState(singleton.icon)
@@ -32,7 +32,7 @@ const Menu = forwardRef<FormInstance, SingletonProps<MenuTreeNode, ExtraProps>>(
   const [permissionKeyEnums, setPermissionKeyEnums] = useState<DefaultOptionType[]>([])
 
   useEffect(() => {
-    setDescription(props.singleton.description)
+    setName(props.singleton.name)
     setSort(props.singleton.sort)
     setComponentPath(props.singleton.componentPath)
     setIcon(props.singleton.icon)
@@ -65,8 +65,8 @@ const Menu = forwardRef<FormInstance, SingletonProps<MenuTreeNode, ExtraProps>>(
     })
 
   /** 菜单描述变更 */
-  const onDescriptionChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setDescription(e.target.value)
+  const onNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value)
   }
 
   /** 排序码变更 */
@@ -97,7 +97,7 @@ const Menu = forwardRef<FormInstance, SingletonProps<MenuTreeNode, ExtraProps>>(
   /** 表单提交事件 */
   const onSubmit = async () => {
     const menu: UpdateMenu = {
-      description,
+      name,
       componentPath,
       to,
       sort,
@@ -124,8 +124,8 @@ const Menu = forwardRef<FormInstance, SingletonProps<MenuTreeNode, ExtraProps>>(
 
   return (
     <Form labelCol={{ span: 6 }} onFinish={onSubmit} ref={ref}>
-      <Form.Item label='菜单描述'>
-        <Input onChange={onDescriptionChange} value={description} />
+      <Form.Item label='菜单名称'>
+        <Input onChange={onNameChange} value={name} />
       </Form.Item>
 
       <Form.Item label='菜单排序码'>
@@ -145,13 +145,7 @@ const Menu = forwardRef<FormInstance, SingletonProps<MenuTreeNode, ExtraProps>>(
       </Form.Item>
 
       <Form.Item label='菜单权限通行证'>
-        <Select
-          mode='multiple'
-          allowClear
-          value={permissionKeys}
-          onChange={onPermissionKeysChange}
-          options={permissionKeyEnums}
-        />
+        <Select mode='multiple' allowClear value={permissionKeys} onChange={onPermissionKeysChange} options={permissionKeyEnums} />
       </Form.Item>
     </Form>
   )

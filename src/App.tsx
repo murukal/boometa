@@ -4,10 +4,8 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 // project
 import Router from './routes'
-import { getTenant } from './apis/tenant'
-import { setTenant } from './redux/tenant/actions'
-import { getMenuTree } from './apis/menu'
-import { setMenus } from './redux/menus/actions'
+import { getTenant } from './redux/tenant/actions'
+import { getMenus } from './redux/menus/actions'
 import { authenticate, passToken } from './redux/userProfile/actions'
 
 const App = () => {
@@ -20,18 +18,10 @@ const App = () => {
     dispatch(passToken())
 
     // 获取租户信息
-    const tenantRes = await getTenant(tenantCode)
-    // 租户未入驻
-    if (!tenantRes.data) return
-    // 租户已入驻
-    dispatch(setTenant(tenantRes.data))
+    dispatch(await getTenant(tenantCode))
 
     // 获取菜单数据
-    const menuRes = await getMenuTree(tenantRes.data._id)
-    // 菜单数据为空
-    if (!menuRes.data) return
-    // 缓存菜单数据
-    dispatch(setMenus(menuRes.data.nodes || []))
+    dispatch(await getMenus(tenantCode))
 
     // 获取用户数据
     dispatch(await authenticate())

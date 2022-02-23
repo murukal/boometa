@@ -2,8 +2,7 @@
 import { UserProfile } from './store'
 import { TOKEN } from '../../assets'
 import store from '..'
-import { gql, useApolloClient } from '@apollo/client'
-import { client } from '../../apis'
+import { getUserProfile } from '../../apis/account'
 
 export type ActionType = 'AUTHENTICATE' | 'LOGOUT' | 'PASS_TOKEN'
 
@@ -15,9 +14,7 @@ export interface Action {
 // 获取到token之后，进行用户的认证
 export const authenticate = async (): Promise<Action> => {
   // 读取用户信息
-  const res = await client.query({
-    query: gql``
-  })
+  const res = await getUserProfile()
 
   // 生成token
   return {

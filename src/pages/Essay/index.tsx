@@ -8,28 +8,28 @@ import { UserOutlined, SolutionOutlined, SmileOutlined } from '@ant-design/icons
 import type { FormInstance } from 'antd'
 // project
 import { getInitialSingleton } from './assets'
-import { create, getBlogById, update } from '../../apis/blog'
-import Step1 from '../../components/Singleton/Blog/Step1'
+import { create, getEssay, update } from '../../apis/essay'
+import Step1 from '../../components/Singleton/Essay/Step1'
 import { getTags } from '../../apis/tag'
-import Step2 from '../../components/Singleton/Blog/Step2'
+import Step2 from '../../components/Singleton/Essay/Step2'
 import { responseNotification } from '../../utils/notification'
 import type { Tag } from '../../typings/tag'
-import type { Blog as BlogType } from '../../typings/blog'
+import type { Essay as EssayType } from '../../typings/essay'
 
 const { Step } = Steps
 
-const Blog = () => {
+const Essay = () => {
   const [step, setStep] = useState(0)
   const [tags, setTags] = useState<Tag[]>([])
-  const [blog, setBlog] = useState<BlogType>(getInitialSingleton())
+  const [essay, setEssay] = useState<EssayType>(getInitialSingleton())
 
   const urlParams = useParams()
   const refs = [createRef<FormInstance>(), createRef<FormInstance>()]
 
   const onFetch = async () => {
     if (urlParams.id) {
-      const res = await getBlogById(urlParams.id)
-      setBlog(res.data || getInitialSingleton())
+      const res = await getEssay(urlParams.id)
+      setEssay(res.data || getInitialSingleton())
     }
 
     // 获取标签
@@ -78,10 +78,10 @@ const Blog = () => {
 
     const handlers = {
       create: () => create(params),
-      update: () => update(blog._id, params)
+      update: () => update(essay._id, params)
     }
 
-    const handler = handlers[blog._id ? 'update' : 'create']
+    const handler = handlers[essay._id ? 'update' : 'create']
     const res = await handler()
     res.code && responseNotification(res)
     return !res.code
@@ -102,8 +102,8 @@ const Blog = () => {
       }}
     >
       <Steps current={step}>
-        <Step title='博客摘要' icon={<UserOutlined />} />
-        <Step title='博客正文' icon={<SolutionOutlined />} />
+        <Step title='文章摘要' icon={<UserOutlined />} />
+        <Step title='文章正文' icon={<SolutionOutlined />} />
         <Step title='发布完成' icon={<SmileOutlined />} />
       </Steps>
 
@@ -113,7 +113,7 @@ const Blog = () => {
             display: step === 0 ? undefined : 'none'
           }}
           ref={refs[0]}
-          blog={blog}
+          essay={essay}
           tags={tags}
         />
         <Step2
@@ -121,7 +121,7 @@ const Blog = () => {
             display: step === 1 ? undefined : 'none'
           }}
           ref={refs[1]}
-          blog={blog}
+          essay={essay}
         />
         <Result
           style={{
@@ -153,4 +153,4 @@ const Blog = () => {
   )
 }
 
-export default Blog
+export default Essay

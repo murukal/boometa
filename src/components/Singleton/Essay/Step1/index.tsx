@@ -16,15 +16,15 @@ const Step1 = forwardRef<FormInstance, Props>((props, ref) => {
 
   const initialValues = useMemo<Model>(() => {
     return {
-      title: props.blog.title,
-      tags: props.blog.tags,
+      title: props.essay.title,
+      tags: props.essay.tags,
       fileList: getUploadParam({
-        id: props.blog._id,
-        name: props.blog.title,
-        url: props.blog.cover
+        id: props.essay._id,
+        name: props.essay.title,
+        url: props.essay.cover
       })?.fileList
     }
-  }, [props.blog])
+  }, [props.essay])
 
   useEffect(() => {
     form.setFieldsValue(initialValues)
@@ -40,7 +40,7 @@ const Step1 = forwardRef<FormInstance, Props>((props, ref) => {
       style={props.style}
     >
       <Item
-        label='博客标题'
+        label='文章标题'
         name='title'
         rules={[
           {
@@ -51,14 +51,14 @@ const Step1 = forwardRef<FormInstance, Props>((props, ref) => {
         <Input size='large' />
       </Item>
 
-      <Item label='博客封面' name='fileList' valuePropName='fileList' getValueFromEvent={getValueFromEvent}>
+      <Item label='文章封面' name='fileList' valuePropName='fileList' getValueFromEvent={getValueFromEvent}>
         <Upload action='http://admin.r2boom.com/api/object-storage/cos' listType='picture-card'>
           <PlusOutlined />
         </Upload>
       </Item>
 
       <Item
-        label='博客标签'
+        label='文章标签'
         name='tags'
         rules={[
           {

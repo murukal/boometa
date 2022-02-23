@@ -3,15 +3,15 @@ import { useEffect } from 'react'
 // antd
 import { Card, Table } from 'antd'
 // project
-import type { Blog as BlogType } from '../../typings/blog'
+import type { Essay as EssayType } from '../../typings/essay'
 import { getColumns } from './assets'
 import { getTableRowHandler, useTable } from '../../utils/table'
-import { getBlogs, remove } from '../../apis/blog'
+import { getEssays, remove } from '../../apis/essay'
 import { responseNotification } from '../../utils/notification'
 import Toolbar from '../../components/Toolbar'
 import { useNavigate } from 'react-router-dom'
 
-const Blogs = () => {
+const Essays = () => {
   const navigate = useNavigate()
 
   const columns = getColumns([
@@ -19,15 +19,15 @@ const Blogs = () => {
       title: '操作',
       width: 100,
       align: 'center',
-      render: (value, blog) =>
+      render: (value, essay) =>
         getTableRowHandler([
           {
             label: '修改',
-            onClick: onNavigate(blog._id)
+            onClick: onNavigate(essay._id)
           },
           {
             label: '删除',
-            onClick: onDelete(blog._id),
+            onClick: onDelete(essay._id),
             danger: true,
             popconfirmProps: {
               title: '确认删除当前条目？',
@@ -41,15 +41,15 @@ const Blogs = () => {
 
   const {
     handlers: { onTableChange, onFetch },
-    props: { results: blogs, pagination, isLoading }
-  } = useTable<BlogType>(getBlogs)
+    props: { results: essays, pagination, isLoading }
+  } = useTable<EssayType>(getEssays)
 
   // 渲染
   useEffect(() => {
     onFetch()
   }, [])
 
-  // 删除博客
+  // 删除文章
   const onDelete = (id: string) => async () => {
     const res = await remove(id)
     responseNotification(res)
@@ -59,16 +59,16 @@ const Blogs = () => {
   const onNavigate =
     (id = '') =>
     () => {
-      navigate(`/blog${id ? `/${id}` : ''}`)
+      navigate(`/essay${id ? `/${id}` : ''}`)
     }
 
   return (
     <Card>
       <Toolbar onAdd={onNavigate()} />
 
-      <Table rowKey='_id' dataSource={blogs} columns={columns} bordered pagination={pagination} onChange={onTableChange} loading={isLoading} />
+      <Table rowKey='_id' dataSource={essays} columns={columns} bordered pagination={pagination} onChange={onTableChange} loading={isLoading} />
     </Card>
   )
 }
 
-export default Blogs
+export default Essays

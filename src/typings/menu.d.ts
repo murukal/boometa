@@ -1,6 +1,6 @@
 export interface Menu {
   _id: string
-  description: string
+  name: string
   sort: number
   icon: string
   to: string
@@ -15,7 +15,7 @@ export interface MenuTreeNode extends Omit<Menu, 'parent' | 'tenant'> {
 }
 
 export interface MenuTree {
-  tenant: string
+  tenantCode: string
   nodes: MenuTreeNode[] | null
 }
 

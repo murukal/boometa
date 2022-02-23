@@ -3,7 +3,7 @@ import type { CSSProperties } from 'react'
 // antd
 import type { UploadFile } from 'antd/lib/upload/interface'
 // project
-import type { Blog } from '../../../../typings/blog'
+import type { Essay } from '../../../../typings/essay'
 import type { Tag } from '../../../../typings/tag'
 
 export interface Model {
@@ -13,7 +13,7 @@ export interface Model {
 }
 
 export interface Props {
-  blog: Blog
+  essay: Essay
   tags: Tag[]
   style?: CSSProperties | undefined
 }

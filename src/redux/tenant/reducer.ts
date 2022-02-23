@@ -1,9 +1,11 @@
-import { Action, ActionType } from './actions'
+import { Action } from './actions'
 import getInitialState from './store'
 
 const reducer = (state = getInitialState(), action: Action) => {
   switch (action.type) {
-    case ActionType.SET_TENANT:
+    case 'GET_TENANT':
+      // 租户获取失败
+      if (!action.data) return state
       // 设置加密器
       state.encryptor.setPublicKey(action.data.publicKey)
       // 混合生成新的state

@@ -5,11 +5,11 @@ import Loadable from '../components/Loadable'
 
 export const customizes: RouteObject[] = [
   {
-    path: '/blog',
-    element: Loadable('pages/Blog')
+    path: '/essay',
+    element: Loadable('pages/essay')
   },
   {
-    path: '/blog/:id',
-    element: Loadable('pages/Blog')
+    path: '/essay/:id',
+    element: Loadable('pages/essay')
   }
 ]

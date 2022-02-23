@@ -2,7 +2,7 @@
 import type { Tag } from './tag'
 import type { User } from './user'
 
-export interface Blog {
+export interface Essay {
   _id: string
   title: string
   content: string
@@ -12,9 +12,9 @@ export interface Blog {
   cover?: string
 }
 
-export interface CreateBlog extends Omit<Blog, '_id' | 'createdBy'> {}
+export interface CreateEssay extends Omit<Essay, '_id' | 'createdBy'> {}
 
-export interface UpdateBlog extends CreateBlog {}
+export interface UpdateEssay extends CreateEssay {}
 
 export interface PublishRecord {
   _id: number

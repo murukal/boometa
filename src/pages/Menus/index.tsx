@@ -65,7 +65,7 @@ const Menus = () => {
     ])
 
     // 筛选菜单数据
-    const menus = menuTrees.find((menuTree) => menuTree.tenant === tenant._id)?.nodes || []
+    const menus = menuTrees.find((menuTree) => menuTree.tenantCode === tenant.code)?.nodes || []
 
     return <Table rowKey='_id' columns={menuColumns} dataSource={menus} pagination={false} bordered={true} />
   }
@@ -125,14 +125,7 @@ const Menus = () => {
 
   return (
     <Card>
-      <Table
-        rowKey='_id'
-        columns={tenantColumns}
-        dataSource={tenants}
-        bordered={true}
-        expandable={{ expandedRowRender }}
-        pagination={false}
-      />
+      <Table rowKey='_id' columns={tenantColumns} dataSource={tenants} bordered={true} expandable={{ expandedRowRender }} pagination={false} />
 
       <Singleton
         title='菜单'

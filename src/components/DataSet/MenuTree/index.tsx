@@ -20,10 +20,10 @@ const MenuTree = (props: Props) => {
 
     // 生成树
     const results: TreeDataType[] = menuTrees.map((menuTree) => {
-      const tenant = tenants.find((tenant) => tenant._id === menuTree.tenant)
+      const tenant = tenants.find((tenant) => tenant.code === menuTree.tenantCode)
 
       return {
-        _id: menuTree.tenant,
+        tenantCode: menuTree.tenantCode,
         children: menuTree.nodes,
         description: tenant?.description
       }
@@ -51,7 +51,7 @@ const MenuTree = (props: Props) => {
     <Tree
       fieldNames={{
         title: 'description',
-        key: '_id'
+        key: 'code'
       }}
       treeData={treeData as []}
       checkedKeys={checkedKeys}

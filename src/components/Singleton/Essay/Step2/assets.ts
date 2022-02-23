@@ -1,13 +1,13 @@
 // react
 import type { CSSProperties } from 'react'
 // project
-import type { Blog } from '../../../../typings/blog'
+import type { Essay } from '../../../../typings/essay'
 
 export interface Model {
   content: string
 }
 
 export interface Props {
-  blog: Blog
+  essay: Essay
   style?: CSSProperties | undefined
 }

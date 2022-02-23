@@ -1,7 +1,9 @@
+import type { MenuTreeNode } from '../../../typings/menu'
+
 export interface TreeDataType {
-  _id: string
+  tenantCode: string
   description?: string | null
-  children?: TreeDataType[] | null
+  children?: MenuTreeNode[] | null
 }
 
 export interface Props {
