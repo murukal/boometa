@@ -15,16 +15,17 @@ import { create, update } from '../../../apis/menu'
 import { responseNotification } from '../../../utils/notification'
 import IconSelector from '../../IconSelector'
 import { getInitialSingleton } from './assets'
-import { getDictionaryEnumsByDictionaryCode } from '../../../apis/dictionaryEnum'
 import { DICTIONARY_CODE_PERMISSION_KEY } from '../Dictionary/assets'
 import { SingletonProps } from '../assets'
+import { getDictionary } from '../../../apis/dictionary'
+import { getDictionaryEnums } from '../../../apis/dictionary-enum'
 
 const Menu = forwardRef<FormInstance, SingletonProps<MenuTreeNode, ExtraProps>>((props, ref) => {
   const singleton = getInitialSingleton()
 
   const [name, setName] = useState(singleton.name)
-  const [sort, setSort] = useState(singleton.sort)
-  const [componentPath, setComponentPath] = useState(singleton.componentPath)
+  const [sortBy, setSortBy] = useState(singleton.sortBy)
+  const [component, setComponent] = useState(singleton.component)
   const [icon, setIcon] = useState(singleton.icon)
   const [to, setTo] = useState(singleton.to)
   const [permissionKeys, setPermissionKeys] = useState(singleton.permissionKeys)
@@ -33,21 +34,27 @@ const Menu = forwardRef<FormInstance, SingletonProps<MenuTreeNode, ExtraProps>>(
 
   useEffect(() => {
     setName(props.singleton.name)
-    setSort(props.singleton.sort)
-    setComponentPath(props.singleton.componentPath)
+    setSortBy(props.singleton.sortBy)
+    setComponent(props.singleton.component)
     setIcon(props.singleton.icon)
     setTo(props.singleton.to)
     setPermissionKeys(props.singleton.permissionKeys)
   }, [props.singleton])
 
   useEffect(() => {
-    getDictionaryEnumsByDictionaryCode(DICTIONARY_CODE_PERMISSION_KEY).then((res) => {
-      setPermissionKeyEnums(
-        (res.data || []).map((dictionaryEnum) => ({
-          label: dictionaryEnum.description,
-          value: dictionaryEnum.code
-        }))
-      )
+    /** 查询字典对象 -> 利用字典对象id 查询字典枚举 -> 放入state */
+    getDictionary(DICTIONARY_CODE_PERMISSION_KEY).then(({ data: dictionary }) => {
+      dictionary &&
+        getDictionaryEnums({
+          belongTo: dictionary._id
+        }).then(({ data }) => {
+          setPermissionKeyEnums(
+            (data?.docs || []).map((dictionaryEnum) => ({
+              label: dictionaryEnum.description,
+              value: dictionaryEnum.code
+            }))
+          )
+        })
     })
   }, [])
 
@@ -70,8 +77,8 @@ const Menu = forwardRef<FormInstance, SingletonProps<MenuTreeNode, ExtraProps>>(
   }
 
   /** 排序码变更 */
-  const onSortChange = (value: number) => {
-    setSort(value)
+  const onSortByChange = (value: number) => {
+    setSortBy(value)
   }
 
   /** 菜单路由发生变更 */
@@ -80,8 +87,8 @@ const Menu = forwardRef<FormInstance, SingletonProps<MenuTreeNode, ExtraProps>>(
   }
 
   /** 菜单组件路径变更 */
-  const onComponentPathChange = (value: string) => {
-    setComponentPath(value)
+  const onComponentChange = (value: string) => {
+    setComponent(value)
   }
 
   /** 图标发生变更 */
@@ -98,9 +105,9 @@ const Menu = forwardRef<FormInstance, SingletonProps<MenuTreeNode, ExtraProps>>(
   const onSubmit = async () => {
     const menu: UpdateMenu = {
       name,
-      componentPath,
+      component,
       to,
-      sort,
+      sortBy,
       parent: props.extraProps.parentId,
       icon,
       permissionKeys
@@ -129,11 +136,11 @@ const Menu = forwardRef<FormInstance, SingletonProps<MenuTreeNode, ExtraProps>>(
       </Form.Item>
 
       <Form.Item label='菜单排序码'>
-        <InputNumber className='w-full' onChange={onSortChange} value={sort} />
+        <InputNumber className='w-full' onChange={onSortByChange} value={sortBy} />
       </Form.Item>
 
       <Form.Item label='菜单组件路径'>
-        <Select onChange={onComponentPathChange} options={componentPaths} value={componentPath} />
+        <Select onChange={onComponentChange} options={componentPaths} value={component} />
       </Form.Item>
 
       <Form.Item label='菜单路由'>

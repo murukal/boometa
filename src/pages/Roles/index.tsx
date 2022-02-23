@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react'
 // antd
 import { Card, Table } from 'antd'
 // project
-import type { Role as RoleType } from '../../typings/role'
-import type { AuthType } from '../../components/Roles4Auth/assets'
 import { getTableRowHandler, useTable } from '../../utils/table'
 import { getColumns } from './assets'
 import { getRoles, remove } from '../../apis/role'
@@ -14,6 +12,8 @@ import { getInitialSingleton } from '../../components/Singleton/Role/assets'
 import Toolbar from '../../components/Toolbar'
 import Roles4Auth from '../../components/Roles4Auth'
 import { responseNotification } from '../../utils/notification'
+import type { Role as RoleType } from '../../typings/role'
+import type { AuthType } from '../../components/Roles4Auth/assets'
 
 const Roles = () => {
   const [role, setRole] = useState(getInitialSingleton())
@@ -119,25 +119,10 @@ const Roles = () => {
           loading={isLoading}
         />
 
-        <Singleton
-          title='角色'
-          isOpened={isOpened}
-          onClose={onClose}
-          onSubmitted={onSubmitted}
-          singleton={role}
-          singletonComponent={Role}
-        />
+        <Singleton title='角色' isOpened={isOpened} onClose={onClose} onSubmitted={onSubmitted} singleton={role} singletonComponent={Role} />
       </Card>
 
-      {isShow && (
-        <Roles4Auth
-          className='w-1/2 overflow-auto'
-          roleId={role._id}
-          title={role.name}
-          actived={actived}
-          onTabChange={onTabChange}
-        />
-      )}
+      {isShow && <Roles4Auth className='w-1/2 overflow-auto' roleId={role._id} title={role.name} actived={actived} onTabChange={onTabChange} />}
     </div>
   )
 }

@@ -33,12 +33,7 @@ const Essay = () => {
     }
 
     // 获取标签
-    const tagsRes = await getTags({
-      pagination: {
-        pagination: false
-      }
-    })
-    setTags(tagsRes.data?.docs || [])
+    setTags((await getTags()).data?.docs || [])
   }
 
   useEffect(() => {

@@ -1,10 +1,10 @@
 export interface Menu {
   _id: string
   name: string
-  sort: number
+  sortBy: number
   icon: string
   to: string
-  componentPath: string
+  component: string
   parent?: Menu | string
   tenant: string
   permissionKeys?: Array<string>

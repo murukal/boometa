@@ -24,7 +24,7 @@ const Router = () => {
         menu.to &&
           total.push({
             path: menu.to,
-            element: Loadable(menu.componentPath || '')
+            element: Loadable(menu.component || '')
           })
 
         return total

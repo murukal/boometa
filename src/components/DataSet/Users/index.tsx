@@ -40,7 +40,18 @@ const Users = (props: Props) => {
     onFetch()
   }, [props.ids, props.excludeIds])
 
-  return <Table rowSelection={props.rowSelection} rowKey='_id' columns={columns} dataSource={users} bordered={true} pagination={pagination} onChange={onTableChange} loading={isLoading} />
+  return (
+    <Table
+      rowSelection={props.rowSelection}
+      rowKey='_id'
+      columns={columns}
+      dataSource={users}
+      bordered={true}
+      pagination={pagination}
+      onChange={onTableChange}
+      loading={isLoading}
+    />
+  )
 }
 
 export default Users

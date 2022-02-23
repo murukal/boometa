@@ -12,9 +12,8 @@ const getInitialState = (): TenantState => ({
   // 租户信息
   _id: '',
   code: 'BOOMETA',
-  description: '',
+  name: '',
   publicKey: '',
-  privateKey: '',
   createdAt: '',
   updatedAt: '',
 

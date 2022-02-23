@@ -15,8 +15,8 @@ export const getColumns = <T = Tenant>(columns?: ColumnsType<T>): ColumnsType<T>
     width: 100
   },
   {
-    title: '租户描述',
-    dataIndex: 'description',
+    title: '租户名称',
+    dataIndex: 'name',
     width: 100
   },
   ...(columns || [])

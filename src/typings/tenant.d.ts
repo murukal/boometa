@@ -3,9 +3,8 @@ export type TenantCode = string
 export interface Tenant {
   _id: string
   code: TenantCode
-  description: string
+  name: string
   publicKey: string
-  privateKey?: string
   createdAt?: string
   updatedAt?: string
 }

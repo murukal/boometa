@@ -47,7 +47,6 @@ const SiderMenu = () => {
     // 调用
     mapRoute(menus)
 
-    // 调用
     return {
       defaultSelectedKeys,
       defaultOpenedKeys
@@ -68,7 +67,7 @@ const SiderMenu = () => {
 
           return !menu.children ? (
             <Item key={menu._id} icon={Icon}>
-              <Link to={menu.to || '/404'}>{menu.name}</Link>
+              {menu.to ? <Link to={menu.to}>{menu.name}</Link> : menu.name}
             </Item>
           ) : (
             <SubMenu key={menu._id} title={menu.name} icon={Icon}>

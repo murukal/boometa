@@ -14,12 +14,12 @@ const { Item } = Form
 const Dictionary = forwardRef<FormInstance, SingletonProps<DictionaryType>>((props, ref) => {
   const initialDictionary = getInitialSingleton()
   const [description, setDescription] = useState(initialDictionary.description)
-  const [sort, setSort] = useState(initialDictionary.sort)
+  const [sortBy, setSortBy] = useState(initialDictionary.sortBy)
   const [code, setCode] = useState(initialDictionary.code)
 
   useEffect(() => {
     setDescription(props.singleton.description)
-    setSort(props.singleton.sort)
+    setSortBy(props.singleton.sortBy)
     setCode(props.singleton.code)
   }, [props.singleton])
 
@@ -27,18 +27,18 @@ const Dictionary = forwardRef<FormInstance, SingletonProps<DictionaryType>>((pro
 
   const onDescriptionChange = (e: ChangeEvent<HTMLInputElement>) => setDescription(e.target.value)
 
-  const onSortChange = (value: number) => setSort(value)
+  const onSortByChange = (value: number) => setSortBy(value)
 
   const onSubmit = async () => {
     const params = {
       code,
-      sort,
+      sortBy,
       description
     }
 
     const handlers = {
       create: () => create(params),
-      update: () => update(props.singleton._id as string, params)
+      update: () => update(props.singleton._id, params)
     }
 
     // 表单提交
@@ -59,7 +59,7 @@ const Dictionary = forwardRef<FormInstance, SingletonProps<DictionaryType>>((pro
       </Item>
 
       <Item label='排序码'>
-        <InputNumber value={sort} onChange={onSortChange} />
+        <InputNumber value={sortBy} onChange={onSortByChange} />
       </Item>
     </Form>
   )

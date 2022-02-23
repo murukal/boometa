@@ -3,30 +3,30 @@ import { forwardRef, useEffect, useState, ChangeEvent } from 'react'
 // antd
 import { Col, Form, FormInstance, Input, Row } from 'antd'
 // project
-import type { SingletonProps } from '../assets'
-import type { Tenant as TenantType } from '../../../typings/tenant'
 import { create, update } from '../../../apis/tenant'
 import { responseNotification } from '../../../utils/notification'
 import { getInitialSingleton } from './assets'
+import type { SingletonProps } from '../assets'
+import type { Tenant as TenantType } from '../../../typings/tenant'
 
 const Tenant = forwardRef<FormInstance, SingletonProps<TenantType>>((props, ref) => {
   const singleton = getInitialSingleton()
   const [code, setCode] = useState(singleton.code)
-  const [description, setDescription] = useState(singleton.description)
+  const [name, setName] = useState(singleton.name)
 
   useEffect(() => {
     setCode(props.singleton.code)
-    setDescription(props.singleton.description)
+    setName(props.singleton.name)
   }, [props.singleton])
 
   const onSubmit = async () => {
     const handlers = {
       create: () =>
         create({
-          description,
+          name,
           code
         }),
-      update: () => update(props.singleton._id as string, { description })
+      update: () => update(props.singleton._id, { name })
     }
 
     // 表单提交
@@ -36,8 +36,8 @@ const Tenant = forwardRef<FormInstance, SingletonProps<TenantType>>((props, ref)
     !res.code && props.onSubmitted && props.onSubmitted()
   }
 
-  const onDescriptionChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setDescription(e.target.value)
+  const onNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value)
   }
 
   const onCodeChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -49,15 +49,15 @@ const Tenant = forwardRef<FormInstance, SingletonProps<TenantType>>((props, ref)
       <Row>
         <Col span={24}>
           <Form.Item label='租户代码'>
-            <Input disabled={!!props.singleton._id} value={code} onChange={onCodeChange} />
+            <Input value={code} onChange={onCodeChange} />
           </Form.Item>
         </Col>
       </Row>
 
       <Row>
         <Col span={24}>
-          <Form.Item label='租户描述'>
-            <Input value={description} onChange={onDescriptionChange} />
+          <Form.Item label='租户名称'>
+            <Input value={name} onChange={onNameChange} />
           </Form.Item>
         </Col>
       </Row>

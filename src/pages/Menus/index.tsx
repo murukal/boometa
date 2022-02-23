@@ -3,8 +3,6 @@ import { useState, useEffect } from 'react'
 // antd
 import { Button, Divider, Space, Table, Popconfirm, Card } from 'antd'
 // project
-import type { MenuTreeNode, MenuTree } from '../../typings/menu'
-import type { Tenant } from '../../typings/tenant'
 import { getColumns as getMenuColumns } from './assets'
 import { getColumns as getTenantColumns } from '../Tenants/assets'
 import Menu from '../../components/Singleton/Menu'
@@ -13,6 +11,8 @@ import { getMenuTrees, remove } from '../../apis/menu'
 import { responseNotification } from '../../utils/notification'
 import Singleton from '../../components/Singleton'
 import { getInitialSingleton } from '../../components/Singleton/Menu/assets'
+import type { MenuTreeNode, MenuTree } from '../../typings/menu'
+import type { Tenant } from '../../typings/tenant'
 
 const Menus = () => {
   const [isOpened, setIsOpened] = useState(false)
@@ -72,12 +72,12 @@ const Menus = () => {
 
   const onFetch = async () => {
     // 获取租户的数据
-    const tenantRes = await getTenants()
-    setTenants(tenantRes.data || [])
-
+    const tenants = (await getTenants()).data?.docs || []
     // 获取租户的菜单树
-    const menuTreesRes = await getMenuTrees(tenantRes.data?.map((tenant) => tenant._id) || [])
-    setMenuTrees(menuTreesRes.data || [])
+    const menuTrees = (await getMenuTrees(tenants.map((tenant) => tenant.code))).data || []
+
+    setTenants(tenants)
+    setMenuTrees(menuTrees)
   }
 
   useEffect(() => {

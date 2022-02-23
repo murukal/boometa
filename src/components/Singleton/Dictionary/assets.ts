@@ -3,7 +3,7 @@ import { Dictionary } from '../../../typings/dictionary'
 export const getInitialSingleton = (): Dictionary => ({
   description: '',
   _id: '',
-  sort: 0,
+  sortBy: 0,
   code: ''
 })
 

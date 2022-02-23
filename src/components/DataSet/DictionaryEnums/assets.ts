@@ -1,7 +1,7 @@
 // antd
 import { ColumnsType } from 'antd/lib/table'
 // project
-import { DictionaryEnum } from '../../../typings/dictionaryEnum'
+import type { DictionaryEnum } from '../../../typings/dictionary-enum'
 
 export interface Props {
   dictionaryId: string
@@ -25,7 +25,7 @@ export const getColumns = <T = DictionaryEnum>(columns?: ColumnsType<T>): Column
   },
   {
     title: '排序码',
-    dataIndex: 'sort',
+    dataIndex: 'sortBy',
     width: 100
   },
   ...(columns || [])

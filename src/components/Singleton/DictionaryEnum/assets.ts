@@ -1,4 +1,5 @@
-import { DictionaryEnum } from '../../../typings/dictionaryEnum'
+// project
+import type { DictionaryEnum } from '../../../typings/dictionary-enum'
 
 export interface ExtraProps {
   dictionaryId: string
@@ -7,7 +8,7 @@ export interface ExtraProps {
 export const getInitialSingleton = (): DictionaryEnum => ({
   code: '',
   description: '',
-  sort: 0,
+  sortBy: 0,
   _id: '',
   belongTo: ''
 })

@@ -1,5 +1,6 @@
 // project
 import arq from '.'
+import type { PaginateResult, QueryOptions } from '../typings/api'
 import type { Login, Register, User } from '../typings/user'
 
 const url = '/api/authentication'
@@ -22,7 +23,7 @@ export const getUserProfile = () => arq.get<User>(url)
 /**
  * 查询多个用户
  */
-export const getUsers = (params: any) =>
-  arq.get<User[]>(url, {
+export const getUsers = (params: QueryOptions) =>
+  arq.get<PaginateResult<User>>(`${url}/users`, {
     params
   })

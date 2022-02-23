@@ -13,10 +13,8 @@ const MenuTree = (props: Props) => {
 
   const onFetch = async () => {
     // 请求租户数据
-    const tenantsRes = await getTenants()
-    const tenants = tenantsRes.data || []
-    const menuTreesRes = await getMenuTrees(tenants.map((tenant) => tenant._id))
-    const menuTrees = menuTreesRes.data || []
+    const tenants = (await getTenants()).data?.docs || []
+    const menuTrees = (await getMenuTrees(tenants.map((tenant) => tenant.code))).data || []
 
     // 生成树
     const results: TreeDataType[] = menuTrees.map((menuTree) => {
@@ -24,8 +22,8 @@ const MenuTree = (props: Props) => {
 
       return {
         tenantCode: menuTree.tenantCode,
-        children: menuTree.nodes,
-        description: tenant?.description
+        tenantName: tenant?.name,
+        children: menuTree.nodes
       }
     })
 

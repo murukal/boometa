@@ -3,7 +3,7 @@ export interface DictionaryEnum {
   belongTo: string
   code: string
   description: string
-  sort: number
+  sortBy: number
 }
 
 export interface CreateDictionaryEnum extends Omit<DictionaryEnum, '_id'> {}

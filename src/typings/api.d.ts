@@ -2,9 +2,14 @@
 import type { TablePaginationConfig } from 'antd'
 import type { SorterResult, FilterValue } from 'antd/lib/table/interface'
 // npm
-import type { PaginateOptions, PaginateResult, QueryOptions as DBQueryOptions, FilterQuery } from 'mongoose'
+import type { PaginateResult, QueryOptions as DBQueryOptions, FilterQuery } from 'mongoose'
 
-export type { PaginateOptions, PaginateResult }
+export type { PaginateResult }
+
+export interface PaginateOptions {
+  page?: number
+  limit?: number
+}
 
 export interface ApiResponse<T = any> {
   code: number

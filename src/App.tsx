@@ -20,11 +20,11 @@ const App = () => {
     // 获取租户信息
     dispatch(await getTenant(tenantCode))
 
-    // 获取菜单数据
-    dispatch(await getMenus(tenantCode))
-
     // 获取用户数据
     dispatch(await authenticate())
+
+    // 获取菜单数据
+    dispatch(await getMenus(tenantCode))
   }
 
   // 初次渲染

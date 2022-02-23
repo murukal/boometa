@@ -1,10 +1,11 @@
-import { DictionaryEnum } from './dictionaryEnum'
+// project
+import type { DictionaryEnum } from './dictionary-enum'
 
 export interface Dictionary {
   _id: string
   code: string
   description: string
-  sort: number
+  sortBy: number
   enums?: DictionaryEnum[]
 }
 

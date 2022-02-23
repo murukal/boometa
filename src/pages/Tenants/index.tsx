@@ -46,8 +46,7 @@ const Tenants = () => {
 
   // 数据加载方法
   const onFetch = async () => {
-    const res = await getTenants()
-    setTenants(res.data || [])
+    setTenants((await getTenants()).data?.docs || [])
   }
 
   // 请求数据
@@ -89,14 +88,7 @@ const Tenants = () => {
 
       <Table rowKey='_id' columns={columns} dataSource={tenants} bordered={true} pagination={false} />
 
-      <Singleton
-        title='客户端'
-        isOpened={isOpened}
-        onClose={onClose}
-        singleton={tenant}
-        singletonComponent={Tenant}
-        onSubmitted={onSubmitted}
-      />
+      <Singleton title='客户端' isOpened={isOpened} onClose={onClose} singleton={tenant} singletonComponent={Tenant} onSubmitted={onSubmitted} />
     </Card>
   )
 }

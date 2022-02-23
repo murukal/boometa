@@ -3,16 +3,16 @@ import { useEffect, useState } from 'react'
 // antd
 import { Table } from 'antd'
 // project
-import type { DictionaryEnum as DictionaryEnumType } from '../../../typings/dictionaryEnum'
-import type { QueryOptions } from '../../../typings/api'
 import { getColumns, Props } from './assets'
 import Singleton from '../../Singleton'
 import DictionaryEnum from '../../Singleton/DictionaryEnum'
-import { getDictionaryEnums, remove } from '../../../apis/dictionaryEnum'
+import { getDictionaryEnums, remove } from '../../../apis/dictionary-enum'
 import { getTableRowHandler, useTable } from '../../../utils/table'
 import { responseNotification } from '../../../utils/notification'
 import Toolbar from '../../Toolbar'
 import { getInitialSingleton } from '../../Singleton/DictionaryEnum/assets'
+import type { DictionaryEnum as DictionaryEnumType } from '../../../typings/dictionary-enum'
+import type { QueryOptions } from '../../../typings/api'
 
 const DictionaryEnums = (props: Props) => {
   const [isOpened, setIsOpened] = useState(false)

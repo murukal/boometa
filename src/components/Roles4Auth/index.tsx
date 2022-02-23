@@ -5,14 +5,14 @@ import { useCallback, useEffect, useState } from 'react'
 import type { CardTabListType } from 'antd/lib/card'
 import { Button, Card, Modal } from 'antd'
 //project
-import type { Props } from './assets'
-import type { Role } from '../../typings/role'
 import Users from '../DataSet/Users'
 import Toolbar from '../Toolbar'
 import { getRoleById, update } from '../../apis/role'
 import { responseNotification } from '../../utils/notification'
 import { getInitialSingleton } from '../Singleton/Role/assets'
 import MenuTree from '../DataSet/MenuTree'
+import type { Props } from './assets'
+import type { Role } from '../../typings/role'
 
 const Roles4Auth = (props: Props) => {
   const tabs: CardTabListType[] = [
@@ -106,12 +106,26 @@ const Roles4Auth = (props: Props) => {
   }
 
   return (
-    <Card className={props.className} tabList={tabs} activeTabKey={props.actived} onTabChange={props.onTabChange} title={props.title} tabBarExtraContent={tabBarExtraContent}>
+    <Card
+      className={props.className}
+      tabList={tabs}
+      activeTabKey={props.actived}
+      onTabChange={props.onTabChange}
+      title={props.title}
+      tabBarExtraContent={tabBarExtraContent}
+    >
       {props.actived === 'user' && (
         <>
           <Toolbar onAddUser={() => setIsUserSelectorOpened(true)} />
           <Users ids={role.users} />
-          <Modal visible={isUserSelectorOpened} maskClosable={false} closable={false} onCancel={() => setIsUserSelectorOpened(false)} onOk={onUserSubmit} confirmLoading={isSubmitterLoading}>
+          <Modal
+            visible={isUserSelectorOpened}
+            maskClosable={false}
+            closable={false}
+            onCancel={() => setIsUserSelectorOpened(false)}
+            onOk={onUserSubmit}
+            confirmLoading={isSubmitterLoading}
+          >
             <Users
               excludeIds={role.users}
               rowSelection={{

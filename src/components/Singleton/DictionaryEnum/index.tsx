@@ -5,8 +5,8 @@ import { forwardRef, useEffect, useState } from 'react'
 import { Form, FormInstance, Input, InputNumber } from 'antd'
 // project
 import type { ExtraProps } from './assets'
-import { CreateDictionaryEnum, DictionaryEnum as DictionaryEnumType } from '../../../typings/dictionaryEnum'
-import { create, update } from '../../../apis/dictionaryEnum'
+import { CreateDictionaryEnum, DictionaryEnum as DictionaryEnumType } from '../../../typings/dictionary-enum'
+import { create, update } from '../../../apis/dictionary-enum'
 import { responseNotification } from '../../../utils/notification'
 import { getInitialSingleton } from './assets'
 import { SingletonProps } from '../assets'
@@ -17,12 +17,12 @@ const DictionaryEnum = forwardRef<FormInstance, SingletonProps<DictionaryEnumTyp
   const initialDictionaryEnum = getInitialSingleton()
   const [description, setDescription] = useState(initialDictionaryEnum.description)
   const [code, setCode] = useState(initialDictionaryEnum.code)
-  const [sort, setSort] = useState(initialDictionaryEnum.sort)
+  const [sortBy, setSortBy] = useState(initialDictionaryEnum.sortBy)
 
   useEffect(() => {
     setDescription(props.singleton.description)
     setCode(props.singleton.code)
-    setSort(props.singleton.sort)
+    setSortBy(props.singleton.sortBy)
   }, [props.singleton])
 
   const onDescriptionChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +37,7 @@ const DictionaryEnum = forwardRef<FormInstance, SingletonProps<DictionaryEnumTyp
     const params: CreateDictionaryEnum = {
       description,
       code,
-      sort,
+      sortBy,
       belongTo: props.extraProps.dictionaryId
     }
 
@@ -64,7 +64,7 @@ const DictionaryEnum = forwardRef<FormInstance, SingletonProps<DictionaryEnumTyp
         </Item>
 
         <Item label='排序码'>
-          <InputNumber value={sort} onChange={setSort} />
+          <InputNumber value={sortBy} onChange={setSortBy} />
         </Item>
       </Form>
     </>

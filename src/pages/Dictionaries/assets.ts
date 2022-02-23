@@ -21,7 +21,7 @@ export const getColumns = <T = Dictionary>(columns?: ColumnsType<T>): ColumnsTyp
   },
   {
     title: '排序码',
-    dataIndex: 'sort',
+    dataIndex: 'sortBy',
     width: 100
   },
   ...(columns || [])

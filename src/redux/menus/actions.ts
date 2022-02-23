@@ -1,4 +1,4 @@
-import { getMenuTree } from '../../apis/menu'
+import { getMenuTrees } from '../../apis/menu'
 import type { MenuTreeNode } from '../../typings/menu'
 
 export type ActionType = 'GET_MENUS'
@@ -9,10 +9,10 @@ export interface Action {
 }
 
 export const getMenus = async (tenantCode: string): Promise<Action> => {
-  const res = await getMenuTree(tenantCode)
+  const res = await getMenuTrees([tenantCode])
 
   return {
     type: 'GET_MENUS',
-    data: res.data?.nodes || []
+    data: res.data?.at(0)?.nodes || []
   }
 }

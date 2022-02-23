@@ -1,11 +1,12 @@
 // project
-import type { Tenant, CreateTenant, UpdateTenant } from '../typings/tenant'
 import arq from '.'
+import type { PaginateResult } from '../typings/api'
+import type { Tenant, CreateTenant, UpdateTenant } from '../typings/tenant'
 
 const url = `/api/tenant`
 
 /** 获取租户清单 */
-export const getTenants = () => arq.get<Tenant[]>(url)
+export const getTenants = () => arq.get<PaginateResult<Tenant>>(url)
 
 /** 获取租户信息 */
 export const getTenant = (code: string) => arq.get<Tenant>(`${url}/${code}`)

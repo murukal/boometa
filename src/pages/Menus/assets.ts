@@ -11,12 +11,12 @@ import { MenuTreeNode } from '../../typings/menu'
 export const getColumns = <T = MenuTreeNode>(columns?: ColumnsType<T>): ColumnsType<T> => [
   {
     title: '菜单描述',
-    dataIndex: 'description',
+    dataIndex: 'name',
     width: 100
   },
   {
     title: '排序码',
-    dataIndex: 'sort',
+    dataIndex: 'sortBy',
     width: 100
   },
   ...(columns || [])
