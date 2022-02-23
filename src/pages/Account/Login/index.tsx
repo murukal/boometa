@@ -5,7 +5,13 @@ import { useDispatch, useSelector } from 'react-redux'
 // antd
 import { Button, Space, Tabs } from 'antd'
 import { LoginForm, ProFormCheckbox, ProFormText } from '@ant-design/pro-form'
-import { AlipayCircleOutlined, TaobaoCircleOutlined, WeiboCircleOutlined, UserOutlined, LockOutlined } from '@ant-design/icons'
+import {
+  AlipayCircleOutlined,
+  TaobaoCircleOutlined,
+  WeiboCircleOutlined,
+  UserOutlined,
+  LockOutlined
+} from '@ant-design/icons'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 // project
 import type { LoginType } from '../../../typings/user'
@@ -95,6 +101,9 @@ const Login = () => {
   return (
     <LoginForm
       className='flex flex-col justify-center'
+      style={{
+        boxShadow: '0px 0px 40px 0px rgb(0 0 0 / 5%)'
+      }}
       title='BOOMETA'
       subTitle='这里可能有一些你感兴趣的'
       onFinish={onLogin}

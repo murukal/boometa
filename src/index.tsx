@@ -11,7 +11,7 @@ import { ConfigProvider } from 'antd'
 import App from './App'
 import store from './redux'
 import reportWebVitals from './reportWebVitals'
-import './styles/index.css'
+import './styles/index.less'
 
 ReactDOM.render(
   <Provider store={store}>

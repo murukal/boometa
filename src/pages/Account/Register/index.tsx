@@ -72,7 +72,15 @@ const Register = () => {
         valueTypeMap: {}
       }}
     >
-      <LoginForm className='flex flex-col justify-center' title='BOOMETA' subTitle='这里可能有一些你感兴趣的' onFinish={onRegister}>
+      <LoginForm
+        className='flex flex-col justify-center'
+        style={{
+          boxShadow: '0px 0px 40px 0px rgb(0 0 0 / 5%)'
+        }}
+        title='BOOMETA'
+        subTitle='这里可能有一些你感兴趣的'
+        onFinish={onRegister}
+      >
         <ProFormText
           name='username'
           fieldProps={{

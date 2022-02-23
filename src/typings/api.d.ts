@@ -1,7 +1,7 @@
 // antd
 import type { TablePaginationConfig } from 'antd'
 import type { SorterResult, FilterValue } from 'antd/lib/table/interface'
-// npm
+// third
 import type { PaginateResult, QueryOptions as DBQueryOptions, FilterQuery } from 'mongoose'
 
 export type { PaginateResult }

@@ -1,4 +1,4 @@
-// npm
+// third
 import { stringify } from 'qs'
 // project
 import type { PaginateResult, QueryOptions } from '../typings/api'

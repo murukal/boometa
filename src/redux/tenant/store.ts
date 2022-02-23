@@ -1,4 +1,4 @@
-// npm
+// third
 import JSEncrypt from 'jsencrypt'
 // project
 import { Tenant } from '../../typings/tenant'
