@@ -12,11 +12,11 @@ import { responseNotification } from '../../utils/notification'
 import Toolbar from '../../components/Toolbar'
 import Singleton from '../../components/Singleton'
 import { getInitialSingleton } from '../../components/Singleton/Tenant/assets'
-import { getTableRowHandler } from '../../utils/table'
+import { getTableRowHandler, useTable } from '../../utils/table'
+import { QueryOptions } from '../../typings/api'
 
 const Tenants = () => {
   const [isOpened, setIsOpened] = useState(false)
-  const [tenants, setTenants] = useState<TenantType[]>([])
   const [tenant, setTenant] = useState<TenantType>(getInitialSingleton())
 
   const columns = getColumns([
@@ -44,10 +44,12 @@ const Tenants = () => {
     }
   ])
 
-  // 数据加载方法
-  const onFetch = async () => {
-    setTenants((await getTenants()).data?.docs || [])
-  }
+  // table hook
+  // 取消分页
+  const {
+    handlers: { onFetch },
+    props: { results: tenants, isLoading }
+  } = useTable<TenantType>(({ pagination, ...query }: QueryOptions) => getTenants(query))
 
   // 请求数据
   useEffect(() => {
@@ -86,7 +88,7 @@ const Tenants = () => {
     <Card>
       <Toolbar onAdd={onOpen()} onDelete={() => {}} />
 
-      <Table rowKey='_id' columns={columns} dataSource={tenants} bordered={true} pagination={false} />
+      <Table rowKey='_id' loading={isLoading} columns={columns} dataSource={tenants} bordered={true} pagination={false} />
 
       <Singleton title='客户端' isOpened={isOpened} onClose={onClose} singleton={tenant} singletonComponent={Tenant} onSubmitted={onSubmitted} />
     </Card>

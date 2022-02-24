@@ -21,6 +21,7 @@ const Menus = () => {
   const [parentId, setParentId] = useState<string>()
   const [menuTrees, setMenuTrees] = useState<MenuTree[]>([])
   const [menuTreeNode, setMenuTreeNode] = useState<MenuTreeNode>(getInitialSingleton())
+  const [isLoading, setIsLoading] = useState(true)
 
   const tenantColumns = getTenantColumns([
     {
@@ -70,6 +71,7 @@ const Menus = () => {
     return <Table rowKey='_id' columns={menuColumns} dataSource={menus} pagination={false} bordered={true} />
   }
 
+  /** 请求菜单数据 */
   const onFetch = async () => {
     // 获取租户的数据
     const tenants = (await getTenants()).data?.docs || []
@@ -78,22 +80,20 @@ const Menus = () => {
 
     setTenants(tenants)
     setMenuTrees(menuTrees)
+    setIsLoading(false)
   }
 
+  /** 渲染 */
   useEffect(() => {
     onFetch()
   }, [])
 
-  /**
-   * 抽屉关闭事件
-   */
+  /** 抽屉关闭事件 */
   const onClose = () => {
     setIsOpened(false)
   }
 
-  /**
-   * 抽屉打开事件
-   */
+  /** 抽屉打开事件 */
   const onOpen =
     (tenantId: string, parentId?: string, menuTreeNode: MenuTreeNode = getInitialSingleton()) =>
     () => {
@@ -104,17 +104,13 @@ const Menus = () => {
       setIsOpened(true)
     }
 
-  /**
-   * 抽屉提交完成后的回调事件
-   */
+  /** 抽屉提交完成后的回调事件 */
   const onSubmitted = () => {
     onClose()
     onFetch()
   }
 
-  /**
-   * 删除菜单事件
-   */
+  /** 删除菜单事件 */
   const onDelete = (_id: string) => {
     return async () => {
       responseNotification(await remove(_id))
@@ -125,7 +121,15 @@ const Menus = () => {
 
   return (
     <Card>
-      <Table rowKey='_id' columns={tenantColumns} dataSource={tenants} bordered={true} expandable={{ expandedRowRender }} pagination={false} />
+      <Table
+        rowKey='_id'
+        columns={tenantColumns}
+        dataSource={tenants}
+        bordered={true}
+        expandable={{ expandedRowRender }}
+        pagination={false}
+        loading={isLoading}
+      />
 
       <Singleton
         title='菜单'

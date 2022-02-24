@@ -7,11 +7,11 @@ import { Form, Input, Upload } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { useForm } from 'antd/lib/form/Form'
 // project
-import type { Tag as TagType } from '../../../typings/tag'
 import { responseNotification } from '../../../utils/notification'
 import { create, update } from '../../../apis/tag'
 import { SingletonProps } from '../assets'
-import { getUploadParam } from '../../../utils/upload'
+import { customRequest, getUploadParam } from '../../../utils/upload'
+import type { Tag as TagType } from '../../../typings/tag'
 
 const { Item } = Form
 
@@ -63,14 +63,7 @@ const Tag = forwardRef<FormInstance, SingletonProps<TagType>>((props, ref) => {
 
   return (
     <>
-      <Form
-        form={form}
-        ref={ref}
-        onFinish={onSubmit}
-        labelCol={{ span: 6 }}
-        initialValues={initialValues}
-        onValuesChange={onValuesChange}
-      >
+      <Form form={form} ref={ref} onFinish={onSubmit} labelCol={{ span: 6 }} initialValues={initialValues} onValuesChange={onValuesChange}>
         <Item
           label='标签名称'
           name='name'
@@ -95,12 +88,7 @@ const Tag = forwardRef<FormInstance, SingletonProps<TagType>>((props, ref) => {
             }
           ]}
         >
-          <Upload
-            listType='picture-card'
-            action='http://admin.r2boom.com/api/object-storage/cos'
-            fileList={model.uploadParam?.fileList}
-            maxCount={1}
-          >
+          <Upload listType='picture-card' fileList={model.uploadParam?.fileList} maxCount={1} customRequest={customRequest}>
             <PlusOutlined />
           </Upload>
         </Item>

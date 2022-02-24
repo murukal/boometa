@@ -29,7 +29,7 @@ export const getInitialPagination = (): TablePaginationConfig => ({
   pageSizeOptions: ['1', '10', '20', '30']
 })
 
-export type FetchHandler<T> = (queryParams?: QueryParams<T>) => Promise<void> | void
+export type FetchHandler<T> = (queryParams?: QueryParams<T>) => Promise<void>
 
 /**
  * 获取页面的fetch事件
@@ -42,7 +42,7 @@ const getFetchHandler =
   async (queryParams) => {
     // 删除条目后，可能导致分页查询出现异常
     // 调用一个可信任的函数处理
-    const { response: res, pagination } = await uTrustFetchHandler(fetchAPI, queryParams)
+    const { response: res, pagination } = await enhancedFetchHandler(fetchAPI, queryParams)
 
     // 分页查询的结果放在docs中
     // 非分页查询的结果直接放在data中
@@ -70,11 +70,7 @@ const getFetchHandler =
  */
 const getTableChangeHandler =
   <T>(fetchHandler: FetchHandler<T>) =>
-  (
-    pagination: TablePaginationConfig,
-    filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<T> | SorterResult<T>[]
-  ) => {
+  (pagination: TablePaginationConfig, filters: Record<string, FilterValue | null>, sorter: SorterResult<T> | SorterResult<T>[]) => {
     fetchHandler({
       // 分页参数
       pagination,
@@ -145,7 +141,7 @@ export const useTable = <T>(fetchAPI: FetchAPI<T>) => {
   const [pagination, setPagination] = useState(getInitialPagination())
   const [filters, setFilters] = useState<Record<string, FilterValue>>()
   const [sorter, setSorter] = useState<SorterResult<T> | SorterResult<T>[]>()
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   const onFetch = useCallback(
     async (
@@ -169,7 +165,7 @@ export const useTable = <T>(fetchAPI: FetchAPI<T>) => {
         pagination: queryParams.pagination,
         filters: queryParams.filters,
         sorter: queryParams.sorter
-      })
+      }).catch(() => false)
 
       // 表格的加载状态 --结束加载
       setIsLoading(false)
@@ -200,7 +196,7 @@ export const useTable = <T>(fetchAPI: FetchAPI<T>) => {
  * @param queryParams
  * @returns
  */
-const uTrustFetchHandler = async <T>(
+const enhancedFetchHandler = async <T>(
   fetchAPI: FetchAPI<T>,
   queryParams?: QueryParams<T>
 ): Promise<{

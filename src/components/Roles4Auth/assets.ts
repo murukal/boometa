@@ -4,6 +4,7 @@ export interface Props {
   actived?: AuthType
   onTabChange?: (actived: string) => void
   className?: string
+  onClose?: Function
 }
 
 export type AuthType = 'user' | 'menu'

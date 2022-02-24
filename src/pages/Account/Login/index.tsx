@@ -1,96 +1,55 @@
 // react
-import { ChangeEvent, CSSProperties, useState } from 'react'
+import { useState } from 'react'
 // redux
 import { useDispatch, useSelector } from 'react-redux'
+// router
+import { Link } from 'react-router-dom'
 // antd
-import { Button, Space, Tabs } from 'antd'
-import { LoginForm, ProFormCheckbox, ProFormText } from '@ant-design/pro-form'
-import {
-  AlipayCircleOutlined,
-  TaobaoCircleOutlined,
-  WeiboCircleOutlined,
-  UserOutlined,
-  LockOutlined
-} from '@ant-design/icons'
-import { CheckboxChangeEvent } from 'antd/lib/checkbox'
+import { Button, Divider, Form, Input, Typography } from 'antd'
+import { EyeTwoTone, EyeInvisibleOutlined, UserOutlined, LockOutlined } from '@ant-design/icons'
 // project
-import type { LoginType } from '../../../typings/user'
-import PhoneFormItem from '../../../components/Form/PhoneFormItem'
-import CaptchaFormItem from '../../../components/Form/CaptchaFormItem'
 import { login } from '../../../apis/account'
 import { easyNotification, responseNotification } from '../../../utils/notification'
 import { authenticate, passToken } from '../../../redux/userProfile/actions'
 import { setToken } from '../../../utils/app'
+import { toggleStyle } from '../assets'
 
-const IconStyle: CSSProperties = {
-  marginLeft: 16,
-  fontSize: 24,
-  verticalAlign: 'middle'
-}
+const { Title, Text } = Typography
+const { Item } = Form
+const { Password } = Input
 
 const Login = () => {
-  const [keyword, setKeyword] = useState('')
-  const [password, setPassword] = useState('')
-  const [phone, setPhone] = useState('')
-  const [captcha, setCaptcha] = useState('')
-  const [isAutoLogin, setIsAutoLogin] = useState(true)
-  const [loginType, setLoginType] = useState<LoginType>('account')
+  // const [isAutoLogin, setIsAutoLogin] = useState(true)
+
+  const [model, setModel] = useState({
+    keyword: '',
+    password: ''
+  })
 
   const dispatch = useDispatch()
   const tenant = useSelector((state) => state.tenant)
 
-  const onLoginTypeChange = (activeKey: string) => {
-    setLoginType(activeKey as LoginType)
-  }
-
-  const onKeywordChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setKeyword(e.target.value)
-  }
-
-  const onPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value)
-  }
-
-  const onIsAutoLoginChange = (e: CheckboxChangeEvent) => {
-    setIsAutoLogin(e.target.checked)
-  }
-
   // 执行登录
   const onLogin = async () => {
-    // 执行登录
-    // 登录方式不同，提交表单的格式也不同
-    // 账户关键字 + 密码登录
-    const handlers = {
-      account: () => {
-        // 利用公钥对密码进行加密
-        const encryptedPassword = tenant.encryptor.encrypt(password)
+    // 利用公钥对密码进行加密
+    const encryptedPassword = tenant.encryptor.encrypt(model.password)
 
-        if (!encryptedPassword) {
-          easyNotification('密码加密失败', 'error')
-          return
-        }
-
-        return login({
-          tenantCode: tenant.code,
-          keyword: keyword,
-          password: encryptedPassword
-        })
-      },
-      phone: () =>
-        login({
-          tenantCode: tenant.code,
-          keyword: keyword,
-          password
-        })
+    if (!encryptedPassword) {
+      easyNotification('密码加密失败', 'error')
+      return
     }
 
-    const res = await handlers[loginType]()
+    const res = await login({
+      ...model,
+      tenantCode: tenant.code,
+      password: encryptedPassword
+    })
 
     // 加密失败
     if (!res) return
 
     if (res.data) {
-      setToken(res.data, isAutoLogin)
+      setToken(res.data, true)
       dispatch(passToken())
       dispatch(await authenticate())
     }
@@ -98,96 +57,54 @@ const Login = () => {
     responseNotification(res)
   }
 
+  /** 表单数据变更 */
+  const onFormChange = (changedValues: any, values: any) => {
+    setModel(values)
+  }
+
   return (
-    <LoginForm
-      className='flex flex-col justify-center'
-      style={{
-        boxShadow: '0px 0px 40px 0px rgb(0 0 0 / 5%)'
-      }}
-      title='BOOMETA'
-      subTitle='这里可能有一些你感兴趣的'
-      onFinish={onLogin}
-      actions={
-        <Space>
-          <span>其他登录方式</span>
-          <AlipayCircleOutlined style={IconStyle} />
-          <TaobaoCircleOutlined style={IconStyle} />
-          <WeiboCircleOutlined style={IconStyle} />
-        </Space>
-      }
-    >
-      <Tabs activeKey={loginType} onChange={onLoginTypeChange}>
-        <Tabs.TabPane key={'account'} tab={'账号密码登录'} />
-        <Tabs.TabPane key={'phone'} tab={'手机号登录'} />
-      </Tabs>
+    <div className='flex flex-col items-center'>
+      <Title level={2}>Sign in</Title>
 
-      {loginType === 'account' && (
-        <>
-          <ProFormText
-            name='username'
-            fieldProps={{
-              size: 'large',
-              prefix: <UserOutlined />,
-              value: keyword,
-              onChange: onKeywordChange
-            }}
-            placeholder='用户名'
-            rules={[
-              {
-                required: true,
-                message: '请输入用户名!'
-              }
-            ]}
-          />
-          <ProFormText.Password
-            name='password'
-            fieldProps={{
-              size: 'large',
-              prefix: <LockOutlined />,
-              value: password,
-              onChange: onPasswordChange
-            }}
+      <Form
+        style={{
+          marginTop: 12
+        }}
+        onFinish={onLogin}
+        onValuesChange={onFormChange}
+      >
+        <Item name='keyword' rules={[{ required: true, message: '用户名/邮箱必输！' }]}>
+          <Input size='large' style={toggleStyle} prefix={<UserOutlined />} placeholder='用户名/邮箱' />
+        </Item>
+
+        <Item name='password' rules={[{ required: true, message: '密码必输！' }]}>
+          <Password
+            size='large'
+            style={toggleStyle}
             placeholder='密码'
-            rules={[
-              {
-                required: true,
-                message: '请输入密码！'
-              }
-            ]}
+            prefix={<LockOutlined />}
+            iconRender={(isPasswordVisible: boolean) => (isPasswordVisible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
           />
-        </>
-      )}
+        </Item>
 
-      {loginType === 'phone' && (
-        <>
-          <PhoneFormItem value={phone} onChange={setPhone} />
-          <CaptchaFormItem value={captcha} onChange={setCaptcha} />
-        </>
-      )}
+        <Item>
+          <Button block htmlType='submit' shape='round' size='large' type='primary'>
+            登录
+          </Button>
+        </Item>
+      </Form>
 
-      <div className='mb-5'>
-        <ProFormCheckbox
-          noStyle
-          fieldProps={{
-            checked: isAutoLogin,
-            onChange: onIsAutoLoginChange
-          }}
-        >
-          自动登录
-        </ProFormCheckbox>
+      <Divider
+        plain
+        style={{
+          marginTop: 0
+        }}
+      />
 
-        <Button
-          className='p-0'
-          size='small'
-          type='link'
-          style={{
-            float: 'right'
-          }}
-        >
-          忘记密码
-        </Button>
-      </div>
-    </LoginForm>
+      <Text>
+        没有账号，前往<Link to='/account/register'>注册</Link>
+      </Text>
+    </div>
   )
 }
 

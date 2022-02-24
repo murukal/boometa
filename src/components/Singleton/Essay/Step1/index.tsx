@@ -6,7 +6,7 @@ import { useForm } from 'antd/lib/form/Form'
 import { PlusOutlined } from '@ant-design/icons'
 import type { FormInstance } from 'antd'
 // project
-import { getUploadParam, getValueFromEvent } from '../../../../utils/upload'
+import { customRequest, getUploadParam, getValueFromEvent } from '../../../../utils/upload'
 import type { Model, Props } from './assets'
 
 const { Item } = Form
@@ -52,7 +52,7 @@ const Step1 = forwardRef<FormInstance, Props>((props, ref) => {
       </Item>
 
       <Item label='文章封面' name='fileList' valuePropName='fileList' getValueFromEvent={getValueFromEvent}>
-        <Upload action='http://admin.r2boom.com/api/object-storage/cos' listType='picture-card'>
+        <Upload listType='picture-card' customRequest={customRequest}>
           <PlusOutlined />
         </Upload>
       </Item>

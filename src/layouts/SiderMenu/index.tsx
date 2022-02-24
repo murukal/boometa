@@ -80,15 +80,9 @@ const SiderMenu = () => {
   }
 
   return (
-    <div className='h-full flex flex-col justify-between'>
-      <Menu mode='inline' theme='dark' defaultSelectedKeys={mappedMenuKeys.defaultSelectedKeys} defaultOpenKeys={mappedMenuKeys.defaultOpenedKeys}>
-        {renderMenu(menus)}
-      </Menu>
-
-      <a className='text-center text-white mb-1' href='http://ythzxfw.miit.gov.cn/index'>
-        浙ICP备2021003835号
-      </a>
-    </div>
+    <Menu mode='inline' theme='dark' defaultSelectedKeys={mappedMenuKeys.defaultSelectedKeys} defaultOpenKeys={mappedMenuKeys.defaultOpenedKeys}>
+      {renderMenu(menus)}
+    </Menu>
   )
 }
 

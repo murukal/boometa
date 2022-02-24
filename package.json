@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@ant-design/pro-form": "^1.52.6",
     "@antv/x6": "^1.29.6",
     "@craco/craco": "^6.4.3",
     "@testing-library/jest-dom": "^5.14.1",

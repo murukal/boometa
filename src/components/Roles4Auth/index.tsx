@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 // antd
 import type { CardTabListType } from 'antd/lib/card'
 import { Button, Card, Modal } from 'antd'
+import { CloseOutlined } from '@ant-design/icons/lib/icons'
 //project
 import Users from '../DataSet/Users'
 import Toolbar from '../Toolbar'
@@ -105,13 +106,23 @@ const Roles4Auth = (props: Props) => {
     setMenus(keys)
   }
 
+  /** 抬头 */
+  const title = useMemo(() => {
+    return (
+      <div className='flex justify-between'>
+        {props.title}
+        <Button shape='circle' type='link' icon={<CloseOutlined />} danger onClick={() => props.onClose && props.onClose()} />
+      </div>
+    )
+  }, [props.title, props.onClose])
+
   return (
     <Card
       className={props.className}
       tabList={tabs}
       activeTabKey={props.actived}
       onTabChange={props.onTabChange}
-      title={props.title}
+      title={title}
       tabBarExtraContent={tabBarExtraContent}
     >
       {props.actived === 'user' && (

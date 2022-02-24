@@ -1,10 +1,14 @@
 // project
 import arq from '.'
+import type { QueryOptions } from '../typings/api'
 import type { Essay, CreateEssay, UpdateEssay } from '../typings/essay'
 
 const url = '/api/essay'
 
-export const getEssays = () => arq.get(url)
+export const getEssays = (params: QueryOptions) =>
+  arq.get(url, {
+    params
+  })
 
 export const create = (data: CreateEssay) => arq.post(url, data)
 

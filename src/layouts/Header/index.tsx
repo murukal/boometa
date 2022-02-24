@@ -2,11 +2,12 @@
 import { useDispatch, useSelector } from 'react-redux'
 // antd
 import { Avatar, Dropdown, Menu } from 'antd'
+import { Header as Wrapper } from 'antd/lib/layout/layout'
 import { EditOutlined, ApiOutlined } from '@ant-design/icons'
 // project
 import { logout } from '../../redux/userProfile/actions'
 
-const HeaderBar = () => {
+const Header = () => {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.userProfile.user)
 
@@ -29,7 +30,7 @@ const HeaderBar = () => {
   }
 
   return (
-    <div className='h-full flex items-center'>
+    <Wrapper className='flex items-center'>
       {/* logo */}
       <div className='w-4/5'></div>
 
@@ -43,8 +44,8 @@ const HeaderBar = () => {
           <Avatar src={user?.avatar} />
         </Dropdown>
       </div>
-    </div>
+    </Wrapper>
   )
 }
 
-export default HeaderBar
+export default Header

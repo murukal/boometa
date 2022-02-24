@@ -1,9 +1,10 @@
 import type { MenuTreeNode } from '../../../typings/menu'
 
 export interface TreeDataType {
-  tenantCode: string
-  tenantName?: string | null
+  _id: string
+  name?: string | null
   children?: MenuTreeNode[] | null
+  checkable?: boolean
 }
 
 export interface Props {

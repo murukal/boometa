@@ -94,9 +94,15 @@ const Roles = () => {
     !res.code && onFetch()
   }
 
+  /** 渲染 */
   useEffect(() => {
     onFetch()
   }, [])
+
+  /** 右侧功能页面关闭 */
+  const onAuthClose = () => {
+    setIsShow(false)
+  }
 
   return (
     <div className='flex'>
@@ -122,7 +128,16 @@ const Roles = () => {
         <Singleton title='角色' isOpened={isOpened} onClose={onClose} onSubmitted={onSubmitted} singleton={role} singletonComponent={Role} />
       </Card>
 
-      {isShow && <Roles4Auth className='w-1/2 overflow-auto' roleId={role._id} title={role.name} actived={actived} onTabChange={onTabChange} />}
+      {isShow && (
+        <Roles4Auth
+          className='w-1/2 overflow-auto'
+          roleId={role._id}
+          title={role.name}
+          actived={actived}
+          onTabChange={onTabChange}
+          onClose={onAuthClose}
+        />
+      )}
     </div>
   )
 }

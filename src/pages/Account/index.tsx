@@ -9,6 +9,7 @@ import { Image } from 'antd'
 // third
 import { stringify } from 'qs'
 // project
+import Footer from '../../layouts/Footer'
 import { TOKEN } from '../../assets'
 import './style.css'
 
@@ -40,19 +41,23 @@ const Account = () => {
   }, [isLogin])
 
   return (
-    <div className='h-full flex'>
-      <div className='flex-1 flex items-center justify-center'>
-        <Outlet />
+    <div className='flex flex-col h-full'>
+      <div className='flex-1 flex'>
+        <div className='flex-1 flex items-center justify-center'>
+          <Outlet />
+        </div>
+        <div className='flex-1 flex items-center justify-center'>
+          <Image
+            style={{
+              animation: 'up-down 2s ease-in-out infinite alternate-reverse both'
+            }}
+            preview={false}
+            src='/assets/account.png'
+          />
+        </div>
       </div>
-      <div className='flex-1 flex items-center justify-center'>
-        <Image
-          style={{
-            animation: 'up-down 2s ease-in-out infinite alternate-reverse both'
-          }}
-          width={200}
-          src='/assets/account.png'
-        />
-      </div>
+
+      <Footer className='flex justify-between px-6 pb-6' />
     </div>
   )
 }

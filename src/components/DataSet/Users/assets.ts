@@ -41,11 +41,5 @@ export const getColumns = <T = User>(columns?: ColumnsType<T>): ColumnsType<T> =
     width: 100
   },
 
-  {
-    title: '手机号',
-    dataIndex: 'phone',
-    width: 100
-  },
-
   ...(columns || [])
 ]
