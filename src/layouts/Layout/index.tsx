@@ -3,12 +3,13 @@ import { Navigate, Outlet } from 'react-router-dom'
 // redux
 import { useSelector } from 'react-redux'
 // antd
-import { Layout as Wrapper } from 'antd'
+import { Layout as Wrapper, Typography } from 'antd'
 // project
 import SiderMenu from '../SiderMenu'
 import Header from '../Header'
 
 const { Content, Sider } = Wrapper
+const { Title } = Typography
 
 const Layout = () => {
   const isLogin = useSelector((state) => state.userProfile.isLogin)
@@ -17,6 +18,21 @@ const Layout = () => {
     <Wrapper className='h-full'>
       {/* 侧边导航栏 */}
       <Sider>
+        {/* logo */}
+        <Title
+          level={5}
+          style={{
+            height: 60,
+            color: 'white',
+            marginBottom: 0,
+            textAlign: 'center',
+            verticalAlign: 'center'
+          }}
+        >
+          fantufantu
+        </Title>
+
+        {/* menu */}
         <SiderMenu />
       </Sider>
 
