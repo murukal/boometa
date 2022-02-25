@@ -3,7 +3,7 @@ import { createRef, useEffect, useState } from 'react'
 // router
 import { useParams } from 'react-router-dom'
 // antd
-import { Button, Card, Steps, Result, Space } from 'antd'
+import { Button, Card, Steps, Result, Space, Input } from 'antd'
 import { UserOutlined, SolutionOutlined, SmileOutlined } from '@ant-design/icons'
 import type { FormInstance } from 'antd'
 // project
@@ -19,7 +19,7 @@ import type { Essay as EssayType } from '../../typings/essay'
 const { Step } = Steps
 
 const Essay = () => {
-  const [step, setStep] = useState(0)
+  const [step, setStep] = useState(1)
   const [tags, setTags] = useState<Tag[]>([])
   const [essay, setEssay] = useState<EssayType>(getInitialSingleton())
 
@@ -96,11 +96,7 @@ const Essay = () => {
         flexDirection: 'column'
       }}
     >
-      <Steps current={step}>
-        <Step title='文章摘要' icon={<UserOutlined />} />
-        <Step title='文章正文' icon={<SolutionOutlined />} />
-        <Step title='发布完成' icon={<SmileOutlined />} />
-      </Steps>
+      <Input size='large' placeholder='请输入标题' />
 
       <div className='flex-1 h-0'>
         <Step1

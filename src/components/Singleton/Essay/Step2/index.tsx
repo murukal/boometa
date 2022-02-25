@@ -1,17 +1,17 @@
 import { forwardRef, useEffect, useMemo, useState } from 'react'
 // antd
+import { Form } from 'antd'
 import type { FormInstance } from 'antd'
 import type { RuleObject } from 'antd/lib/form'
 import type { StoreValue } from 'antd/lib/form/interface'
-import { Form, Input } from 'antd'
 // third
 import ReactMarkdown from 'react-markdown'
 // project
-import type { Props } from './assets'
 import { useForm } from 'antd/lib/form/Form'
+import Editor from '../Editor'
+import type { Props } from './assets'
 
 const { Item } = Form
-const { TextArea } = Input
 
 const Step2 = forwardRef<FormInstance, Props>((props, ref) => {
   const [form] = useForm()
@@ -53,7 +53,7 @@ const Step2 = forwardRef<FormInstance, Props>((props, ref) => {
         ...props.style
       }}
     >
-      <Form ref={ref} form={form} className='w-1/2' initialValues={initialValues} labelCol={{ span: 24 }} onValuesChange={onFormChange}>
+      <Form className='w-full' ref={ref} form={form} initialValues={initialValues} labelCol={{ span: 24 }} onValuesChange={onFormChange}>
         <Item
           name='content'
           rules={[
@@ -64,13 +64,7 @@ const Step2 = forwardRef<FormInstance, Props>((props, ref) => {
           ]}
           noStyle
         >
-          <TextArea
-            style={{
-              height: '100%',
-              resize: 'none',
-              borderColor: validateFailedMessage ? '#ff4d4f' : undefined
-            }}
-          />
+          <Editor />
         </Item>
 
         {/* 校验信息 */}
@@ -85,7 +79,7 @@ const Step2 = forwardRef<FormInstance, Props>((props, ref) => {
           </p>
         )}
       </Form>
-      <ReactMarkdown className='w-1/2 ml-2 overflow-auto border border-solid border-slate-400'>{model.content}</ReactMarkdown>
+      {/* <ReactMarkdown className='w-1/2 ml-2 overflow-auto border border-solid border-slate-400'>{model.content}</ReactMarkdown> */}
     </div>
   )
 })

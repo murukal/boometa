@@ -22,26 +22,20 @@ const SiderMenu = () => {
     const defaultOpenedKeys: string[] = []
 
     // 路由匹配菜单
-    const mapRoute = (menus: MenuTreeNode[]): boolean => {
-      let isMapped = false
-
-      for (let index = 0; index < menus.length; index++) {
-        const menu = menus[index]
-
+    const mapRoute = (menus: MenuTreeNode[]) => {
+      menus.forEach((menu) => {
         if (menu.children) {
+          // 默认展开父菜单
+          defaultOpenedKeys.push(menu._id)
           // 存在子级，递归匹配
-          isMapped = mapRoute(menu.children)
-          isMapped && menu._id && defaultOpenedKeys.push(menu._id)
+          mapRoute(menu.children)
         } else {
           // 匹配路由
           if (menu.to === route.pathname) {
             menu._id && defaultSelectedKeys.push(menu._id)
-            isMapped = true
           }
         }
-      }
-
-      return isMapped
+      })
     }
 
     // 调用
@@ -86,7 +80,7 @@ const SiderMenu = () => {
   }
 
   return (
-    <Menu mode='inline' theme='dark' defaultSelectedKeys={mappedMenuKeys.defaultSelectedKeys} defaultOpenKeys={mappedMenuKeys.defaultOpenedKeys}>
+    <Menu mode='inline' theme='dark' defaultOpenKeys={mappedMenuKeys.defaultOpenedKeys} selectedKeys={mappedMenuKeys.defaultSelectedKeys}>
       {renderMenu(menus)}
     </Menu>
   )
