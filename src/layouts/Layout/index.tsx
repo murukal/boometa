@@ -22,7 +22,7 @@ const Layout = () => {
         <Title
           level={5}
           style={{
-            height: 60,
+            height: 64,
             color: 'white',
             marginBottom: 0,
             textAlign: 'center',

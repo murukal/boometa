@@ -57,7 +57,7 @@ const Account = () => {
         </div>
       </div>
 
-      <Footer className='flex justify-between px-6 pb-6' />
+      <Footer className='flex justify-between' />
     </div>
   )
 }

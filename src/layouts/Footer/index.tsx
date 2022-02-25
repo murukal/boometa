@@ -8,7 +8,7 @@ const { Text } = Typography
 
 const Footer = (props: Props) => {
   return (
-    <footer className={props.className}>
+    <footer className={`${props.className} p-6`}>
       <Link target='_blank' rel='noreferrer' to='https://beian.miit.gov.cn'>
         浙ICP备2021003835号
       </Link>

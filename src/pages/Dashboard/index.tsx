@@ -12,64 +12,40 @@ const Dashboard = () => {
       <Row gutter={16}>
         <Col span={6}>
           <Card>
-            <Statistic
-              title='Active'
-              value={11.28}
-              precision={2}
-              valueStyle={{ color: '#3f8600' }}
-              prefix={<ArrowUpOutlined />}
-              suffix='%'
-            />
+            <Statistic title='Active' value={11.28} precision={2} valueStyle={{ color: '#3f8600' }} prefix={<ArrowUpOutlined />} suffix='%' />
           </Card>
         </Col>
         <Col span={6}>
           <Card>
-            <Statistic
-              title='Active'
-              value={11.28}
-              precision={2}
-              valueStyle={{ color: '#3f8600' }}
-              prefix={<ArrowUpOutlined />}
-              suffix='%'
-            />
+            <Statistic title='Active' value={11.28} precision={2} valueStyle={{ color: '#3f8600' }} prefix={<ArrowUpOutlined />} suffix='%' />
           </Card>
         </Col>
         <Col span={6}>
           <Card>
-            <Statistic
-              title='Active'
-              value={11.28}
-              precision={2}
-              valueStyle={{ color: '#3f8600' }}
-              prefix={<ArrowUpOutlined />}
-              suffix='%'
-            />
+            <Statistic title='Active' value={11.28} precision={2} valueStyle={{ color: '#3f8600' }} prefix={<ArrowUpOutlined />} suffix='%' />
           </Card>
         </Col>
         <Col span={6}>
           <Card>
-            <Statistic
-              title='Active'
-              value={11.28}
-              precision={2}
-              valueStyle={{ color: '#3f8600' }}
-              prefix={<ArrowUpOutlined />}
-              suffix='%'
-            />
+            <Statistic title='Active' value={11.28} precision={2} valueStyle={{ color: '#3f8600' }} prefix={<ArrowUpOutlined />} suffix='%' />
           </Card>
         </Col>
       </Row>
 
-      <Row>
+      <Row gutter={16}>
         <Col span={16}>
-          <UPers />
+          <Card>
+            <UPers />
+          </Card>
         </Col>
         <Col span={8}>
-          <Hot />
+          <Card>
+            <Hot />
+          </Card>
         </Col>
       </Row>
 
-      <Footer className='mt-auto flex justify-between px-6 pb-6' />
+      <Footer className='mt-auto flex justify-between' />
     </div>
   )
 }

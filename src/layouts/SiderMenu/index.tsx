@@ -66,7 +66,13 @@ const SiderMenu = () => {
           const Icon = menu.icon ? createElement(Icons[menu.icon as keyof typeof Icons]) : null
 
           return !menu.children ? (
-            <Item key={menu._id} icon={Icon}>
+            <Item
+              style={{
+                marginTop: 0
+              }}
+              key={menu._id}
+              icon={Icon}
+            >
               {menu.to ? <Link to={menu.to}>{menu.name}</Link> : menu.name}
             </Item>
           ) : (

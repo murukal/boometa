@@ -9,7 +9,8 @@ module.exports = {
         secure: false,
         changeOrigin: true
       }
-    }
+    },
+    port: 8000
   },
   plugins: [
     {
