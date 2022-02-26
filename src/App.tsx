@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from 'react-redux'
 // project
 import Router from './routes'
 import { getTenant } from './redux/tenant/actions'
-import { getMenus } from './redux/menus/actions'
 import { authenticate, passToken } from './redux/userProfile/actions'
+import { getMenus } from './redux/menus/actions'
 
 const App = () => {
   const dispatch = useDispatch()

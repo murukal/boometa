@@ -1,7 +1,7 @@
 // react
 import { useMemo } from 'react'
 // redux
-import { useStore } from 'react-redux'
+import { useSelector } from 'react-redux'
 // router
 import { RouteObject, useRoutes } from 'react-router-dom'
 // projetc
@@ -12,7 +12,7 @@ import { customizes } from './customizes'
 import { roadmaps } from './roadmaps'
 
 const Router = () => {
-  const store = useStore()
+  const menus = useSelector((state) => state.menus)
 
   const routes = useMemo((): RouteObject => {
     const menusToRoutes = (menus: MenuTreeNode[], routes: RouteObject[] = []) => {
@@ -34,9 +34,16 @@ const Router = () => {
     return {
       path: '/',
       element: Loadable('layouts/Layout'),
-      children: menusToRoutes(store.getState().menus).concat(customizes)
+      children: menusToRoutes(menus)
+        .concat(customizes)
+        .concat([
+          {
+            path: '*',
+            element: Loadable('layouts/Layout')
+          }
+        ])
     }
-  }, [store])
+  }, [menus])
 
   return useRoutes([routes, accounts, roadmaps])
 }
