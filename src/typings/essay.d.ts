@@ -9,10 +9,10 @@ export interface Essay {
   createdBy: string | User
   createdAt?: string
   tags: Array<Tag | string>
-  cover?: string
+  cover?: string | null
 }
 
-export interface CreateEssay extends Omit<Essay, '_id' | 'createdBy'> {}
+export interface CreateEssay extends Omit<Essay, '_id' | 'createdBy' | 'createdAt'> {}
 
 export interface UpdateEssay extends CreateEssay {}
 
