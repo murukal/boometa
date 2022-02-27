@@ -1,5 +1,5 @@
 // react
-import { useLayoutEffect } from 'react'
+import { useLayoutEffect, useState } from 'react'
 // redux
 import { useDispatch, useSelector } from 'react-redux'
 // project
@@ -10,6 +10,7 @@ import { authenticate, passToken } from './redux/userProfile/actions'
 const App = () => {
   const dispatch = useDispatch()
   const tenantCode = useSelector((state) => state.tenant.code)
+  const [isReady, setIsReady] = useState(false)
 
   const onFetch = async () => {
     // 将客户端的token存储到redux中
@@ -23,10 +24,10 @@ const App = () => {
   }
 
   useLayoutEffect(() => {
-    onFetch()
+    onFetch().finally(() => setIsReady(true))
   }, [])
 
-  return <Router />
+  return <>{isReady && <Router />}</>
 }
 
 export default App

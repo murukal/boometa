@@ -8,4 +8,6 @@ export const getInitialSingleton = (): Dictionary => ({
 })
 
 /** 字典code枚举，配置的时候请务必参考下当前文件 */
-export const DICTIONARY_CODE_PERMISSION_KEY = 'PERMISSION_KEY'
+export const DICTIONARY_CODE_PERMISSION_KEY = 'permission_key'
+
+export const DICTIONARY_CODE_ABILITY_KEY = 'ability_key'

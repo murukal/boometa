@@ -8,7 +8,7 @@ import { RouteObject, useRoutes } from 'react-router-dom'
 import { MenuTreeNode } from '../../typings/menu'
 import Loadable from '../../components/Loadable'
 import { getMenus } from '../../redux/menus/actions'
-import { accountRoutes, essayRoutes, roadmapRoutes } from './assets'
+import { accountRoutes, essayRoutes, notFoundRoutes, roadmapRoutes } from './assets'
 
 const Router = () => {
   const isLogin = useSelector((state) => state.userProfile.isLogin)
@@ -50,27 +50,7 @@ const Router = () => {
     }
   }, [menus])
 
-  /**
-   * 根据登录状态生成动态的回调地址
-   * 已登录：404，
-   * 未登录：登录页
-   */
-  const notFoundRoutes = useMemo<RouteObject>(
-    () =>
-      isLogin
-        ? {
-            path: '*',
-            element: Loadable('pages/Account'),
-            children: [{ index: true, element: Loadable('pages/Account/Login') }]
-          }
-        : {
-            path: '*',
-            element: Loadable('layouts/Layout')
-          },
-    [isLogin]
-  )
-
-  /**直接利用router hooks 返回对应的dom */
+  /** 直接利用router hooks 返回对应的dom */
   return useRoutes([authorizatedRoutes, accountRoutes, essayRoutes, roadmapRoutes, notFoundRoutes])
 }
 

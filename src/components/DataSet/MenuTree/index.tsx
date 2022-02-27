@@ -32,8 +32,8 @@ const MenuTree = (props: Props) => {
     setTreeData(results)
   }
 
-  const onCheck = (checkedKeys: Key[] | { checked: Key[]; halfChecked: Key[] }) => {
-    props.onCheck && props.onCheck(checkedKeys as string[])
+  const onCheck = (checked: Key[] | { checked: Key[]; halfChecked: Key[] }) => {
+    props.onCheck && props.onCheck((checked as { checked: Key[]; halfChecked: Key[] }).checked as string[])
   }
 
   // 避免渲染报错
@@ -53,6 +53,7 @@ const MenuTree = (props: Props) => {
         title: 'name',
         key: '_id'
       }}
+      checkStrictly
       treeData={treeData as []}
       checkedKeys={checkedKeys}
       checkable

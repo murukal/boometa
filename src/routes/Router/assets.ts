@@ -19,7 +19,6 @@ export const essayRoutes: RouteObject = {
   element: Loadable('layouts/Layout'),
   children: [
     {
-      index: true,
       element: Loadable('pages/Essay')
     },
     {
@@ -33,4 +32,16 @@ export const essayRoutes: RouteObject = {
 export const roadmapRoutes: RouteObject = {
   path: '/boomap',
   element: Loadable('pages/Boomap')
+}
+
+/** 404 */
+export const notFoundRoutes: RouteObject = {
+  path: '*',
+  element: Loadable('pages/Error'),
+  children: [
+    {
+      path: '*',
+      element: Loadable('pages/Error/404')
+    }
+  ]
 }

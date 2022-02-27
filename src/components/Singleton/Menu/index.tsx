@@ -10,15 +10,13 @@ import path from 'path-browserify'
 import type { MenuTreeNode, UpdateMenu } from '../../../typings/menu'
 import type { ExtraProps } from './assets'
 import type { DefaultOptionType } from 'antd/lib/select'
-
 import { create, update } from '../../../apis/menu'
 import { responseNotification } from '../../../utils/notification'
 import IconSelector from '../../IconSelector'
 import { getInitialSingleton } from './assets'
 import { DICTIONARY_CODE_PERMISSION_KEY } from '../Dictionary/assets'
 import { SingletonProps } from '../assets'
-import { getDictionary } from '../../../apis/dictionary'
-import { getDictionaryEnums } from '../../../apis/dictionary-enum'
+import { getDictionaryEnumsByDictionaryCode } from '../../../apis/dictionary-enum'
 
 const Menu = forwardRef<FormInstance, SingletonProps<MenuTreeNode, ExtraProps>>((props, ref) => {
   const singleton = getInitialSingleton()
@@ -42,19 +40,14 @@ const Menu = forwardRef<FormInstance, SingletonProps<MenuTreeNode, ExtraProps>>(
   }, [props.singleton])
 
   useEffect(() => {
-    /** 查询字典对象 -> 利用字典对象id 查询字典枚举 -> 放入state */
-    getDictionary(DICTIONARY_CODE_PERMISSION_KEY).then(({ data: dictionary }) => {
-      dictionary &&
-        getDictionaryEnums({
-          belongTo: dictionary._id
-        }).then(({ data }) => {
-          setPermissionKeyEnums(
-            (data?.docs || []).map((dictionaryEnum) => ({
-              label: dictionaryEnum.description,
-              value: dictionaryEnum.code
-            }))
-          )
-        })
+    /** 利用字典 code 查询字典枚举 -> 放入state */
+    getDictionaryEnumsByDictionaryCode(DICTIONARY_CODE_PERMISSION_KEY).then(({ data: dictionaryEnums }) => {
+      setPermissionKeyEnums(
+        (dictionaryEnums || []).map((dictionaryEnum) => ({
+          label: dictionaryEnum.description,
+          value: dictionaryEnum.code
+        }))
+      )
     })
   }, [])
 
@@ -152,7 +145,13 @@ const Menu = forwardRef<FormInstance, SingletonProps<MenuTreeNode, ExtraProps>>(
       </Form.Item>
 
       <Form.Item label='菜单权限通行证'>
-        <Select mode='multiple' allowClear value={permissionKeys} onChange={onPermissionKeysChange} options={permissionKeyEnums} />
+        <Select
+          mode='multiple'
+          allowClear
+          value={permissionKeys}
+          onChange={onPermissionKeysChange}
+          options={permissionKeyEnums}
+        />
       </Form.Item>
     </Form>
   )
