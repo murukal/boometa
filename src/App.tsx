@@ -1,17 +1,15 @@
 // react
-import { useEffect, useState } from 'react'
+import { useLayoutEffect } from 'react'
 // redux
 import { useDispatch, useSelector } from 'react-redux'
 // project
-import Router from './routes'
+import Router from './routes/Router'
 import { getTenant } from './redux/tenant/actions'
 import { authenticate, passToken } from './redux/userProfile/actions'
-import { getMenus } from './redux/menus/actions'
 
 const App = () => {
   const dispatch = useDispatch()
   const tenantCode = useSelector((state) => state.tenant.code)
-  const [isReady, setIsReady] = useState(false)
 
   const onFetch = async () => {
     // 将客户端的token存储到redux中
@@ -22,20 +20,13 @@ const App = () => {
 
     // 获取用户数据
     dispatch(await authenticate())
-
-    // 获取菜单数据
-    dispatch(await getMenus(tenantCode))
   }
 
-  // 初次渲染
-  useEffect(() => {
-    onFetch().finally(() => {
-      // 数据准备完成，展示主页面
-      setIsReady(true)
-    })
+  useLayoutEffect(() => {
+    onFetch()
   }, [])
 
-  return <>{isReady && <Router />}</>
+  return <Router />
 }
 
 export default App

@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 // router
 import { Outlet, useNavigate, useSearchParams } from 'react-router-dom'
 // redux
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 // antd
 import { Image } from 'antd'
 // third
@@ -11,14 +11,11 @@ import { stringify } from 'qs'
 // project
 import Footer from '../../layouts/Footer'
 import { TOKEN } from '../../assets'
-import { getMenus } from '../../redux/menus/actions'
 import './style.css'
 
 const Account = () => {
   const navigate = useNavigate()
   const isLogin = useSelector((state) => state.userProfile.isLogin)
-  const tenantCode = useSelector((state) => state.tenant.code)
-  const dispatch = useDispatch()
 
   // 获取重定向的url
   const redirect = useSearchParams()[0].get('redirect') || ''
@@ -28,11 +25,6 @@ const Account = () => {
 
     // 非重定向页面，直接内部跳转
     if (!redirect) {
-      // 获取菜单数据
-      getMenus(tenantCode).then((action) => {
-        dispatch(action)
-      })
-
       // 跳转路由
       navigate('/', { replace: true })
       return

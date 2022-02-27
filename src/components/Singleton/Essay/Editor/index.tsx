@@ -51,8 +51,6 @@ export const Editor = (props: Props) => {
         update: (value, transaction) => {
           // 事务发生变更
           if (transaction.docChanged) {
-            console.log('12312321')
-
             // 调用的变更事件
             props.onChange && props.onChange(transaction.newDoc.toString())
           }
