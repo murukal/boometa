@@ -1,5 +1,5 @@
 // react
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 // redux
 import { useDispatch, useSelector } from 'react-redux'
 // router
@@ -11,6 +11,7 @@ import { getMenus } from '../../redux/menus/actions'
 import { accountRoutes, essayRoutes, notFoundRoutes, roadmapRoutes } from './assets'
 
 const Router = () => {
+  const [isReady, setIsReady] = useState(false)
   const isLogin = useSelector((state) => state.userProfile.isLogin)
   const tenantCode = useSelector((state) => state.tenant.code)
   const menus = useSelector((state) => state.menus)
@@ -22,7 +23,8 @@ const Router = () => {
 
   /** 渲染 */
   useEffect(() => {
-    isLogin && onFetch()
+    isLogin && onFetch().finally(() => setIsReady(true))
+    !isLogin && setIsReady(true)
   }, [isLogin])
 
   /** 认证权限后动态生成路由 */
@@ -50,8 +52,11 @@ const Router = () => {
     }
   }, [menus])
 
+  // 渲染路由
+  const routes = useRoutes([authorizatedRoutes, accountRoutes, essayRoutes, roadmapRoutes, notFoundRoutes])
+
   /** 直接利用router hooks 返回对应的dom */
-  return useRoutes([authorizatedRoutes, accountRoutes, essayRoutes, roadmapRoutes, notFoundRoutes])
+  return <>{isReady && routes}</>
 }
 
 export default Router

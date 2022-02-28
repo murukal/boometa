@@ -4,6 +4,7 @@ export interface Tenant {
   _id: string
   code: TenantCode
   name: string
+  isAuthorizate: boolean
   publicKey: string
   createdAt?: string
   updatedAt?: string
@@ -11,4 +12,4 @@ export interface Tenant {
 
 export interface CreateTenant extends Omit<Tenant, '_id' | 'publicKey' | 'privateKey' | 'createdAt' | 'updatedAt'> {}
 
-export interface UpdateTenant extends Omit<CreateTenant, 'code'> {}
+export interface UpdateTenant extends CreateTenant {}

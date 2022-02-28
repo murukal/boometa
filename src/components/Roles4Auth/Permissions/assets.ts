@@ -1,7 +1,7 @@
 // antd
 import type { DataNode } from 'antd/lib/tree'
 // project
-import type { AbilityKey, PermissionKey } from '../../../typings/role'
+import type { AbilityKey, Permission, PermissionKey } from '../../../typings/role'
 
 export interface PermissionDataNode extends DataNode {
   value: string
@@ -41,4 +41,9 @@ export interface Props {
   roleId: string
   onSubmit: Function
   onSubmitted: Function
+  permissions: Permission[]
 }
+
+export const separator = ':'
+
+export type PermissionModel = Partial<Record<PermissionKey, AbilityKey[]>>

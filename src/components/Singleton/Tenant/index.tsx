@@ -1,66 +1,72 @@
 // react
-import { forwardRef, useEffect, useState, ChangeEvent } from 'react'
+import { forwardRef } from 'react'
 // antd
-import { Col, Form, FormInstance, Input, Row } from 'antd'
+import { Form, FormInstance, Input, Switch } from 'antd'
 // project
 import { create, update } from '../../../apis/tenant'
 import { responseNotification } from '../../../utils/notification'
-import { getInitialSingleton } from './assets'
+import { useForm } from 'antd/lib/form/Form'
+import { useMemo } from 'react'
+import type { FormValues } from './assets'
 import type { SingletonProps } from '../assets'
 import type { Tenant as TenantType } from '../../../typings/tenant'
 
 const Tenant = forwardRef<FormInstance, SingletonProps<TenantType>>((props, ref) => {
-  const singleton = getInitialSingleton()
-  const [code, setCode] = useState(singleton.code)
-  const [name, setName] = useState(singleton.name)
+  const [form] = useForm<FormValues>()
 
-  useEffect(() => {
-    setCode(props.singleton.code)
-    setName(props.singleton.name)
-  }, [props.singleton])
+  /** 表单初始值 */
+  const initialValues = useMemo(
+    () => ({
+      code: props.singleton.code,
+      name: props.singleton.name,
+      isAuthorizate: props.singleton.isAuthorizate
+    }),
+    [props.singleton]
+  )
 
   const onSubmit = async () => {
+    const model = form.getFieldsValue()
+
     const handlers = {
-      create: () =>
-        create({
-          name,
-          code
-        }),
-      update: () => update(props.singleton._id, { name })
+      create: () => create(model),
+      update: () => update(props.singleton._id, model)
     }
 
     // 表单提交
-    const handler = handlers[props.singleton._id ? 'update' : 'create']
-    const res = await handler()
+    const res = await handlers[props.singleton._id ? 'update' : 'create']()
     responseNotification(res)
     !res.code && props.onSubmitted && props.onSubmitted()
   }
 
-  const onNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value)
-  }
-
-  const onCodeChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setCode(e.target.value)
-  }
-
   return (
-    <Form labelCol={{ span: 6 }} onFinish={onSubmit} ref={ref}>
-      <Row>
-        <Col span={24}>
-          <Form.Item label='租户代码'>
-            <Input value={code} onChange={onCodeChange} />
-          </Form.Item>
-        </Col>
-      </Row>
+    <Form form={form} labelCol={{ span: 6 }} onFinish={onSubmit} ref={ref} initialValues={initialValues}>
+      <Form.Item
+        label='租户代码'
+        name='code'
+        rules={[
+          {
+            required: true
+          }
+        ]}
+      >
+        <Input />
+      </Form.Item>
 
-      <Row>
-        <Col span={24}>
-          <Form.Item label='租户名称'>
-            <Input value={name} onChange={onNameChange} />
-          </Form.Item>
-        </Col>
-      </Row>
+      <Form.Item
+        label='租户名称'
+        name='name'
+        rules={[
+          {
+            required: true
+          }
+        ]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item label='是否鉴权' name='isAuthorizate' valuePropName='checked'>
+        <Switch />
+      </Form.Item>
     </Form>
   )
 })

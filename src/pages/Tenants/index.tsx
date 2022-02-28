@@ -11,13 +11,13 @@ import Tenant from '../../components/Singleton/Tenant'
 import { responseNotification } from '../../utils/notification'
 import Toolbar from '../../components/Toolbar'
 import Singleton from '../../components/Singleton'
-import { getInitialSingleton } from '../../components/Singleton/Tenant/assets'
+import { getInitialTenant } from '../../components/Singleton/Tenant/assets'
 import { getTableRowHandler, useTable } from '../../utils/table'
 import { QueryOptions } from '../../typings/api'
 
 const Tenants = () => {
   const [isOpened, setIsOpened] = useState(false)
-  const [tenant, setTenant] = useState<TenantType>(getInitialSingleton())
+  const [tenant, setTenant] = useState<TenantType>(getInitialTenant())
 
   const columns = getColumns([
     {
@@ -63,7 +63,7 @@ const Tenants = () => {
 
   // 抽屉打开事件
   const onOpen =
-    (tenant: TenantType = getInitialSingleton()) =>
+    (tenant: TenantType = getInitialTenant()) =>
     () => {
       setTenant(tenant)
       setIsOpened(true)
@@ -88,9 +88,23 @@ const Tenants = () => {
     <Card>
       <Toolbar onAdd={onOpen()} onDelete={() => {}} />
 
-      <Table rowKey='_id' loading={isLoading} columns={columns} dataSource={tenants} bordered={true} pagination={false} />
+      <Table
+        rowKey='_id'
+        loading={isLoading}
+        columns={columns}
+        dataSource={tenants}
+        bordered={true}
+        pagination={false}
+      />
 
-      <Singleton title='客户端' isOpened={isOpened} onClose={onClose} singleton={tenant} singletonComponent={Tenant} onSubmitted={onSubmitted} />
+      <Singleton
+        title='客户端'
+        isOpened={isOpened}
+        onClose={onClose}
+        singleton={tenant}
+        singletonComponent={Tenant}
+        onSubmitted={onSubmitted}
+      />
     </Card>
   )
 }

@@ -27,6 +27,8 @@ const Users = (props: Props) => {
     setIsOpened(false)
     setIsLoading(false)
     responseNotification(res)
+
+    props.onSubmitted()
   }
 
   /** 选择用户 */
@@ -38,7 +40,14 @@ const Users = (props: Props) => {
     <>
       <Toolbar onAddUser={() => setIsOpened(true)} />
       <UserDataSet ids={props.users} />
-      <Modal visible={isOpened} maskClosable={false} closable={false} onCancel={() => setIsOpened(false)} onOk={onSubmit} confirmLoading={isLoading}>
+      <Modal
+        visible={isOpened}
+        maskClosable={false}
+        closable={false}
+        onCancel={() => setIsOpened(false)}
+        onOk={onSubmit}
+        confirmLoading={isLoading}
+      >
         <UserDataSet
           excludeIds={props.users}
           rowSelection={{

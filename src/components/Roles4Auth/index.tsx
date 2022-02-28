@@ -60,7 +60,13 @@ const Roles4Auth = (props: Props) => {
     return (
       <div className='flex justify-between'>
         {props.title}
-        <Button shape='circle' type='link' icon={<CloseOutlined />} danger onClick={() => props.onClose && props.onClose()} />
+        <Button
+          shape='circle'
+          type='link'
+          icon={<CloseOutlined />}
+          danger
+          onClick={() => props.onClose && props.onClose()}
+        />
       </div>
     )
   }, [props.title, props.onClose])
@@ -77,19 +83,32 @@ const Roles4Auth = (props: Props) => {
     onFetch()
   }
 
+  /** tab 变更 */
+  const onTabChange = (key: string) => {
+    setIsEditable(false)
+    props.onTabChange && props.onTabChange(key)
+  }
+
   return (
     <Card
       className={props.className}
       tabList={tabs}
       activeTabKey={props.actived}
-      onTabChange={props.onTabChange}
+      onTabChange={onTabChange}
       title={title}
       tabBarExtraContent={tabBarExtraContent}
     >
       {props.actived === 'user' ? (
-        <Users roleId={role._id} users={role.users} />
+        <Users roleId={role._id} users={role.users} onSubmitted={onSubmitted} />
       ) : (
-        <Permissions ref={ref} roleId={role._id} isDisabled={!isEditable} onSubmit={onSubmit} onSubmitted={onSubmitted} />
+        <Permissions
+          ref={ref}
+          roleId={role._id}
+          permissions={role.permissions}
+          isDisabled={!isEditable}
+          onSubmit={onSubmit}
+          onSubmitted={onSubmitted}
+        />
       )}
     </Card>
   )

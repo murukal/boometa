@@ -13,6 +13,7 @@ const getInitialState = (): TenantState => ({
   _id: '',
   code: 'BOOMETA',
   name: '',
+  isAuthorizate: false,
   publicKey: '',
   createdAt: '',
   updatedAt: '',
