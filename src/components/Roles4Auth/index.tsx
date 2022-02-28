@@ -1,43 +1,34 @@
 // react
-import { Key, useMemo } from 'react'
+import { useMemo } from 'react'
 import { useCallback, useEffect, useState } from 'react'
 // antd
 import type { CardTabListType } from 'antd/lib/card'
-import { Button, Card, Modal } from 'antd'
+import { Button, Card } from 'antd'
 import { CloseOutlined } from '@ant-design/icons/lib/icons'
 //project
-import Users from '../DataSet/Users'
-import Toolbar from '../Toolbar'
-import { getRoleById, update } from '../../apis/role'
-import { responseNotification } from '../../utils/notification'
+import Users from './Users'
+import { getRoleById } from '../../apis/role'
 import { getInitialSingleton } from '../Singleton/Role/assets'
-import MenuTree from '../DataSet/MenuTree'
 import type { Props } from './assets'
 import type { Role } from '../../typings/role'
+import Permissions from './Permissions'
+import { createRef } from 'react'
 
 const Roles4Auth = (props: Props) => {
   const tabs: CardTabListType[] = [
     { key: 'user', tab: '用户' },
     { key: 'menu', tab: '授权' }
   ]
+
   const [role, setRole] = useState<Role>(getInitialSingleton())
-  const [isSubmitterLoading, setIsSubmitterLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [isEditable, setIsEditable] = useState(false)
 
-  // user
-  const [isUserSelectorOpened, setIsUserSelectorOpened] = useState(false)
-  const [users, setUsers] = useState<string[]>([])
-
-  // menu
-  const [isMenuEditable, setIsMenuEditable] = useState(false)
-  const [menus, setMenus] = useState<string[]>([])
+  const ref = createRef<any>()
 
   /** fetch函数 */
   const onFetch = useCallback(async () => {
-    const res = await getRoleById(props.roleId)
-    const role = res.data || getInitialSingleton()
-    setRole(role)
-    setUsers([])
-    setMenus(role.menus)
+    setRole((await getRoleById(props.roleId)).data || getInitialSingleton())
   }, [props.roleId])
 
   // 数据渲染
@@ -45,66 +36,24 @@ const Roles4Auth = (props: Props) => {
     onFetch()
   }, [onFetch])
 
-  /** 授权用户 */
-  const onUserSubmit = async () => {
-    setIsSubmitterLoading(true)
-
-    // 提交事件
-    const res = await update(props.roleId, {
-      users: [...role.users, ...users]
-    })
-
-    setIsUserSelectorOpened(false)
-    setIsSubmitterLoading(false)
-    responseNotification(res)
-    onFetch()
-  }
-
-  /** 授权菜单 */
-  const onMenuSubmit = async () => {
-    setIsSubmitterLoading(true)
-
-    const res = await update(role._id, {
-      menus
-    })
-
-    setIsSubmitterLoading(false)
-    setIsMenuEditable(false)
-    responseNotification(res)
-    onFetch()
-  }
-
-  /** 选择用户 */
-  const onUserSelectChange = (userIds: Key[]) => {
-    setUsers(userIds as string[])
-  }
-
   /** 获取授权页签下的按钮 */
   const tabBarExtraContent = useMemo(() => {
     if (props.actived !== 'menu') return undefined
 
-    if (!isMenuEditable)
-      return (
-        <Button
-          onClick={() => {
-            setIsMenuEditable(true)
-          }}
-        >
-          编辑
-        </Button>
-      )
+    if (!isEditable) return <Button onClick={() => setIsEditable(true)}>编辑</Button>
 
     return (
-      <Button type='primary' loading={isSubmitterLoading} onClick={onMenuSubmit}>
+      <Button
+        type='primary'
+        loading={isLoading}
+        onClick={() => {
+          ref.current.onSubmit()
+        }}
+      >
         保存
       </Button>
     )
-  }, [props.actived, isMenuEditable, menus])
-
-  /** 对菜单树进行授权过程中的回调 */
-  const onMenuCheck = (keys: string[]) => {
-    setMenus(keys)
-  }
+  }, [props.actived, isEditable])
 
   /** 抬头 */
   const title = useMemo(() => {
@@ -116,6 +65,18 @@ const Roles4Auth = (props: Props) => {
     )
   }, [props.title, props.onClose])
 
+  /** 提交的预回调 */
+  const onSubmit = () => {
+    setIsLoading(true)
+  }
+
+  /** 提交结束的回调 */
+  const onSubmitted = () => {
+    setIsLoading(false)
+    setIsEditable(false)
+    onFetch()
+  }
+
   return (
     <Card
       className={props.className}
@@ -125,30 +86,11 @@ const Roles4Auth = (props: Props) => {
       title={title}
       tabBarExtraContent={tabBarExtraContent}
     >
-      {props.actived === 'user' && (
-        <>
-          <Toolbar onAddUser={() => setIsUserSelectorOpened(true)} />
-          <Users ids={role.users} />
-          <Modal
-            visible={isUserSelectorOpened}
-            maskClosable={false}
-            closable={false}
-            onCancel={() => setIsUserSelectorOpened(false)}
-            onOk={onUserSubmit}
-            confirmLoading={isSubmitterLoading}
-          >
-            <Users
-              excludeIds={role.users}
-              rowSelection={{
-                selectedRowKeys: users,
-                onChange: onUserSelectChange
-              }}
-            />
-          </Modal>
-        </>
+      {props.actived === 'user' ? (
+        <Users roleId={role._id} users={role.users} />
+      ) : (
+        <Permissions ref={ref} roleId={role._id} isDisabled={!isEditable} onSubmit={onSubmit} onSubmitted={onSubmitted} />
       )}
-
-      {props.actived === 'menu' && <MenuTree menus={menus} isDisable={!isMenuEditable} onCheck={onMenuCheck} />}
     </Card>
   )
 }
