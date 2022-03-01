@@ -1,4 +1,4 @@
-export type PermissionKey = 'menu' | 'dictionary'
+export type PermissionKey = 'tenant' | 'user' | 'menu' | 'role' | 'dictionary' | 'essay' | 'tag'
 
 export type AbilityKey = 'retrieve' | 'create' | 'update' | 'delete'
 

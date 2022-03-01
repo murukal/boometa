@@ -7,7 +7,12 @@ export const separator = ':'
 
 export const permissionKeys: Record<PermissionKey, string> = {
   menu: '菜单',
-  dictionary: '字典'
+  dictionary: '字典',
+  role: '角色',
+  tenant: '租户',
+  user: '用户',
+  essay: '文章',
+  tag: '标签'
 }
 
 export const abilityKeys: Record<AbilityKey, string> = {
