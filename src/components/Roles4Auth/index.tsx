@@ -11,7 +11,7 @@ import { getRoleById } from '../../apis/role'
 import { getInitialSingleton } from '../Singleton/Role/assets'
 import type { Props } from './assets'
 import type { Role } from '../../typings/role'
-import Permissions from './Permissions'
+import Permissions from './Authorizations'
 import { createRef } from 'react'
 
 const Roles4Auth = (props: Props) => {
@@ -60,13 +60,7 @@ const Roles4Auth = (props: Props) => {
     return (
       <div className='flex justify-between'>
         {props.title}
-        <Button
-          shape='circle'
-          type='link'
-          icon={<CloseOutlined />}
-          danger
-          onClick={() => props.onClose && props.onClose()}
-        />
+        <Button shape='circle' type='link' icon={<CloseOutlined />} danger onClick={() => props.onClose && props.onClose()} />
       </div>
     )
   }, [props.title, props.onClose])
@@ -104,7 +98,7 @@ const Roles4Auth = (props: Props) => {
         <Permissions
           ref={ref}
           roleId={role._id}
-          permissions={role.permissions}
+          authorizations={role.authorizations}
           isDisabled={!isEditable}
           onSubmit={onSubmit}
           onSubmitted={onSubmitted}

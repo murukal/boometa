@@ -1,158 +1,95 @@
 // react
-import { ChangeEvent } from 'react'
-import { useState, forwardRef, useEffect } from 'react'
+import { useMemo, forwardRef } from 'react'
 // antd
-import type { FormInstance } from 'antd'
 import { Form, Input, InputNumber, Select } from 'antd'
-// third
-import path from 'path-browserify'
+import { useForm } from 'antd/lib/form/Form'
+import type { FormInstance } from 'antd'
 // project
-import type { MenuTreeNode, UpdateMenu } from '../../../typings/menu'
-import type { ExtraProps } from './assets'
-import type { DefaultOptionType } from 'antd/lib/select'
 import { create, update } from '../../../apis/menu'
 import { responseNotification } from '../../../utils/notification'
 import IconSelector from '../../IconSelector'
-import { getInitialSingleton } from './assets'
-import { DICTIONARY_CODE_PERMISSION_KEY } from '../Dictionary/assets'
+import { authorizationOptions, componentOptions } from './assets'
 import { SingletonProps } from '../assets'
-import { getDictionaryEnumsByDictionaryCode } from '../../../apis/dictionary-enum'
+import type { MenuTreeNode } from '../../../typings/menu'
+import type { ExtraProps, FormValues } from './assets'
+
+const { Item } = Form
 
 const Menu = forwardRef<FormInstance, SingletonProps<MenuTreeNode, ExtraProps>>((props, ref) => {
-  const singleton = getInitialSingleton()
+  const [form] = useForm<FormValues>()
 
-  const [name, setName] = useState(singleton.name)
-  const [sortBy, setSortBy] = useState(singleton.sortBy)
-  const [component, setComponent] = useState(singleton.component)
-  const [icon, setIcon] = useState(singleton.icon)
-  const [to, setTo] = useState(singleton.to)
-  const [permissionKeys, setPermissionKeys] = useState(singleton.permissionKeys)
-
-  const [permissionKeyEnums, setPermissionKeyEnums] = useState<DefaultOptionType[]>([])
-
-  useEffect(() => {
-    setName(props.singleton.name)
-    setSortBy(props.singleton.sortBy)
-    setComponent(props.singleton.component)
-    setIcon(props.singleton.icon)
-    setTo(props.singleton.to)
-    setPermissionKeys(props.singleton.permissionKeys)
-  }, [props.singleton])
-
-  useEffect(() => {
-    /** 利用字典 code 查询字典枚举 -> 放入state */
-    getDictionaryEnumsByDictionaryCode(DICTIONARY_CODE_PERMISSION_KEY).then(({ data: dictionaryEnums }) => {
-      setPermissionKeyEnums(
-        (dictionaryEnums || []).map((dictionaryEnum) => ({
-          label: dictionaryEnum.description,
-          value: dictionaryEnum.code
-        }))
-      )
-    })
-  }, [])
-
-  /** 组件的路径 */
-  const componentPaths = require
-    .context('../../../pages/', true, /tsx$/)
-    .keys()
-    .map((componentPath) => {
-      const actualPath = path.join('pages', path.dirname(componentPath))
-
-      return {
-        label: actualPath,
-        value: actualPath
-      }
-    })
-
-  /** 菜单描述变更 */
-  const onNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value)
-  }
-
-  /** 排序码变更 */
-  const onSortByChange = (value: number) => {
-    setSortBy(value)
-  }
-
-  /** 菜单路由发生变更 */
-  const onToChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTo(e.target.value)
-  }
-
-  /** 菜单组件路径变更 */
-  const onComponentChange = (value: string) => {
-    setComponent(value)
-  }
-
-  /** 图标发生变更 */
-  const onIconChange = (value: string) => {
-    setIcon(value)
-  }
-
-  /** 选择权限 */
-  const onPermissionKeysChange = (value: Array<string>) => {
-    setPermissionKeys(value)
-  }
+  const initialValuse = useMemo<FormValues>(
+    () => ({
+      name: props.singleton.name,
+      sortBy: props.singleton.sortBy,
+      icon: props.singleton.icon,
+      authorizations: props.singleton.authorizations,
+      route: props.singleton.route
+    }),
+    [props.singleton]
+  )
 
   /** 表单提交事件 */
   const onSubmit = async () => {
-    const menu: UpdateMenu = {
-      name,
-      component,
-      to,
-      sortBy,
-      parent: props.extraProps.parentId,
-      icon,
-      permissionKeys
-    }
+    const formValues = form.getFieldsValue()
 
     const handlers = {
       create: () =>
         create({
-          ...menu,
-          tenant: props.extraProps.tenantId
+          ...formValues,
+          tenant: props.extraProps.tenantId,
+          parent: props.extraProps.parentId
         }),
-      update: () => update(props.singleton._id as string, menu)
+      update: () => update(props.singleton._id, formValues)
     }
 
     // 提交表单
-    const handler = handlers[props.singleton._id ? 'update' : 'create']
-    const res = await handler()
+    const res = await handlers[props.singleton._id ? 'update' : 'create']()
     responseNotification(res)
     !res.code && props.onSubmitted && props.onSubmitted()
   }
 
   return (
-    <Form labelCol={{ span: 6 }} onFinish={onSubmit} ref={ref}>
-      <Form.Item label='菜单名称'>
-        <Input onChange={onNameChange} value={name} />
-      </Form.Item>
+    <Form labelCol={{ span: 6 }} onFinish={onSubmit} ref={ref} form={form} initialValues={initialValuse}>
+      <Item
+        label='菜单名称'
+        name='name'
+        rules={[
+          {
+            required: true
+          }
+        ]}
+      >
+        <Input />
+      </Item>
 
-      <Form.Item label='菜单排序码'>
-        <InputNumber className='w-full' onChange={onSortByChange} value={sortBy} />
-      </Form.Item>
+      <Item
+        label='菜单排序码'
+        name='sortBy'
+        rules={[
+          {
+            required: true
+          }
+        ]}
+      >
+        <InputNumber />
+      </Item>
 
-      <Form.Item label='菜单组件路径'>
-        <Select onChange={onComponentChange} options={componentPaths} value={component} />
-      </Form.Item>
+      <Item label='菜单组件路径' name={['route', 'component']}>
+        <Select options={componentOptions} />
+      </Item>
 
-      <Form.Item label='菜单路由'>
-        <Input onChange={onToChange} value={to} />
-      </Form.Item>
+      <Item label='菜单路由' name={['route', 'to']}>
+        <Input />
+      </Item>
 
-      <Form.Item label='菜单图标'>
-        <IconSelector value={icon} onChange={onIconChange} />
-      </Form.Item>
+      <Item label='菜单图标' name='icon'>
+        <IconSelector />
+      </Item>
 
-      <Form.Item label='菜单权限通行证'>
-        <Select
-          mode='multiple'
-          allowClear
-          value={permissionKeys}
-          onChange={onPermissionKeysChange}
-          options={permissionKeyEnums}
-        />
-      </Form.Item>
+      <Item label='菜单权限通行证' name='authorizations'>
+        <Select mode='multiple' allowClear options={authorizationOptions} />
+      </Item>
     </Form>
   )
 })

@@ -1,5 +1,3 @@
-// react
-import { useState } from 'react'
 // redux
 import { useDispatch, useSelector } from 'react-redux'
 // router
@@ -7,12 +5,14 @@ import { Link } from 'react-router-dom'
 // antd
 import { Button, Divider, Form, Input, Typography } from 'antd'
 import { EyeTwoTone, EyeInvisibleOutlined, UserOutlined, LockOutlined } from '@ant-design/icons'
+import { useForm } from 'antd/lib/form/Form'
 // project
 import { login } from '../../../apis/account'
 import { easyNotification, responseNotification } from '../../../utils/notification'
 import { authenticate, passToken } from '../../../redux/userProfile/actions'
 import { setToken } from '../../../utils/app'
 import { toggleStyle } from '../assets'
+import type { FormValues } from './assets'
 
 const { Title, Text } = Typography
 const { Item } = Form
@@ -21,18 +21,16 @@ const { Password } = Input
 const Login = () => {
   // const [isAutoLogin, setIsAutoLogin] = useState(true)
 
-  const [model, setModel] = useState({
-    keyword: '',
-    password: ''
-  })
-
   const dispatch = useDispatch()
   const tenant = useSelector((state) => state.tenant)
+  const [form] = useForm<FormValues>()
 
   // 执行登录
   const onLogin = async () => {
+    const formValues = form.getFieldsValue()
+
     // 利用公钥对密码进行加密
-    const encryptedPassword = tenant.encryptor.encrypt(model.password)
+    const encryptedPassword = tenant.encryptor.encrypt(formValues.password)
 
     if (!encryptedPassword) {
       easyNotification('密码加密失败', 'error')
@@ -40,7 +38,7 @@ const Login = () => {
     }
 
     const res = await login({
-      ...model,
+      ...formValues,
       tenantCode: tenant.code,
       password: encryptedPassword
     })
@@ -57,11 +55,6 @@ const Login = () => {
     responseNotification(res)
   }
 
-  /** 表单数据变更 */
-  const onFormChange = (changedValues: any, values: any) => {
-    setModel(values)
-  }
-
   return (
     <div className='flex flex-col items-center'>
       <Title level={2}>Sign in</Title>
@@ -70,8 +63,8 @@ const Login = () => {
         style={{
           marginTop: 12
         }}
+        form={form}
         onFinish={onLogin}
-        onValuesChange={onFormChange}
       >
         <Item name='keyword' rules={[{ required: true, message: '用户名/邮箱必输！' }]}>
           <Input size='large' style={toggleStyle} prefix={<UserOutlined />} placeholder='用户名/邮箱' />

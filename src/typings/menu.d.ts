@@ -2,12 +2,17 @@ export interface Menu {
   _id: string
   name: string
   sortBy: number
-  icon: string
-  to: string
-  component: string
+  icon?: string
+
   parent?: Menu | string
   tenant: string
-  permissionKeys?: Array<string>
+
+  authorizations: string[]
+
+  route?: {
+    to: string
+    component: string
+  }
 }
 
 export interface MenuTreeNode extends Omit<Menu, 'parent' | 'tenant'> {

@@ -1,5 +1,3 @@
-// react
-import { useState } from 'react'
 // redux
 import { useDispatch, useSelector } from 'react-redux'
 // router
@@ -7,31 +5,30 @@ import { Link } from 'react-router-dom'
 // antd
 import { LockOutlined, UserOutlined, EyeTwoTone, EyeInvisibleOutlined, MailOutlined } from '@ant-design/icons'
 import { Button, Divider, Form, Input, Typography } from 'antd'
+import { useForm } from 'antd/lib/form/Form'
 // project
 import { register } from '../../../apis/account'
 import { easyNotification, responseNotification } from '../../../utils/notification'
 import { authenticate, passToken } from '../../../redux/userProfile/actions'
 import { setToken } from '../../../utils/app'
 import { toggleStyle } from '../assets'
+import type { FormValues } from './assets'
 
 const { Item } = Form
 const { Title, Text } = Typography
 const { Password } = Input
 
 const Register = () => {
-  const [model, setModel] = useState({
-    username: '',
-    email: '',
-    password: ''
-  })
-
   const dispatch = useDispatch()
   const tenant = useSelector((state) => state.tenant)
+  const [form] = useForm<FormValues>()
 
   // 用户注册
   const onRegister = async () => {
+    const formValues = form.getFieldsValue()
+
     // 利用公钥加密密码
-    const encryptedPassword = tenant.encryptor.encrypt(model.password)
+    const encryptedPassword = tenant.encryptor.encrypt(formValues.password)
 
     if (!encryptedPassword) {
       easyNotification('密码加密失败', 'error')
@@ -39,7 +36,7 @@ const Register = () => {
     }
 
     const res = await register({
-      ...model,
+      ...formValues,
       password: encryptedPassword,
       tenantCode: tenant.code
     })
@@ -52,11 +49,6 @@ const Register = () => {
     responseNotification(res)
   }
 
-  /** 表单数据变更 */
-  const onFormChange = (changedValues: any, values: any) => {
-    setModel(values)
-  }
-
   return (
     <div className='flex flex-col items-center'>
       <Title level={2}>Sign up</Title>
@@ -66,7 +58,6 @@ const Register = () => {
           marginTop: 12
         }}
         onFinish={onRegister}
-        onValuesChange={onFormChange}
       >
         <Item name='username'>
           <Input style={toggleStyle} size='large' prefix={<UserOutlined />} placeholder='用户名' />

@@ -1,65 +1,79 @@
 // react
-import { ChangeEvent, forwardRef, useState, useEffect } from 'react'
+import { forwardRef, useMemo } from 'react'
 // antd
 import { Form, FormInstance, Input, InputNumber } from 'antd'
+import { useForm } from 'antd/lib/form/Form'
 // project
-import type { Dictionary as DictionaryType } from '../../../typings/dictionary'
 import { create, update } from '../../../apis/dictionary'
 import { responseNotification } from '../../../utils/notification'
-import { getInitialSingleton } from './assets'
 import { SingletonProps } from '../assets'
+import type { FormValues } from './assets'
+import type { Dictionary as DictionaryType } from '../../../typings/dictionary'
 
 const { Item } = Form
 
 const Dictionary = forwardRef<FormInstance, SingletonProps<DictionaryType>>((props, ref) => {
-  const initialDictionary = getInitialSingleton()
-  const [description, setDescription] = useState(initialDictionary.description)
-  const [sortBy, setSortBy] = useState(initialDictionary.sortBy)
-  const [code, setCode] = useState(initialDictionary.code)
+  const [form] = useForm<FormValues>()
 
-  useEffect(() => {
-    setDescription(props.singleton.description)
-    setSortBy(props.singleton.sortBy)
-    setCode(props.singleton.code)
-  }, [props.singleton])
-
-  const onCodeChange = (e: ChangeEvent<HTMLInputElement>) => setCode(e.target.value)
-
-  const onDescriptionChange = (e: ChangeEvent<HTMLInputElement>) => setDescription(e.target.value)
-
-  const onSortByChange = (value: number) => setSortBy(value)
+  const initialValues = useMemo<FormValues>(
+    () => ({
+      code: props.singleton.code,
+      description: props.singleton.description,
+      sortBy: props.singleton.sortBy
+    }),
+    [props.singleton]
+  )
 
   const onSubmit = async () => {
-    const params = {
-      code,
-      sortBy,
-      description
-    }
+    const formValues = form.getFieldsValue()
 
     const handlers = {
-      create: () => create(params),
-      update: () => update(props.singleton._id, params)
+      create: () => create(formValues),
+      update: () => update(props.singleton._id, formValues)
     }
 
     // 表单提交
-    const handler = handlers[props.singleton._id ? 'update' : 'create']
-    const res = await handler()
+    const res = await handlers[props.singleton._id ? 'update' : 'create']()
     responseNotification(res)
     !res.code && props.onSubmitted && props.onSubmitted()
   }
 
   return (
-    <Form ref={ref} onFinish={onSubmit} labelCol={{ span: 6 }}>
-      <Item label='字典Code'>
-        <Input value={code} onChange={onCodeChange} />
+    <Form ref={ref} form={form} onFinish={onSubmit} labelCol={{ span: 6 }} initialValues={initialValues}>
+      <Item
+        label='字典Code'
+        name='code'
+        rules={[
+          {
+            required: true
+          }
+        ]}
+      >
+        <Input />
       </Item>
 
-      <Item label='字典描述'>
-        <Input value={description} onChange={onDescriptionChange} />
+      <Item
+        label='字典描述'
+        name='description'
+        rules={[
+          {
+            required: true
+          }
+        ]}
+      >
+        <Input />
       </Item>
 
-      <Item label='排序码'>
-        <InputNumber value={sortBy} onChange={onSortByChange} />
+      <Item
+        label='排序码'
+        name='sortBy'
+        rules={[
+          {
+            required: true
+          }
+        ]}
+      >
+        <InputNumber />
       </Item>
     </Form>
   )

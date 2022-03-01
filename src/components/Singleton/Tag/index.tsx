@@ -1,8 +1,7 @@
 // react
-import { useEffect, useMemo, forwardRef, useState } from 'react'
+import { useMemo, forwardRef } from 'react'
 // antd
 import type { FormInstance } from 'antd'
-import type { UploadChangeParam } from 'antd/lib/upload'
 import { Form, Input, Upload } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { useForm } from 'antd/lib/form/Form'
@@ -10,39 +9,34 @@ import { useForm } from 'antd/lib/form/Form'
 import { responseNotification } from '../../../utils/notification'
 import { create, update } from '../../../apis/tag'
 import { SingletonProps } from '../assets'
-import { customRequest, getUploadParam } from '../../../utils/upload'
+import { customRequest, getUploadParam, getValueFromEvent } from '../../../utils/upload'
 import type { Tag as TagType } from '../../../typings/tag'
+import type { FormValues } from './assets'
 
 const { Item } = Form
 
 const Tag = forwardRef<FormInstance, SingletonProps<TagType>>((props, ref) => {
-  const [form] = useForm()
+  const [form] = useForm<FormValues>()
 
-  const initialValues = useMemo((): {
-    name: string
-    uploadParam?: UploadChangeParam
-  } => {
+  const initialValues = useMemo<FormValues>(() => {
     return {
       name: props.singleton.name,
-      uploadParam: getUploadParam({
-        id: props.singleton._id,
-        name: props.singleton.name,
-        url: props.singleton.cover
-      })
+      fileList:
+        getUploadParam({
+          id: props.singleton._id,
+          name: props.singleton.name,
+          url: props.singleton.cover
+        })?.fileList || []
     }
-  }, [props.singleton])
-
-  const [model, setModel] = useState(initialValues)
-
-  useEffect(() => {
-    setModel(initialValues)
   }, [props.singleton])
 
   /** 表单提交事件 */
   const onSubmit = async () => {
+    const formValues = form.getFieldsValue()
+
     const params = {
-      name: model.name,
-      cover: model.uploadParam?.file.response.data
+      name: formValues.name,
+      cover: formValues.fileList.at(0)?.response.data
     }
 
     const handlers = {
@@ -56,14 +50,9 @@ const Tag = forwardRef<FormInstance, SingletonProps<TagType>>((props, ref) => {
     props.onSubmitted && props.onSubmitted()
   }
 
-  /** 表单数据变更 */
-  const onValuesChange = (changedValues: any, values: any) => {
-    setModel(values)
-  }
-
   return (
     <>
-      <Form form={form} ref={ref} onFinish={onSubmit} labelCol={{ span: 6 }} initialValues={initialValues} onValuesChange={onValuesChange}>
+      <Form form={form} ref={ref} onFinish={onSubmit} labelCol={{ span: 6 }} initialValues={initialValues}>
         <Item
           label='标签名称'
           name='name'
@@ -78,17 +67,19 @@ const Tag = forwardRef<FormInstance, SingletonProps<TagType>>((props, ref) => {
 
         <Item
           label='封面图'
-          name='uploadParam'
+          name='fileList'
+          valuePropName='fileList'
           rules={[
             {
-              required: true,
-              validator: async (_, value?: UploadChangeParam) => {
-                if (!value || value.fileList.length === 0) throw new Error('请输入封面图')
-              }
+              required: true
+              // validator: async (_, value?: UploadChangeParam) => {
+              //   if (!value || value.fileList.length === 0) throw new Error('请输入封面图')
+              // }
             }
           ]}
+          getValueFromEvent={getValueFromEvent}
         >
-          <Upload listType='picture-card' fileList={model.uploadParam?.fileList} maxCount={1} customRequest={customRequest}>
+          <Upload listType='picture-card' maxCount={1} customRequest={customRequest}>
             <PlusOutlined />
           </Upload>
         </Item>

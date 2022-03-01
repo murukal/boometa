@@ -12,3 +12,9 @@ export const getInitialSingleton = (): DictionaryEnum => ({
   _id: '',
   belongTo: ''
 })
+
+export interface FormValues {
+  code: string
+  description: string
+  sortBy: number
+}

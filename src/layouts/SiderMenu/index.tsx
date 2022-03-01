@@ -31,7 +31,7 @@ const SiderMenu = () => {
           mapRoute(menu.children)
         } else {
           // 匹配路由
-          if (menu.to === route.pathname) {
+          if (menu.route?.to === route.pathname) {
             menu._id && defaultSelectedKeys.push(menu._id)
           }
         }
@@ -67,7 +67,7 @@ const SiderMenu = () => {
               key={menu._id}
               icon={Icon}
             >
-              {menu.to ? <Link to={menu.to}>{menu.name}</Link> : menu.name}
+              {menu.route ? <Link to={menu.route.to}>{menu.name}</Link> : menu.name}
             </Item>
           ) : (
             <SubMenu key={menu._id} title={menu.name} icon={Icon}>

@@ -6,40 +6,53 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Card, Input, Form, Upload, Select } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { useForm } from 'antd/lib/form/Form'
+import type { DefaultOptionType } from 'antd/lib/select'
 // project
-import { getInitialModel } from './assets'
 import { create, getEssay, update } from '../../apis/essay'
 import { getTags } from '../../apis/tag'
 import Editor from '../../components/Singleton/Essay/Editor'
 import { customRequest, getValueFromEvent } from '../../utils/upload'
-import type { Tag } from '../../typings/tag'
-import type { Model, UploadFile } from './assets'
-import { CreateEssay } from '../../typings/essay'
 import { responseNotification } from '../../utils/notification'
+import type { CreateEssay } from '../../typings/essay'
+import type { FormValues } from './assets'
 
 const { Item } = Form
 
 const Essay = () => {
-  const [tags, setTags] = useState<Tag[]>([])
-  const [model, setModel] = useState<Model>(getInitialModel())
+  const [tagOptions, setTagOptions] = useState<DefaultOptionType[]>()
+  const [initialValues, setInitialValues] = useState<FormValues>()
 
   const urlParams = useParams()
   const navigate = useNavigate()
-  const [form] = useForm()
+  const [form] = useForm<FormValues>()
 
   const onFetch = async () => {
-    // 路由中存在文章id，查询文章
-    if (urlParams.id) {
-      const essay = (await getEssay(urlParams.id)).data
+    // 标签选项
+    setTagOptions(
+      ((await getTags()).data?.docs || []).map((tag) => ({
+        label: tag.name,
+        value: tag._id
+      }))
+    )
 
-      // 文章不存在，返回404
-      if (!essay) {
-        navigate('/404')
-        return
-      }
+    // 路由存在文章id，还需要查询文章信息
+    // 如果不存在，不做处理
+    if (!urlParams.id) return
 
-      // 文件列表
-      const fileList: UploadFile[] = essay.cover
+    const essay = (await getEssay(urlParams.id)).data
+
+    // 文章不存在，返回404
+    if (!essay) {
+      navigate('/404')
+      return
+    }
+
+    // 赋值
+    setInitialValues({
+      title: essay.title,
+      content: essay.content,
+      tags: essay.tags as string[],
+      fileList: essay.cover
         ? [
             {
               name: essay.title,
@@ -48,25 +61,10 @@ const Essay = () => {
             }
           ]
         : []
+    })
 
-      // 赋值
-      setModel({
-        title: essay.title,
-        content: essay.content,
-        tags: essay.tags as string[],
-        fileList
-      })
-
-      form.setFieldsValue({
-        title: essay.title,
-        content: essay.content,
-        tags: essay.tags as string[],
-        fileList
-      })
-    }
-
-    // 获取标签
-    setTags((await getTags()).data?.docs || [])
+    // 重置表单
+    form.resetFields()
   }
 
   useEffect(() => {
@@ -75,11 +73,13 @@ const Essay = () => {
 
   /** 提交 */
   const onSubmit = async () => {
+    const formValues = form.getFieldsValue()
+
     const params: CreateEssay = {
-      content: model.content,
-      tags: model.tags,
-      title: model.title,
-      cover: model.fileList.at(0)?.response?.data || ''
+      content: formValues.content,
+      tags: formValues.tags,
+      title: formValues.title,
+      cover: formValues.fileList.at(0)?.response?.data || ''
     }
 
     const handlers = {
@@ -88,21 +88,15 @@ const Essay = () => {
     }
 
     const res = await handlers[urlParams.id ? 'update' : 'create']()
-
     // 路由跳转到文章列表
     navigate('/essays')
     // 消息提醒
     res && responseNotification(res)
   }
 
-  /** 表单变更 */
-  const onFormChange = (changedValues: any, values: any) => {
-    setModel(values)
-  }
-
   return (
     <Card>
-      <Form form={form} onFinish={onSubmit} onValuesChange={onFormChange} initialValues={model}>
+      <Form form={form} onFinish={onSubmit} initialValues={initialValues}>
         <Item
           label='文章标题'
           labelCol={{ span: 2 }}
@@ -116,13 +110,7 @@ const Essay = () => {
           <Input size='large' placeholder='请输入标题' />
         </Item>
 
-        <Item
-          label='文章封面'
-          name='fileList'
-          labelCol={{ span: 2 }}
-          valuePropName='fileList'
-          getValueFromEvent={getValueFromEvent}
-        >
+        <Item label='文章封面' name='fileList' labelCol={{ span: 2 }} valuePropName='fileList' getValueFromEvent={getValueFromEvent}>
           <Upload listType='picture-card' customRequest={customRequest}>
             <PlusOutlined />
           </Upload>
@@ -138,13 +126,7 @@ const Essay = () => {
             }
           ]}
         >
-          <Select
-            mode='multiple'
-            options={tags.map((tag) => ({
-              label: tag.name,
-              value: tag._id
-            }))}
-          />
+          <Select mode='multiple' options={tagOptions} />
         </Item>
 
         <Item

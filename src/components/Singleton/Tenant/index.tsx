@@ -15,7 +15,7 @@ const Tenant = forwardRef<FormInstance, SingletonProps<TenantType>>((props, ref)
   const [form] = useForm<FormValues>()
 
   /** 表单初始值 */
-  const initialValues = useMemo(
+  const initialValues = useMemo<FormValues>(
     () => ({
       code: props.singleton.code,
       name: props.singleton.name,
@@ -25,11 +25,11 @@ const Tenant = forwardRef<FormInstance, SingletonProps<TenantType>>((props, ref)
   )
 
   const onSubmit = async () => {
-    const model = form.getFieldsValue()
+    const formValues = form.getFieldsValue()
 
     const handlers = {
-      create: () => create(model),
-      update: () => update(props.singleton._id, model)
+      create: () => create(formValues),
+      update: () => update(props.singleton._id, formValues)
     }
 
     // 表单提交

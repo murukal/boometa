@@ -34,11 +34,11 @@ const Router = () => {
         // 存在子节点递归
         menu.children && menusToRoutes(menu.children, total)
 
-        // 菜单存在路由时，添加到路由表中
-        menu.to &&
+        // 菜单存在路由，添加到路由表中
+        menu.route &&
           total.push({
-            path: menu.to,
-            element: Loadable(menu.component || '')
+            path: menu.route.to,
+            element: Loadable(menu.route.component)
           })
 
         return total

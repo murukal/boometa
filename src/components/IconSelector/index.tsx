@@ -3,11 +3,8 @@ import { createElement } from 'react'
 // antd
 import { Select } from 'antd'
 import * as Icons from '@ant-design/icons/lib/icons'
-
-interface Props {
-  value: string
-  onChange?: (value: string) => void
-}
+// project
+import { Props } from './assets'
 
 const { Option } = Select
 

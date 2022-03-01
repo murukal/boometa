@@ -7,7 +7,8 @@ export const getInitialSingleton = (): Dictionary => ({
   code: ''
 })
 
-/** 字典code枚举，配置的时候请务必参考下当前文件 */
-export const DICTIONARY_CODE_PERMISSION_KEY = 'permission_key'
-
-export const DICTIONARY_CODE_ABILITY_KEY = 'ability_key'
+export interface FormValues {
+  code: string
+  description: string
+  sortBy: number
+}

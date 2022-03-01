@@ -1,12 +1,9 @@
 // antd
 import type { DataNode } from 'antd/lib/tree'
 // project
-import type { AbilityKey, Permission, PermissionKey } from '../../../typings/role'
+import type { AbilityKey, PermissionKey } from '../../../typings/role'
 
-export interface PermissionDataNode extends DataNode {
-  value: string
-  children?: PermissionDataNode[]
-}
+export const separator = ':'
 
 export const permissionKeys: Record<PermissionKey, string> = {
   menu: '菜单',
@@ -20,15 +17,13 @@ export const abilityKeys: Record<AbilityKey, string> = {
   update: '更新'
 }
 
-export const permissionTree: PermissionDataNode[] = Object.keys(permissionKeys).map((permissionKey) => ({
+export const permissionTree: DataNode[] = Object.keys(permissionKeys).map((permissionKey) => ({
   key: permissionKey,
-  value: permissionKey,
   title: permissionKeys[permissionKey as PermissionKey],
 
   // 叶子节点
   children: Object.keys(abilityKeys).map((ablityKey) => ({
-    key: `${permissionKey}:${ablityKey}`,
-    value: ablityKey,
+    key: `${permissionKey}${separator}${ablityKey}`,
     title: abilityKeys[ablityKey as AbilityKey]
   })),
 
@@ -41,9 +36,5 @@ export interface Props {
   roleId: string
   onSubmit: Function
   onSubmitted: Function
-  permissions: Permission[]
+  authorizations: string[]
 }
-
-export const separator = ':'
-
-export type PermissionModel = Partial<Record<PermissionKey, AbilityKey[]>>
