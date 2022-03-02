@@ -18,21 +18,25 @@ const Permissions = forwardRef<any, Props>((props, ref) => {
   }
 
   /** ref */
-  useImperativeHandle(ref, () => ({
-    /** 提交 */
-    onSubmit: async () => {
-      // 预回调
-      props.onSubmit()
-      // 展现消息
-      responseNotification(
-        await update(props.roleId, {
-          authorizations: checkedKeys
-        })
-      )
-      // 结束回调
-      props.onSubmitted()
-    }
-  }))
+  useImperativeHandle(
+    ref,
+    () => ({
+      /** 提交 */
+      onSubmit: async () => {
+        // 预回调
+        props.onSubmit()
+        // 展现消息
+        responseNotification(
+          await update(props.roleId, {
+            authorizations: checkedKeys
+          })
+        )
+        // 结束回调
+        props.onSubmitted()
+      }
+    }),
+    []
+  )
 
   /** 渲染 已授权 */
   useEffect(() => {
