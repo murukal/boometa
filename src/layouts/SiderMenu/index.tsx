@@ -59,21 +59,30 @@ const SiderMenu = () => {
           // 创建动态图标
           const Icon = menu.icon ? createElement(Icons[menu.icon as keyof typeof Icons]) : null
 
-          return !menu.children ? (
-            <Item
-              style={{
-                marginTop: 0
-              }}
-              key={menu._id}
-              icon={Icon}
-            >
-              {menu.route ? <Link to={menu.route.to}>{menu.name}</Link> : menu.name}
-            </Item>
-          ) : (
-            <SubMenu key={menu._id} title={menu.name} icon={Icon}>
-              {renderMenu(menu.children)}
-            </SubMenu>
-          )
+          // menu 含有子节点，渲染为submenu
+          if (menu.children)
+            return (
+              <SubMenu key={menu._id} title={menu.name} icon={Icon}>
+                {renderMenu(menu.children)}
+              </SubMenu>
+            )
+
+          // menu 含有路由信息，渲染为item
+          if (menu.route)
+            return (
+              <Item
+                style={{
+                  marginTop: 0
+                }}
+                key={menu._id}
+                icon={Icon}
+              >
+                {menu.route ? <Link to={menu.route.to}>{menu.name}</Link> : menu.name}
+              </Item>
+            )
+
+          // 都不包含，返回空dom
+          return <></>
         })}
       </>
     )

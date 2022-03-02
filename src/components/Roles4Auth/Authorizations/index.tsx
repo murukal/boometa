@@ -35,7 +35,7 @@ const Permissions = forwardRef<any, Props>((props, ref) => {
         props.onSubmitted()
       }
     }),
-    []
+    [checkedKeys]
   )
 
   /** 渲染 已授权 */
