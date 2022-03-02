@@ -11,7 +11,7 @@ import type { DefaultOptionType } from 'antd/lib/select'
 import { create, getEssay, update } from '../../apis/essay'
 import { getTags } from '../../apis/tag'
 import Editor from '../../components/Singleton/Essay/Editor'
-import { customRequest, getValueFromEvent } from '../../utils/upload'
+import { customRequest, getUploadParam, getValueFromEvent } from '../../utils/upload'
 import { responseNotification } from '../../utils/notification'
 import type { CreateEssay } from '../../typings/essay'
 import type { FormValues } from './assets'
@@ -52,15 +52,11 @@ const Essay = () => {
       title: essay.title,
       content: essay.content,
       tags: essay.tags as string[],
-      fileList: essay.cover
-        ? [
-            {
-              name: essay.title,
-              uid: essay._id,
-              thumbUrl: essay.cover
-            }
-          ]
-        : []
+      fileList: getUploadParam({
+        id: essay._id,
+        name: essay.title,
+        url: essay.cover
+      })?.fileList
     })
 
     // 重置表单
@@ -79,7 +75,7 @@ const Essay = () => {
       content: formValues.content,
       tags: formValues.tags,
       title: formValues.title,
-      cover: formValues.fileList.at(0)?.response?.data || ''
+      cover: formValues.fileList?.at(0)?.response?.data || ''
     }
 
     const handlers = {

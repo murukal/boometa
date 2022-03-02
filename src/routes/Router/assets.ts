@@ -19,6 +19,8 @@ export const essayRoutes: RouteObject = {
   element: Loadable('layouts/Layout'),
   children: [
     {
+      path: '',
+      index: true,
       element: Loadable('pages/Essay')
     },
     {

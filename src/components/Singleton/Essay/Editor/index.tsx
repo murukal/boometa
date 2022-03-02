@@ -14,9 +14,6 @@ export const Editor = (props: Props) => {
   const ref = createRef<HTMLDivElement>()
 
   useEffect(() => {
-    // 挂载之前保证editor对象已经被清除
-    editor?.destroy()
-
     const height = props.height || ref.current?.clientHeight
 
     const theme = EditorView.theme(
@@ -73,7 +70,7 @@ export const Editor = (props: Props) => {
     return () => {
       editor?.destroy()
     }
-  }, [props])
+  }, [])
 
   return <div className={props.className} ref={ref} />
 }

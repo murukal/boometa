@@ -9,7 +9,7 @@ export interface Essay {
   createdBy: string | User
   createdAt?: string
   tags: Array<Tag | string>
-  cover?: string | null
+  cover?: string
 }
 
 export interface CreateEssay extends Omit<Essay, '_id' | 'createdBy' | 'createdAt'> {}

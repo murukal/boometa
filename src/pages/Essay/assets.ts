@@ -7,6 +7,6 @@ export type UploadFile = OriginUploadFile<ApiResponse<string>>
 export interface FormValues {
   title: string
   content: string
-  fileList: UploadFile[]
+  fileList?: UploadFile[]
   tags: string[]
 }
