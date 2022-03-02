@@ -57,6 +57,7 @@ const Register = () => {
         style={{
           marginTop: 12
         }}
+        form={form}
         onFinish={onRegister}
       >
         <Item name='username'>
