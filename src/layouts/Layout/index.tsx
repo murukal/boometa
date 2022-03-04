@@ -3,14 +3,13 @@ import { Navigate, Outlet } from 'react-router-dom'
 // redux
 import { useSelector } from 'react-redux'
 // antd
-import { Layout as Wrapper, Typography, Image } from 'antd'
+import { Layout as Wrapper, Image } from 'antd'
 // project
 import SiderMenu from '../SiderMenu'
 import Header from '../Header'
 import { useState } from 'react'
 
 const { Content, Sider } = Wrapper
-const { Title } = Typography
 
 const Layout = () => {
   const [isFolded, setIsFolded] = useState(false)
@@ -25,7 +24,6 @@ const Layout = () => {
       {/* 侧边导航栏 */}
       <Sider collapsed={isFolded}>
         {/* logo */}
-        {/* 站名 */}
         <div className='h-16 flex items-center justify-around'>
           <Image
             src='/boomart.ico'
@@ -34,18 +32,6 @@ const Layout = () => {
             }}
             preview={false}
           />
-
-          {!isFolded && (
-            <Title
-              level={5}
-              style={{
-                color: 'white',
-                marginBottom: 0
-              }}
-            >
-              fantufantu
-            </Title>
-          )}
         </div>
 
         {/* menu */}
