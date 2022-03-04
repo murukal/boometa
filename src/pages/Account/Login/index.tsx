@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 // router
 import { Link } from 'react-router-dom'
 // antd
-import { Button, Divider, Form, Input, Typography } from 'antd'
+import { Button, Checkbox, Divider, Form, Input, Typography } from 'antd'
 import { EyeTwoTone, EyeInvisibleOutlined, UserOutlined, LockOutlined } from '@ant-design/icons'
 import { useForm } from 'antd/lib/form/Form'
 // project
@@ -19,8 +19,6 @@ const { Item } = Form
 const { Password } = Input
 
 const Login = () => {
-  // const [isAutoLogin, setIsAutoLogin] = useState(true)
-
   const dispatch = useDispatch()
   const tenant = useSelector((state) => state.tenant)
   const [form] = useForm<FormValues>()
@@ -47,7 +45,7 @@ const Login = () => {
     if (!res) return
 
     if (res.data) {
-      setToken(res.data, true)
+      setToken(res.data, formValues.isAutoLogin)
       dispatch(passToken())
       dispatch(await authenticate())
     }
@@ -79,6 +77,14 @@ const Login = () => {
             iconRender={(isPasswordVisible: boolean) => (isPasswordVisible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
           />
         </Item>
+
+        <div className='mb-6 flex justify-between'>
+          <Item name='isAutoLogin' noStyle valuePropName='checked'>
+            <Checkbox>记住我</Checkbox>
+          </Item>
+
+          <Link to='/account/forget-password'>忘记密码</Link>
+        </div>
 
         <Item>
           <Button block htmlType='submit' shape='round' size='large' type='primary'>

@@ -12,7 +12,7 @@ import { easyNotification, responseNotification } from '../../../utils/notificat
 import { authenticate, passToken } from '../../../redux/userProfile/actions'
 import { setToken } from '../../../utils/app'
 import { toggleStyle } from '../assets'
-import type { FormValues } from './assets'
+import { FormValues, passwordRegex } from './assets'
 
 const { Item } = Form
 const { Title, Text } = Typography
@@ -60,19 +60,80 @@ const Register = () => {
         form={form}
         onFinish={onRegister}
       >
-        <Item name='username'>
-          <Input style={toggleStyle} size='large' prefix={<UserOutlined />} placeholder='用户名' />
+        <Item
+          name='username'
+          rules={[
+            {
+              required: true,
+              message: '用户名必输！'
+            }
+          ]}
+        >
+          <Input style={toggleStyle} size='large' prefix={<UserOutlined />} placeholder='用户名' maxLength={20} />
         </Item>
 
-        <Item name='email'>
+        <Item
+          name='email'
+          rules={[
+            {
+              required: true,
+              message: '邮箱必输！'
+            },
+            {
+              type: 'email',
+              message: '邮箱不符合规范！'
+            }
+          ]}
+        >
           <Input style={toggleStyle} size='large' prefix={<MailOutlined />} placeholder='邮箱' />
         </Item>
 
-        <Item name='password'>
+        <Item
+          name='password'
+          rules={[
+            {
+              required: true,
+              message: '密码必输！'
+            },
+            {
+              validator: async (rule, value) => {
+                if (!value) return
+
+                if (!passwordRegex.test(value)) return Promise.reject('需包含大/小写字母，数组，特殊符号中三项！')
+              }
+            }
+          ]}
+        >
           <Password
             style={toggleStyle}
             size='large'
             placeholder='密码'
+            prefix={<LockOutlined />}
+            iconRender={(isPasswordVisible: boolean) => (isPasswordVisible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+          />
+        </Item>
+
+        <Item
+          name='repeatPassword'
+          dependencies={['password']}
+          rules={[
+            {
+              required: true,
+              message: '请再次输入密码！'
+            },
+            ({ getFieldValue }) => ({
+              validator: async (rule, value) => {
+                if (!value) return
+
+                if (value !== getFieldValue('password')) return Promise.reject('再次输入的密码必须跟密码保持一致！')
+              }
+            })
+          ]}
+        >
+          <Password
+            style={toggleStyle}
+            size='large'
+            placeholder='请再次输入密码'
             prefix={<LockOutlined />}
             iconRender={(isPasswordVisible: boolean) => (isPasswordVisible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
           />
