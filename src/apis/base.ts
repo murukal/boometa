@@ -1,4 +1,5 @@
 // project
+import { gql } from '@apollo/client'
 import arq from '.'
 
 interface UploadParams {
@@ -18,3 +19,10 @@ export const upload = (params: UploadParams) => {
     }
   })
 }
+
+/** 初始化项目 */
+export const INITIALIZE = gql`
+  query {
+    rsaPublicKey
+  }
+`

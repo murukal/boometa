@@ -6,11 +6,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import Router from './routes/Router'
 import { getTenant } from './redux/tenant/actions'
 import { authenticate, passToken } from './redux/userProfile/actions'
+import { useQuery } from '@apollo/client'
+import { INITIALIZE } from './apis/base'
 
 const App = () => {
   const dispatch = useDispatch()
   const tenantCode = useSelector((state) => state.tenant.code)
   const [isReady, setIsReady] = useState(false)
+
+  const { data, loading: isLoading } = useQuery(INITIALIZE)
 
   const onFetch = async () => {
     // 将客户端的token存储到redux中
@@ -27,7 +31,7 @@ const App = () => {
     onFetch().finally(() => setIsReady(true))
   }, [])
 
-  return <>{isReady && <Router />}</>
+  return <>{isLoading && <Router />}</>
 }
 
 export default App

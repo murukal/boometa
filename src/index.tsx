@@ -7,20 +7,28 @@ import { Provider } from 'react-redux'
 // antd
 import zh_CN from 'antd/lib/locale-provider/zh_CN'
 import { ConfigProvider } from 'antd'
+// third
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
 // project
 import App from './App'
 import store from './redux'
 import reportWebVitals from './reportWebVitals'
 import './styles/index.less'
 
+const client = new ApolloClient({
+  cache: new InMemoryCache()
+})
+
 ReactDOM.render(
-  <Provider store={store}>
-    <ConfigProvider locale={zh_CN}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ConfigProvider>
-  </Provider>,
+  <ApolloProvider client={client}>
+    <Provider store={store}>
+      <ConfigProvider locale={zh_CN}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ConfigProvider>
+    </Provider>
+  </ApolloProvider>,
   document.getElementById('root')
 )
 

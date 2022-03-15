@@ -6,13 +6,16 @@ import { Link } from 'react-router-dom'
 import { Button, Checkbox, Divider, Form, Input, Typography } from 'antd'
 import { EyeTwoTone, EyeInvisibleOutlined, UserOutlined, LockOutlined } from '@ant-design/icons'
 import { useForm } from 'antd/lib/form/Form'
+// third
+import { useApolloClient } from '@apollo/client'
 // project
-import { login } from '../../../apis/account'
-import { easyNotification, responseNotification } from '../../../utils/notification'
+import { LOGIN } from '../../../apis/account'
+import { easyNotification } from '../../../utils/notification'
 import { authenticate, passToken } from '../../../redux/userProfile/actions'
 import { setToken } from '../../../utils/app'
 import { toggleStyle } from '../assets'
 import type { FormValues } from './assets'
+import type { LoginInput } from '../../../typings/user'
 
 const { Title, Text } = Typography
 const { Item } = Form
@@ -22,6 +25,8 @@ const Login = () => {
   const dispatch = useDispatch()
   const tenant = useSelector((state) => state.tenant)
   const [form] = useForm<FormValues>()
+
+  const client = useApolloClient()
 
   // 执行登录
   const onLogin = async () => {
@@ -35,22 +40,22 @@ const Login = () => {
       return
     }
 
-    const res = await login({
-      ...formValues,
-      tenantCode: tenant.code,
-      password: encryptedPassword
+    const { data: token, errors } = await client.mutate<string, LoginInput>({
+      mutation: LOGIN,
+      variables: {
+        ...formValues,
+        password: encryptedPassword
+      }
     })
 
-    // 加密失败
-    if (!res) return
+    console.log('errors=====', errors)
 
-    if (res.data) {
-      setToken(res.data, formValues.isAutoLogin)
-      dispatch(passToken())
-      dispatch(await authenticate())
-    }
+    // 请求失败
+    if (!token) return
 
-    responseNotification(res)
+    setToken(token, formValues.isAutoLogin)
+    dispatch(passToken())
+    dispatch(await authenticate())
   }
 
   return (

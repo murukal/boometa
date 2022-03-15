@@ -8,8 +8,7 @@ export interface User {
   avatar: string
 }
 
-export interface Login {
-  tenantCode: TenantCode
+export interface LoginInput {
   keyword: string
   password: string
 }
