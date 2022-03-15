@@ -1,5 +1,5 @@
 // react
-import { useLayoutEffect, useState } from 'react'
+import { useLayoutEffect } from 'react'
 // redux
 import { useDispatch, useSelector } from 'react-redux'
 // project
@@ -12,9 +12,19 @@ import { INITIALIZE } from './apis/base'
 const App = () => {
   const dispatch = useDispatch()
   const tenantCode = useSelector((state) => state.tenant.code)
-  const [isReady, setIsReady] = useState(false)
 
-  const { data, loading: isLoading } = useQuery(INITIALIZE)
+  const { data, loading } = useQuery<{
+    rsaPublicKey: string
+  }>(INITIALIZE, {
+    variables: {
+      tenantkeyword: tenantCode
+    },
+    onCompleted: (profile) => {
+      dispatch(passToken())
+    }
+  })
+
+  console.log('data====', data)
 
   const onFetch = async () => {
     // 将客户端的token存储到redux中
@@ -28,10 +38,10 @@ const App = () => {
   }
 
   useLayoutEffect(() => {
-    onFetch().finally(() => setIsReady(true))
+    onFetch()
   }, [])
 
-  return <>{isLoading && <Router />}</>
+  return <>{loading && <Router />}</>
 }
 
 export default App

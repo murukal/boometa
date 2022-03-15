@@ -22,7 +22,12 @@ export const upload = (params: UploadParams) => {
 
 /** 初始化项目 */
 export const INITIALIZE = gql`
-  query {
+  query Initialize($tenantkeyword: ID!) {
     rsaPublicKey
+    tenant(keyword: $tenantkeyword) {
+      id
+      code
+      name
+    }
   }
 `
