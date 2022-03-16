@@ -8,7 +8,7 @@ export interface Action {
   data?: Tenant | null
 }
 
-export const setTenant = (data: Tenant): Action => ({
+export const setTenant = (data?: Tenant | null): Action => ({
   type: 'SET_TENANT',
   data
 })

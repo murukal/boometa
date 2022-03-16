@@ -8,12 +8,10 @@ import type { Tenant as TenantType } from '../../typings/tenant'
 import { getColumns } from './assets'
 import { getTenants, remove } from '../../apis/tenant'
 import Tenant from '../../components/Singleton/Tenant'
-import { responseNotification } from '../../utils/notification'
 import Toolbar from '../../components/Toolbar'
 import Singleton from '../../components/Singleton'
 import { getInitialTenant } from '../../components/Singleton/Tenant/assets'
 import { getTableRowHandler, useTable } from '../../utils/table'
-import { QueryOptions } from '../../typings/api'
 
 const Tenants = () => {
   const [isOpened, setIsOpened] = useState(false)
@@ -49,7 +47,7 @@ const Tenants = () => {
   const {
     handlers: { onFetch },
     props: { results: tenants, isLoading }
-  } = useTable<TenantType>(({ pagination, ...query }: QueryOptions) => getTenants(query))
+  } = useTable<TenantType>(() => getTenants())
 
   // 请求数据
   useEffect(() => {
@@ -73,8 +71,7 @@ const Tenants = () => {
   const onDelete = (id: number) => {
     return async () => {
       const res = await remove(id)
-      responseNotification(res)
-      !res.code && onFetch()
+      !res.data && onFetch()
     }
   }
 
@@ -88,9 +85,23 @@ const Tenants = () => {
     <Card>
       <Toolbar onAdd={onOpen()} onDelete={() => {}} />
 
-      <Table rowKey='_id' loading={isLoading} columns={columns} dataSource={tenants} bordered={true} pagination={false} />
+      <Table
+        rowKey='_id'
+        loading={isLoading}
+        columns={columns}
+        dataSource={tenants}
+        bordered={true}
+        pagination={false}
+      />
 
-      <Singleton title='客户端' isOpened={isOpened} onClose={onClose} singleton={tenant} singletonComponent={Tenant} onSubmitted={onSubmitted} />
+      <Singleton
+        title='客户端'
+        isOpened={isOpened}
+        onClose={onClose}
+        singleton={tenant}
+        singletonComponent={Tenant}
+        onSubmitted={onSubmitted}
+      />
     </Card>
   )
 }

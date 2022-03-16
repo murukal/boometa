@@ -8,21 +8,13 @@ import { Provider } from 'react-redux'
 import zh_CN from 'antd/lib/locale-provider/zh_CN'
 import { ConfigProvider } from 'antd'
 // third
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
+import { ApolloProvider } from '@apollo/client'
 // project
 import App from './App'
 import store from './redux'
-import { TOKEN } from './assets'
+import client from './apis'
 import reportWebVitals from './reportWebVitals'
 import './styles/index.less'
-
-const client = new ApolloClient({
-  uri: 'http://localhost:8000/graphql',
-  cache: new InMemoryCache(),
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem(TOKEN) || sessionStorage.getItem(TOKEN)}`
-  }
-})
 
 ReactDOM.render(
   <ApolloProvider client={client}>

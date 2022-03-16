@@ -1,5 +1,5 @@
 // redux
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 // router
 import { Link } from 'react-router-dom'
 // antd
@@ -7,11 +7,11 @@ import { LockOutlined, UserOutlined, EyeTwoTone, EyeInvisibleOutlined, MailOutli
 import { Button, Divider, Form, Input, Typography } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 // third
+import { useApolloClient } from '@apollo/client'
 import type JSEncrypt from 'jsencrypt'
 // project
-import { register } from '../../../apis/account'
-import { easyNotification, responseNotification } from '../../../utils/notification'
-import { authenticate, passToken } from '../../../redux/userProfile/action'
+import { REGISTER } from '../../../apis/account'
+import { easyNotification } from '../../../utils/notification'
 import { setToken } from '../../../utils/app'
 import { toggleStyle } from '../assets'
 import { FormValues, passwordRegex } from './assets'
@@ -22,8 +22,8 @@ const { Title, Text } = Typography
 const { Password } = Input
 
 const Register = () => {
-  const dispatch = useDispatch()
   const encryptor = useSelector<State, JSEncrypt>((state) => state.encryptor)
+  const client = useApolloClient()
 
   const [form] = useForm<FormValues>()
 
@@ -39,17 +39,23 @@ const Register = () => {
       return
     }
 
-    const res = await register({
-      ...formValues,
-      password: encryptedPassword
+    const { data: token, errors } = await client.mutate({
+      mutation: REGISTER,
+      variables: {
+        registerInput: {
+          email: formValues.email,
+          password: formValues.password,
+          username: formValues.username
+        }
+      }
     })
 
-    if (res.data) {
-      setToken(res.data, false)
-      dispatch(passToken())
-      dispatch(await authenticate())
-    }
-    responseNotification(res)
+    console.log('errors=====', errors)
+
+    // 请求失败
+    if (!token) return
+
+    setToken(token, false)
   }
 
   return (

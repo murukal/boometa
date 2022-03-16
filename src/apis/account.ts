@@ -2,16 +2,8 @@
 import { gql } from '@apollo/client'
 import type { TypedDocumentNode } from '@apollo/client'
 // project
-import arq from '.'
-import type { PaginateResult, QueryOptions } from '../typings/api'
+import { fetcher } from '.'
 import type { LoginInput, RegisterInput, User } from '../typings/user'
-
-const url = '/api/authentication'
-
-export const getUsers = (params: QueryOptions) =>
-  arq.get<PaginateResult<User>>(`${url}/users`, {
-    params
-  })
 
 /**
  * 登陆
@@ -33,7 +25,7 @@ export const LOGIN: TypedDocumentNode<
 export const REGISTER: TypedDocumentNode<
   string,
   {
-    loginInput: RegisterInput
+    registerInput: RegisterInput
   }
 > = gql`
   mutation Register($registerInput: RegisterInput!) {
@@ -44,7 +36,7 @@ export const REGISTER: TypedDocumentNode<
 /**
  * 获取用户信息
  */
-export const WHO_AM_I: TypedDocumentNode<User> = gql`
+const WHO_AM_I: TypedDocumentNode<User> = gql`
   query {
     whoAmI {
       id
@@ -55,10 +47,15 @@ export const WHO_AM_I: TypedDocumentNode<User> = gql`
   }
 `
 
+export const whoAmI = async () =>
+  await fetcher.query({
+    query: WHO_AM_I
+  })
+
 /**
  * 查询多个用户
  */
-export const GET_USERS = gql`
+const GET_USERS = gql`
   query {
     getUsers {
       id
@@ -68,3 +65,8 @@ export const GET_USERS = gql`
     }
   }
 `
+
+export const getUsers = () =>
+  fetcher.query({
+    query: GET_USERS
+  })

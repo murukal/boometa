@@ -17,22 +17,16 @@ const Users = (props: Props) => {
     handlers: { onFetch, onTableChange },
     props: { results: users, pagination, isLoading }
   } = useTable<UserType>(async (query: QueryOptions) => {
-    // ids存在入参时，但数组长度为0
-    if (props.ids && !props.ids.length)
-      return {
-        code: 0,
-        data: []
-      }
-
     // 其余场景请求后端数据
     // 固定筛选条件的注入
-    return await getUsers({
-      ...query,
-      _id: {
-        $in: props.ids,
-        $nin: props.excludeIds
-      }
-    })
+    // return await getUsers({
+    //   ...query,
+    //   _id: {
+    //     $in: props.ids,
+    //     $nin: props.excludeIds
+    //   }
+    // })
+    return await getUsers()
   })
 
   // 初始化渲染

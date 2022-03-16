@@ -7,7 +7,6 @@ import type { Tag as TagType } from '../../typings/tag'
 import { getTags, remove } from '../../apis/tag'
 import { getTableRowHandler, useTable } from '../../utils/table'
 import { getColumns } from './assets'
-import { responseNotification } from '../../utils/notification'
 import Singleton from '../../components/Singleton'
 import Tag from '../../components/Singleton/Tag'
 import { getInitialSingleton } from '../../components/Singleton/Tag/assets'
@@ -65,7 +64,6 @@ const Tags = () => {
   /** 删除tag */
   const onDelete = (id: string) => async () => {
     const res = await remove(id)
-    responseNotification(res)
     !res.code && onFetch()
   }
 

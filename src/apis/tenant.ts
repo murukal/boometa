@@ -2,41 +2,20 @@
 import { gql } from '@apollo/client'
 import type { TypedDocumentNode } from '@apollo/client'
 // project
-import arq from '.'
-import type { PaginateResult, QueryOptions } from '../typings/api'
-import type { Tenant, CreateTenant, UpdateTenant } from '../typings/tenant'
-
-const url = `/api/tenant`
-
-/** 获取租户清单 */
-export const getTenants = (params?: QueryOptions) =>
-  arq.get<PaginateResult<Tenant>>(url, {
-    params
-  })
-
-/** 获取租户信息 */
-export const getTenant = (code: string) => arq.get<Tenant>(`${url}/${code}`)
-
-/** 租户入驻 */
-export const create = (tenant: CreateTenant) => arq.post<Tenant>(url, tenant)
-
-/** 更新租户信息 */
-export const update = (id: string, tenant: UpdateTenant) => arq.patch<Tenant>(`${url}/${id}`, tenant)
-
-/** 删除租户 */
-export const remove = (id: number) => arq.delete(`${url}/${id}`)
+import { fetcher } from '.'
+import type { Tenant } from '../typings/tenant'
 
 /**
  * 查询单个租户
  */
-export const TENANT: TypedDocumentNode<
+const TENANT: TypedDocumentNode<
   Tenant,
   {
-    tenantCode: string
+    keyword: string
   }
 > = gql`
-  query Tenant($tenantCode: ID!) {
-    tenant(keyword: $tenantCode) {
+  query Tenant($keyword: ID!) {
+    tenant(keyword: $keyword) {
       id
       code
       name
@@ -44,6 +23,13 @@ export const TENANT: TypedDocumentNode<
     }
   }
 `
+export const getTenant = async (keyword: string) =>
+  await fetcher.query({
+    query: TENANT,
+    variables: {
+      keyword
+    }
+  })
 
 /**
  * 创建租户
@@ -67,3 +53,44 @@ export const UPDATE = gql`
     updateTenant(id: $id, updateTenantInput: $tenant)
   }
 `
+
+/**
+ * 删除租户
+ */
+const REMOVE: TypedDocumentNode<
+  boolean,
+  {
+    id: number
+  }
+> = gql`
+  mutation UpdateTenant($id: Int!) {
+    removeTenant(id: $id)
+  }
+`
+
+export const remove = (id: number) =>
+  fetcher.mutate({
+    mutation: REMOVE,
+    variables: {
+      id
+    }
+  })
+
+/**
+ * 查询多个租户
+ */
+const TENANTS: TypedDocumentNode<Tenant[]> = gql`
+  query {
+    tenants {
+      id
+      code
+      name
+      isAuthorizate
+    }
+  }
+`
+
+export const getTenants = () =>
+  fetcher.query({
+    query: TENANTS
+  })

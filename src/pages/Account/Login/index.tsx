@@ -1,5 +1,5 @@
 // redux
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 // router
 import { Link } from 'react-router-dom'
 // antd
@@ -12,7 +12,6 @@ import type JSEncrypt from 'jsencrypt'
 // project
 import { LOGIN } from '../../../apis/account'
 import { easyNotification } from '../../../utils/notification'
-import { authenticate, passToken } from '../../../redux/userProfile/action'
 import { setToken } from '../../../utils/app'
 import { toggleStyle } from '../assets'
 import type { FormValues } from './assets'
@@ -24,7 +23,6 @@ const { Item } = Form
 const { Password } = Input
 
 const Login = () => {
-  const dispatch = useDispatch()
   const encryptor = useSelector<State, JSEncrypt>((state) => state.encryptor)
   const [form] = useForm<FormValues>()
 
@@ -56,8 +54,6 @@ const Login = () => {
     if (!token) return
 
     setToken(token, formValues.isAutoLogin)
-    dispatch(passToken())
-    dispatch(await authenticate())
   }
 
   return (

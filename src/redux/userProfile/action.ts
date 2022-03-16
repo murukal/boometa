@@ -1,5 +1,5 @@
 // project
-import { UserProfile } from './store'
+import getInitialState, { UserProfile } from './store'
 import { TOKEN } from '../../assets'
 import type { User } from '../../typings/user'
 
@@ -13,12 +13,13 @@ export interface Action {
 /**
  * 存储用户信息
  */
-export const authenticate = (user?: User): Action => {
+export const authenticate = (user?: User | null): Action => {
   return {
     type: 'AUTHENTICATE',
     data: {
       isLogin: !!user,
-      user
+      user,
+      token: getInitialState().token
     }
   }
 }
@@ -33,6 +34,6 @@ export const logout = (): Action => {
 
   return {
     type: 'LOGOUT',
-    data: { isLogin: false, user: null }
+    data: { isLogin: false, user: null, token: null }
   }
 }

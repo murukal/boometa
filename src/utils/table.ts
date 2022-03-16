@@ -6,7 +6,8 @@ import type { TablePaginationConfig, PopconfirmProps } from 'antd'
 import type { FilterValue, SorterResult } from 'antd/lib/table/interface'
 import { Button, Divider, Popconfirm, Space } from 'antd'
 // project
-import type { ApiResponse, FetchAPI, PaginateOptions, PaginateResult, QueryParams } from '../typings/api'
+import type { FetchAPI, PaginateInput, PaginateOutput, QueryParams } from '../typings/api'
+import { FetchResult } from '@apollo/client'
 
 export interface FetchCallbacks<T> {
   setResults?: Dispatch<SetStateAction<T[]>>
@@ -42,18 +43,18 @@ const getFetchHandler =
   async (queryParams) => {
     // 删除条目后，可能导致分页查询出现异常
     // 调用一个可信任的函数处理
-    const { response: res, pagination } = await enhancedFetchHandler(fetchAPI, queryParams)
+    const { result, paginateInput } = await enhancedFetchHandler(fetchAPI, queryParams)
 
     // 分页查询的结果放在docs中
     // 非分页查询的结果直接放在data中
-    callbacks?.setResults && callbacks.setResults((res.data as PaginateResult<T>).docs || res.data || [])
+    callbacks?.setResults && callbacks.setResults((result.data as PaginateOutput<T>).items || result.data || [])
 
     // 设置分页state
     if (callbacks?.setPagination)
       callbacks.setPagination({
         ...queryParams?.pagination,
-        current: pagination.page,
-        total: (res.data as PaginateResult<T>).totalDocs || 0
+        current: paginateInput.page,
+        total: (result.data as PaginateOutput<T>).total || 0
       })
 
     // 设置排序state
@@ -65,12 +66,14 @@ const getFetchHandler =
 
 /**
  * 获取页面的表格变更事件
- * @param onFetch
- * @returns
  */
 const getTableChangeHandler =
   <T>(fetchHandler: FetchHandler<T>) =>
-  (pagination: TablePaginationConfig, filters: Record<string, FilterValue | null>, sorter: SorterResult<T> | SorterResult<T>[]) => {
+  (
+    pagination: TablePaginationConfig,
+    filters: Record<string, FilterValue | null>,
+    sorter: SorterResult<T> | SorterResult<T>[]
+  ) => {
     fetchHandler({
       // 分页参数
       pagination,
@@ -80,60 +83,6 @@ const getTableChangeHandler =
       sorter
     })
   }
-
-/**
- * 动态生成表格的操作按钮
- * @param handlers
- * @returns
- */
-export const getTableRowHandler = (handlers: TableRowHandler[]) => {
-  const nodes: ReactNode[] = []
-
-  handlers.forEach((handler, index) => {
-    // 生成按钮的dom元素
-    const button = createElement(
-      Button,
-      {
-        type: 'link',
-        size: 'small',
-        onClick: handler.popconfirmProps ? undefined : handler.onClick,
-        key: `${handler.label}-button`,
-        danger: handler.danger
-      },
-      handler.label
-    )
-
-    // 生成确认框的dom元素
-    handler.popconfirmProps
-      ? nodes.push(
-          createElement(
-            Popconfirm,
-            {
-              ...handler.popconfirmProps,
-              onConfirm: (e) => {
-                e && handler.onClick && handler.onClick(e)
-              },
-              key: `${handler.label}-confirm`
-            },
-            // 按钮作为子元素
-            button
-          )
-        )
-      : nodes.push(button)
-
-    // 每个元素后面添加一个分割线
-    if (index < handlers.length - 1) {
-      nodes.push(
-        createElement(Divider, {
-          type: 'vertical',
-          key: `${handler.label}-divider`
-        })
-      )
-    }
-  })
-
-  return createElement(Space, null, nodes)
-}
 
 /** 创建一个自定义的hooks，该hooks能被表格实例使用 */
 export const useTable = <T>(fetchAPI: FetchAPI<T>) => {
@@ -200,15 +149,15 @@ const enhancedFetchHandler = async <T>(
   fetchAPI: FetchAPI<T>,
   queryParams?: QueryParams<T>
 ): Promise<{
-  response: ApiResponse<PaginateResult<T> | T[] | null>
-  pagination: PaginateOptions
+  result: FetchResult<PaginateOutput<T> | T[] | null>
+  paginateInput: PaginateInput
 }> => {
   // 初始化分页参数
   const initialPagination = getInitialPagination()
   const limit = queryParams?.pagination?.pageSize || initialPagination.pageSize
   let page = queryParams?.pagination?.current || initialPagination.current
 
-  let res = await fetchAPI({
+  let result = await fetchAPI({
     ...queryParams,
     pagination: {
       page,
@@ -217,15 +166,13 @@ const enhancedFetchHandler = async <T>(
   })
 
   // 分页的场景下，在异常范围内，需要重新处理
-  const docs = (res.data as PaginateResult<T>).docs
-  const hasPrevPage = (res.data as PaginateResult<T>).hasPrevPage
-  const totalPages = (res.data as PaginateResult<T>).totalPages
+  const { items, pageCount } = result.data as PaginateOutput<T>
 
-  if (docs && !docs.length && hasPrevPage && page && page > 1) {
+  if (items && !items.length && page && page > 1) {
     page--
-    page = page > totalPages ? totalPages : page
+    page = page > pageCount ? pageCount : page
 
-    res = await fetchAPI({
+    result = await fetchAPI({
       ...queryParams,
       pagination: {
         page,
@@ -235,10 +182,64 @@ const enhancedFetchHandler = async <T>(
   }
 
   return {
-    response: res,
-    pagination: {
+    result,
+    paginateInput: {
       page,
       limit
     }
   }
+}
+
+/**
+ * 动态生成表格的操作按钮
+ * @param handlers
+ * @returns
+ */
+export const getTableRowHandler = (handlers: TableRowHandler[]) => {
+  const nodes: ReactNode[] = []
+
+  handlers.forEach((handler, index) => {
+    // 生成按钮的dom元素
+    const button = createElement(
+      Button,
+      {
+        type: 'link',
+        size: 'small',
+        onClick: handler.popconfirmProps ? undefined : handler.onClick,
+        key: `${handler.label}-button`,
+        danger: handler.danger
+      },
+      handler.label
+    )
+
+    // 生成确认框的dom元素
+    handler.popconfirmProps
+      ? nodes.push(
+          createElement(
+            Popconfirm,
+            {
+              ...handler.popconfirmProps,
+              onConfirm: (e) => {
+                e && handler.onClick && handler.onClick(e)
+              },
+              key: `${handler.label}-confirm`
+            },
+            // 按钮作为子元素
+            button
+          )
+        )
+      : nodes.push(button)
+
+    // 每个元素后面添加一个分割线
+    if (index < handlers.length - 1) {
+      nodes.push(
+        createElement(Divider, {
+          type: 'vertical',
+          key: `${handler.label}-divider`
+        })
+      )
+    }
+  })
+
+  return createElement(Space, null, nodes)
 }
