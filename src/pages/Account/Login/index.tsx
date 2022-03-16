@@ -8,14 +8,16 @@ import { EyeTwoTone, EyeInvisibleOutlined, UserOutlined, LockOutlined } from '@a
 import { useForm } from 'antd/lib/form/Form'
 // third
 import { useApolloClient } from '@apollo/client'
+import type JSEncrypt from 'jsencrypt'
 // project
 import { LOGIN } from '../../../apis/account'
 import { easyNotification } from '../../../utils/notification'
-import { authenticate, passToken } from '../../../redux/userProfile/actions'
+import { authenticate, passToken } from '../../../redux/userProfile/action'
 import { setToken } from '../../../utils/app'
 import { toggleStyle } from '../assets'
 import type { FormValues } from './assets'
 import type { LoginInput } from '../../../typings/user'
+import type { State } from '../../../redux'
 
 const { Title, Text } = Typography
 const { Item } = Form
@@ -23,7 +25,7 @@ const { Password } = Input
 
 const Login = () => {
   const dispatch = useDispatch()
-  const tenant = useSelector((state) => state.tenant)
+  const encryptor = useSelector<State, JSEncrypt>((state) => state.encryptor)
   const [form] = useForm<FormValues>()
 
   const client = useApolloClient()
@@ -33,7 +35,7 @@ const Login = () => {
     const formValues = form.getFieldsValue()
 
     // 利用公钥对密码进行加密
-    const encryptedPassword = tenant.encryptor.encrypt(formValues.password)
+    const encryptedPassword = encryptor.encrypt(formValues.password)
 
     if (!encryptedPassword) {
       easyNotification('密码加密失败', 'error')

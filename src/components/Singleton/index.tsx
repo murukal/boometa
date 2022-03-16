@@ -4,7 +4,8 @@ import { createRef } from 'react'
 import { Button, Drawer, Space } from 'antd'
 import type { FormInstance } from 'antd'
 // project
-import { Props } from './assets'
+import type { Props } from './assets'
+import type { FetchResult } from '@apollo/client'
 
 const Singleton = (props: Props) => {
   const ref = createRef<FormInstance>()
@@ -24,6 +25,14 @@ const Singleton = (props: Props) => {
     }
   }
 
+  /** 提交后的回调事件 */
+  const onSubmitted = (res: FetchResult) => {
+    if (res.errors?.length) return
+    if (!props.onSubmitted) return
+    props.onSubmitted()
+  }
+
+  /** 单利组件 */
   const Instance = props.singletonComponent
 
   return (
@@ -46,7 +55,7 @@ const Singleton = (props: Props) => {
           </Space>
         }
       >
-        {Instance ? <Instance singleton={props.singleton} ref={ref} extraProps={props.extraProps} onSubmitted={props.onSubmitted} /> : null}
+        <Instance singleton={props.singleton} ref={ref} extraProps={props.extraProps} onSubmitted={onSubmitted} />
       </Drawer>
     </>
   )

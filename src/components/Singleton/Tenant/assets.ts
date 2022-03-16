@@ -1,11 +1,10 @@
 import { Tenant } from '../../../typings/tenant'
 
 export const getInitialTenant = (): Tenant => ({
-  _id: '',
+  id: 0,
   code: '',
   name: '',
-  isAuthorizate: false,
-  publicKey: ''
+  isAuthorizate: false
 })
 
 export interface FormValues {

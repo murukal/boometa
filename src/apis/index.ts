@@ -1,9 +1,10 @@
 // third
 import axios from 'axios'
 import { stringify } from 'qs'
+import { gql } from '@apollo/client'
+import type { TypedDocumentNode } from '@apollo/client'
 import type { AxiosRequestConfig, AxiosResponse } from 'axios'
 // project
-import store from '../redux'
 import type { ApiResponse } from '../typings/api'
 
 // 生成一个axios实例
@@ -16,7 +17,7 @@ const instance = axios.create({
  */
 instance.interceptors.request.use((config: AxiosRequestConfig) => {
   // 获取token信息
-  const token = store.getState().userProfile.token
+  const token = ''
 
   if (token && config.headers) {
     config.headers['Authorization'] = `Bearer ${token}`
@@ -64,3 +65,10 @@ const arq = {
 }
 
 export default arq
+
+/** 获取RSA公钥 */
+export const RSA_PUBLIC_KEY: TypedDocumentNode<string> = gql`
+  query {
+    rsaPublicKey
+  }
+`

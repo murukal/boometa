@@ -15,6 +15,6 @@ export interface Props<P = any, E = any> {
 
 export interface SingletonProps<P, E = any> {
   singleton: P
-  onSubmitted?: Function
+  onSubmitted: Function
   extraProps: E
 }

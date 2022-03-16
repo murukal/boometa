@@ -6,13 +6,16 @@ import { Link } from 'react-router-dom'
 import { LockOutlined, UserOutlined, EyeTwoTone, EyeInvisibleOutlined, MailOutlined } from '@ant-design/icons'
 import { Button, Divider, Form, Input, Typography } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
+// third
+import type JSEncrypt from 'jsencrypt'
 // project
 import { register } from '../../../apis/account'
 import { easyNotification, responseNotification } from '../../../utils/notification'
-import { authenticate, passToken } from '../../../redux/userProfile/actions'
+import { authenticate, passToken } from '../../../redux/userProfile/action'
 import { setToken } from '../../../utils/app'
 import { toggleStyle } from '../assets'
 import { FormValues, passwordRegex } from './assets'
+import type { State } from '../../../redux'
 
 const { Item } = Form
 const { Title, Text } = Typography
@@ -20,7 +23,8 @@ const { Password } = Input
 
 const Register = () => {
   const dispatch = useDispatch()
-  const tenant = useSelector((state) => state.tenant)
+  const encryptor = useSelector<State, JSEncrypt>((state) => state.encryptor)
+
   const [form] = useForm<FormValues>()
 
   // 用户注册
@@ -28,7 +32,7 @@ const Register = () => {
     const formValues = form.getFieldsValue()
 
     // 利用公钥加密密码
-    const encryptedPassword = tenant.encryptor.encrypt(formValues.password)
+    const encryptedPassword = encryptor.encrypt(formValues.password)
 
     if (!encryptedPassword) {
       easyNotification('密码加密失败', 'error')
@@ -37,8 +41,7 @@ const Register = () => {
 
     const res = await register({
       ...formValues,
-      password: encryptedPassword,
-      tenantCode: tenant.code
+      password: encryptedPassword
     })
 
     if (res.data) {

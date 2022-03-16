@@ -9,11 +9,12 @@ import { Menu } from 'antd'
 import * as Icons from '@ant-design/icons/lib/icons'
 // project
 import type { MenuTreeNode } from '../../typings/menu'
+import type { State } from '../../redux'
 
 const { Item, SubMenu } = Menu
 
 const SiderMenu = () => {
-  const menus = useSelector((state) => state.menus)
+  const menus = useSelector<State, MenuTreeNode[]>((state) => state.menus)
   const route = useLocation()
 
   // 渲染默认选中的条目

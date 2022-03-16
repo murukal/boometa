@@ -5,15 +5,17 @@ import { Avatar, Button, Dropdown, Menu, Typography } from 'antd'
 import { Header as Wrapper } from 'antd/lib/layout/layout'
 import { EditOutlined, ApiOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 // project
-import { logout } from '../../redux/userProfile/actions'
+import { logout } from '../../redux/userProfile/action'
 import { foldStyle } from './assets'
 import type { Props } from './assets'
+import type { State } from '../../redux'
+import type { User } from '../../typings/user'
 
 const { Title } = Typography
 
 const Header = (props: Props) => {
   const dispatch = useDispatch()
-  const user = useSelector((state) => state.userProfile.user)
+  const user = useSelector<State, User | undefined | null>((state) => state.userProfile.user)
 
   const onLogout = () => {
     dispatch(logout())

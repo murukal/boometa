@@ -1,3 +1,5 @@
+// react
+import { useState } from 'react'
 // router
 import { Navigate, Outlet } from 'react-router-dom'
 // redux
@@ -7,14 +9,14 @@ import { Layout as Wrapper, Image } from 'antd'
 // project
 import SiderMenu from '../SiderMenu'
 import Header from '../Header'
-import { useState } from 'react'
+import type { State } from '../../redux'
 
 const { Content, Sider } = Wrapper
 
 const Layout = () => {
   const [isFolded, setIsFolded] = useState(false)
 
-  const isLogin = useSelector((state) => state.userProfile.isLogin)
+  const isLogin = useSelector<State>((state) => state.userProfile.isLogin)
 
   /** 折叠功能 */
   const onFold = () => setIsFolded((isFolded) => !isFolded)

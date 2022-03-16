@@ -1,47 +1,56 @@
 // react
 import { useLayoutEffect } from 'react'
 // redux
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 // project
 import Router from './routes/Router'
-import { getTenant } from './redux/tenant/actions'
-import { authenticate, passToken } from './redux/userProfile/actions'
-import { useQuery } from '@apollo/client'
-import { INITIALIZE } from './apis/base'
+import { authenticate } from './redux/userProfile/action'
+import { useApolloClient } from '@apollo/client'
+import { RSA_PUBLIC_KEY } from './apis'
+import { setTenant } from './redux/tenant/action'
+import { setRsaPublicKey } from './redux/encryptor/action'
+import { TENANT } from './apis/tenant'
+import { WHO_AM_I } from './apis/account'
 
 const App = () => {
   const dispatch = useDispatch()
-  const tenantCode = useSelector((state) => state.tenant.code)
-
-  const { data, loading } = useQuery<{
-    rsaPublicKey: string
-  }>(INITIALIZE, {
-    variables: {
-      tenantkeyword: tenantCode
-    },
-    onCompleted: (profile) => {
-      dispatch(passToken())
-    }
-  })
-
-  console.log('data====', data)
+  const client = useApolloClient()
 
   const onFetch = async () => {
-    // 将客户端的token存储到redux中
-    dispatch(passToken())
+    // 获取rsa公钥
+    const { data: rsaPublicKey } = await client.query({
+      query: RSA_PUBLIC_KEY
+    })
+
+    // 在redux中存储rsa公钥
+    dispatch(setRsaPublicKey(rsaPublicKey))
 
     // 获取租户信息
-    dispatch(await getTenant(tenantCode))
+    const { data: tenant } = await client.query({
+      query: TENANT
+    })
 
-    // 获取用户数据
-    dispatch(await authenticate())
+    // 在redux中存储租户信息
+    dispatch(setTenant(tenant))
+
+    // 获取用户信息
+    const { data: user } = await client.query({
+      query: WHO_AM_I
+    })
+
+    // 在redux中存储用户信息
+    dispatch(authenticate(user))
   }
 
+  console.log('app function run')
+
+  /** 初始化渲染 */
   useLayoutEffect(() => {
+    console.log('useLayoutEffect run')
     onFetch()
   }, [])
 
-  return <>{loading && <Router />}</>
+  return <Router />
 }
 
 export default App

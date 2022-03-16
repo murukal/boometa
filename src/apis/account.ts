@@ -1,20 +1,12 @@
-// project
+// third
 import { gql } from '@apollo/client'
+import type { TypedDocumentNode } from '@apollo/client'
+// project
 import arq from '.'
 import type { PaginateResult, QueryOptions } from '../typings/api'
-import type { Register, User } from '../typings/user'
+import type { LoginInput, RegisterInput, User } from '../typings/user'
 
 const url = '/api/authentication'
-
-/**
- * 注册
- */
-export const register = (data: Register) => arq.post<string>(`${url}/register`, data)
-
-/**
- * 获取用户信息
- */
-export const getUserProfile = () => arq.get<User>(url)
 
 export const getUsers = (params: QueryOptions) =>
   arq.get<PaginateResult<User>>(`${url}/users`, {
@@ -24,7 +16,12 @@ export const getUsers = (params: QueryOptions) =>
 /**
  * 登陆
  */
-export const LOGIN = gql`
+export const LOGIN: TypedDocumentNode<
+  string,
+  {
+    loginInput: LoginInput
+  }
+> = gql`
   mutation Login($loginInput: LoginInput!) {
     login(loginInput: $loginInput)
   }
@@ -33,7 +30,12 @@ export const LOGIN = gql`
 /**
  * 注册
  */
-export const REGISTER = gql`
+export const REGISTER: TypedDocumentNode<
+  string,
+  {
+    loginInput: RegisterInput
+  }
+> = gql`
   mutation Register($registerInput: RegisterInput!) {
     register(registerInput: $registerInput)
   }
@@ -42,10 +44,13 @@ export const REGISTER = gql`
 /**
  * 获取用户信息
  */
-export const WHO_AM_I = gql`
+export const WHO_AM_I: TypedDocumentNode<User> = gql`
   query {
     whoAmI {
       id
+      username
+      email
+      avatar
     }
   }
 `
@@ -57,6 +62,9 @@ export const GET_USERS = gql`
   query {
     getUsers {
       id
+      username
+      email
+      avatar
     }
   }
 `

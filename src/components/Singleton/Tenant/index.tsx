@@ -3,16 +3,17 @@ import { forwardRef } from 'react'
 // antd
 import { Form, FormInstance, Input, Switch } from 'antd'
 // project
-import { create, update } from '../../../apis/tenant'
-import { responseNotification } from '../../../utils/notification'
+import { CREATE, UPDATE } from '../../../apis/tenant'
 import { useForm } from 'antd/lib/form/Form'
 import { useMemo } from 'react'
 import type { FormValues } from './assets'
 import type { SingletonProps } from '../assets'
 import type { Tenant as TenantType } from '../../../typings/tenant'
+import { useApolloClient } from '@apollo/client'
 
 const Tenant = forwardRef<FormInstance, SingletonProps<TenantType>>((props, ref) => {
   const [form] = useForm<FormValues>()
+  const clinet = useApolloClient()
 
   /** 表单初始值 */
   const initialValues = useMemo<FormValues>(
@@ -28,14 +29,38 @@ const Tenant = forwardRef<FormInstance, SingletonProps<TenantType>>((props, ref)
     const formValues = form.getFieldsValue()
 
     const handlers = {
-      create: () => create(formValues),
-      update: () => update(props.singleton._id, formValues)
+      create: () =>
+        clinet.mutate<
+          TenantType,
+          {
+            tenant: FormValues
+          }
+        >({
+          mutation: CREATE,
+          variables: {
+            tenant: formValues
+          }
+        }),
+      update: () =>
+        clinet.mutate<
+          boolean,
+          {
+            id: number
+            tenant: FormValues
+          }
+        >({
+          mutation: UPDATE,
+          variables: {
+            id: props.singleton.id,
+            tenant: formValues
+          }
+        })
     }
 
     // 表单提交
-    const res = await handlers[props.singleton._id ? 'update' : 'create']()
-    responseNotification(res)
-    !res.code && props.onSubmitted && props.onSubmitted()
+    const res = await handlers[props.singleton.id ? 'update' : 'create']()
+    // 触发回调
+    props.onSubmitted(res)
   }
 
   return (

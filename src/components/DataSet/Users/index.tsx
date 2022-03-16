@@ -3,12 +3,12 @@ import { useEffect } from 'react'
 // antd
 import { Table } from 'antd'
 // project
-import type { User as UserType } from '../../../typings/user'
-import type { Props } from './assets'
-import type { QueryOptions } from '../../../typings/api'
 import { getColumns } from './assets'
 import { useTable } from '../../../utils/table'
 import { getUsers } from '../../../apis/account'
+import type { User as UserType } from '../../../typings/user'
+import type { Props } from './assets'
+import type { QueryOptions } from '../../../typings/api'
 
 const Users = (props: Props) => {
   const columns = getColumns()

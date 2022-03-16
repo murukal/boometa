@@ -1,25 +1,16 @@
-// third
-import JSEncrypt from 'jsencrypt'
 // project
 import { Tenant } from '../../typings/tenant'
 
 // store 在原先的数据结构基础上 补充
-export interface TenantState extends Tenant {
-  encryptor: JSEncrypt
-}
 
-const getInitialState = (): TenantState => ({
+const getInitialState = (): Tenant => ({
   // 租户信息
-  _id: '',
+  id: 0,
   code: 'BOOMETA',
   name: '',
   isAuthorizate: false,
-  publicKey: '',
   createdAt: '',
-  updatedAt: '',
-
-  // 加密器
-  encryptor: new JSEncrypt()
+  updatedAt: ''
 })
 
 export default getInitialState

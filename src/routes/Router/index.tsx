@@ -5,16 +5,17 @@ import { useDispatch, useSelector } from 'react-redux'
 // router
 import { RouteObject, useRoutes } from 'react-router-dom'
 // projetc
-import { MenuTreeNode } from '../../typings/menu'
 import Loadable from '../../components/Loadable'
-import { getMenus } from '../../redux/menus/actions'
+import { getMenus } from '../../redux/menus/action'
 import { accountRoutes, essayRoutes, notFoundRoutes, roadmapRoutes } from './assets'
+import type { State } from '../../redux'
+import type { MenuTreeNode } from '../../typings/menu'
 
 const Router = () => {
   const [isReady, setIsReady] = useState(false)
-  const isLogin = useSelector((state) => state.userProfile.isLogin)
-  const tenantCode = useSelector((state) => state.tenant.code)
-  const menus = useSelector((state) => state.menus)
+  const isLogin = useSelector<State>((state) => state.userProfile.isLogin)
+  const tenantCode = useSelector<State, string>((state) => state.tenant.code)
+  const menus = useSelector<State, MenuTreeNode[]>((state) => state.menus)
   const dispatch = useDispatch()
 
   const onFetch = async () => {

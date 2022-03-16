@@ -11,11 +11,12 @@ import { stringify } from 'qs'
 // project
 import Footer from '../../layouts/Footer'
 import { TOKEN } from '../../assets'
+import type { State } from '../../redux'
 import './style.css'
 
 const Account = () => {
   const navigate = useNavigate()
-  const isLogin = useSelector((state) => state.userProfile.isLogin)
+  const isLogin = useSelector<State>((state) => state.userProfile.isLogin)
 
   // 获取重定向的url
   const redirect = useSearchParams()[0].get('redirect') || ''

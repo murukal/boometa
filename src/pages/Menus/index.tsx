@@ -17,7 +17,7 @@ import type { Tenant } from '../../typings/tenant'
 const Menus = () => {
   const [isOpened, setIsOpened] = useState(false)
   const [tenants, setTenants] = useState<Tenant[]>([])
-  const [tenantId, setTenantId] = useState('')
+  const [tenantId, setTenantId] = useState(0)
   const [parentId, setParentId] = useState<string>()
   const [menuTrees, setMenuTrees] = useState<MenuTree[]>([])
   const [menuTreeNode, setMenuTreeNode] = useState<MenuTreeNode>(getInitialSingleton())
@@ -46,11 +46,11 @@ const Menus = () => {
         align: 'center',
         render: (text, menu) => (
           <Space>
-            <Button type='link' size='small' onClick={onOpen(tenant._id, undefined, menu)}>
+            <Button type='link' size='small' onClick={onOpen(tenant.id, undefined, menu)}>
               修改
             </Button>
             <Divider type='vertical' />
-            <Button type='link' size='small' onClick={onOpen(tenant._id, menu._id)}>
+            <Button type='link' size='small' onClick={onOpen(tenant.id, menu._id)}>
               添加子级菜单
             </Button>
             <Divider type='vertical' />
@@ -95,7 +95,7 @@ const Menus = () => {
 
   /** 抽屉打开事件 */
   const onOpen =
-    (tenantId: string, parentId?: string, menuTreeNode: MenuTreeNode = getInitialSingleton()) =>
+    (tenantId: number, parentId?: string, menuTreeNode: MenuTreeNode = getInitialSingleton()) =>
     () => {
       // 重置state
       setMenuTreeNode(menuTreeNode)

@@ -1,11 +1,8 @@
-export type TenantCode = string
-
 export interface Tenant {
-  _id: string
-  code: TenantCode
+  id: number
+  code: string
   name: string
   isAuthorizate: boolean
-  publicKey: string
   createdAt?: string
   updatedAt?: string
 }

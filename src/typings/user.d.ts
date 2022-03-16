@@ -1,10 +1,7 @@
-import { TenantCode } from './tenant'
-
 export interface User {
-  _id: string
+  id: number
   username: string
   email: string
-  password?: string
   avatar: string
 }
 
@@ -13,13 +10,9 @@ export interface LoginInput {
   password: string
 }
 
-export interface Register {
-  tenantCode: TenantCode
+export interface RegisterInput {
   username: string
   email: string
   password: string
-}
-
-export interface Authentication {
-  token: string
+  avatar?: string
 }

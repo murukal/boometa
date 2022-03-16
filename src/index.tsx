@@ -12,12 +12,16 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
 // project
 import App from './App'
 import store from './redux'
+import { TOKEN } from './assets'
 import reportWebVitals from './reportWebVitals'
 import './styles/index.less'
 
 const client = new ApolloClient({
   uri: 'http://localhost:8000/graphql',
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem(TOKEN) || sessionStorage.getItem(TOKEN)}`
+  }
 })
 
 ReactDOM.render(

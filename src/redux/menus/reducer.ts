@@ -1,4 +1,4 @@
-import { Action } from './actions'
+import { Action } from './action'
 import getInitialState from './store'
 
 const reducer = (state = getInitialState(), action: Action) => {
