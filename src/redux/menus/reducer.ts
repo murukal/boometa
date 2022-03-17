@@ -3,7 +3,7 @@ import getInitialState from './store'
 
 const reducer = (state = getInitialState(), action: Action) => {
   switch (action.type) {
-    case 'GET_MENUS':
+    case 'SET_MENUS':
       // 获取菜单数据
       return action.data
     default:

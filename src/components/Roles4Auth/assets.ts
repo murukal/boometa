@@ -1,5 +1,5 @@
 export interface Props {
-  roleId: string
+  roleId: number
   title: string
   actived?: AuthType
   onTabChange?: (actived: string) => void

@@ -62,7 +62,7 @@ const DictionaryEnums = (props: Props) => {
 
   const onDelete = (id: number) => async () => {
     const res = await remove(id)
-    res.data && refetch()
+    res.data?.removeDictionaryEnum && refetch()
   }
 
   return (

@@ -6,4 +6,9 @@ export interface Menu extends Core {
   icon?: string
   tenantId?: string
   parentId?: string
+
+  to?: string
+  component?: string
+
+  children?: Menu[]
 }

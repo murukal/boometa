@@ -1,16 +1,15 @@
 // react
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 // antd
 import { Table, Drawer, Card } from 'antd'
 // project
 import type { Dictionary as DictionaryType } from '../../typings/dictionary'
-import { getTableRowHandler, onTableChange, useTable, useTableQuery } from '../../utils/table'
+import { getTableRowHandler, onTableChange, useTableQuery } from '../../utils/table'
 import { getColumns } from './assets'
 import Toolbar from '../../components/Toolbar'
 import Singleton from '../../components/Singleton'
-import { responseNotification } from '../../utils/notification'
 import Dictionary from '../../components/Singleton/Dictionary'
-import { DICTIONARIES, getDictionaries, remove } from '../../apis/dictionary'
+import { DICTIONARIES, remove } from '../../apis/dictionary'
 import DictionaryEnums from '../../components/DataSet/DictionaryEnums'
 import { getInitialSingleton } from '../../components/Singleton/Dictionary/assets'
 
@@ -51,7 +50,7 @@ const Dictionaries = () => {
   const [isEnumOpened, setIsEnumOpened] = useState(false)
 
   /** hooks */
-  const { data, pagination, isLoading, refetch, setPagination } = useTableQuery(DICTIONARIES)
+  const { data, pagination, isLoading, refetch } = useTableQuery(DICTIONARIES)
 
   const onOpen =
     (dictionary: DictionaryType = getInitialSingleton()) =>
@@ -70,7 +69,7 @@ const Dictionaries = () => {
 
   const onDelete = (id: number) => async () => {
     const res = await remove(id)
-    res.data && refetch()
+    res.data?.removeDictionary && refetch()
   }
 
   const onEnumOpen = (id: number) => () => {

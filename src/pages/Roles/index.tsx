@@ -1,17 +1,16 @@
 // react
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 // antd
 import { Card, Table } from 'antd'
 // project
-import { getTableRowHandler, useTable } from '../../utils/table'
+import { getTableRowHandler, onTableChange, useTableQuery } from '../../utils/table'
 import { getColumns } from './assets'
-import { getRoles, remove } from '../../apis/role'
+import { remove, ROLES } from '../../apis/role'
 import Singleton from '../../components/Singleton'
 import Role from '../../components/Singleton/Role'
 import { getInitialSingleton } from '../../components/Singleton/Role/assets'
 import Toolbar from '../../components/Toolbar'
 import Roles4Auth from '../../components/Roles4Auth'
-import { responseNotification } from '../../utils/notification'
 import type { Role as RoleType } from '../../typings/role'
 import type { AuthType } from '../../components/Roles4Auth/assets'
 
@@ -54,10 +53,8 @@ const Roles = () => {
     }
   ])
 
-  const {
-    handlers: { onFetch, onTableChange },
-    props: { results: roles, pagination, isLoading }
-  } = useTable<RoleType>(getRoles)
+  /** hooks */
+  const { data, isLoading, pagination, refetch } = useTableQuery(ROLES)
 
   const onOpen =
     (role = getInitialSingleton()) =>
@@ -71,7 +68,7 @@ const Roles = () => {
   }
 
   const onSubmitted = () => {
-    onFetch()
+    refetch()
     onClose()
   }
 
@@ -88,16 +85,10 @@ const Roles = () => {
   }
 
   /** 删除角色 */
-  const onDelete = (id: string) => async () => {
+  const onDelete = (id: number) => async () => {
     const res = await remove(id)
-    res.code && responseNotification(res)
-    !res.code && onFetch()
+    res.data?.removeRole && refetch()
   }
-
-  /** 渲染 */
-  useEffect(() => {
-    onFetch()
-  }, [])
 
   /** 右侧功能页面关闭 */
   const onAuthClose = () => {
@@ -118,14 +109,21 @@ const Roles = () => {
         <Table
           rowKey='id'
           columns={columns}
-          dataSource={roles}
+          dataSource={data?.roles.items}
           bordered={true}
           pagination={pagination}
           onChange={onTableChange}
           loading={isLoading}
         />
 
-        <Singleton title='角色' isOpened={isOpened} onClose={onClose} onSubmitted={onSubmitted} singleton={role} singletonComponent={Role} />
+        <Singleton
+          title='角色'
+          isOpened={isOpened}
+          onClose={onClose}
+          onSubmitted={onSubmitted}
+          singleton={role}
+          singletonComponent={Role}
+        />
       </Card>
 
       {isShow && (

@@ -42,7 +42,7 @@ const Essays = () => {
   // 删除文章
   const onDelete = (id: number) => async () => {
     const res = await remove(id)
-    res.data && refetch()
+    res.data?.removeEssay && refetch()
   }
 
   const onNavigate =

@@ -61,7 +61,7 @@ const Tags = () => {
   /** 删除tag */
   const onDelete = (id: number) => async () => {
     const res = await remove(id)
-    res.data && refetch()
+    res.data?.removeTag && refetch()
   }
 
   /** 表单提交后的回调 */
@@ -84,7 +84,14 @@ const Tags = () => {
         loading={isLoading}
       />
 
-      <Singleton title='标签' isOpened={isOpened} onClose={onClose} singleton={tag} singletonComponent={Tag} onSubmitted={onSubmitted} />
+      <Singleton
+        title='标签'
+        isOpened={isOpened}
+        onClose={onClose}
+        singleton={tag}
+        singletonComponent={Tag}
+        onSubmitted={onSubmitted}
+      />
     </>
   )
 }

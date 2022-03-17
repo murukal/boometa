@@ -29,7 +29,14 @@ export const DICTIONARY_ENUMS: TypedDocumentNode<
 `
 
 /** 删除字典枚举 */
-const REMOVE_DICTIONAAY_ENUM = gql`
+const REMOVE_DICTIONAAY_ENUM: TypedDocumentNode<
+  {
+    removeDictionaryEnum: boolean
+  },
+  {
+    id: number
+  }
+> = gql`
   mutation RemoveDictionaryEnums($id: Int!) {
     removeDictionaryEnum(id: $id)
   }

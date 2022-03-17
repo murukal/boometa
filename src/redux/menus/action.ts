@@ -1,18 +1,15 @@
-import { getMenuTrees } from '../../apis/menu'
-import type { MenuTreeNode } from '../../typings/menu'
+import type { Menu } from '../../typings/menu'
 
-export type ActionType = 'GET_MENUS'
+export type ActionType = 'SET_MENUS'
 
 export interface Action {
   type: ActionType
-  data: MenuTreeNode[]
+  data: Menu[]
 }
 
-export const getMenus = async (tenantCode: string): Promise<Action> => {
-  const res = await getMenuTrees([tenantCode])
-
+export const setMenus = (menus: Menu[]): Action => {
   return {
-    type: 'GET_MENUS',
-    data: res.data?.at(0)?.nodes || []
+    type: 'SET_MENUS',
+    data: menus
   }
 }

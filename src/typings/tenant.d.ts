@@ -2,7 +2,7 @@ import { Core } from '.'
 import { Menu } from './menu'
 
 export interface Tenant extends Core {
-  code?: string
+  code: string
   name?: string
   isAuthorizate?: boolean
   menus?: Menu[]

@@ -1,5 +1,5 @@
-import { MenuTreeNode } from '../../typings/menu'
+import { Menu } from '../../typings/menu'
 
-const getInitialState = (): MenuTreeNode[] => []
+const getInitialState = (): Menu[] => []
 
 export default getInitialState

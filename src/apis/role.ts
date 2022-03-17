@@ -1,19 +1,70 @@
-// project
-import type { QueryOptions } from '../typings/api'
-import type { CreateRole, Role, UpdateRole } from '../typings/role'
-import arq from '.'
+import { gql, TypedDocumentNode } from '@apollo/client'
+import { fetcher } from '.'
+import { PaginateOutput, QueryParams } from '../typings/api'
+import type { Role } from '../typings/role'
 
-const url = '/api/role'
+/**
+ * 查询多个角色
+ */
+export const ROLES: TypedDocumentNode<
+  {
+    roles: PaginateOutput<Role>
+  },
+  QueryParams
+> = gql`
+  query ($paginateInput: PaginateInput) {
+    roles(paginateInput: $paginateInput) {
+      items {
+        id
+        name
+      }
+      page
+      limit
+      total
+      pageCount
+    }
+  }
+`
 
-export const getRoles = (params: QueryOptions) =>
-  arq.get(url, {
-    params
+/**
+ * 删除角色
+ */
+const REMOVE: TypedDocumentNode<
+  {
+    removeRole: boolean
+  },
+  {
+    id: number
+  }
+> = gql`
+  mutation RemoveRole($id: Int!) {
+    removeRole(id: $id)
+  }
+`
+
+export const remove = (id: number) =>
+  fetcher.mutate({
+    mutation: REMOVE,
+    variables: {
+      id
+    }
   })
 
-export const getRoleById = (id: string) => arq.get<Role>(`${url}/${id}`)
-
-export const create = (data: CreateRole) => arq.post(url, data)
-
-export const update = (id: string, data: UpdateRole) => arq.patch(`${url}/${id}`, data)
-
-export const remove = (id: string) => arq.delete(`${url}/${id}`)
+/**
+ * 查询单个角色
+ */
+export const ROLE: TypedDocumentNode<
+  {
+    role: Role
+  },
+  {
+    id: number
+  }
+> = gql`
+  query Role($id: Int!) {
+    role(id: $id) {
+      id
+      name
+    }
+  }
+`

@@ -4,7 +4,7 @@ import type { TypedDocumentNode } from '@apollo/client'
 // project
 import { fetcher } from '.'
 import type { Tenant } from '../typings/tenant'
-import { PaginateOutput } from '../typings/api'
+import { PaginateOutput, QueryParams } from '../typings/api'
 
 /**
  * 查询单个租户
@@ -61,7 +61,9 @@ export const UPDATE = gql`
  * 删除租户
  */
 const REMOVE: TypedDocumentNode<
-  boolean,
+  {
+    removeTenant: boolean
+  },
   {
     id: number
   }
@@ -82,15 +84,23 @@ export const remove = (id: number) =>
 /**
  * 查询多个租户
  */
-export const TENANTS: TypedDocumentNode<{
-  tenants: PaginateOutput<Tenant>
-}> = gql`
-  query {
-    tenants {
-      id
-      code
-      name
-      isAuthorizate
+export const TENANTS: TypedDocumentNode<
+  {
+    tenants: PaginateOutput<Tenant>
+  },
+  QueryParams
+> = gql`
+  query ($paginateInput: PaginateInput) {
+    tenants(paginateInput: $paginateInput) {
+      page
+      limit
+      total
+      pageCount
+      items {
+        code
+        name
+        isAuthorizate
+      }
     }
   }
 `
@@ -107,6 +117,7 @@ export const TENANTS_WITH_MENUS: TypedDocumentNode<{
         id
         code
         name
+        isAuthorizate
         menus {
           id
           createdAt
