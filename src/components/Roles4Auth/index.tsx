@@ -98,7 +98,7 @@ const Roles4Auth = (props: Props) => {
     >
       {data?.role &&
         (props.actived === 'user' ? (
-          <Users roleId={data?.role.id} users={role.users} onSubmitted={onSubmitted} />
+          <Users roleId={data?.role.id} users={data.role.users} onSubmitted={onSubmitted} />
         ) : (
           <Permissions
             ref={ref}
