@@ -29,11 +29,11 @@ const Dictionary = forwardRef<FormInstance, SingletonProps<DictionaryType>>((pro
 
     const handlers = {
       create: () => create(formValues),
-      update: () => update(props.singleton._id, formValues)
+      update: () => update(props.singleton.id, formValues)
     }
 
     // 表单提交
-    const res = await handlers[props.singleton._id ? 'update' : 'create']()
+    const res = await handlers[props.singleton.id ? 'update' : 'create']()
     responseNotification(res)
     !res.code && props.onSubmitted && props.onSubmitted()
   }

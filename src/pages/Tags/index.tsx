@@ -1,26 +1,23 @@
 // react
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 // antd
 import { Table } from 'antd'
 // project
-import type { Tag as TagType } from '../../typings/tag'
-import { getTags, remove } from '../../apis/tag'
-import { getTableRowHandler, useTable } from '../../utils/table'
+import { remove, TAGS } from '../../apis/tag'
+import { getTableRowHandler, onTableChange, useTableQuery } from '../../utils/table'
 import { getColumns } from './assets'
-import Singleton from '../../components/Singleton'
-import Tag from '../../components/Singleton/Tag'
 import { getInitialSingleton } from '../../components/Singleton/Tag/assets'
 import Toolbar from '../../components/Toolbar'
+import Singleton from '../../components/Singleton'
+import Tag from '../../components/Singleton/Tag'
+import type { Tag as TagType } from '../../typings/tag'
 
 const Tags = () => {
   const [isOpened, setIsOpened] = useState(false)
   const [tag, setTag] = useState<TagType>(getInitialSingleton())
 
   /** table hooks */
-  const {
-    handlers: { onFetch, onTableChange },
-    props: { results: tags, pagination, isLoading }
-  } = useTable<TagType>(getTags)
+  const { data, isLoading, pagination, refetch } = useTableQuery(TAGS)
 
   /** table column */
   const columns = getColumns([
@@ -42,7 +39,7 @@ const Tags = () => {
               okText: '确认',
               cancelText: '取消'
             },
-            onClick: onDelete(tag._id)
+            onClick: onDelete(tag.id)
           }
         ])
     }
@@ -62,44 +59,32 @@ const Tags = () => {
   }
 
   /** 删除tag */
-  const onDelete = (id: string) => async () => {
+  const onDelete = (id: number) => async () => {
     const res = await remove(id)
-    !res.code && onFetch()
+    res.data && refetch()
   }
 
   /** 表单提交后的回调 */
   const onSubmitted = () => {
-    onFetch()
+    refetch()
     setIsOpened(false)
   }
-
-  /** 初次渲染 */
-  useEffect(() => {
-    onFetch()
-  }, [])
 
   return (
     <>
       <Toolbar onAdd={onOpen()} />
 
       <Table
-        rowKey='_id'
+        rowKey='id'
         columns={columns}
-        dataSource={tags}
+        dataSource={data?.tags.items}
         bordered={true}
         pagination={pagination}
         onChange={onTableChange}
         loading={isLoading}
       />
 
-      <Singleton
-        title='标签'
-        isOpened={isOpened}
-        onClose={onClose}
-        singleton={tag}
-        singletonComponent={Tag}
-        onSubmitted={onSubmitted}
-      />
+      <Singleton title='标签' isOpened={isOpened} onClose={onClose} singleton={tag} singletonComponent={Tag} onSubmitted={onSubmitted} />
     </>
   )
 }

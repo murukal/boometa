@@ -21,7 +21,7 @@ const Users = (props: Props) => {
     // 固定筛选条件的注入
     // return await getUsers({
     //   ...query,
-    //   _id: {
+    //   id: {
     //     $in: props.ids,
     //     $nin: props.excludeIds
     //   }
@@ -37,7 +37,7 @@ const Users = (props: Props) => {
   return (
     <Table
       rowSelection={props.rowSelection}
-      rowKey='_id'
+      rowKey='id'
       columns={columns}
       dataSource={users}
       bordered={true}

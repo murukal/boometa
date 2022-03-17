@@ -4,14 +4,13 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 // antd
 import { LockOutlined, UserOutlined, EyeTwoTone, EyeInvisibleOutlined, MailOutlined } from '@ant-design/icons'
-import { Button, Divider, Form, Input, Typography } from 'antd'
+import { Button, Divider, Form, Input, notification, Typography } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 // third
 import { useApolloClient } from '@apollo/client'
 import type JSEncrypt from 'jsencrypt'
 // project
 import { REGISTER } from '../../../apis/account'
-import { easyNotification } from '../../../utils/notification'
 import { setToken } from '../../../utils/app'
 import { toggleStyle } from '../assets'
 import { FormValues, passwordRegex } from './assets'
@@ -35,7 +34,9 @@ const Register = () => {
     const encryptedPassword = encryptor.encrypt(formValues.password)
 
     if (!encryptedPassword) {
-      easyNotification('密码加密失败', 'error')
+      notification.error({
+        message: '密码加密失败！'
+      })
       return
     }
 

@@ -35,10 +35,10 @@ const DictionaryEnum = forwardRef<FormInstance, SingletonProps<DictionaryEnumTyp
           ...formValues,
           belongTo: props.extraProps.dictionaryId
         }),
-      update: () => update(props.singleton._id, formValues)
+      update: () => update(props.singleton.id, formValues)
     }
 
-    const res = await handlers[props.singleton._id ? 'update' : 'create']()
+    const res = await handlers[props.singleton.id ? 'update' : 'create']()
     responseNotification(res)
     !res.code && props.onSubmitted && props.onSubmitted()
   }

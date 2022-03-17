@@ -4,7 +4,7 @@ import type { UploadFile } from 'antd/lib/upload/interface'
 import type { Tag } from '../../../typings/tag'
 
 export const getInitialSingleton = (): Tag => ({
-  _id: '',
+  id: 0,
   cover: '',
   name: ''
 })

@@ -1,15 +1,12 @@
-// react
-import { useEffect } from 'react'
+// router
+import { useNavigate } from 'react-router-dom'
 // antd
 import { Card, Table } from 'antd'
 // project
-import type { Essay as EssayType } from '../../typings/essay'
-import { getColumns } from './assets'
-import { getTableRowHandler, useTable } from '../../utils/table'
-import { getEssays, remove } from '../../apis/essay'
-import { responseNotification } from '../../utils/notification'
 import Toolbar from '../../components/Toolbar'
-import { useNavigate } from 'react-router-dom'
+import { getColumns } from './assets'
+import { getTableRowHandler, onTableChange, useTableQuery } from '../../utils/table'
+import { ESSAYS, remove } from '../../apis/essay'
 
 const Essays = () => {
   const navigate = useNavigate()
@@ -23,11 +20,11 @@ const Essays = () => {
         getTableRowHandler([
           {
             label: '修改',
-            onClick: onNavigate(essay._id)
+            onClick: onNavigate(essay.id)
           },
           {
             label: '删除',
-            onClick: onDelete(essay._id),
+            onClick: onDelete(essay.id),
             danger: true,
             popconfirmProps: {
               title: '确认删除当前条目？',
@@ -39,25 +36,17 @@ const Essays = () => {
     }
   ])
 
-  const {
-    handlers: { onTableChange, onFetch },
-    props: { results: essays, pagination, isLoading }
-  } = useTable<EssayType>(getEssays)
-
-  // 渲染
-  useEffect(() => {
-    onFetch()
-  }, [])
+  /** hooks获取数据 */
+  const { data, isLoading, pagination, refetch } = useTableQuery(ESSAYS)
 
   // 删除文章
-  const onDelete = (id: string) => async () => {
+  const onDelete = (id: number) => async () => {
     const res = await remove(id)
-    responseNotification(res)
-    !res.code && onFetch()
+    res.data && refetch()
   }
 
   const onNavigate =
-    (id = '') =>
+    (id = 0) =>
     () => {
       navigate(`/essay${id ? `/${id}` : ''}`)
     }
@@ -66,7 +55,15 @@ const Essays = () => {
     <Card>
       <Toolbar onAdd={onNavigate()} />
 
-      <Table rowKey='_id' dataSource={essays} columns={columns} bordered pagination={pagination} onChange={onTableChange} loading={isLoading} />
+      <Table
+        rowKey='id'
+        dataSource={data?.essays.items}
+        columns={columns}
+        bordered
+        pagination={pagination}
+        onChange={onTableChange}
+        loading={isLoading}
+      />
     </Card>
   )
 }

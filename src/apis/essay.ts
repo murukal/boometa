@@ -1,19 +1,49 @@
-// project
-import arq from '.'
-import type { QueryOptions } from '../typings/api'
-import type { Essay, CreateEssay, UpdateEssay } from '../typings/essay'
+import { gql, TypedDocumentNode } from '@apollo/client'
+import { fetcher } from '.'
+import { PaginateOutput, QueryParams } from '../typings/api'
+import { Essay } from '../typings/essay'
 
-const url = '/api/essay'
+/** 查询多个文章 */
+export const ESSAYS: TypedDocumentNode<
+  {
+    essays: PaginateOutput<Essay>
+  },
+  QueryParams
+> = gql`
+  query Essays($paginateInput: PaginateInput) {
+    essays(paginateInput: $paginateInput) {
+      items {
+        id
+        createdAt
+        updatedAt
+        title
+        content
+        cover
+      }
+      page
+      limit
+      total
+      pageCount
+    }
+  }
+`
 
-export const getEssays = (params: QueryOptions) =>
-  arq.get(url, {
-    params
+/** 删除文章 */
+const REMOVE: TypedDocumentNode<
+  {
+    removeEssay: boolean
+  },
+  {
+    id: number
+  }
+> = gql`
+  mutation RemoveEssay($id: Int!) {
+    removeEssay(id: $id)
+  }
+`
+
+export const remove = (id: number) =>
+  fetcher.mutate({
+    mutation: REMOVE,
+    variables: { id }
   })
-
-export const create = (data: CreateEssay) => arq.post(url, data)
-
-export const update = (id: string, data: UpdateEssay) => arq.patch(`${url}/${id}`, data)
-
-export const remove = (id: string) => arq.delete(`${url}/${id}`)
-
-export const getEssay = (id: string) => arq.get<Essay>(`${url}/${id}`)

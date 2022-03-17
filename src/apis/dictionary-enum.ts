@@ -1,19 +1,44 @@
-// project
-import type { PaginateResult, QueryOptions } from '../typings/api'
-import type { CreateDictionaryEnum, DictionaryEnum, UpdateDictionaryEnum } from '../typings/dictionary-enum'
-import arq from '.'
+import { gql, TypedDocumentNode } from '@apollo/client'
+import { fetcher } from '.'
+import { PaginateOutput, QueryParams } from '../typings/api'
+import { DictionaryEnum } from '../typings/dictionary-enum'
 
-const url = '/api/dictionary-enum'
+/** 查询多个字典枚举 */
+export const DICTIONARY_ENUMS: TypedDocumentNode<
+  {
+    dictionaryEnums: PaginateOutput<DictionaryEnum>
+  },
+  QueryParams
+> = gql`
+  query DictionaryEnums($paginateInput: PaginateInput) {
+    dictionaryEnums(paginateInput: $paginateInput) {
+      items {
+        id
+        createdAt
+        updatedAt
+        code
+        description
+        sortBy
+      }
+      page
+      limit
+      total
+      pageCount
+    }
+  }
+`
 
-export const getDictionaryEnums = (query: QueryOptions) =>
-  arq.get<PaginateResult<DictionaryEnum>>(url, { params: query })
+/** 删除字典枚举 */
+const REMOVE_DICTIONAAY_ENUM = gql`
+  mutation RemoveDictionaryEnums($id: Int!) {
+    removeDictionaryEnum(id: $id)
+  }
+`
 
-export const create = (data: CreateDictionaryEnum) => arq.post(url, data)
-
-export const update = (id: string, data: UpdateDictionaryEnum) => arq.patch(`${url}/${id}`, data)
-
-export const remove = (id: string) => arq.delete(`${url}/${id}`)
-
-/** 通过 dictionaryCode 查询 字典枚举 */
-export const getDictionaryEnumsByDictionaryCode = (dicitonaryCode: string) =>
-  arq.get<DictionaryEnum[]>(`${url}${dicitonaryCode}`)
+export const remove = (id: number) =>
+  fetcher.mutate({
+    mutation: REMOVE_DICTIONAAY_ENUM,
+    variables: {
+      id
+    }
+  })

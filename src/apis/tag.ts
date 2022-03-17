@@ -1,17 +1,53 @@
+// third
+import { gql } from '@apollo/client'
+import type { TypedDocumentNode } from '@apollo/client'
 // project
-import type { PaginateResult, QueryOptions } from '../typings/api'
-import type { CreateTag, Tag, UpdateTag } from '../typings/tag'
-import arq from '.'
+import { fetcher } from '.'
+import type { PaginateOutput, QueryParams } from '../typings/api'
+import type { Tag } from '../typings/tag'
 
-const url = '/api/tag'
+/** 查询多个标签 */
+export const TAGS: TypedDocumentNode<
+  {
+    tags: PaginateOutput<Tag>
+  },
+  QueryParams
+> = gql`
+  query Tags($paginateInput: PaginateInput) {
+    tags(paginateInput: $paginateInput) {
+      items {
+        id
+        createdAt
+        updatedAt
+        name
+        image
+      }
+      page
+      limit
+      total
+      pageCount
+    }
+  }
+`
 
-export const getTags = (params?: QueryOptions) =>
-  arq.get<PaginateResult<Tag>>(url, {
-    params
+/** 删除标签 */
+const REMOVE: TypedDocumentNode<
+  {
+    removeTag: boolean
+  },
+  {
+    id: number
+  }
+> = gql`
+  mutation RemoveTag($id: Int!) {
+    removeTag(id: $id)
+  }
+`
+
+export const remove = (id: number) =>
+  fetcher.mutate({
+    mutation: REMOVE,
+    variables: {
+      id
+    }
   })
-
-export const remove = (id: string) => arq.delete(`${url}/${id}`)
-
-export const create = (data: CreateTag) => arq.post(url, data)
-
-export const update = (id: string, data: UpdateTag) => arq.patch(`${url}/${id}`, data)

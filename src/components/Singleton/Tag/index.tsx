@@ -23,7 +23,7 @@ const Tag = forwardRef<FormInstance, SingletonProps<TagType>>((props, ref) => {
       name: props.singleton.name,
       fileList:
         getUploadParam({
-          id: props.singleton._id,
+          id: props.singleton.id,
           name: props.singleton.name,
           url: props.singleton.cover
         })?.fileList || []
@@ -41,10 +41,10 @@ const Tag = forwardRef<FormInstance, SingletonProps<TagType>>((props, ref) => {
 
     const handlers = {
       create: () => create(params),
-      update: () => update(props.singleton._id, params)
+      update: () => update(props.singleton.id, params)
     }
 
-    const handler = handlers[props.singleton._id ? 'update' : 'create']
+    const handler = handlers[props.singleton.id ? 'update' : 'create']
     const res = await handler()
     responseNotification(res)
     props.onSubmitted && props.onSubmitted()

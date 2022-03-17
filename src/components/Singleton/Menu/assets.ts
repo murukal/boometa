@@ -24,7 +24,7 @@ export interface FormValues {
 }
 
 export const getInitialSingleton = (): MenuTreeNode => ({
-  _id: '',
+  id: 0,
   name: '',
   sortBy: 0,
   authorizations: []

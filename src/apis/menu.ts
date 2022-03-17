@@ -1,25 +1,26 @@
-// project
-import type { CreateMenu, Menu, MenuTree, UpdateMenu } from '../typings/menu'
-import arq from '.'
-
-const url = '/api/menu'
-
-/**
- * 查询菜单树
- */
-export const getMenuTrees = (tenantCodes: string[]) => arq.get<MenuTree[]>(`${url}/menu-tree/${tenantCodes.toString()}`)
-
-/**
- * 创建菜单
- */
-export const create = (menu: CreateMenu) => arq.post<Menu>('/api/menu', menu)
+import { gql, TypedDocumentNode } from '@apollo/client'
+import { fetcher } from '.'
 
 /**
  * 删除菜单
  */
-export const remove = (id: string) => arq.delete<Menu>(`${url}/${id}`)
+const REMOVE: TypedDocumentNode<
+  {
+    removeMenu: boolean
+  },
+  {
+    id: number
+  }
+> = gql`
+  mutation RemoveMenu($id: Int!) {
+    removeMenu(id: $id)
+  }
+`
 
-/**
- * 更新菜单
- */
-export const update = (id: string, menu: UpdateMenu) => arq.patch(`${url}/${id}`, menu)
+export const remove = (id: number) =>
+  fetcher.mutate({
+    mutation: REMOVE,
+    variables: {
+      id
+    }
+  })

@@ -1,5 +1,6 @@
-export interface User {
-  id: number
+import { Core } from '.'
+
+export interface User extends Core {
   username: string
   email: string
   avatar: string

@@ -4,13 +4,13 @@ import { useEffect, useState } from 'react'
 import { Table, Drawer, Card } from 'antd'
 // project
 import type { Dictionary as DictionaryType } from '../../typings/dictionary'
-import { getTableRowHandler, useTable } from '../../utils/table'
+import { getTableRowHandler, onTableChange, useTable, useTableQuery } from '../../utils/table'
 import { getColumns } from './assets'
 import Toolbar from '../../components/Toolbar'
 import Singleton from '../../components/Singleton'
 import { responseNotification } from '../../utils/notification'
 import Dictionary from '../../components/Singleton/Dictionary'
-import { getDictionaries, remove } from '../../apis/dictionary'
+import { DICTIONARIES, getDictionaries, remove } from '../../apis/dictionary'
 import DictionaryEnums from '../../components/DataSet/DictionaryEnums'
 import { getInitialSingleton } from '../../components/Singleton/Dictionary/assets'
 
@@ -28,12 +28,12 @@ const Dictionaries = () => {
           },
           {
             label: '枚举配置',
-            onClick: onEnumOpen(dictionary._id)
+            onClick: onEnumOpen(dictionary.id)
           },
           {
             label: '删除',
             danger: true,
-            onClick: onDelete(dictionary._id),
+            onClick: onDelete(dictionary.id),
             popconfirmProps: {
               okText: '确认',
               cancelText: '取消',
@@ -47,13 +47,11 @@ const Dictionaries = () => {
   const [isOpened, setIsOpened] = useState(false)
   const [dictionary, setDictionary] = useState<DictionaryType>(getInitialSingleton())
 
-  const [dictionaryId, setDictionaryId] = useState('')
+  const [dictionaryId, setDictionaryId] = useState(0)
   const [isEnumOpened, setIsEnumOpened] = useState(false)
 
-  const {
-    handlers: { onFetch, onTableChange },
-    props: { results: dictionaries, pagination, isLoading }
-  } = useTable<DictionaryType>(getDictionaries)
+  /** hooks */
+  const { data, pagination, isLoading, refetch, setPagination } = useTableQuery(DICTIONARIES)
 
   const onOpen =
     (dictionary: DictionaryType = getInitialSingleton()) =>
@@ -64,18 +62,18 @@ const Dictionaries = () => {
 
   const onClose = () => setIsOpened(false)
 
+  /** 提交后的回调事件 */
   const onSubmitted = () => {
-    onFetch()
+    refetch()
     onClose()
   }
 
-  const onDelete = (id: string) => async () => {
+  const onDelete = (id: number) => async () => {
     const res = await remove(id)
-    responseNotification(res)
-    !res.code && onFetch()
+    res.data && refetch()
   }
 
-  const onEnumOpen = (id: string) => () => {
+  const onEnumOpen = (id: number) => () => {
     setDictionaryId(id)
     setIsEnumOpened(true)
   }
@@ -84,17 +82,13 @@ const Dictionaries = () => {
     setIsEnumOpened(false)
   }
 
-  useEffect(() => {
-    onFetch()
-  }, [])
-
   return (
     <Card>
       <Toolbar onAdd={onOpen()} />
 
       <Table
-        rowKey='_id'
-        dataSource={dictionaries}
+        rowKey='id'
+        dataSource={data?.dictionaries.items}
         columns={columns}
         bordered
         pagination={pagination}

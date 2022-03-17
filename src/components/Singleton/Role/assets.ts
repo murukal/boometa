@@ -1,7 +1,7 @@
 import type { Role } from '../../../typings/role'
 
 export const getInitialSingleton = (): Role => ({
-  _id: '',
+  id: 0,
   name: '',
   authorizations: [],
   users: []

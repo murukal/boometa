@@ -1,11 +1,7 @@
-export interface DictionaryEnum {
-  _id: string
-  belongTo: string
+import { Core } from '.'
+
+export interface DictionaryEnum extends Core {
   code: string
   description: string
   sortBy: number
 }
-
-export interface CreateDictionaryEnum extends Omit<DictionaryEnum, '_id'> {}
-
-export interface UpdateDictionaryEnum extends CreateEnum {}

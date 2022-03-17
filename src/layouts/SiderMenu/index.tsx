@@ -27,13 +27,13 @@ const SiderMenu = () => {
       menus.forEach((menu) => {
         if (menu.children) {
           // 默认展开父菜单
-          defaultOpenedKeys.push(menu._id)
+          defaultOpenedKeys.push(menu.id)
           // 存在子级，递归匹配
           mapRoute(menu.children)
         } else {
           // 匹配路由
           if (menu.route?.to === route.pathname) {
-            menu._id && defaultSelectedKeys.push(menu._id)
+            menu.id && defaultSelectedKeys.push(menu.id)
           }
         }
       })
@@ -63,7 +63,7 @@ const SiderMenu = () => {
           // menu 含有子节点，渲染为submenu
           if (menu.children)
             return (
-              <SubMenu key={menu._id} title={menu.name} icon={Icon}>
+              <SubMenu key={menu.id} title={menu.name} icon={Icon}>
                 {renderMenu(menu.children)}
               </SubMenu>
             )
@@ -75,7 +75,7 @@ const SiderMenu = () => {
                 style={{
                   marginTop: 0
                 }}
-                key={menu._id}
+                key={menu.id}
                 icon={Icon}
               >
                 {menu.route ? <Link to={menu.route.to}>{menu.name}</Link> : menu.name}

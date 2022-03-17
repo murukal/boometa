@@ -43,7 +43,7 @@ const Roles = () => {
           {
             label: '删除',
             danger: true,
-            onClick: onDelete(role._id),
+            onClick: onDelete(role.id),
             popconfirmProps: {
               title: '确认删除当前条目？',
               okText: '确认',
@@ -116,7 +116,7 @@ const Roles = () => {
         <Toolbar onAdd={onOpen()} />
 
         <Table
-          rowKey='_id'
+          rowKey='id'
           columns={columns}
           dataSource={roles}
           bordered={true}
@@ -131,7 +131,7 @@ const Roles = () => {
       {isShow && (
         <Roles4Auth
           className='w-1/2 overflow-auto'
-          roleId={role._id}
+          roleId={role.id}
           title={role.name}
           actived={actived}
           onTabChange={onTabChange}

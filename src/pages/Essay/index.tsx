@@ -8,11 +8,10 @@ import { PlusOutlined } from '@ant-design/icons'
 import { useForm } from 'antd/lib/form/Form'
 import type { DefaultOptionType } from 'antd/lib/select'
 // project
+import Editor from '../../components/Singleton/Essay/Editor'
 import { create, getEssay, update } from '../../apis/essay'
 import { getTags } from '../../apis/tag'
-import Editor from '../../components/Singleton/Essay/Editor'
 import { customRequest, getUploadParam, getValueFromEvent } from '../../utils/upload'
-import { responseNotification } from '../../utils/notification'
 import type { CreateEssay } from '../../typings/essay'
 import type { FormValues } from './assets'
 
@@ -31,7 +30,7 @@ const Essay = () => {
     setTagOptions(
       ((await getTags()).data?.docs || []).map((tag) => ({
         label: tag.name,
-        value: tag._id
+        value: tag.id
       }))
     )
 
@@ -53,7 +52,7 @@ const Essay = () => {
       content: essay.content,
       tags: essay.tags as string[],
       fileList: getUploadParam({
-        id: essay._id,
+        id: essay.id,
         name: essay.title,
         url: essay.cover
       })?.fileList
@@ -83,11 +82,9 @@ const Essay = () => {
       update: () => urlParams.id && update(urlParams.id, params)
     }
 
-    const res = await handlers[urlParams.id ? 'update' : 'create']()
+    await handlers[urlParams.id ? 'update' : 'create']()
     // 路由跳转到文章列表
     navigate('/essays')
-    // 消息提醒
-    res && responseNotification(res)
   }
 
   return (

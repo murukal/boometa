@@ -1,9 +1,6 @@
-export interface Tag {
-  _id: string
+import { Core } from '.'
+
+export interface Tag extends Core {
   name: string
-  cover: string
+  image: string
 }
-
-export interface CreateTag extends Omit<Tag, '_id'> {}
-
-export interface UpdateTag extends CreateTag {}

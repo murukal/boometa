@@ -85,23 +85,9 @@ const Tenants = () => {
     <Card>
       <Toolbar onAdd={onOpen()} onDelete={() => {}} />
 
-      <Table
-        rowKey='_id'
-        loading={isLoading}
-        columns={columns}
-        dataSource={tenants}
-        bordered={true}
-        pagination={false}
-      />
+      <Table rowKey='id' loading={isLoading} columns={columns} dataSource={tenants} bordered={true} pagination={false} />
 
-      <Singleton
-        title='客户端'
-        isOpened={isOpened}
-        onClose={onClose}
-        singleton={tenant}
-        singletonComponent={Tenant}
-        onSubmitted={onSubmitted}
-      />
+      <Singleton title='客户端' isOpened={isOpened} onClose={onClose} singleton={tenant} singletonComponent={Tenant} onSubmitted={onSubmitted} />
     </Card>
   )
 }

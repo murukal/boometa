@@ -1,18 +1,17 @@
 // react
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 // antd
 import { Table } from 'antd'
 // project
-import { getColumns, Props } from './assets'
 import Singleton from '../../Singleton'
 import DictionaryEnum from '../../Singleton/DictionaryEnum'
-import { getDictionaryEnums, remove } from '../../../apis/dictionary-enum'
-import { getTableRowHandler, useTable } from '../../../utils/table'
-import { responseNotification } from '../../../utils/notification'
 import Toolbar from '../../Toolbar'
+import { getColumns } from './assets'
+import { DICTIONARY_ENUMS, remove } from '../../../apis/dictionary-enum'
+import { getTableRowHandler, onTableChange, useTableQuery } from '../../../utils/table'
 import { getInitialSingleton } from '../../Singleton/DictionaryEnum/assets'
+import type { Props } from './assets'
 import type { DictionaryEnum as DictionaryEnumType } from '../../../typings/dictionary-enum'
-import type { QueryOptions } from '../../../typings/api'
 
 const DictionaryEnums = (props: Props) => {
   const [isOpened, setIsOpened] = useState(false)
@@ -32,7 +31,7 @@ const DictionaryEnums = (props: Props) => {
           {
             label: '删除',
             danger: true,
-            onClick: onDelete(dictionaryEnum._id),
+            onClick: onDelete(dictionaryEnum.id),
             popconfirmProps: {
               title: '确认删除当前条目？',
               okText: '确认',
@@ -43,22 +42,14 @@ const DictionaryEnums = (props: Props) => {
     }
   ])
 
-  const {
-    handlers: { onFetch, onTableChange },
-    props: { results: dictionaryEnums, pagination, isLoading }
-  } = useTable<DictionaryEnumType>((query: QueryOptions) =>
-    getDictionaryEnums({
-      belongTo: props.dictionaryId,
-      ...query
-    })
-  )
+  const { data, isLoading, pagination, refetch } = useTableQuery(DICTIONARY_ENUMS)
 
   const onClose = () => {
     setIsOpened(false)
   }
 
   const onSubmitted = () => {
-    onFetch()
+    refetch()
     onClose()
   }
 
@@ -69,24 +60,19 @@ const DictionaryEnums = (props: Props) => {
       setIsOpened(true)
     }
 
-  const onDelete = (id: string) => async () => {
+  const onDelete = (id: number) => async () => {
     const res = await remove(id)
-    responseNotification(res)
-    !res.code && onFetch()
+    res.data && refetch()
   }
-
-  useEffect(() => {
-    onFetch()
-  }, [props.dictionaryId])
 
   return (
     <>
       <Toolbar onAdd={onOpen()} />
 
       <Table
-        rowKey='_id'
+        rowKey='id'
         bordered={true}
-        dataSource={dictionaryEnums}
+        dataSource={data?.dictionaryEnums.items}
         columns={columns}
         pagination={pagination}
         onChange={onTableChange}

@@ -40,11 +40,11 @@ const Menu = forwardRef<FormInstance, SingletonProps<MenuTreeNode, ExtraProps>>(
           tenant: props.extraProps.tenantId,
           parent: props.extraProps.parentId
         }),
-      update: () => update(props.singleton._id, formValues)
+      update: () => update(props.singleton.id, formValues)
     }
 
     // 提交表单
-    const res = await handlers[props.singleton._id ? 'update' : 'create']()
+    const res = await handlers[props.singleton.id ? 'update' : 'create']()
     responseNotification(res)
     !res.code && props.onSubmitted && props.onSubmitted()
   }

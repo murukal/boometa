@@ -4,6 +4,7 @@ import type { TypedDocumentNode } from '@apollo/client'
 // project
 import { fetcher } from '.'
 import type { Tenant } from '../typings/tenant'
+import { PaginateOutput } from '../typings/api'
 
 /**
  * 查询单个租户
@@ -17,6 +18,8 @@ const TENANT: TypedDocumentNode<
   query Tenant($keyword: ID!) {
     tenant(keyword: $keyword) {
       id
+      createdAt
+      updatedAt
       code
       name
       isAuthorizate
@@ -79,7 +82,9 @@ export const remove = (id: number) =>
 /**
  * 查询多个租户
  */
-const TENANTS: TypedDocumentNode<Tenant[]> = gql`
+export const TENANTS: TypedDocumentNode<{
+  tenants: PaginateOutput<Tenant>
+}> = gql`
   query {
     tenants {
       id
@@ -90,7 +95,29 @@ const TENANTS: TypedDocumentNode<Tenant[]> = gql`
   }
 `
 
-export const getTenants = () =>
-  fetcher.query({
-    query: TENANTS
-  })
+/**
+ * 查询多个租户（关联菜单）
+ */
+export const TENANTS_WITH_MENUS: TypedDocumentNode<{
+  tenants: PaginateOutput<Tenant>
+}> = gql`
+  query {
+    tenants {
+      items {
+        id
+        code
+        name
+        menus {
+          id
+          createdAt
+          updatedAt
+          name
+          sortBy
+          icon
+          tenantId
+          parentId
+        }
+      }
+    }
+  }
+`

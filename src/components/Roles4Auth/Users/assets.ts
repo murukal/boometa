@@ -1,5 +1,5 @@
 export interface Props {
-  roleId: string
+  roleId: number
   users: string[]
   onSubmitted: Function
 }

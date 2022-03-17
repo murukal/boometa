@@ -1,20 +1,13 @@
 // react
-import type { Dispatch, SetStateAction, MouseEventHandler, ReactNode } from 'react'
-import { createElement, useCallback, useState } from 'react'
+import { ReactNode, useState, createElement } from 'react'
+import type { MouseEventHandler } from 'react'
 // antd
-import type { TablePaginationConfig, PopconfirmProps } from 'antd'
-import type { FilterValue, SorterResult } from 'antd/lib/table/interface'
 import { Button, Divider, Popconfirm, Space } from 'antd'
-// project
-import type { FetchAPI, PaginateInput, PaginateOutput, QueryParams } from '../typings/api'
-import { FetchResult } from '@apollo/client'
-
-export interface FetchCallbacks<T> {
-  setResults?: Dispatch<SetStateAction<T[]>>
-  setPagination?: Dispatch<SetStateAction<TablePaginationConfig>>
-  setSorter?: Dispatch<SetStateAction<any>>
-  setFilters?: Dispatch<SetStateAction<any>>
-}
+import type { PopconfirmProps, TablePaginationConfig } from 'antd'
+// third
+import { useQuery } from '@apollo/client'
+import type { TypedDocumentNode } from '@apollo/client'
+import type { QueryParams } from '../typings/api'
 
 export interface TableRowHandler {
   label: string
@@ -23,177 +16,8 @@ export interface TableRowHandler {
   popconfirmProps?: Omit<PopconfirmProps, 'onConfirm'>
 }
 
-export const getInitialPagination = (): TablePaginationConfig => ({
-  current: 1,
-  pageSize: 10,
-  showSizeChanger: true,
-  pageSizeOptions: ['1', '10', '20', '30']
-})
-
-export type FetchHandler<T> = (queryParams?: QueryParams<T>) => Promise<void>
-
-/**
- * 获取页面的fetch事件
- * @param fetchAPI
- * @param callbacks
- * @returns
- */
-const getFetchHandler =
-  <T>(fetchAPI: FetchAPI<T>, callbacks?: FetchCallbacks<T>): FetchHandler<T> =>
-  async (queryParams) => {
-    // 删除条目后，可能导致分页查询出现异常
-    // 调用一个可信任的函数处理
-    const { result, paginateInput } = await enhancedFetchHandler(fetchAPI, queryParams)
-
-    // 分页查询的结果放在docs中
-    // 非分页查询的结果直接放在data中
-    callbacks?.setResults && callbacks.setResults((result.data as PaginateOutput<T>).items || result.data || [])
-
-    // 设置分页state
-    if (callbacks?.setPagination)
-      callbacks.setPagination({
-        ...queryParams?.pagination,
-        current: paginateInput.page,
-        total: (result.data as PaginateOutput<T>).total || 0
-      })
-
-    // 设置排序state
-    callbacks?.setSorter && callbacks?.setSorter(queryParams?.sorter)
-
-    // 设置筛选state
-    callbacks?.setFilters && callbacks?.setFilters(queryParams?.filters)
-  }
-
-/**
- * 获取页面的表格变更事件
- */
-const getTableChangeHandler =
-  <T>(fetchHandler: FetchHandler<T>) =>
-  (
-    pagination: TablePaginationConfig,
-    filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<T> | SorterResult<T>[]
-  ) => {
-    fetchHandler({
-      // 分页参数
-      pagination,
-      // 筛选条件
-      filters,
-      // 排序
-      sorter
-    })
-  }
-
-/** 创建一个自定义的hooks，该hooks能被表格实例使用 */
-export const useTable = <T>(fetchAPI: FetchAPI<T>) => {
-  const [results, setResults] = useState<T[]>([])
-  const [pagination, setPagination] = useState(getInitialPagination())
-  const [filters, setFilters] = useState<Record<string, FilterValue>>()
-  const [sorter, setSorter] = useState<SorterResult<T> | SorterResult<T>[]>()
-  const [isLoading, setIsLoading] = useState(true)
-
-  const onFetch = useCallback(
-    async (
-      queryParams: QueryParams<T> = {
-        pagination,
-        filters,
-        sorter
-      }
-    ) => {
-      // 表格的加载状态 --开始加载
-      setIsLoading(true)
-
-      const handler = getFetchHandler<T>(fetchAPI, {
-        setResults,
-        setPagination,
-        setFilters,
-        setSorter
-      })
-
-      await handler({
-        pagination: queryParams.pagination,
-        filters: queryParams.filters,
-        sorter: queryParams.sorter
-      }).catch(() => false)
-
-      // 表格的加载状态 --结束加载
-      setIsLoading(false)
-    },
-    [pagination, filters, sorter, fetchAPI]
-  )
-
-  const onTableChange = getTableChangeHandler<T>(onFetch)
-
-  return {
-    handlers: {
-      onFetch,
-      onTableChange
-    },
-    props: {
-      results,
-      pagination,
-      filters,
-      sorter,
-      isLoading
-    }
-  }
-}
-
-/**
- * 处理异常后的查询
- * @param fetchAPI
- * @param queryParams
- * @returns
- */
-const enhancedFetchHandler = async <T>(
-  fetchAPI: FetchAPI<T>,
-  queryParams?: QueryParams<T>
-): Promise<{
-  result: FetchResult<PaginateOutput<T> | T[] | null>
-  paginateInput: PaginateInput
-}> => {
-  // 初始化分页参数
-  const initialPagination = getInitialPagination()
-  const limit = queryParams?.pagination?.pageSize || initialPagination.pageSize
-  let page = queryParams?.pagination?.current || initialPagination.current
-
-  let result = await fetchAPI({
-    ...queryParams,
-    pagination: {
-      page,
-      limit
-    }
-  })
-
-  // 分页的场景下，在异常范围内，需要重新处理
-  const { items, pageCount } = result.data as PaginateOutput<T>
-
-  if (items && !items.length && page && page > 1) {
-    page--
-    page = page > pageCount ? pageCount : page
-
-    result = await fetchAPI({
-      ...queryParams,
-      pagination: {
-        page,
-        limit
-      }
-    })
-  }
-
-  return {
-    result,
-    paginateInput: {
-      page,
-      limit
-    }
-  }
-}
-
 /**
  * 动态生成表格的操作按钮
- * @param handlers
- * @returns
  */
 export const getTableRowHandler = (handlers: TableRowHandler[]) => {
   const nodes: ReactNode[] = []
@@ -243,3 +67,49 @@ export const getTableRowHandler = (handlers: TableRowHandler[]) => {
 
   return createElement(Space, null, nodes)
 }
+
+/**
+ * 自定义table hooks
+ * 1. 集成 apollo client hook 请求后端数据
+ */
+export const useTableQuery = <T>(query: TypedDocumentNode<T, QueryParams>) => {
+  // 初始化表格的分页参数
+  const [pagination, setPagination] = useState<TablePaginationConfig>({
+    current: 1,
+    pageSize: 10,
+    showSizeChanger: true,
+    pageSizeOptions: ['10', '20', '30'],
+    total: 0
+  })
+
+  // 执行请求
+  const {
+    data,
+    loading: isLoading,
+    refetch
+  } = useQuery(query, {
+    variables: {
+      paginateInput: {
+        page: pagination.current,
+        limit: pagination.pageSize || 10
+      }
+    }
+  })
+
+  // hooks返回
+  return {
+    // 数据集
+    data,
+    isLoading,
+    pagination,
+
+    // 事件
+    refetch,
+    setPagination
+  }
+}
+
+/**
+ * 表格变更的回调事件
+ */
+export const onTableChange = () => {}

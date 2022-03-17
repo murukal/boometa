@@ -93,11 +93,11 @@ const Roles4Auth = (props: Props) => {
       tabBarExtraContent={tabBarExtraContent}
     >
       {props.actived === 'user' ? (
-        <Users roleId={role._id} users={role.users} onSubmitted={onSubmitted} />
+        <Users roleId={role.id} users={role.users} onSubmitted={onSubmitted} />
       ) : (
         <Permissions
           ref={ref}
-          roleId={role._id}
+          roleId={role.id}
           authorizations={role.authorizations}
           isDisabled={!isEditable}
           onSubmit={onSubmit}

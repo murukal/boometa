@@ -38,7 +38,7 @@ export const permissionTree: DataNode[] = Object.keys(permissionKeys).map((permi
 
 export interface Props {
   isDisabled: boolean
-  roleId: string
+  roleId: number
   onSubmit: Function
   onSubmitted: Function
   authorizations: string[]

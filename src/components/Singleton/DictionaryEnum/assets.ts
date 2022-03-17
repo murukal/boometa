@@ -9,7 +9,7 @@ export const getInitialSingleton = (): DictionaryEnum => ({
   code: '',
   description: '',
   sortBy: 0,
-  _id: '',
+  id: 0,
   belongTo: ''
 })
 

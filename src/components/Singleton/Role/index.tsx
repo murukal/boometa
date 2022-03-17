@@ -24,10 +24,10 @@ const Role = forwardRef<FormInstance, SingletonProps<RoleType>>((props, ref) => 
 
     const handlers = {
       create: () => create(params),
-      update: () => update(props.singleton._id, params)
+      update: () => update(props.singleton.id, params)
     }
 
-    const handler = handlers[props.singleton._id ? 'update' : 'create']
+    const handler = handlers[props.singleton.id ? 'update' : 'create']
     const res = await handler()
     responseNotification(res)
     !res.code && props.onSubmitted && props.onSubmitted()

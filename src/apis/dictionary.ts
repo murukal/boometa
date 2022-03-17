@@ -1,21 +1,53 @@
-// project
-import type { PaginateResult, QueryOptions } from '../typings/api'
-import type { CreateDictionary, Dictionary, UpdateDictionary } from '../typings/dictionary'
-import arq from '.'
-
-const url = '/api/dictionary'
+// third
+import { gql } from '@apollo/client'
+import type { TypedDocumentNode } from '@apollo/client'
+import { PaginateOutput, QueryParams } from '../typings/api'
+import { Dictionary } from '../typings/dictionary'
+import { fetcher } from '.'
 
 /** 查询多个字典 */
-export const getDictionaries = (params: QueryOptions) =>
-  arq.get<PaginateResult<Dictionary>>(url, {
-    params
+export const DICTIONARIES: TypedDocumentNode<
+  {
+    dictionaries: PaginateOutput<Dictionary>
+  },
+  QueryParams
+> = gql`
+  query Dictionaries($paginateInput: PaginateInput) {
+    dictionaries(paginateInput: $paginateInput) {
+      items {
+        id
+        createdAt
+        updatedAt
+        code
+        description
+        sortBy
+      }
+      page
+      limit
+      total
+      pageCount
+    }
+  }
+`
+
+/** 删除字典 */
+const REMOVE: TypedDocumentNode<
+  {
+    removeDictionary: boolean
+  },
+  {
+    id: number
+  }
+> = gql`
+  mutation RemoveDictionary($id: Int!) {
+    removeDictionary(id: $id)
+  }
+`
+
+export const remove = (id: number) =>
+  fetcher.mutate({
+    mutation: REMOVE,
+    variables: {
+      id
+    }
   })
-
-/** 查询单个字典 */
-export const getDictionary = (code: string) => arq.get<Dictionary>(`${url}/${code}`)
-
-export const create = (data: CreateDictionary) => arq.post<Dictionary>(url, data)
-
-export const update = (id: string, data: UpdateDictionary) => arq.patch<Dictionary>(`${url}/${id}`, data)
-
-export const remove = (id: string) => arq.delete(`${url}/${id}`)

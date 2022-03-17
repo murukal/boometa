@@ -3,6 +3,7 @@ import {
   ApolloClient,
   ApolloError,
   ApolloQueryResult,
+  FetchResult,
   gql,
   InMemoryCache,
   MutationOptions,
@@ -13,6 +14,7 @@ import {
 import type { TypedDocumentNode } from '@apollo/client'
 // project
 import store from '../redux'
+import { GraphQLError } from 'graphql'
 
 /**
  * 生成一个graphql请求客户端对象
@@ -45,10 +47,12 @@ export const fetcher = {
 
   /** 变更 */
   mutate: <T = any, V = OperationVariables>(options: MutationOptions<T, V>) =>
-    client.mutate<T, V>(options).catch((error: ApolloError) => ({
-      data: null,
-      error
-    }))
+    client.mutate<T, V>(options).catch(
+      (error: GraphQLError): FetchResult<T> => ({
+        data: null,
+        errors: [error]
+      })
+    )
 }
 
 /** 获取RSA公钥 */

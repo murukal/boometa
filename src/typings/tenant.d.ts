@@ -1,12 +1,9 @@
-export interface Tenant {
-  id: number
-  code: string
-  name: string
-  isAuthorizate: boolean
-  createdAt?: string
-  updatedAt?: string
+import { Core } from '.'
+import { Menu } from './menu'
+
+export interface Tenant extends Core {
+  code?: string
+  name?: string
+  isAuthorizate?: boolean
+  menus?: Menu[]
 }
-
-export interface CreateTenant extends Omit<Tenant, '_id' | 'publicKey' | 'privateKey' | 'createdAt' | 'updatedAt'> {}
-
-export interface UpdateTenant extends CreateTenant {}

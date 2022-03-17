@@ -1,33 +1,31 @@
 // react
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 // antd
 import { Button, Divider, Space, Table, Popconfirm, Card } from 'antd'
 // project
+import Menu from '../../components/Singleton/Menu'
+import Singleton from '../../components/Singleton'
 import { getColumns as getMenuColumns } from './assets'
 import { getColumns as getTenantColumns } from '../Tenants/assets'
-import Menu from '../../components/Singleton/Menu'
-import { getTenants } from '../../apis/tenant'
-import { getMenuTrees, remove } from '../../apis/menu'
-import { responseNotification } from '../../utils/notification'
-import Singleton from '../../components/Singleton'
-import { getInitialSingleton } from '../../components/Singleton/Menu/assets'
-import type { MenuTreeNode, MenuTree } from '../../typings/menu'
+import { useTableQuery } from '../../utils/table'
+import { TENANTS_WITH_MENUS } from '../../apis/tenant'
 import type { Tenant } from '../../typings/tenant'
+import type { Menu as MenuType } from '../../typings/menu'
 
 const Menus = () => {
   const [isOpened, setIsOpened] = useState(false)
-  const [tenants, setTenants] = useState<Tenant[]>([])
   const [tenantId, setTenantId] = useState(0)
-  const [parentId, setParentId] = useState<string>()
-  const [menuTrees, setMenuTrees] = useState<MenuTree[]>([])
-  const [menuTreeNode, setMenuTreeNode] = useState<MenuTreeNode>(getInitialSingleton())
-  const [isLoading, setIsLoading] = useState(true)
+  const [parentId, setParentId] = useState<number>()
+  const [menu, setMenu] = useState<MenuType>()
+
+  /** hooks 请求数据 */
+  const { data, isLoading, refetch } = useTableQuery(TENANTS_WITH_MENUS)
 
   const tenantColumns = getTenantColumns([
     {
       title: '操作',
       align: 'center',
-      dataIndex: '_id',
+      dataIndex: 'id',
       render: (tenantId) => (
         <Space>
           <Button type='link' size='small' onClick={onOpen(tenantId)}>
@@ -50,11 +48,11 @@ const Menus = () => {
               修改
             </Button>
             <Divider type='vertical' />
-            <Button type='link' size='small' onClick={onOpen(tenant.id, menu._id)}>
+            <Button type='link' size='small' onClick={onOpen(tenant.id, menu.id)}>
               添加子级菜单
             </Button>
             <Divider type='vertical' />
-            <Popconfirm title='确认删除当前条目？' okText='确认' cancelText='取消' onConfirm={onDelete(menu._id)}>
+            <Popconfirm title='确认删除当前条目？' okText='确认' cancelText='取消' onConfirm={onDelete(menu.id)}>
               <Button type='link' size='small' danger>
                 删除
               </Button>
@@ -65,28 +63,17 @@ const Menus = () => {
       }
     ])
 
-    // 筛选菜单数据
-    const menus = menuTrees.find((menuTree) => menuTree.tenantCode === tenant.code)?.nodes || []
-
-    return <Table rowKey='_id' columns={menuColumns} dataSource={menus} pagination={false} bordered={true} />
+    /** 菜单表格 */
+    return (
+      <Table
+        rowKey='id'
+        columns={menuColumns}
+        dataSource={data?.tenants.items?.find((tenantWithMenus) => tenantWithMenus.code === tenant.code)?.menus}
+        pagination={false}
+        bordered={true}
+      />
+    )
   }
-
-  /** 请求菜单数据 */
-  const onFetch = async () => {
-    // 获取租户的数据
-    const tenants = (await getTenants()).data?.docs || []
-    // 获取租户的菜单树
-    const menuTrees = (await getMenuTrees(tenants.map((tenant) => tenant.code))).data || []
-
-    setTenants(tenants)
-    setMenuTrees(menuTrees)
-    setIsLoading(false)
-  }
-
-  /** 渲染 */
-  useEffect(() => {
-    onFetch()
-  }, [])
 
   /** 抽屉关闭事件 */
   const onClose = () => {
@@ -94,37 +81,31 @@ const Menus = () => {
   }
 
   /** 抽屉打开事件 */
-  const onOpen =
-    (tenantId: number, parentId?: string, menuTreeNode: MenuTreeNode = getInitialSingleton()) =>
-    () => {
-      // 重置state
-      setMenuTreeNode(menuTreeNode)
-      setTenantId(tenantId)
-      setParentId(parentId)
-      setIsOpened(true)
-    }
+  const onOpen = (tenantId: number, parentId?: number, menu?: MenuType) => () => {
+    // 重置state
+    setMenu(menu)
+    setTenantId(tenantId)
+    setParentId(parentId)
+    setIsOpened(true)
+  }
 
   /** 抽屉提交完成后的回调事件 */
   const onSubmitted = () => {
     onClose()
-    onFetch()
   }
 
   /** 删除菜单事件 */
-  const onDelete = (_id: string) => {
-    return async () => {
-      responseNotification(await remove(_id))
-      // 删除成功后回调，刷新数据
-      onFetch()
-    }
+  const onDelete = (id: number) => async () => {
+    // 删除成功后回调，刷新数据
+    refetch()
   }
 
   return (
     <Card>
       <Table
-        rowKey='_id'
+        rowKey='id'
         columns={tenantColumns}
-        dataSource={tenants}
+        dataSource={data?.tenants.items}
         bordered={true}
         expandable={{ expandedRowRender }}
         pagination={false}
@@ -140,7 +121,7 @@ const Menus = () => {
           parentId
         }}
         singletonComponent={Menu}
-        singleton={menuTreeNode}
+        singleton={menu}
         onSubmitted={onSubmitted}
       />
     </Card>
