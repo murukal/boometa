@@ -5,11 +5,10 @@ import { forwardRef } from 'react'
 import { Form, FormInstance, Input, InputNumber } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 // project
-import { DictionaryEnum as DictionaryEnumType } from '../../../typings/dictionary-enum'
 import { create, update } from '../../../apis/dictionary-enum'
-import { responseNotification } from '../../../utils/notification'
 import { SingletonProps } from '../assets'
 import type { ExtraProps, FormValues } from './assets'
+import type { DictionaryEnum as DictionaryEnumType } from '../../../typings/dictionary-enum'
 
 const { Item } = Form
 
@@ -33,14 +32,15 @@ const DictionaryEnum = forwardRef<FormInstance, SingletonProps<DictionaryEnumTyp
       create: () =>
         create({
           ...formValues,
-          belongTo: props.extraProps.dictionaryId
+          parentId: props.extraProps.parentId
         }),
       update: () => update(props.singleton.id, formValues)
     }
 
     const res = await handlers[props.singleton.id ? 'update' : 'create']()
-    responseNotification(res)
-    !res.code && props.onSubmitted && props.onSubmitted()
+
+    // 回调
+    props.onSubmitted(res)
   }
 
   return (

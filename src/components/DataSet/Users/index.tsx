@@ -1,45 +1,22 @@
-// react
-import { useEffect } from 'react'
 // antd
 import { Table } from 'antd'
 // project
 import { getColumns } from './assets'
-import { useTable } from '../../../utils/table'
-import { getUsers } from '../../../apis/account'
-import type { User as UserType } from '../../../typings/user'
+import { onTableChange, useTableQuery } from '../../../utils/table'
+import { GET_USERS } from '../../../apis/auth'
 import type { Props } from './assets'
-import type { QueryOptions } from '../../../typings/api'
 
 const Users = (props: Props) => {
   const columns = getColumns()
 
-  const {
-    handlers: { onFetch, onTableChange },
-    props: { results: users, pagination, isLoading }
-  } = useTable<UserType>(async (query: QueryOptions) => {
-    // 其余场景请求后端数据
-    // 固定筛选条件的注入
-    // return await getUsers({
-    //   ...query,
-    //   id: {
-    //     $in: props.ids,
-    //     $nin: props.excludeIds
-    //   }
-    // })
-    return await getUsers()
-  })
-
-  // 初始化渲染
-  useEffect(() => {
-    onFetch()
-  }, [props.ids, props.excludeIds])
+  const { data, isLoading, pagination } = useTableQuery(GET_USERS)
 
   return (
     <Table
       rowSelection={props.rowSelection}
       rowKey='id'
       columns={columns}
-      dataSource={users}
+      dataSource={data?.users.items}
       bordered={true}
       pagination={pagination}
       onChange={onTableChange}

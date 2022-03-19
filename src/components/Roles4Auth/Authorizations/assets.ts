@@ -41,5 +41,5 @@ export interface Props {
   roleId: number
   onSubmit: Function
   onSubmitted: Function
-  authorizations: string[]
+  authorizationIds: number[]
 }

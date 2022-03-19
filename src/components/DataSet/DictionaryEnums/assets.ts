@@ -4,7 +4,7 @@ import { ColumnsType } from 'antd/lib/table'
 import type { DictionaryEnum } from '../../../typings/dictionary-enum'
 
 export interface Props {
-  dictionaryId: number
+  parentId: number
 }
 
 /**

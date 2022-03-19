@@ -5,7 +5,6 @@ import { Form, FormInstance, Input, InputNumber } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 // project
 import { create, update } from '../../../apis/dictionary'
-import { responseNotification } from '../../../utils/notification'
 import { SingletonProps } from '../assets'
 import type { FormValues } from './assets'
 import type { Dictionary as DictionaryType } from '../../../typings/dictionary'
@@ -34,8 +33,9 @@ const Dictionary = forwardRef<FormInstance, SingletonProps<DictionaryType>>((pro
 
     // 表单提交
     const res = await handlers[props.singleton.id ? 'update' : 'create']()
-    responseNotification(res)
-    !res.code && props.onSubmitted && props.onSubmitted()
+
+    // 回调
+    props.onSubmitted(res)
   }
 
   return (

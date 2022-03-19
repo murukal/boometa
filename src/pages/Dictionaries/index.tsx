@@ -3,15 +3,15 @@ import { useState } from 'react'
 // antd
 import { Table, Drawer, Card } from 'antd'
 // project
-import type { Dictionary as DictionaryType } from '../../typings/dictionary'
-import { getTableRowHandler, onTableChange, useTableQuery } from '../../utils/table'
-import { getColumns } from './assets'
 import Toolbar from '../../components/Toolbar'
 import Singleton from '../../components/Singleton'
 import Dictionary from '../../components/Singleton/Dictionary'
-import { DICTIONARIES, remove } from '../../apis/dictionary'
 import DictionaryEnums from '../../components/DataSet/DictionaryEnums'
+import { getTableRowHandler, onTableChange, useTableQuery } from '../../utils/table'
+import { getColumns } from './assets'
+import { DICTIONARIES, remove } from '../../apis/dictionary'
 import { getInitialSingleton } from '../../components/Singleton/Dictionary/assets'
+import type { Dictionary as DictionaryType } from '../../typings/dictionary'
 
 const Dictionaries = () => {
   const columns = getColumns([
@@ -107,7 +107,7 @@ const Dictionaries = () => {
 
       {/* 枚举的展现抽屉 */}
       <Drawer title='枚举配置' visible={isEnumOpened} onClose={onEnumClose} size='large' closable={false}>
-        <DictionaryEnums dictionaryId={dictionaryId} />
+        <DictionaryEnums parentId={dictionaryId} />
       </Drawer>
     </Card>
   )

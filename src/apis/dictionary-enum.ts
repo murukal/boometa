@@ -1,9 +1,14 @@
-import { gql, TypedDocumentNode } from '@apollo/client'
+// third
+import { gql } from '@apollo/client'
+import type { TypedDocumentNode } from '@apollo/client'
+// project
 import { fetcher } from '.'
-import { PaginateOutput, QueryParams } from '../typings/api'
-import { DictionaryEnum } from '../typings/dictionary-enum'
+import type { PaginateOutput, QueryParams } from '../typings/api'
+import type { CreateDictionaryEnumInput, DictionaryEnum, UpdateDictionaryEnumInput } from '../typings/dictionary-enum'
 
-/** 查询多个字典枚举 */
+/**
+ * 查询多个字典枚举
+ */
 export const DICTIONARY_ENUMS: TypedDocumentNode<
   {
     dictionaryEnums: PaginateOutput<DictionaryEnum>
@@ -28,8 +33,10 @@ export const DICTIONARY_ENUMS: TypedDocumentNode<
   }
 `
 
-/** 删除字典枚举 */
-const REMOVE_DICTIONAAY_ENUM: TypedDocumentNode<
+/**
+ * 删除字典枚举
+ */
+const REMOVE: TypedDocumentNode<
   {
     removeDictionaryEnum: boolean
   },
@@ -44,8 +51,60 @@ const REMOVE_DICTIONAAY_ENUM: TypedDocumentNode<
 
 export const remove = (id: number) =>
   fetcher.mutate({
-    mutation: REMOVE_DICTIONAAY_ENUM,
+    mutation: REMOVE,
     variables: {
       id
+    }
+  })
+
+/**
+ * 创建字典
+ */
+const CREATE: TypedDocumentNode<
+  {
+    createDictionary: DictionaryEnum
+  },
+  {
+    createDictionaryEnumInput: CreateDictionaryEnumInput
+  }
+> = gql`
+  mutation CreateDictionaryEnum($createDictionaryEnumInput: CreateDictionaryEnumInput!) {
+    createDictionaryEnum(createDictionaryEnumInput: $createDictionaryEnumInput) {
+      id
+    }
+  }
+`
+
+export const create = (createDictionaryEnumInput: CreateDictionaryEnumInput) =>
+  fetcher.mutate({
+    mutation: CREATE,
+    variables: {
+      createDictionaryEnumInput
+    }
+  })
+
+/**
+ * 更新字典
+ */
+const UPDATE: TypedDocumentNode<
+  {
+    updateDictionary: boolean
+  },
+  {
+    id: number
+    updateDictionaryEnumInput: UpdateDictionaryEnumInput
+  }
+> = gql`
+  mutation UpdateDictionaryEnum($id: Int!, $updateDictionaryEnumInput: UpdateDictionaryEnumInput!) {
+    updateDictionaryEnum(id: $id, updateDictionaryEnumInput: $updateDictionaryEnumInput)
+  }
+`
+
+export const update = (id: number, updateDictionaryEnumInput: UpdateDictionaryEnumInput) =>
+  fetcher.mutate({
+    mutation: UPDATE,
+    variables: {
+      id,
+      updateDictionaryEnumInput
     }
   })

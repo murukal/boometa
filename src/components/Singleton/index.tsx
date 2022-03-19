@@ -26,8 +26,8 @@ const Singleton = (props: Props) => {
   }
 
   /** 提交后的回调事件 */
-  const onSubmitted = (res: FetchResult) => {
-    if (res.errors?.length) return
+  const onSubmitted = (result: FetchResult) => {
+    if (result.errors?.length) return
     if (!props.onSubmitted) return
     props.onSubmitted()
   }

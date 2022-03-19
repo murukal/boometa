@@ -4,6 +4,7 @@ import type { TypedDocumentNode } from '@apollo/client'
 // project
 import { fetcher } from '.'
 import type { LoginInput, RegisterInput, User } from '../typings/user'
+import { PaginateOutput, QueryParams } from '../typings/api'
 
 /**
  * 登陆
@@ -55,18 +56,30 @@ export const whoAmI = async () =>
 /**
  * 查询多个用户
  */
-const GET_USERS = gql`
-  query {
-    getUsers {
-      id
-      username
-      email
-      avatar
+export const GET_USERS: TypedDocumentNode<
+  {
+    users: PaginateOutput<User>
+  },
+  QueryParams
+> = gql`
+  query Users($paginateInput: PaginateInput) {
+    users(paginateInput: $paginateInput) {
+      total
+      pageCount
+      page
+      limit
+      items {
+        id
+        createdAt
+        updatedAt
+        username
+        email
+        avatar
+      }
     }
   }
 `
 
-export const getUsers = () =>
-  fetcher.query({
-    query: GET_USERS
-  })
+/**
+ * 查询权限树
+ */

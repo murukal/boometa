@@ -1,7 +1,10 @@
-import { gql, TypedDocumentNode } from '@apollo/client'
+// third
+import { gql } from '@apollo/client'
+import type { TypedDocumentNode } from '@apollo/client'
+// project
 import { fetcher } from '.'
-import { PaginateOutput, QueryParams } from '../typings/api'
-import type { Role } from '../typings/role'
+import type { PaginateOutput, QueryParams } from '../typings/api'
+import type { Role, UpdateRoleInput } from '../typings/role'
 
 /**
  * 查询多个角色
@@ -68,3 +71,29 @@ export const ROLE: TypedDocumentNode<
     }
   }
 `
+
+/**
+ * 更新角色
+ */
+const UPDATE: TypedDocumentNode<
+  {
+    updateRole: boolean
+  },
+  {
+    id: number
+    updateRoleInput: UpdateRoleInput
+  }
+> = gql`
+  mutation UpdateRole($id: Int!, $updateRoleInput: UpdateRoleInput!) {
+    updateRole(id: $id, updateRoleInput: $updateRoleInput)
+  }
+`
+
+export const update = (id: number, updateRoleInput: UpdateRoleInput) =>
+  fetcher.mutate({
+    mutation: UPDATE,
+    variables: {
+      id,
+      updateRoleInput
+    }
+  })

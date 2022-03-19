@@ -5,11 +5,10 @@ import { Tree } from 'antd'
 // project
 import { permissionTree } from './assets'
 import { update } from '../../../apis/role'
-import { responseNotification } from '../../../utils/notification'
 import type { Props } from './assets'
 
 const Permissions = forwardRef<any, Props>((props, ref) => {
-  const [checkedKeys, setCheckedKeys] = useState<string[]>([])
+  const [checkedKeys, setCheckedKeys] = useState<number[]>([])
 
   /** 选择树节点 */
   const onCheck = ({ checked }: any) => {
@@ -25,12 +24,10 @@ const Permissions = forwardRef<any, Props>((props, ref) => {
       onSubmit: async () => {
         // 预回调
         props.onSubmit()
-        // 展现消息
-        responseNotification(
-          await update(props.roleId, {
-            authorizations: checkedKeys
-          })
-        )
+        // 请求
+        await update(props.roleId, {
+          authorizationIds: checkedKeys
+        })
         // 结束回调
         props.onSubmitted()
       }
@@ -40,8 +37,8 @@ const Permissions = forwardRef<any, Props>((props, ref) => {
 
   /** 渲染 已授权 */
   useEffect(() => {
-    setCheckedKeys(props.authorizations)
-  }, [props.authorizations])
+    setCheckedKeys(props.authorizationIds)
+  }, [props.authorizationIds])
 
   return <Tree checkStrictly treeData={permissionTree} checkedKeys={checkedKeys} checkable disabled={props.isDisabled} onCheck={onCheck} />
 })

@@ -4,7 +4,7 @@ import { createElement } from 'react'
 import { Select } from 'antd'
 import * as Icons from '@ant-design/icons/lib/icons'
 // project
-import { Props } from './assets'
+import type { Props } from './assets'
 
 const { Option } = Select
 

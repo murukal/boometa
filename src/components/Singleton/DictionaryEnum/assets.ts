@@ -2,7 +2,7 @@
 import type { DictionaryEnum } from '../../../typings/dictionary-enum'
 
 export interface ExtraProps {
-  dictionaryId: string
+  parentId: number
 }
 
 export const getInitialSingleton = (): DictionaryEnum => ({
@@ -10,7 +10,7 @@ export const getInitialSingleton = (): DictionaryEnum => ({
   description: '',
   sortBy: 0,
   id: 0,
-  belongTo: ''
+  parentId: 0
 })
 
 export interface FormValues {

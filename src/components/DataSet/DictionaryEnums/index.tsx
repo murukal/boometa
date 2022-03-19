@@ -84,7 +84,7 @@ const DictionaryEnums = (props: Props) => {
         isOpened={isOpened}
         onClose={onClose}
         extraProps={{
-          dictionaryId: props.dictionaryId
+          parentId: props.parentId
         }}
         singleton={dictionaryEnum}
         onSubmitted={onSubmitted}

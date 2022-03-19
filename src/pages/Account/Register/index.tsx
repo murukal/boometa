@@ -10,7 +10,7 @@ import { useForm } from 'antd/lib/form/Form'
 import { useApolloClient } from '@apollo/client'
 import type JSEncrypt from 'jsencrypt'
 // project
-import { REGISTER } from '../../../apis/account'
+import { REGISTER } from '../../../apis/auth'
 import { setToken } from '../../../utils/app'
 import { toggleStyle } from '../assets'
 import { FormValues, passwordRegex } from './assets'

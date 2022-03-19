@@ -2,6 +2,8 @@
 import type { ForwardRefExoticComponent, PropsWithoutRef, RefAttributes } from 'react'
 // antd
 import type { FormInstance } from 'antd'
+// third
+import type { FetchResult } from '@apollo/client'
 
 export interface Props<P = any, E = any> {
   title?: string
@@ -15,6 +17,6 @@ export interface Props<P = any, E = any> {
 
 export interface SingletonProps<P, E = any> {
   singleton: P
-  onSubmitted: Function
+  onSubmitted: (result: FetchResult) => void
   extraProps: E
 }

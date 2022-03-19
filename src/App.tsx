@@ -9,7 +9,7 @@ import { getRsaPublicKey } from './apis'
 import { setTenant } from './redux/tenant/action'
 import { setRsaPublicKey } from './redux/encryptor/action'
 import { getTenant } from './apis/tenant'
-import { whoAmI } from './apis/account'
+import { whoAmI } from './apis/auth'
 import type { State } from './redux'
 
 const App = () => {
