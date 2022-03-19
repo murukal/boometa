@@ -5,7 +5,7 @@ import type { Tag } from '../../../typings/tag'
 
 export const getInitialSingleton = (): Tag => ({
   id: 0,
-  cover: '',
+  image: '',
   name: ''
 })
 

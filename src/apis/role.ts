@@ -4,7 +4,7 @@ import type { TypedDocumentNode } from '@apollo/client'
 // project
 import { fetcher } from '.'
 import type { PaginateOutput, QueryParams } from '../typings/api'
-import type { Role, UpdateRoleInput } from '../typings/role'
+import type { CreateRoleInput, Role, UpdateRoleInput } from '../typings/role'
 
 /**
  * 查询多个角色
@@ -95,5 +95,32 @@ export const update = (id: number, updateRoleInput: UpdateRoleInput) =>
     variables: {
       id,
       updateRoleInput
+    }
+  })
+
+/**
+ * 创建角色
+ */
+const CREATE: TypedDocumentNode<
+  {
+    createRole: Role
+  },
+  {
+    createRoleInput: CreateRoleInput
+  }
+> = gql`
+  mutation CreateRole($createRoleInput: CreateRoleInput!) {
+    createRole(createRoleInput: $createRoleInput) {
+      id
+      name
+    }
+  }
+`
+
+export const create = (createRoleInput: CreateRoleInput) =>
+  fetcher.mutate({
+    mutation: CREATE,
+    variables: {
+      createRoleInput
     }
   })

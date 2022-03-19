@@ -7,13 +7,14 @@ import { LockOutlined, UserOutlined, EyeTwoTone, EyeInvisibleOutlined, MailOutli
 import { Button, Divider, Form, Input, notification, Typography } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 // third
-import { useApolloClient } from '@apollo/client'
 import type JSEncrypt from 'jsencrypt'
 // project
-import { REGISTER } from '../../../apis/auth'
-import { setToken } from '../../../utils/app'
+import { register } from '../../../apis/auth'
+import { storeToken } from '../../../utils/app'
 import { toggleStyle } from '../assets'
-import { FormValues, passwordRegex } from './assets'
+import { passwordRegex } from './assets'
+import { resultNotification } from '../../../utils/notification'
+import type { FormValues } from './assets'
 import type { State } from '../../../redux'
 
 const { Item } = Form
@@ -22,7 +23,6 @@ const { Password } = Input
 
 const Register = () => {
   const encryptor = useSelector<State, JSEncrypt>((state) => state.encryptor)
-  const client = useApolloClient()
 
   const [form] = useForm<FormValues>()
 
@@ -40,23 +40,14 @@ const Register = () => {
       return
     }
 
-    const { data: token, errors } = await client.mutate({
-      mutation: REGISTER,
-      variables: {
-        registerInput: {
-          email: formValues.email,
-          password: formValues.password,
-          username: formValues.username
-        }
-      }
+    const result = await register({
+      username: formValues.username,
+      email: formValues.email,
+      password: encryptedPassword
     })
 
-    console.log('errors=====', errors)
-
-    // 请求失败
-    if (!token) return
-
-    setToken(token, false)
+    resultNotification(result)
+    storeToken(result.data?.register)
   }
 
   return (

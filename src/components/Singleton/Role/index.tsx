@@ -5,10 +5,9 @@ import { forwardRef, useState } from 'react'
 import type { FormInstance } from 'antd'
 import { Form, Input } from 'antd'
 // project
-import type { CreateRole, Role as RoleType } from '../../../typings/role'
 import { create, update } from '../../../apis/role'
-import { responseNotification } from '../../../utils/notification'
 import { SingletonProps } from '../assets'
+import type { Role as RoleType } from '../../../typings/role'
 
 const { Item } = Form
 
@@ -18,7 +17,7 @@ const Role = forwardRef<FormInstance, SingletonProps<RoleType>>((props, ref) => 
   const onNameChange = (e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)
 
   const onSubmit = async () => {
-    const params: CreateRole = {
+    const params = {
       name
     }
 
@@ -29,8 +28,7 @@ const Role = forwardRef<FormInstance, SingletonProps<RoleType>>((props, ref) => 
 
     const handler = handlers[props.singleton.id ? 'update' : 'create']
     const res = await handler()
-    responseNotification(res)
-    !res.code && props.onSubmitted && props.onSubmitted()
+    props.onSubmitted(res)
   }
 
   return (

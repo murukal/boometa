@@ -6,12 +6,11 @@ import { Modal } from 'antd'
 // project
 import UserDataSet from '../../DataSet/Users'
 import Toolbar from '../../Toolbar'
-import { responseNotification } from '../../../utils/notification'
 import { update } from '../../../apis/role'
 import type { Props } from './assets'
 
 const Users = (props: Props) => {
-  const [users, setUsers] = useState<string[]>([])
+  const [userIds, setUserIds] = useState<number[]>([])
   const [isOpened, setIsOpened] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -21,25 +20,24 @@ const Users = (props: Props) => {
 
     // 提交事件
     const res = await update(props.roleId, {
-      users: [...props.users, ...users]
+      userIds: [...props.userIds, ...userIds]
     })
 
     setIsOpened(false)
     setIsLoading(false)
-    responseNotification(res)
 
-    props.onSubmitted()
+    props.onSubmitted(res)
   }
 
   /** 选择用户 */
   const onSelectChange = (userIds: Key[]) => {
-    setUsers(userIds as string[])
+    setUserIds(userIds as number[])
   }
 
   return (
     <>
       <Toolbar onAddUser={() => setIsOpened(true)} />
-      <UserDataSet ids={props.users} />
+      <UserDataSet ids={props.userIds} />
       <Modal
         visible={isOpened}
         maskClosable={false}
@@ -49,9 +47,9 @@ const Users = (props: Props) => {
         confirmLoading={isLoading}
       >
         <UserDataSet
-          excludeIds={props.users}
+          excludeUserIds={props.userIds}
           rowSelection={{
-            selectedRowKeys: users,
+            selectedRowKeys: userIds,
             onChange: onSelectChange
           }}
         />

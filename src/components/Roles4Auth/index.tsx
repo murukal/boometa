@@ -1,6 +1,6 @@
 // react
 import { useMemo } from 'react'
-import { useCallback, useEffect, useState } from 'react'
+import { useState } from 'react'
 // antd
 import type { CardTabListType } from 'antd/lib/card'
 import { Button, Card } from 'antd'
@@ -8,13 +8,9 @@ import { CloseOutlined } from '@ant-design/icons/lib/icons'
 //project
 import Users from './Users'
 import { ROLE } from '../../apis/role'
-import { getInitialSingleton } from '../Singleton/Role/assets'
-import type { Props } from './assets'
-import type { Role } from '../../typings/role'
-import Permissions from './Authorizations'
 import { createRef } from 'react'
-import { useTableQuery } from '../../utils/table'
 import { useQuery } from '@apollo/client'
+import type { Props } from './assets'
 
 const Roles4Auth = (props: Props) => {
   const tabs: CardTabListType[] = [
@@ -98,16 +94,9 @@ const Roles4Auth = (props: Props) => {
     >
       {data?.role &&
         (props.actived === 'user' ? (
-          <Users roleId={data?.role.id} users={data.role.users} onSubmitted={onSubmitted} />
+          <Users roleId={data?.role.id} userIds={data.role.userIds || []} onSubmitted={onSubmitted} />
         ) : (
-          <Permissions
-            ref={ref}
-            roleId={data.role.id}
-            authorizations={role.authorizations}
-            isDisabled={!isEditable}
-            onSubmit={onSubmit}
-            onSubmitted={onSubmitted}
-          />
+          <></>
         ))}
     </Card>
   )

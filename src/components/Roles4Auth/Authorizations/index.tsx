@@ -3,7 +3,6 @@ import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 // antd
 import { Tree } from 'antd'
 // project
-import { permissionTree } from './assets'
 import { update } from '../../../apis/role'
 import type { Props } from './assets'
 
@@ -40,7 +39,16 @@ const Permissions = forwardRef<any, Props>((props, ref) => {
     setCheckedKeys(props.authorizationIds)
   }, [props.authorizationIds])
 
-  return <Tree checkStrictly treeData={permissionTree} checkedKeys={checkedKeys} checkable disabled={props.isDisabled} onCheck={onCheck} />
+  return (
+    <Tree
+      checkStrictly
+      treeData={[]}
+      checkedKeys={checkedKeys}
+      checkable
+      disabled={props.isDisabled}
+      onCheck={onCheck}
+    />
+  )
 })
 
 export default Permissions

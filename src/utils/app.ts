@@ -1,25 +1,23 @@
-import { ParsedUrlQuery } from 'querystring'
+// project
 import { TOKEN } from '../assets'
+import store from '../redux'
+import { authenticate, setToken } from '../redux/userProfile/action'
 
-export const storeQueryParams = (queryParams: ParsedUrlQuery) => {
-  let isRedirct = false
-  const authentication = JSON.parse(queryParams.authentication?.toString() || JSON.stringify(null))
-
-  if (authentication) {
-    isRedirct = true
-    setToken(authentication.token, !authentication.is_once)
-  }
-
-  return isRedirct
-}
-
-export const setToken = (token: string, isAutoLogin: boolean) => {
-  localStorage.removeItem(TOKEN)
-  sessionStorage.removeItem(TOKEN)
+/**
+ * 浏览器存储token
+ */
+export const storeToken = async (token?: string, isAutoLogin?: boolean) => {
+  if (!token) return
 
   if (isAutoLogin) {
     localStorage.setItem(TOKEN, token)
   } else {
     sessionStorage.setItem(TOKEN, token)
   }
+
+  // token
+  store.dispatch(setToken())
+
+  // 用户信息
+  store.dispatch(await authenticate())
 }

@@ -3,7 +3,9 @@ import { User } from './user'
 
 export interface Role extends Core {
   name: string
-  users: User[]
+
+  userIds?: number[]
+  users?: User[]
 }
 
 export interface CreateRoleInput extends Pick<Role, 'name'> {}

@@ -3,6 +3,7 @@ import {
   ApolloClient,
   ApolloError,
   ApolloQueryResult,
+  createHttpLink,
   FetchResult,
   gql,
   InMemoryCache,
@@ -11,24 +12,37 @@ import {
   OperationVariables,
   QueryOptions
 } from '@apollo/client'
+import { setContext } from '@apollo/client/link/context'
 import type { TypedDocumentNode } from '@apollo/client'
 // project
 import store from '../redux'
 import { GraphQLError } from 'graphql'
 
+const httpLink = createHttpLink({
+  uri: '/graphql'
+})
+
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = store.getState().userProfile.token
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+
+      ...(token && {
+        Authorization: `Bearer ${token}`
+      })
+    }
+  }
+})
+
 /**
  * 生成一个graphql请求客户端对象
  */
-const token = store.getState().userProfile.token
-
 const client = new ApolloClient({
-  uri: 'http://localhost:8000/graphql',
-  cache: new InMemoryCache(),
-  headers: {
-    ...(token && {
-      Authorization: `Bearer ${token}`
-    })
-  }
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache()
 })
 
 export default client
@@ -56,13 +70,15 @@ export const fetcher = {
 }
 
 /** 获取RSA公钥 */
-const RSA_PUBLIC_KEY: TypedDocumentNode<string> = gql`
+const RSA_PUBLIC_KEY: TypedDocumentNode<{
+  rsaPublicKey: string
+}> = gql`
   query {
     rsaPublicKey
   }
 `
 
-export const getRsaPublicKey = async () =>
-  await fetcher.query({
+export const getRsaPublicKey = () =>
+  fetcher.query({
     query: RSA_PUBLIC_KEY
   })

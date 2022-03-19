@@ -1,85 +1,69 @@
 // react
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 // router
 import { useNavigate, useParams } from 'react-router-dom'
 // antd
 import { Button, Card, Input, Form, Upload, Select } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { useForm } from 'antd/lib/form/Form'
-import type { DefaultOptionType } from 'antd/lib/select'
+// third
+import { useQuery } from '@apollo/client'
 // project
 import Editor from '../../components/Singleton/Essay/Editor'
-import { create, getEssay, update } from '../../apis/essay'
-import { getTags } from '../../apis/tag'
+import { create, ESSAY, update } from '../../apis/essay'
+import { TAGS } from '../../apis/tag'
 import { customRequest, getUploadParam, getValueFromEvent } from '../../utils/upload'
-import type { CreateEssay } from '../../typings/essay'
+import type { CreateEssayInput } from '../../typings/essay'
 import type { FormValues } from './assets'
 
 const { Item } = Form
 
 const Essay = () => {
-  const [tagOptions, setTagOptions] = useState<DefaultOptionType[]>()
   const [initialValues, setInitialValues] = useState<FormValues>()
 
+  /** hooks */
   const urlParams = useParams()
   const navigate = useNavigate()
   const [form] = useForm<FormValues>()
+  const { data } = useQuery(TAGS)
+  useQuery(ESSAY, {
+    variables: {
+      id: Number(urlParams.id)
+    },
+    onCompleted: (data) => {
+      const essay = data.essay
 
-  const onFetch = async () => {
-    // 标签选项
-    setTagOptions(
-      ((await getTags()).data?.docs || []).map((tag) => ({
-        label: tag.name,
-        value: tag.id
-      }))
-    )
+      // 赋值
+      setInitialValues({
+        title: essay.title,
+        content: essay.content,
+        tagIds: essay.tagIds,
+        fileList: getUploadParam({
+          id: essay.id,
+          name: essay.title,
+          url: essay.cover
+        })?.fileList
+      })
 
-    // 路由存在文章id，还需要查询文章信息
-    // 如果不存在，不做处理
-    if (!urlParams.id) return
-
-    const essay = (await getEssay(urlParams.id)).data
-
-    // 文章不存在，返回404
-    if (!essay) {
-      navigate('/404')
-      return
+      // 重置表单
+      form.resetFields()
     }
-
-    // 赋值
-    setInitialValues({
-      title: essay.title,
-      content: essay.content,
-      tags: essay.tags as string[],
-      fileList: getUploadParam({
-        id: essay.id,
-        name: essay.title,
-        url: essay.cover
-      })?.fileList
-    })
-
-    // 重置表单
-    form.resetFields()
-  }
-
-  useEffect(() => {
-    onFetch()
-  }, [])
+  })
 
   /** 提交 */
   const onSubmit = async () => {
     const formValues = form.getFieldsValue()
 
-    const params: CreateEssay = {
+    const params: CreateEssayInput = {
       content: formValues.content,
-      tags: formValues.tags,
+      tagIds: formValues.tagIds,
       title: formValues.title,
       cover: formValues.fileList?.at(0)?.response?.data || ''
     }
 
     const handlers = {
       create: () => create(params),
-      update: () => urlParams.id && update(urlParams.id, params)
+      update: () => urlParams.id && update(Number(urlParams.id), params)
     }
 
     await handlers[urlParams.id ? 'update' : 'create']()
@@ -103,7 +87,13 @@ const Essay = () => {
           <Input size='large' placeholder='请输入标题' />
         </Item>
 
-        <Item label='文章封面' name='fileList' labelCol={{ span: 2 }} valuePropName='fileList' getValueFromEvent={getValueFromEvent}>
+        <Item
+          label='文章封面'
+          name='fileList'
+          labelCol={{ span: 2 }}
+          valuePropName='fileList'
+          getValueFromEvent={getValueFromEvent}
+        >
           <Upload listType='picture-card' customRequest={customRequest}>
             <PlusOutlined />
           </Upload>
@@ -119,7 +109,14 @@ const Essay = () => {
             }
           ]}
         >
-          <Select mode='multiple' options={tagOptions} />
+          <Select
+            mode='multiple'
+            options={data?.tags.items}
+            fieldNames={{
+              label: 'name',
+              value: 'id'
+            }}
+          />
         </Item>
 
         <Item

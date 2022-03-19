@@ -1,5 +1,8 @@
+// third
+import type { FetchResult } from '@apollo/client'
+
 export interface Props {
   roleId: number
-  users: string[]
-  onSubmitted: Function
+  userIds: number[]
+  onSubmitted: (result: FetchResult) => void
 }

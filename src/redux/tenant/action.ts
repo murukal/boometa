@@ -1,4 +1,5 @@
 // project
+import { getTenant } from '../../apis/tenant'
 import type { Tenant } from '../../typings/tenant'
 
 export type ActionType = 'SET_TENANT'
@@ -8,7 +9,11 @@ export interface Action {
   data?: Tenant | null
 }
 
-export const setTenant = (data?: Tenant | null): Action => ({
-  type: 'SET_TENANT',
-  data
-})
+export const setTenant = async (tenantCode: string): Promise<Action> => {
+  const result = await getTenant(tenantCode)
+
+  return {
+    type: 'SET_TENANT',
+    data: result.data?.tenant
+  }
+}

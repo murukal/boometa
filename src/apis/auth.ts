@@ -9,8 +9,10 @@ import { PaginateOutput, QueryParams } from '../typings/api'
 /**
  * 登陆
  */
-export const LOGIN: TypedDocumentNode<
-  string,
+const LOGIN: TypedDocumentNode<
+  {
+    login: string
+  },
   {
     loginInput: LoginInput
   }
@@ -20,11 +22,21 @@ export const LOGIN: TypedDocumentNode<
   }
 `
 
+export const login = (loginInput: LoginInput) =>
+  fetcher.mutate({
+    mutation: LOGIN,
+    variables: {
+      loginInput
+    }
+  })
+
 /**
  * 注册
  */
-export const REGISTER: TypedDocumentNode<
-  string,
+const REGISTER: TypedDocumentNode<
+  {
+    register: string
+  },
   {
     registerInput: RegisterInput
   }
@@ -33,11 +45,20 @@ export const REGISTER: TypedDocumentNode<
     register(registerInput: $registerInput)
   }
 `
+export const register = (registerInput: RegisterInput) =>
+  fetcher.mutate({
+    mutation: REGISTER,
+    variables: {
+      registerInput
+    }
+  })
 
 /**
  * 获取用户信息
  */
-const WHO_AM_I: TypedDocumentNode<User> = gql`
+const WHO_AM_I: TypedDocumentNode<{
+  whoAmI: User
+}> = gql`
   query {
     whoAmI {
       id

@@ -7,14 +7,13 @@ import { Button, Checkbox, Divider, Form, Input, notification, Typography } from
 import { EyeTwoTone, EyeInvisibleOutlined, UserOutlined, LockOutlined } from '@ant-design/icons'
 import { useForm } from 'antd/lib/form/Form'
 // third
-import { useApolloClient } from '@apollo/client'
 import type JSEncrypt from 'jsencrypt'
 // project
-import { LOGIN } from '../../../apis/auth'
-import { setToken } from '../../../utils/app'
+import { login } from '../../../apis/auth'
+import { storeToken } from '../../../utils/app'
 import { toggleStyle } from '../assets'
+import { resultNotification } from '../../../utils/notification'
 import type { FormValues } from './assets'
-import type { LoginInput } from '../../../typings/user'
 import type { State } from '../../../redux'
 
 const { Title, Text } = Typography
@@ -24,8 +23,6 @@ const { Password } = Input
 const Login = () => {
   const encryptor = useSelector<State, JSEncrypt>((state) => state.encryptor)
   const [form] = useForm<FormValues>()
-
-  const client = useApolloClient()
 
   // 执行登录
   const onLogin = async () => {
@@ -41,20 +38,13 @@ const Login = () => {
       return
     }
 
-    const { data: token, errors } = await client.mutate<string, LoginInput>({
-      mutation: LOGIN,
-      variables: {
-        ...formValues,
-        password: encryptedPassword
-      }
+    const result = await login({
+      keyword: formValues.keyword,
+      password: encryptedPassword
     })
 
-    console.log('errors=====', errors)
-
-    // 请求失败
-    if (!token) return
-
-    setToken(token, formValues.isAutoLogin)
+    resultNotification(result)
+    storeToken(result.data?.login, formValues.isAutoLogin)
   }
 
   return (

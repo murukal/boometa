@@ -3,14 +3,16 @@ import { gql } from '@apollo/client'
 import type { TypedDocumentNode } from '@apollo/client'
 // project
 import { fetcher } from '.'
-import type { Tenant } from '../typings/tenant'
-import { PaginateOutput, QueryParams } from '../typings/api'
+import type { CreateTenantInput, Tenant, UpdateTenantInput } from '../typings/tenant'
+import type { PaginateOutput, QueryParams } from '../typings/api'
 
 /**
  * 查询单个租户
  */
 const TENANT: TypedDocumentNode<
-  Tenant,
+  {
+    tenant: Tenant
+  },
   {
     keyword: string
   }
@@ -37,9 +39,16 @@ export const getTenant = async (keyword: string) =>
 /**
  * 创建租户
  */
-export const CREATE = gql`
-  mutation CreateTenant($tenant: CreateTenantInput!) {
-    createTenant(createTenantInput: $tenant) {
+const CREATE: TypedDocumentNode<
+  {
+    createTenant: Tenant
+  },
+  {
+    createTenantInput: CreateTenantInput
+  }
+> = gql`
+  mutation CreateTenant($createTenantInput: CreateTenantInput!) {
+    createTenant(createTenantInput: $createTenantInput) {
       id
       name
       code
@@ -48,14 +57,39 @@ export const CREATE = gql`
   }
 `
 
+export const create = (createTenantInput: CreateTenantInput) =>
+  fetcher.mutate({
+    mutation: CREATE,
+    variables: {
+      createTenantInput
+    }
+  })
+
 /**
  * 更新租户
  */
-export const UPDATE = gql`
-  mutation UpdateTenant($id: Int!, $tenant: UpdateTenantInput!) {
-    updateTenant(id: $id, updateTenantInput: $tenant)
+const UPDATE: TypedDocumentNode<
+  {
+    updateTenant: boolean
+  },
+  {
+    id: number
+    updateTenantInput: UpdateTenantInput
+  }
+> = gql`
+  mutation UpdateTenant($id: Int!, $updateTenantInput: UpdateTenantInput!) {
+    updateTenant(id: $id, updateTenantInput: $updateTenantInput)
   }
 `
+
+export const update = (id: number, updateTenantInput: UpdateTenantInput) =>
+  fetcher.mutate({
+    mutation: UPDATE,
+    variables: {
+      id,
+      updateTenantInput
+    }
+  })
 
 /**
  * 删除租户
@@ -97,6 +131,7 @@ export const TENANTS: TypedDocumentNode<
       total
       pageCount
       items {
+        id
         code
         name
         isAuthorizate
@@ -125,6 +160,8 @@ export const TENANTS_WITH_MENUS: TypedDocumentNode<{
           name
           sortBy
           icon
+          to
+          component
           tenantId
           parentId
         }

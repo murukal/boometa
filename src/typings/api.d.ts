@@ -20,6 +20,7 @@ export interface PaginateOutput<T> {
 /**
  * 查询的通用参数
  */
-export interface QueryParams {
+export interface QueryParams<F = Record<string, any>> {
   paginateInput?: PaginateInput
+  filterInput?: F
 }

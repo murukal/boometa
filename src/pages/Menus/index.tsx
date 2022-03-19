@@ -11,6 +11,10 @@ import { useTableQuery } from '../../utils/table'
 import { TENANTS_WITH_MENUS } from '../../apis/tenant'
 import type { Tenant } from '../../typings/tenant'
 import type { Menu as MenuType } from '../../typings/menu'
+import { getMenuTreeFromMenus } from '../../utils/menu'
+import { getInitialSingleton } from '../../components/Singleton/Menu/assets'
+import { remove } from '../../apis/menu'
+import { resultNotification } from '../../utils/notification'
 
 const Menus = () => {
   const [isOpened, setIsOpened] = useState(false)
@@ -63,16 +67,12 @@ const Menus = () => {
       }
     ])
 
-    /** 菜单表格 */
-    return (
-      <Table
-        rowKey='id'
-        columns={menuColumns}
-        dataSource={data?.tenants.items?.find((tenantWithMenus) => tenantWithMenus.code === tenant.code)?.menus}
-        pagination={false}
-        bordered={true}
-      />
+    const menus = getMenuTreeFromMenus(
+      data?.tenants.items?.find((tenantWithMenus) => tenantWithMenus.code === tenant.code)?.menus
     )
+
+    /** 菜单表格 */
+    return <Table rowKey='id' columns={menuColumns} dataSource={menus} pagination={false} bordered={true} />
   }
 
   /** 抽屉关闭事件 */
@@ -81,23 +81,27 @@ const Menus = () => {
   }
 
   /** 抽屉打开事件 */
-  const onOpen = (tenantId: number, parentId?: number, menu?: MenuType) => () => {
-    // 重置state
-    setMenu(menu)
-    setTenantId(tenantId)
-    setParentId(parentId)
-    setIsOpened(true)
-  }
+  const onOpen =
+    (tenantId: number, parentId?: number, menu: MenuType = getInitialSingleton()) =>
+    () => {
+      // 重置state
+      setMenu(menu)
+      setTenantId(tenantId)
+      setParentId(parentId)
+      setIsOpened(true)
+    }
 
   /** 抽屉提交完成后的回调事件 */
   const onSubmitted = () => {
+    refetch()
     onClose()
   }
 
   /** 删除菜单事件 */
   const onDelete = (id: number) => async () => {
-    // 删除成功后回调，刷新数据
-    refetch()
+    const res = await remove(id)
+    resultNotification(res)
+    res.data?.removeMenu && refetch()
   }
 
   return (

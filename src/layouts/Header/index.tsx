@@ -7,6 +7,7 @@ import { EditOutlined, ApiOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from 
 // project
 import { logout } from '../../redux/userProfile/action'
 import { foldStyle } from './assets'
+import { TOKEN } from '../../assets'
 import type { Props } from './assets'
 import type { State } from '../../redux'
 import type { User } from '../../typings/user'
@@ -18,6 +19,10 @@ const Header = (props: Props) => {
   const user = useSelector<State, User | undefined | null>((state) => state.userProfile.user)
 
   const onLogout = () => {
+    // 清楚浏览器的缓存
+    localStorage.removeItem(TOKEN)
+    sessionStorage.removeItem(TOKEN)
+
     dispatch(logout())
   }
 
@@ -57,7 +62,7 @@ const Header = (props: Props) => {
 
       {/* avatar */}
       <div className='ml-auto flex items-center'>
-        <Dropdown overlay={getMenu} trigger={['click']} placement='bottomCenter' arrow>
+        <Dropdown overlay={getMenu} trigger={['click']} placement='bottom' arrow>
           <Avatar src={user?.avatar} />
         </Dropdown>
 

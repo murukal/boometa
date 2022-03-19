@@ -1,41 +1,45 @@
 // react
-import { useLayoutEffect } from 'react'
+import { useEffect, useState } from 'react'
 // redux
 import { useDispatch, useSelector } from 'react-redux'
 // project
 import Router from './routes/Router'
-import { authenticate } from './redux/userProfile/action'
-import { getRsaPublicKey } from './apis'
+import { authenticate, setToken } from './redux/userProfile/action'
 import { setTenant } from './redux/tenant/action'
 import { setRsaPublicKey } from './redux/encryptor/action'
-import { getTenant } from './apis/tenant'
-import { whoAmI } from './apis/auth'
 import type { State } from './redux'
+import { setMenus } from './redux/menus/action'
 
 const App = () => {
   const dispatch = useDispatch()
   const tenantCode = useSelector<State, string>((state) => state.tenant.code)
+  const [isReady, setIsReady] = useState(false)
 
   const onFetch = async () => {
+    // 在redux中存储token
+    dispatch(setToken())
+
     // 在redux中存储rsa公钥
-    dispatch(setRsaPublicKey((await getRsaPublicKey()).data))
+    dispatch(await setRsaPublicKey())
 
     // 在redux中存储租户信息
-    dispatch(setTenant((await getTenant(tenantCode)).data))
+    dispatch(await setTenant(tenantCode))
+
+    // 在redux中存储菜单信息
+    dispatch(await setMenus())
 
     // 在redux中存储用户信息
-    dispatch(authenticate((await whoAmI()).data))
+    dispatch(await authenticate())
+
+    setIsReady(true)
   }
 
-  console.log('app function run')
-
   /** 初始化渲染 */
-  useLayoutEffect(() => {
-    console.log('useLayoutEffect run')
+  useEffect(() => {
     onFetch()
   }, [])
 
-  return <Router />
+  return <>{isReady && <Router />}</>
 }
 
 export default App

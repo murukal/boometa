@@ -9,6 +9,9 @@ const reducer = (state = getInitialState(), action: Action) => {
     case 'LOGOUT':
       // 退出登录
       return action.data
+    case 'SET_TOKEN':
+      // 初始化token
+      return action.data
     default:
       // 未被监测到的action
       return state

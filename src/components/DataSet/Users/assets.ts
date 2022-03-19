@@ -8,8 +8,8 @@ import { Avatar } from 'antd'
 import type { User } from '../../../typings/user'
 
 export interface Props {
-  ids?: string[]
-  excludeIds?: string[]
+  ids?: number[]
+  excludeUserIds?: number[]
   rowSelection?: TableRowSelection<User>
 }
 

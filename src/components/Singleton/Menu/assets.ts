@@ -1,13 +1,11 @@
 // third
 import path from 'path-browserify'
 // project
-import { permissionKeys, separator } from '../../Roles4Auth/Authorizations/assets'
-import type { MenuTreeNode } from '../../../typings/menu'
-import type { AbilityKey, PermissionKey } from '../../../typings/role'
+import type { Menu } from '../../../typings/menu'
 
 export interface ExtraProps {
-  tenantId: string
-  parentId?: string
+  tenantId: number
+  parentId?: number
 }
 
 export interface FormValues {
@@ -15,19 +13,14 @@ export interface FormValues {
   sortBy: number
   icon?: string
 
-  authorizations: string[]
-
-  route?: {
-    to: string
-    component: string
-  }
+  to?: string
+  component?: string
 }
 
-export const getInitialSingleton = (): MenuTreeNode => ({
+export const getInitialSingleton = (): Menu => ({
   id: 0,
   name: '',
-  sortBy: 0,
-  authorizations: []
+  sortBy: 0
 })
 
 /** 组件的路径 */
@@ -42,9 +35,3 @@ export const componentOptions = require
       value: actualPath
     }
   })
-
-/** 检索权限 */
-export const authorizationOptions = Object.keys(permissionKeys).map((permissionKey) => ({
-  label: permissionKeys[permissionKey as PermissionKey],
-  value: `${permissionKey}${separator}${'retrieve' as AbilityKey}`
-}))

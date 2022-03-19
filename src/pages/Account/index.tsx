@@ -1,49 +1,25 @@
 // react
 import { useEffect } from 'react'
 // router
-import { Outlet, useNavigate, useSearchParams } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 // redux
 import { useSelector } from 'react-redux'
 // antd
 import { Image } from 'antd'
-// third
-import { stringify } from 'qs'
 // project
 import Footer from '../../layouts/Footer'
-import { TOKEN } from '../../assets'
 import type { State } from '../../redux'
+// css
 import './style.css'
 
 const Account = () => {
   const navigate = useNavigate()
-  const isLogin = useSelector<State>((state) => state.userProfile.isLogin)
-
-  // 获取重定向的url
-  const redirect = useSearchParams()[0].get('redirect') || ''
+  const isLogin = useSelector<State, boolean>((state) => state.userProfile.isLogin)
 
   useEffect(() => {
     if (!isLogin) return
-
-    // 非重定向页面，直接内部跳转
-    if (!redirect) {
-      // 跳转路由
-      navigate('/', { replace: true })
-      return
-    }
-
-    // 重定向页面
-    // 传递auth信息
-    const localToken = localStorage.getItem(TOKEN)
-    const sessionToken = sessionStorage.getItem(TOKEN)
-
-    const params = {
-      authentication: JSON.stringify({
-        token: localToken || sessionToken,
-        is_once: !localToken
-      })
-    }
-
-    window.location.replace(`${redirect}?${stringify(params)}`)
+    // 跳转路由
+    navigate('/', { replace: true })
   }, [isLogin])
 
   return (

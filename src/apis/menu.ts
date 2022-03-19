@@ -1,5 +1,9 @@
+// third
 import { gql, TypedDocumentNode } from '@apollo/client'
+// project
 import { fetcher } from '.'
+import { PaginateOutput } from '../typings/api'
+import type { Menu, CreateMenuInput, UpdateMenuInput, FilterInput } from '../typings/menu'
 
 /**
  * 删除菜单
@@ -22,5 +26,93 @@ export const remove = (id: number) =>
     mutation: REMOVE,
     variables: {
       id
+    }
+  })
+
+/**
+ * 创建菜单
+ */
+const CREATE: TypedDocumentNode<
+  {
+    createMenu: Menu
+  },
+  {
+    createMenuInput: CreateMenuInput
+  }
+> = gql`
+  mutation CreateMenu($createMenuInput: CreateMenuInput!) {
+    createMenu(createMenuInput: $createMenuInput) {
+      id
+    }
+  }
+`
+
+export const create = (createMenuInput: CreateMenuInput) =>
+  fetcher.mutate({
+    mutation: CREATE,
+    variables: {
+      createMenuInput
+    }
+  })
+
+/**
+ * 更新菜单
+ */
+const UPDATE: TypedDocumentNode<
+  {
+    updateMenu: boolean
+  },
+  {
+    id: number
+    updateMenuInput: UpdateMenuInput
+  }
+> = gql`
+  mutation UpdateMenu($id: Int!, $updateMenuInput: UpdateMenuInput!) {
+    updateMenu(id: $id, updateMenuInput: $updateMenuInput)
+  }
+`
+
+export const update = (id: number, updateMenuInput: UpdateMenuInput) =>
+  fetcher.mutate({
+    mutation: UPDATE,
+    variables: {
+      id,
+      updateMenuInput
+    }
+  })
+
+/**
+ * 查询多个菜单
+ */
+const MENUS: TypedDocumentNode<
+  {
+    menus: PaginateOutput<Menu>
+  },
+  {
+    filterInput: FilterInput
+  }
+> = gql`
+  query Menus($filterInput: FilterInput!) {
+    menus(filterInput: $filterInput) {
+      items {
+        id
+        name
+        sortBy
+        icon
+        to
+        component
+        parentId
+      }
+    }
+  }
+`
+
+export const getMenus = (tenantId: number) =>
+  fetcher.query({
+    query: MENUS,
+    variables: {
+      filterInput: {
+        tenantId
+      }
     }
   })

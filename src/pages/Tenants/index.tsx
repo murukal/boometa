@@ -4,14 +4,14 @@ import { useState } from 'react'
 import { Card } from 'antd'
 import { Table } from 'antd'
 // project
-import type { Tenant as TenantType } from '../../typings/tenant'
-import { getColumns } from './assets'
-import { remove, TENANTS } from '../../apis/tenant'
 import Tenant from '../../components/Singleton/Tenant'
 import Toolbar from '../../components/Toolbar'
 import Singleton from '../../components/Singleton'
+import { getColumns } from './assets'
+import { remove, TENANTS } from '../../apis/tenant'
 import { getInitialTenant } from '../../components/Singleton/Tenant/assets'
 import { getTableRowHandler, useTableQuery } from '../../utils/table'
+import type { Tenant as TenantType } from '../../typings/tenant'
 
 const Tenants = () => {
   const [isOpened, setIsOpened] = useState(false)
@@ -78,7 +78,7 @@ const Tenants = () => {
       <Toolbar onAdd={onOpen()} onDelete={() => {}} />
 
       <Table
-        rowKey='id'
+        rowKey='code'
         loading={isLoading}
         columns={columns}
         dataSource={data?.tenants.items}

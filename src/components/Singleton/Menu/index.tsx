@@ -6,16 +6,16 @@ import { useForm } from 'antd/lib/form/Form'
 import type { FormInstance } from 'antd'
 // project
 import { create, update } from '../../../apis/menu'
-import { responseNotification } from '../../../utils/notification'
 import IconSelector from '../../IconSelector'
-import { authorizationOptions, componentOptions } from './assets'
-import { SingletonProps } from '../assets'
-import type { MenuTreeNode } from '../../../typings/menu'
+import { componentOptions } from './assets'
+import { resultNotification } from '../../../utils/notification'
+import type { SingletonProps } from '../assets'
+import type { Menu as MenuType } from '../../../typings/menu'
 import type { ExtraProps, FormValues } from './assets'
 
 const { Item } = Form
 
-const Menu = forwardRef<FormInstance, SingletonProps<MenuTreeNode, ExtraProps>>((props, ref) => {
+const Menu = forwardRef<FormInstance, SingletonProps<MenuType, ExtraProps>>((props, ref) => {
   const [form] = useForm<FormValues>()
 
   const initialValuse = useMemo<FormValues>(
@@ -23,8 +23,8 @@ const Menu = forwardRef<FormInstance, SingletonProps<MenuTreeNode, ExtraProps>>(
       name: props.singleton.name,
       sortBy: props.singleton.sortBy,
       icon: props.singleton.icon,
-      authorizations: props.singleton.authorizations,
-      route: props.singleton.route
+      to: props.singleton.to,
+      component: props.singleton.component
     }),
     [props.singleton]
   )
@@ -37,16 +37,16 @@ const Menu = forwardRef<FormInstance, SingletonProps<MenuTreeNode, ExtraProps>>(
       create: () =>
         create({
           ...formValues,
-          tenant: props.extraProps.tenantId,
-          parent: props.extraProps.parentId
+          tenantId: props.extraProps.tenantId,
+          parentId: props.extraProps.parentId
         }),
       update: () => update(props.singleton.id, formValues)
     }
 
     // 提交表单
-    const res = await handlers[props.singleton.id ? 'update' : 'create']()
-    responseNotification(res)
-    !res.code && props.onSubmitted && props.onSubmitted()
+    const result = await handlers[props.singleton.id ? 'update' : 'create']()
+    resultNotification(result)
+    props.onSubmitted(result)
   }
 
   return (
@@ -75,11 +75,11 @@ const Menu = forwardRef<FormInstance, SingletonProps<MenuTreeNode, ExtraProps>>(
         <InputNumber />
       </Item>
 
-      <Item label='菜单组件路径' name={['route', 'component']}>
+      <Item label='菜单组件路径' name='component'>
         <Select options={componentOptions} />
       </Item>
 
-      <Item label='菜单路由' name={['route', 'to']}>
+      <Item label='菜单路由' name='to'>
         <Input />
       </Item>
 
@@ -87,9 +87,9 @@ const Menu = forwardRef<FormInstance, SingletonProps<MenuTreeNode, ExtraProps>>(
         <IconSelector />
       </Item>
 
-      <Item label='菜单权限通行证' name='authorizations'>
+      {/* <Item label='菜单权限通行证' name='authorizations'>
         <Select mode='multiple' allowClear options={authorizationOptions} />
-      </Item>
+      </Item> */}
     </Form>
   )
 })

@@ -1,12 +1,11 @@
 // react
 import { useMemo, forwardRef } from 'react'
 // antd
-import type { FormInstance } from 'antd'
 import { Form, Input, Upload } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { useForm } from 'antd/lib/form/Form'
+import type { FormInstance } from 'antd'
 // project
-import { responseNotification } from '../../../utils/notification'
 import { create, update } from '../../../apis/tag'
 import { SingletonProps } from '../assets'
 import { customRequest, getUploadParam, getValueFromEvent } from '../../../utils/upload'
@@ -25,7 +24,7 @@ const Tag = forwardRef<FormInstance, SingletonProps<TagType>>((props, ref) => {
         getUploadParam({
           id: props.singleton.id,
           name: props.singleton.name,
-          url: props.singleton.cover
+          url: props.singleton.image
         })?.fileList || []
     }
   }, [props.singleton])
@@ -36,7 +35,7 @@ const Tag = forwardRef<FormInstance, SingletonProps<TagType>>((props, ref) => {
 
     const params = {
       name: formValues.name,
-      cover: formValues.fileList.at(0)?.response.data
+      image: formValues.fileList.at(0)?.response.data
     }
 
     const handlers = {
@@ -46,8 +45,7 @@ const Tag = forwardRef<FormInstance, SingletonProps<TagType>>((props, ref) => {
 
     const handler = handlers[props.singleton.id ? 'update' : 'create']
     const res = await handler()
-    responseNotification(res)
-    props.onSubmitted && props.onSubmitted()
+    props.onSubmitted(res)
   }
 
   return (

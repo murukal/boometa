@@ -1,9 +1,8 @@
 // project
 import getInitialState, { UserProfile } from './store'
-import { TOKEN } from '../../assets'
-import type { User } from '../../typings/user'
+import { whoAmI } from '../../apis/auth'
 
-export type ActionType = 'AUTHENTICATE' | 'LOGOUT'
+export type ActionType = 'AUTHENTICATE' | 'LOGOUT' | 'SET_TOKEN'
 
 export interface Action {
   type: ActionType
@@ -13,7 +12,12 @@ export interface Action {
 /**
  * 存储用户信息
  */
-export const authenticate = (user?: User | null): Action => {
+export const authenticate = async (): Promise<Action> => {
+  // 查询用户信息
+  const { data } = await whoAmI()
+  const user = data?.whoAmI
+
+  // 根据查询的用户信息生成redux的aciton
   return {
     type: 'AUTHENTICATE',
     data: {
@@ -27,13 +31,17 @@ export const authenticate = (user?: User | null): Action => {
 /**
  * 退出登录
  */
-export const logout = (): Action => {
-  // 清楚浏览器的缓存
-  localStorage.removeItem(TOKEN)
-  sessionStorage.removeItem(TOKEN)
+export const logout = (): Action => ({
+  type: 'LOGOUT',
+  data: { isLogin: false, user: null, token: null }
+})
 
+/**
+ * 传递token
+ */
+export const setToken = (): Action => {
   return {
-    type: 'LOGOUT',
-    data: { isLogin: false, user: null, token: null }
+    type: 'SET_TOKEN',
+    data: getInitialState()
   }
 }

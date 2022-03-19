@@ -14,6 +14,7 @@ import App from './App'
 import store from './redux'
 import client from './apis'
 import reportWebVitals from './reportWebVitals'
+// css
 import './styles/index.less'
 
 ReactDOM.render(
