@@ -4,7 +4,7 @@ import type { TypedDocumentNode } from '@apollo/client'
 // project
 import { fetcher } from '.'
 import type { LoginInput, RegisterInput, User } from '../typings/user'
-import { PaginateOutput, QueryParams } from '../typings/api'
+import type { PaginateOutput, QueryParams } from '../typings/api'
 
 /**
  * 登陆
@@ -83,8 +83,8 @@ export const GET_USERS: TypedDocumentNode<
   },
   QueryParams
 > = gql`
-  query Users($paginateInput: PaginateInput) {
-    users(paginateInput: $paginateInput) {
+  query Users($paginateInput: PaginateInput, $filterInput: FilterUserInput) {
+    users(paginateInput: $paginateInput, filterInput: $filterInput) {
       total
       pageCount
       page
@@ -104,3 +104,36 @@ export const GET_USERS: TypedDocumentNode<
 /**
  * 查询权限树
  */
+export const AUTHORIZATION_TREE: TypedDocumentNode<{
+  authorizationTree: {
+    key: string
+    title: string
+    checkable: false
+    children: {
+      key: string
+      title: string
+      checkable: false
+      children: {
+        key: number
+        title: string
+      }[]
+    }[]
+  }[]
+}> = gql`
+  query {
+    authorizationTree {
+      key
+      title
+      checkable
+      children {
+        key
+        title
+        checkable
+        children {
+          key
+          title
+        }
+      }
+    }
+  }
+`

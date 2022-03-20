@@ -5,11 +5,17 @@ import { getColumns } from './assets'
 import { onTableChange, useTableQuery } from '../../../utils/table'
 import { GET_USERS } from '../../../apis/auth'
 import type { Props } from './assets'
+import type { FilterInput } from '../../../typings/user'
 
 const Users = (props: Props) => {
   const columns = getColumns()
 
-  const { data, isLoading, pagination } = useTableQuery(GET_USERS)
+  const { data, isLoading, pagination } = useTableQuery<FilterInput>(GET_USERS, {
+    filterInput: {
+      ids: props.ids,
+      excludeIds: props.excludeUserIds
+    }
+  })
 
   return (
     <Table

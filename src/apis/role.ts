@@ -68,6 +68,8 @@ export const ROLE: TypedDocumentNode<
     role(id: $id) {
       id
       name
+      userIds
+      authorizationIds
     }
   }
 `

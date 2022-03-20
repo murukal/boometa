@@ -41,6 +41,7 @@ const Singleton = (props: Props) => {
         title={props.title}
         placement='right'
         closable={false}
+        maskClosable={false}
         onClose={props.onClose}
         visible={props.isOpened}
         afterVisibleChange={afterVisibleChange}

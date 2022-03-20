@@ -1,12 +1,12 @@
 // react
-import { useMemo } from 'react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 // antd
-import type { CardTabListType } from 'antd/lib/card'
 import { Button, Card } from 'antd'
 import { CloseOutlined } from '@ant-design/icons/lib/icons'
+import type { CardTabListType } from 'antd/lib/card'
 //project
 import Users from './Users'
+import Authorizations from './Authorizations'
 import { ROLE } from '../../apis/role'
 import { createRef } from 'react'
 import { useQuery } from '@apollo/client'
@@ -15,14 +15,18 @@ import type { Props } from './assets'
 const Roles4Auth = (props: Props) => {
   const tabs: CardTabListType[] = [
     { key: 'user', tab: '用户' },
-    { key: 'menu', tab: '授权' }
+    { key: 'authorization', tab: '授权' }
   ]
 
   const [isLoading, setIsLoading] = useState(false)
   const [isEditable, setIsEditable] = useState(false)
 
   /** hooks */
-  const { data, refetch } = useQuery(ROLE, {
+  const {
+    data,
+    refetch,
+    loading: isQueryLoading
+  } = useQuery(ROLE, {
     variables: {
       id: props.roleId
     }
@@ -32,8 +36,7 @@ const Roles4Auth = (props: Props) => {
 
   /** 获取授权页签下的按钮 */
   const tabBarExtraContent = useMemo(() => {
-    if (props.actived !== 'menu') return undefined
-
+    if (props.actived !== 'authorization') return undefined
     if (!isEditable) return <Button onClick={() => setIsEditable(true)}>编辑</Button>
 
     return (
@@ -91,13 +94,24 @@ const Roles4Auth = (props: Props) => {
       onTabChange={onTabChange}
       title={title}
       tabBarExtraContent={tabBarExtraContent}
+      loading={isQueryLoading}
     >
-      {data?.role &&
-        (props.actived === 'user' ? (
-          <Users roleId={data?.role.id} userIds={data.role.userIds || []} onSubmitted={onSubmitted} />
-        ) : (
-          <></>
-        ))}
+      {/* 用户 */}
+      {props.actived === 'user' && (
+        <Users roleId={props.roleId} userIds={data?.role.userIds || []} onSubmitted={onSubmitted} />
+      )}
+
+      {/* 权限 */}
+      {props.actived === 'authorization' && (
+        <Authorizations
+          ref={ref}
+          roleId={props.roleId}
+          isDisabled={!isEditable}
+          onSubmit={onSubmit}
+          onSubmitted={onSubmitted}
+          authorizationIds={data?.role.authorizationIds || []}
+        ></Authorizations>
+      )}
     </Card>
   )
 }

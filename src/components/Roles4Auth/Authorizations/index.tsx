@@ -4,10 +4,15 @@ import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 import { Tree } from 'antd'
 // project
 import { update } from '../../../apis/role'
+import { useQuery } from '@apollo/client'
+import { AUTHORIZATION_TREE } from '../../../apis/auth'
 import type { Props } from './assets'
 
-const Permissions = forwardRef<any, Props>((props, ref) => {
+const Authorizations = forwardRef<any, Props>((props, ref) => {
   const [checkedKeys, setCheckedKeys] = useState<number[]>([])
+
+  /** hooks */
+  const { data } = useQuery(AUTHORIZATION_TREE)
 
   /** 选择树节点 */
   const onCheck = ({ checked }: any) => {
@@ -42,7 +47,7 @@ const Permissions = forwardRef<any, Props>((props, ref) => {
   return (
     <Tree
       checkStrictly
-      treeData={[]}
+      treeData={data?.authorizationTree}
       checkedKeys={checkedKeys}
       checkable
       disabled={props.isDisabled}
@@ -51,4 +56,4 @@ const Permissions = forwardRef<any, Props>((props, ref) => {
   )
 })
 
-export default Permissions
+export default Authorizations

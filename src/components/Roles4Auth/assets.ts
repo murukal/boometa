@@ -7,4 +7,4 @@ export interface Props {
   onClose?: Function
 }
 
-export type AuthType = 'user' | 'menu'
+export type AuthType = 'user' | 'authorization'

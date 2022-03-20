@@ -16,3 +16,8 @@ export interface RegisterInput {
   email: string
   password: string
 }
+
+export interface FilterInput {
+  ids?: number[]
+  excludeIds?: number[]
+}

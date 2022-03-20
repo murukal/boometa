@@ -1,11 +1,9 @@
 import { Core } from '.'
-import { User } from './user'
 
 export interface Role extends Core {
   name: string
-
   userIds?: number[]
-  users?: User[]
+  authorizationIds?: number[]
 }
 
 export interface CreateRoleInput extends Pick<Role, 'name'> {}

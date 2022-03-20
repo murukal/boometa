@@ -8,6 +8,7 @@ import UserDataSet from '../../DataSet/Users'
 import Toolbar from '../../Toolbar'
 import { update } from '../../../apis/role'
 import type { Props } from './assets'
+import { resultNotification } from '../../../utils/notification'
 
 const Users = (props: Props) => {
   const [userIds, setUserIds] = useState<number[]>([])
@@ -20,19 +21,26 @@ const Users = (props: Props) => {
 
     // 提交事件
     const res = await update(props.roleId, {
-      userIds: [...props.userIds, ...userIds]
+      userIds
     })
 
-    setIsOpened(false)
+    resultNotification(res)
     setIsLoading(false)
 
-    props.onSubmitted(res)
+    if (res.data) {
+      setUserIds([])
+      setIsOpened(false)
+      props.onSubmitted(res)
+    }
   }
 
   /** 选择用户 */
   const onSelectChange = (userIds: Key[]) => {
     setUserIds(userIds as number[])
   }
+
+  /** 弹窗关闭 */
+  const onClose = () => setIsOpened(false)
 
   return (
     <>
@@ -42,7 +50,7 @@ const Users = (props: Props) => {
         visible={isOpened}
         maskClosable={false}
         closable={false}
-        onCancel={() => setIsOpened(false)}
+        onCancel={onClose}
         onOk={onSubmit}
         confirmLoading={isLoading}
       >

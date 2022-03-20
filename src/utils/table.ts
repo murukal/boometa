@@ -72,7 +72,10 @@ export const getTableRowHandler = (handlers: TableRowHandler[]) => {
  * 自定义table hooks
  * 1. 集成 apollo client hook 请求后端数据
  */
-export const useTableQuery = <T>(query: TypedDocumentNode<T, QueryParams>) => {
+export const useTableQuery = <F, T = Record<string, any>>(
+  query: TypedDocumentNode<T, QueryParams>,
+  params?: Omit<QueryParams<F>, 'paginateInput'>
+) => {
   // 初始化表格的分页参数
   const [pagination, setPagination] = useState<TablePaginationConfig>({
     current: 1,
@@ -89,6 +92,7 @@ export const useTableQuery = <T>(query: TypedDocumentNode<T, QueryParams>) => {
     refetch
   } = useQuery(query, {
     variables: {
+      ...params,
       paginateInput: {
         page: pagination.current,
         limit: pagination.pageSize || 10

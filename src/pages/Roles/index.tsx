@@ -33,7 +33,7 @@ const Roles = () => {
           },
           {
             label: '授权',
-            onClick: onShow(role, 'menu')
+            onClick: onShow(role, 'authorization')
           },
           {
             label: '用户',

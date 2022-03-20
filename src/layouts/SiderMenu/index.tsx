@@ -68,13 +68,7 @@ const SiderMenu = () => {
 
           // 渲染为item
           return (
-            <Item
-              style={{
-                marginTop: 0
-              }}
-              key={menu.id}
-              icon={Icon}
-            >
+            <Item key={menu.id} icon={Icon}>
               {menu.to ? <Link to={menu.to}>{menu.name}</Link> : menu.name}
             </Item>
           )
