@@ -5,7 +5,7 @@ import type { ColumnsType } from 'antd/lib/table'
 import type { TableRowSelection } from 'antd/lib/table/interface'
 import { Avatar } from 'antd'
 // project
-import type { User } from '../../../typings/user'
+import type { User } from '../../../typings/auth'
 
 export interface Props {
   ids?: number[]

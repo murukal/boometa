@@ -1,7 +1,7 @@
 // project
 import { Core } from '.'
 import { Tag } from './tag'
-import { User } from './user'
+import { User } from './auth'
 
 export interface Essay extends Core {
   title: string

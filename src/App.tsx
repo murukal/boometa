@@ -7,8 +7,8 @@ import Router from './routes/Router'
 import { authenticate, setToken } from './redux/userProfile/action'
 import { setTenant } from './redux/tenant/action'
 import { setRsaPublicKey } from './redux/encryptor/action'
-import type { State } from './redux'
 import { setMenus } from './redux/menus/action'
+import type { State } from './redux'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -31,6 +31,7 @@ const App = () => {
     // 在redux中存储用户信息
     dispatch(await authenticate())
 
+    // 待渲染
     setIsReady(true)
   }
 

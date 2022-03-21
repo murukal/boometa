@@ -1,5 +1,5 @@
 import { TOKEN } from '../../assets'
-import type { User } from '../../typings/user'
+import type { User } from '../../typings/auth'
 
 export interface UserProfile {
   isLogin: boolean

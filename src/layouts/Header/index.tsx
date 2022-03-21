@@ -10,7 +10,7 @@ import { foldStyle } from './assets'
 import { TOKEN } from '../../assets'
 import type { Props } from './assets'
 import type { State } from '../../redux'
-import type { User } from '../../typings/user'
+import type { User } from '../../typings/auth'
 
 const { Title } = Typography
 

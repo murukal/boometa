@@ -5,7 +5,7 @@ import { getColumns } from './assets'
 import { onTableChange, useTableQuery } from '../../../utils/table'
 import { GET_USERS } from '../../../apis/auth'
 import type { Props } from './assets'
-import type { FilterInput } from '../../../typings/user'
+import type { FilterInput } from '../../../typings/auth'
 
 const Users = (props: Props) => {
   const columns = getColumns()

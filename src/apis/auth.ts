@@ -3,7 +3,7 @@ import { gql } from '@apollo/client'
 import type { TypedDocumentNode } from '@apollo/client'
 // project
 import { fetcher } from '.'
-import type { LoginInput, RegisterInput, User } from '../typings/user'
+import type { LoginInput, RegisterInput, User } from '../typings/auth'
 import type { PaginateOutput, QueryParams } from '../typings/api'
 
 /**
