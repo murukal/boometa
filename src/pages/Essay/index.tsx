@@ -1,5 +1,5 @@
 // react
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 // router
 import { useNavigate, useParams } from 'react-router-dom'
 // antd
@@ -10,7 +10,7 @@ import { useForm } from 'antd/lib/form/Form'
 import { useQuery } from '@apollo/client'
 // project
 import Editor from '../../components/Singleton/Essay/Editor'
-import { create, ESSAY, update } from '../../apis/essay'
+import { create, getEssay, update } from '../../apis/essay'
 import { TAGS } from '../../apis/tag'
 import { customRequest, getUploadParam, getValueFromEvent } from '../../utils/upload'
 import type { CreateEssayInput } from '../../typings/essay'
@@ -26,29 +26,32 @@ const Essay = () => {
   const navigate = useNavigate()
   const [form] = useForm<FormValues>()
   const { data } = useQuery(TAGS)
-  useQuery(ESSAY, {
-    variables: {
-      id: Number(urlParams.id)
-    },
-    onCompleted: (data) => {
-      const essay = data.essay
 
-      // 赋值
-      setInitialValues({
-        title: essay.title,
-        content: essay.content,
-        tagIds: essay.tagIds,
-        fileList: getUploadParam({
-          id: essay.id,
-          name: essay.title,
-          url: essay.cover
-        })?.fileList
+  useEffect(() => {
+    urlParams.id &&
+      getEssay(Number(urlParams.id)).then(({ data }) => {
+        const essay = data?.essay
+
+        if (!essay) {
+          setInitialValues(undefined)
+        } else {
+          // 赋值
+          setInitialValues({
+            title: essay.title,
+            content: essay.content,
+            tagIds: essay.tagIds,
+            fileList: getUploadParam({
+              id: essay.id,
+              name: essay.title,
+              url: essay.cover
+            })?.fileList
+          })
+        }
+
+        // 重置表单
+        form.resetFields()
       })
-
-      // 重置表单
-      form.resetFields()
-    }
-  })
+  }, [])
 
   /** 提交 */
   const onSubmit = async () => {

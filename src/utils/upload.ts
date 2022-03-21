@@ -31,17 +31,13 @@ export const getValueFromEvent = (e: UploadChangeParam) => {
 
 /** 自定义的上传事件 */
 export const customRequest = async (options: UploadRequestOption) => {
-  // const res = await upload({
-  //   url: '/api/upload',
-  //   file: options.file,
-  //   headers: options.headers
-  // })
+  const form = new FormData()
+  form.append('file', options.file)
 
-  // if (res.code) {
-  //   options.onError && options.onError(new Error(res.message), res)
-  // } else {
-  //   options.onSuccess && options.onSuccess(res)
-  // }
+  const res = await fetch('/api/upload', {
+    method: 'post',
+    body: form
+  })
 
-  options.onSuccess && options.onSuccess({})
+  options.onSuccess && options.onSuccess(await res.text())
 }

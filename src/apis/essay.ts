@@ -106,7 +106,7 @@ export const update = (id: number, updateEssayInput: UpdateEssayInput) =>
 /**
  * 查询单个文章
  */
-export const ESSAY: TypedDocumentNode<
+const ESSAY: TypedDocumentNode<
   {
     essay: Essay
   },
@@ -124,3 +124,11 @@ export const ESSAY: TypedDocumentNode<
     }
   }
 `
+
+export const getEssay = (id: number) =>
+  fetcher.query({
+    query: ESSAY,
+    variables: {
+      id
+    }
+  })

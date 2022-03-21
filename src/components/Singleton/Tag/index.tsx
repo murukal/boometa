@@ -5,6 +5,7 @@ import { Form, Input, Upload } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { useForm } from 'antd/lib/form/Form'
 import type { FormInstance } from 'antd'
+import type { UploadChangeParam } from 'antd/lib/upload'
 // project
 import { create, update } from '../../../apis/tag'
 import { SingletonProps } from '../assets'
