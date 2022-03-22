@@ -1,17 +1,17 @@
 const CracoLessPlugin = require('craco-less')
 
+const server_location = 'http://localhost:9000' // http://admin.r2boom.com
+
 module.exports = {
   devServer: {
     proxy: {
       '/graphql': {
-        // target: 'http://admin.r2boom.com',
-        target: 'http://localhost:9000',
+        target: server_location,
         secure: false,
         changeOrigin: true
       },
       '/api': {
-        // target: 'http://admin.r2boom.com',
-        target: 'http://localhost:9000',
+        target: server_location,
         secure: false,
         changeOrigin: true
       }

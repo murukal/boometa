@@ -19,21 +19,15 @@ const Layout = () => {
   const isLogin = useSelector<State>((state) => state.userProfile.isLogin)
 
   /** 折叠功能 */
-  const onFold = () => setIsFolded((isFolded) => !isFolded)
+  const onToggle = () => setIsFolded((isFolded) => !isFolded)
 
   return isLogin ? (
     <Wrapper className='h-full'>
       {/* 侧边导航栏 */}
       <Sider collapsed={isFolded}>
         {/* logo */}
-        <div className='h-16 flex items-center justify-around'>
-          <Image
-            src='/boomart.ico'
-            style={{
-              height: 32
-            }}
-            preview={false}
-          />
+        <div className='m-4'>
+          <Image src='/boomart.ico' preview={false} height={32} />
         </div>
 
         {/* menu */}
@@ -42,7 +36,7 @@ const Layout = () => {
 
       <Wrapper>
         {/* 顶部导航栏 */}
-        <Header isFolded={isFolded} onFold={onFold} />
+        <Header isFolded={isFolded} onToggle={onToggle} />
 
         {/* 页面正文 */}
         <Content className='p-3 overflow-auto'>

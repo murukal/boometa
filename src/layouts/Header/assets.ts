@@ -2,7 +2,7 @@ import { CSSProperties } from 'react'
 
 export interface Props {
   isFolded: boolean
-  onFold: Function
+  onToggle: Function
 }
 
 export const foldStyle: CSSProperties = {

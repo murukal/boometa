@@ -41,23 +41,18 @@ const Header = (props: Props) => {
   }
 
   /** 折叠事件 */
-  const onFold = () => {
-    props.onFold()
+  const onToggle = () => {
+    props.onToggle()
   }
 
   return (
-    <Wrapper
-      className='flex items-center'
-      style={{
-        paddingLeft: 0
-      }}
-    >
+    <Wrapper className='flex items-center'>
       {/* menu icon */}
       <Button
         size='large'
         icon={props.isFolded ? <MenuUnfoldOutlined style={foldStyle} /> : <MenuFoldOutlined style={foldStyle} />}
         type='link'
-        onClick={onFold}
+        onClick={onToggle}
       />
 
       {/* avatar */}
