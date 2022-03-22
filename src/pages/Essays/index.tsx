@@ -49,7 +49,7 @@ const Essays = () => {
 
   const onNavigate = (id?: number) => () => {
     if (id) {
-      navigate(`/essay${id}`)
+      navigate(`/essay/${id}`)
     } else {
       navigate(`/essay`)
     }
