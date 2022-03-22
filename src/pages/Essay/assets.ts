@@ -1,7 +1,5 @@
 // antd
-import type { UploadFile as OriginUploadFile } from 'antd/lib/upload/interface'
-
-export type UploadFile = OriginUploadFile
+import type { UploadFile } from 'antd/lib/upload/interface'
 
 export interface FormValues {
   title: string

@@ -5,13 +5,13 @@ import { Form, Input, Upload } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { useForm } from 'antd/lib/form/Form'
 import type { FormInstance } from 'antd'
-import type { UploadChangeParam } from 'antd/lib/upload'
 // project
 import { create, update } from '../../../apis/tag'
 import { SingletonProps } from '../assets'
 import { customRequest, getUploadParam, getValueFromEvent } from '../../../utils/upload'
 import type { Tag as TagType } from '../../../typings/tag'
 import type { FormValues } from './assets'
+import type { UploadFile } from 'antd/lib/upload/interface'
 
 const { Item } = Form
 
@@ -36,7 +36,7 @@ const Tag = forwardRef<FormInstance, SingletonProps<TagType>>((props, ref) => {
 
     const params = {
       name: formValues.name,
-      image: formValues.fileList.at(0)?.response.data
+      image: formValues.fileList.at(0)?.response
     }
 
     const handlers = {
@@ -70,10 +70,10 @@ const Tag = forwardRef<FormInstance, SingletonProps<TagType>>((props, ref) => {
           valuePropName='fileList'
           rules={[
             {
-              required: true
-              // validator: async (_, value?: UploadChangeParam) => {
-              //   if (!value || value.fileList.length === 0) throw new Error('请输入封面图')
-              // }
+              required: true,
+              validator: async (_, fileList?: UploadFile[]) => {
+                if (!fileList?.length) throw new Error('请输入封面图')
+              }
             }
           ]}
           getValueFromEvent={getValueFromEvent}

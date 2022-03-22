@@ -37,7 +37,9 @@ const Essays = () => {
   ])
 
   /** hooks获取数据 */
-  const { data, isLoading, pagination, refetch } = useTableQuery(ESSAYS)
+  const { data, isLoading, pagination, refetch } = useTableQuery(ESSAYS, undefined, {
+    fetchPolicy: 'no-cache'
+  })
 
   // 删除文章
   const onDelete = (id: number) => async () => {
@@ -45,11 +47,13 @@ const Essays = () => {
     res.data?.removeEssay && refetch()
   }
 
-  const onNavigate =
-    (id = 0) =>
-    () => {
-      navigate(`/essay${id ? `/${id}` : ''}`)
+  const onNavigate = (id?: number) => () => {
+    if (id) {
+      navigate(`/essay${id}`)
+    } else {
+      navigate(`/essay`)
     }
+  }
 
   return (
     <Card>

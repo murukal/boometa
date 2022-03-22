@@ -5,7 +5,7 @@ import type { MouseEventHandler } from 'react'
 import { Button, Divider, Popconfirm, Space } from 'antd'
 import type { PopconfirmProps, TablePaginationConfig } from 'antd'
 // third
-import { useQuery } from '@apollo/client'
+import { QueryHookOptions, useQuery } from '@apollo/client'
 import type { TypedDocumentNode } from '@apollo/client'
 import type { QueryParams } from '../typings/api'
 
@@ -74,7 +74,8 @@ export const getTableRowHandler = (handlers: TableRowHandler[]) => {
  */
 export const useTableQuery = <F, T = Record<string, any>>(
   query: TypedDocumentNode<T, QueryParams>,
-  params?: Omit<QueryParams<F>, 'paginateInput'>
+  params?: Omit<QueryParams<F>, 'paginateInput'>,
+  options?: Pick<QueryHookOptions, 'fetchPolicy'>
 ) => {
   // 初始化表格的分页参数
   const [pagination, setPagination] = useState<TablePaginationConfig>({
@@ -91,6 +92,7 @@ export const useTableQuery = <F, T = Record<string, any>>(
     loading: isLoading,
     refetch
   } = useQuery(query, {
+    ...options,
     variables: {
       ...params,
       paginateInput: {

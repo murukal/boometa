@@ -3,13 +3,13 @@ import { useState } from 'react'
 // antd
 import { Table } from 'antd'
 // project
+import Toolbar from '../../components/Toolbar'
+import Singleton from '../../components/Singleton'
+import Tag from '../../components/Singleton/Tag'
 import { remove, TAGS } from '../../apis/tag'
 import { getTableRowHandler, onTableChange, useTableQuery } from '../../utils/table'
 import { getColumns } from './assets'
 import { getInitialSingleton } from '../../components/Singleton/Tag/assets'
-import Toolbar from '../../components/Toolbar'
-import Singleton from '../../components/Singleton'
-import Tag from '../../components/Singleton/Tag'
 import type { Tag as TagType } from '../../typings/tag'
 
 const Tags = () => {
@@ -84,14 +84,7 @@ const Tags = () => {
         loading={isLoading}
       />
 
-      <Singleton
-        title='标签'
-        isOpened={isOpened}
-        onClose={onClose}
-        singleton={tag}
-        singletonComponent={Tag}
-        onSubmitted={onSubmitted}
-      />
+      <Singleton title='标签' isOpened={isOpened} onClose={onClose} singleton={tag} singletonComponent={Tag} onSubmitted={onSubmitted} />
     </>
   )
 }

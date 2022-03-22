@@ -18,8 +18,8 @@ export const getColumns = <T = Tag>(columns?: ColumnsType<T>): ColumnsType<T> =>
     width: 100
   },
   {
-    title: '默认封面',
-    dataIndex: 'cover',
+    title: '默认图片',
+    dataIndex: 'image',
     width: 100,
     render: (value) =>
       createElement(Image, {

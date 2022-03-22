@@ -90,13 +90,7 @@ const Essay = () => {
           <Input size='large' placeholder='请输入标题' />
         </Item>
 
-        <Item
-          label='文章封面'
-          name='fileList'
-          labelCol={{ span: 2 }}
-          valuePropName='fileList'
-          getValueFromEvent={getValueFromEvent}
-        >
+        <Item label='文章封面' name='fileList' labelCol={{ span: 2 }} valuePropName='fileList' getValueFromEvent={getValueFromEvent}>
           <Upload listType='picture-card' customRequest={customRequest}>
             <PlusOutlined />
           </Upload>
@@ -104,7 +98,7 @@ const Essay = () => {
 
         <Item
           label='文章标签'
-          name='tags'
+          name='tagIds'
           labelCol={{ span: 2 }}
           rules={[
             {
@@ -114,11 +108,10 @@ const Essay = () => {
         >
           <Select
             mode='multiple'
-            options={data?.tags.items}
-            fieldNames={{
-              label: 'name',
-              value: 'id'
-            }}
+            options={data?.tags.items?.map((tag) => ({
+              value: tag.id,
+              label: tag.name
+            }))}
           />
         </Item>
 
