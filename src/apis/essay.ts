@@ -90,7 +90,7 @@ const UPDATE: TypedDocumentNode<
   }
 > = gql`
   mutation UpdateEssay($id: Int!, $updateEssayInput: UpdateEssayInput!) {
-    updateEssay(updateEssayInput: $updateEssayInput)
+    updateEssay(id: $id, updateEssayInput: $updateEssayInput)
   }
 `
 
