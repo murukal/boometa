@@ -1,6 +1,6 @@
 const CracoLessPlugin = require('craco-less')
 
-const server_location = 'http://localhost:9000' // http://admin.r2boom.com
+const server_location = 'http://localhost:3200' // http://admin.r2boom.com
 
 module.exports = {
   devServer: {
