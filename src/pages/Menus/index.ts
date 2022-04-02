@@ -1,7 +1,7 @@
 // antd
 import { ColumnsType } from 'antd/lib/table'
 // project
-import { Menu } from '../../typings/menu'
+import { Menu } from '~/typings/menu'
 
 export { default } from './Menus'
 

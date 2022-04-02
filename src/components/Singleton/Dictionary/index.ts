@@ -1,4 +1,4 @@
-import { Dictionary } from '../../../typings/dictionary'
+import { Dictionary } from '~/typings/dictionary'
 
 export { default } from './Dictionary'
 

@@ -1,7 +1,7 @@
 // third
 import path from 'path-browserify'
 // project
-import type { Menu } from '../../../typings/menu'
+import type { Menu } from '~/typings/menu'
 
 export { default } from './Menu'
 

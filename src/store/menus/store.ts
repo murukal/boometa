@@ -1,4 +1,4 @@
-import { Menu } from '../../typings/menu'
+import { Menu } from '~/typings/menu'
 
 const getInitialState = (): Menu[] => []
 

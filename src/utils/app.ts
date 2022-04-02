@@ -1,7 +1,7 @@
 // project
-import { TOKEN } from '../assets'
-import store from '../redux'
-import { authenticate, setToken } from '../redux/userProfile/action'
+import { TOKEN } from '~/assets'
+import store from '~/store'
+import { authenticate, setToken } from '~/store/userProfile/action'
 
 /**
  * 浏览器存储token

@@ -11,9 +11,9 @@ export interface PaginateInput {
  */
 export interface PaginateOutput<T> {
   items?: T[]
-  total?: number
   page?: number
   limit?: number
+  totalCount?: number
   pageCount?: number
 }
 

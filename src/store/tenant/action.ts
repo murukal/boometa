@@ -1,6 +1,6 @@
 // project
-import { getTenant } from '../../apis/tenant'
-import type { Tenant } from '../../typings/tenant'
+import { getTenant } from '~/apis/tenant'
+import type { Tenant } from '~/typings/tenant'
 
 export type ActionType = 'SET_TENANT'
 

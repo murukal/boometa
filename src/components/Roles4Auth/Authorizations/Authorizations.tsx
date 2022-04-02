@@ -3,9 +3,9 @@ import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 // antd
 import { Tree } from 'antd'
 // project
-import { update } from '../../../apis/role'
+import { update } from '~/apis/role'
 import { useQuery } from '@apollo/client'
-import { AUTHORIZATION_TREE } from '../../../apis/auth'
+import { AUTHORIZATION_TREE } from '~/apis/auth'
 import type { Props } from '.'
 
 const Authorizations = forwardRef<any, Props>((props, ref) => {

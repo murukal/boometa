@@ -1,5 +1,5 @@
 // project
-import { getRsaPublicKey } from '../../apis'
+import { getRsaPublicKey } from '~/apis'
 
 export type ActionType = 'SET_RSA_PUBLIC_KEY'
 

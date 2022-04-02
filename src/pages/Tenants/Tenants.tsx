@@ -3,14 +3,14 @@ import { useState } from 'react'
 // antd
 import { Card, Table } from 'antd'
 // project
-import Tenant from '../../components/Singleton/Tenant'
-import Toolbar from '../../components/Toolbar'
-import Singleton from '../../components/Singleton'
+import Tenant from '~/components/Singleton/Tenant'
+import Toolbar from '~/components/Toolbar'
+import Singleton from '~/components/Singleton'
 import { getColumns } from '.'
-import { remove, TENANTS } from '../../apis/tenant'
-import { getInitialTenant } from '../../components/Singleton/Tenant'
-import { getTableRowHandler, useTableQuery } from '../../utils/table'
-import type { Tenant as TenantType } from '../../typings/tenant'
+import { remove, TENANTS } from '~/apis/tenant'
+import { getInitialTenant } from '~/components/Singleton/Tenant'
+import { getTableRowHandler, useTableQuery } from '~/utils/table'
+import type { Tenant as TenantType } from '~/typings/tenant'
 
 const Tenants = () => {
   const [isOpened, setIsOpened] = useState(false)

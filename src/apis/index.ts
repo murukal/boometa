@@ -15,7 +15,7 @@ import {
 import { setContext } from '@apollo/client/link/context'
 import type { TypedDocumentNode } from '@apollo/client'
 // project
-import store from '../redux'
+import store from '~/store'
 import { GraphQLError } from 'graphql'
 import { RcFile } from 'antd/lib/upload'
 

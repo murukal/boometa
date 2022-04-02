@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom'
 // antd
 import { Card, Table } from 'antd'
 // project
-import Toolbar from '../../components/Toolbar'
+import Toolbar from '~/components/Toolbar'
 import { getColumns } from '.'
-import { getTableRowHandler, onTableChange, useTableQuery } from '../../utils/table'
-import { ESSAYS, remove } from '../../apis/essay'
+import { getTableRowHandler, useTableQuery } from '~/utils/table'
+import { ESSAYS, remove } from '~/apis/essay'
 
 const Essays = () => {
   const navigate = useNavigate()
@@ -37,7 +37,7 @@ const Essays = () => {
   ])
 
   /** hooks获取数据 */
-  const { data, isLoading, pagination, refetch } = useTableQuery(ESSAYS, undefined, {
+  const { data, isLoading, pagination, refetch, onTableChange } = useTableQuery(ESSAYS, undefined, {
     fetchPolicy: 'no-cache'
   })
 

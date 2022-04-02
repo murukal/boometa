@@ -3,8 +3,8 @@ import { gql } from '@apollo/client'
 import type { TypedDocumentNode } from '@apollo/client'
 // project
 import { fetcher } from '.'
-import type { PaginateOutput, QueryParams } from '../typings/api'
-import type { CreateDictionaryEnumInput, DictionaryEnum, UpdateDictionaryEnumInput } from '../typings/dictionary-enum'
+import type { PaginateOutput, QueryParams } from '~/typings/api'
+import type { CreateDictionaryEnumInput, DictionaryEnum, UpdateDictionaryEnumInput } from '~/typings/dictionary-enum'
 
 /**
  * 查询多个字典枚举
@@ -27,8 +27,7 @@ export const DICTIONARY_ENUMS: TypedDocumentNode<
       }
       page
       limit
-      total
-      pageCount
+      totalCount
     }
   }
 `

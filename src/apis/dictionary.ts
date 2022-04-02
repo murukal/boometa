@@ -3,8 +3,8 @@ import { gql } from '@apollo/client'
 import type { TypedDocumentNode } from '@apollo/client'
 // project
 import { fetcher } from '.'
-import type { PaginateOutput, QueryParams } from '../typings/api'
-import type { Dictionary, CreateDictionaryInput } from '../typings/dictionary'
+import type { PaginateOutput, QueryParams } from '~/typings/api'
+import type { Dictionary, CreateDictionaryInput } from '~/typings/dictionary'
 
 /**
  * 查询多个字典
@@ -27,8 +27,7 @@ export const DICTIONARIES: TypedDocumentNode<
       }
       page
       limit
-      total
-      pageCount
+      totalCount
     }
   }
 `

@@ -2,9 +2,9 @@
 import { Card, Col, Row, Statistic } from 'antd'
 import { ArrowUpOutlined } from '@ant-design/icons/lib/icons'
 // project
-import UPers from '../../components/Charts/UPer'
-import Hot from '../../components/Charts/Hot'
-import Footer from '../../layouts/Footer'
+import UPers from '~/components/Charts/UPer'
+import Hot from '~/components/Charts/Hot'
+import Footer from '~/layouts/Footer'
 
 const Dashboard = () => {
   return (

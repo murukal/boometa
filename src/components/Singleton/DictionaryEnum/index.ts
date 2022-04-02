@@ -1,5 +1,5 @@
 // project
-import type { DictionaryEnum } from '../../../typings/dictionary-enum'
+import type { DictionaryEnum } from '~/typings/dictionary-enum'
 
 export { default } from './DictionaryEnum'
 

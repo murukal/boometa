@@ -1,7 +1,9 @@
 // router
 import type { RouteObject } from 'react-router-dom'
 // project
-import Loadable from '../../components/Loadable'
+import Loadable from '~/components/Loadable'
+
+export { default } from './Router'
 
 /** 认证 */
 export const accountRoutes: RouteObject = {

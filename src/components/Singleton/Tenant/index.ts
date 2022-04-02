@@ -1,4 +1,5 @@
-import { Tenant } from '../../../typings/tenant'
+// project
+import type { Tenant } from '~/typings/tenant'
 
 export { default } from './Tenant'
 

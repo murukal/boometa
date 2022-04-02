@@ -2,15 +2,15 @@
 import { Table } from 'antd'
 // project
 import { getColumns } from '.'
-import { onTableChange, useTableQuery } from '../../../utils/table'
-import { GET_USERS } from '../../../apis/auth'
+import { useTableQuery } from '~/utils/table'
+import { GET_USERS } from '~/apis/auth'
 import type { Props } from '.'
-import type { FilterInput } from '../../../typings/auth'
+import type { FilterInput } from '~/typings/auth'
 
 const Users = (props: Props) => {
   const columns = getColumns()
 
-  const { data, isLoading, pagination } = useTableQuery<FilterInput>(GET_USERS, {
+  const { data, isLoading, pagination, onTableChange } = useTableQuery<FilterInput>(GET_USERS, {
     filterInput: {
       ids: props.ids,
       excludeIds: props.excludeUserIds

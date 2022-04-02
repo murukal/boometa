@@ -8,8 +8,8 @@ import { Link, useLocation } from 'react-router-dom'
 import { Menu } from 'antd'
 import * as Icons from '@ant-design/icons/lib/icons'
 // project
-import type { Menu as MenuType } from '../../typings/menu'
-import type { State } from '../../redux'
+import type { Menu as MenuType } from '~/typings/menu'
+import type { State } from '~/store'
 
 const { Item, SubMenu } = Menu
 
@@ -78,12 +78,7 @@ const SiderMenu = () => {
   }
 
   return (
-    <Menu
-      mode='inline'
-      theme='dark'
-      defaultOpenKeys={mappedMenuKeys.defaultOpenedKeys}
-      selectedKeys={mappedMenuKeys.defaultSelectedKeys}
-    >
+    <Menu mode='inline' theme='dark' defaultOpenKeys={mappedMenuKeys.defaultOpenedKeys} selectedKeys={mappedMenuKeys.defaultSelectedKeys}>
       {renderMenu(menus)}
     </Menu>
   )

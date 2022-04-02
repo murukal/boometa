@@ -4,7 +4,7 @@ import { createRef } from 'react'
 import { Button, Drawer, Space } from 'antd'
 import type { FormInstance } from 'antd'
 // project
-import type { Props } from './assets'
+import type { Props } from '.'
 import type { FetchResult } from '@apollo/client'
 
 const Singleton = (props: Props) => {

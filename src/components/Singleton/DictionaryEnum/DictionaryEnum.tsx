@@ -4,10 +4,10 @@ import { useMemo, forwardRef } from 'react'
 import { Form, FormInstance, Input, InputNumber } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 // project
-import { create, update } from '../../../apis/dictionary-enum'
-import { SingletonProps } from '../assets'
+import { create, update } from '~/apis/dictionary-enum'
+import { SingletonProps } from '..'
 import type { ExtraProps, FormValues } from '.'
-import type { DictionaryEnum as DictionaryEnumType } from '../../../typings/dictionary-enum'
+import type { DictionaryEnum as DictionaryEnumType } from '~/typings/dictionary-enum'
 
 const { Item } = Form
 

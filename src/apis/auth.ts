@@ -3,8 +3,8 @@ import { gql } from '@apollo/client'
 import type { TypedDocumentNode } from '@apollo/client'
 // project
 import { fetcher } from '.'
-import type { LoginInput, RegisterInput, User } from '../typings/auth'
-import type { PaginateOutput, QueryParams } from '../typings/api'
+import type { LoginInput, RegisterInput, User } from '~/typings/auth'
+import type { PaginateOutput, QueryParams } from '~/typings/api'
 
 /**
  * 登陆
@@ -85,8 +85,7 @@ export const GET_USERS: TypedDocumentNode<
 > = gql`
   query Users($paginateInput: PaginateInput, $filterInput: FilterUserInput) {
     users(paginateInput: $paginateInput, filterInput: $filterInput) {
-      total
-      pageCount
+      totalCount
       page
       limit
       items {

@@ -1,7 +1,7 @@
 // antd
 import { Card } from 'antd'
 
-import UserDataSet from '../../components/DataSet/Users'
+import UserDataSet from '~/components/DataSet/Users'
 
 const Users = () => {
   return (

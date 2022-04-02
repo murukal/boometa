@@ -9,12 +9,12 @@ import { useForm } from 'antd/lib/form/Form'
 // third
 import type JSEncrypt from 'jsencrypt'
 // project
-import { login } from '../../../apis/auth'
-import { storeToken } from '../../../utils/app'
+import { login } from '~/apis/auth'
+import { storeToken } from '~/utils/app'
 import { toggleStyle } from '..'
-import { resultNotification } from '../../../utils/notification'
+import { resultNotification } from '~/utils/notification'
 import type { FormValues } from '.'
-import type { State } from '../../../redux'
+import type { State } from '~/store'
 
 const { Title, Text } = Typography
 const { Item } = Form

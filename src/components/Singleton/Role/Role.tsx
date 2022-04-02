@@ -1,13 +1,13 @@
 // react
-import type { ChangeEvent } from 'react'
 import { forwardRef, useState } from 'react'
+import type { ChangeEvent } from 'react'
 // antd
-import type { FormInstance } from 'antd'
 import { Form, Input } from 'antd'
+import type { FormInstance } from 'antd'
 // project
-import { create, update } from '../../../apis/role'
-import { SingletonProps } from '../assets'
-import type { Role as RoleType } from '../../../typings/role'
+import { create, update } from '~/apis/role'
+import type { SingletonProps } from '..'
+import type { Role as RoleType } from '~/typings/role'
 
 const { Item } = Form
 

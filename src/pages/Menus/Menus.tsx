@@ -3,18 +3,18 @@ import { useState } from 'react'
 // antd
 import { Button, Divider, Space, Table, Popconfirm, Card } from 'antd'
 // project
-import Menu from '../../components/Singleton/Menu'
-import Singleton from '../../components/Singleton'
+import Menu from '~/components/Singleton/Menu'
+import Singleton from '~/components/Singleton'
 import { getColumns as getMenuColumns } from '.'
 import { getColumns as getTenantColumns } from '../Tenants'
-import { useTableQuery } from '../../utils/table'
-import { TENANTS_WITH_MENUS } from '../../apis/tenant'
-import type { Tenant } from '../../typings/tenant'
-import type { Menu as MenuType } from '../../typings/menu'
-import { getMenuTreeFromMenus } from '../../utils/menu'
-import { getInitialSingleton } from '../../components/Singleton/Menu'
-import { remove } from '../../apis/menu'
-import { resultNotification } from '../../utils/notification'
+import { useTableQuery } from '~/utils/table'
+import { TENANTS_WITH_MENUS } from '~/apis/tenant'
+import type { Tenant } from '~/typings/tenant'
+import type { Menu as MenuType } from '~/typings/menu'
+import { getMenuTreeFromMenus } from '~/utils/menu'
+import { getInitialSingleton } from '~/components/Singleton/Menu'
+import { remove } from '~/apis/menu'
+import { resultNotification } from '~/utils/notification'
 
 const Menus = () => {
   const [isOpened, setIsOpened] = useState(false)

@@ -1,7 +1,7 @@
 import { gql, TypedDocumentNode } from '@apollo/client'
 import { fetcher } from '.'
-import { PaginateOutput, QueryParams } from '../typings/api'
-import { CreateEssayInput, Essay, UpdateEssayInput } from '../typings/essay'
+import { PaginateOutput, QueryParams } from '~/typings/api'
+import { CreateEssayInput, Essay, UpdateEssayInput } from '~/typings/essay'
 
 /** 查询多个文章 */
 export const ESSAYS: TypedDocumentNode<
@@ -22,8 +22,7 @@ export const ESSAYS: TypedDocumentNode<
       }
       page
       limit
-      total
-      pageCount
+      totalCount
     }
   }
 `

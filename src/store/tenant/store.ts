@@ -1,7 +1,5 @@
 // project
-import { Tenant } from '../../typings/tenant'
-
-// store 在原先的数据结构基础上 补充
+import { Tenant } from '~/typings/tenant'
 
 const getInitialState = (): Tenant => ({
   // 租户信息

@@ -6,9 +6,9 @@ import { Modal } from 'antd'
 // project
 import UserDataSet from '../../DataSet/Users'
 import Toolbar from '../../Toolbar'
-import { update } from '../../../apis/role'
+import { update } from '~/apis/role'
+import { resultNotification } from '~/utils/notification'
 import type { Props } from '.'
-import { resultNotification } from '../../../utils/notification'
 
 const Users = (props: Props) => {
   const [userIds, setUserIds] = useState<number[]>([])

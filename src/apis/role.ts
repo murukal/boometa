@@ -23,8 +23,7 @@ export const ROLES: TypedDocumentNode<
       }
       page
       limit
-      total
-      pageCount
+      totalCount
     }
   }
 `

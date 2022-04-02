@@ -3,21 +3,21 @@ import { useState } from 'react'
 // antd
 import { Table } from 'antd'
 // project
-import Toolbar from '../../components/Toolbar'
-import Singleton from '../../components/Singleton'
-import Tag from '../../components/Singleton/Tag'
-import { remove, TAGS } from '../../apis/tag'
-import { getTableRowHandler, onTableChange, useTableQuery } from '../../utils/table'
+import Toolbar from '~/components/Toolbar'
+import Singleton from '~/components/Singleton'
+import Tag from '~/components/Singleton/Tag'
+import { remove, TAGS } from '~/apis/tag'
+import { getTableRowHandler, useTableQuery } from '~/utils/table'
 import { getColumns } from '.'
-import { getInitialSingleton } from '../../components/Singleton/Tag'
-import type { Tag as TagType } from '../../typings/tag'
+import { getInitialSingleton } from '~/components/Singleton/Tag'
+import type { Tag as TagType } from '~/typings/tag'
 
 const Tags = () => {
   const [isOpened, setIsOpened] = useState(false)
   const [tag, setTag] = useState<TagType>(getInitialSingleton())
 
   /** table hooks */
-  const { data, isLoading, pagination, refetch } = useTableQuery(TAGS)
+  const { data, isLoading, pagination, refetch, onTableChange } = useTableQuery(TAGS)
 
   /** table column */
   const columns = getColumns([

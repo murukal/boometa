@@ -5,12 +5,11 @@ import { Avatar, Button, Dropdown, Menu, Typography } from 'antd'
 import { Header as Wrapper } from 'antd/lib/layout/layout'
 import { EditOutlined, ApiOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 // project
-import { logout } from '../../redux/userProfile/action'
-import { foldStyle } from './assets'
-import { TOKEN } from '../../assets'
-import type { Props } from './assets'
-import type { State } from '../../redux'
-import type { User } from '../../typings/auth'
+import { logout } from '~/store/userProfile/action'
+import { TOKEN } from '~/assets'
+import type { Props } from '.'
+import type { State } from '~/store'
+import type { User } from '~/typings/auth'
 
 const { Title } = Typography
 
@@ -50,7 +49,7 @@ const Header = (props: Props) => {
       {/* menu icon */}
       <Button
         size='large'
-        icon={props.isFolded ? <MenuUnfoldOutlined style={foldStyle} /> : <MenuFoldOutlined style={foldStyle} />}
+        icon={props.isFolded ? <MenuUnfoldOutlined className='text-white' /> : <MenuFoldOutlined className='text-white' />}
         type='link'
         onClick={onToggle}
       />
@@ -65,7 +64,7 @@ const Header = (props: Props) => {
         <Title
           level={5}
           style={{
-            ...foldStyle,
+            color: 'white',
             marginBottom: 0,
             paddingLeft: 16
           }}

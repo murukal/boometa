@@ -7,11 +7,11 @@ import Singleton from '../../Singleton'
 import DictionaryEnum from '../../Singleton/DictionaryEnum'
 import Toolbar from '../../Toolbar'
 import { getColumns } from '.'
-import { DICTIONARY_ENUMS, remove } from '../../../apis/dictionary-enum'
-import { getTableRowHandler, onTableChange, useTableQuery } from '../../../utils/table'
+import { DICTIONARY_ENUMS, remove } from '~/apis/dictionary-enum'
+import { getTableRowHandler, useTableQuery } from '~/utils/table'
 import { getInitialSingleton } from '../../Singleton/DictionaryEnum'
 import type { Props } from '.'
-import type { DictionaryEnum as DictionaryEnumType } from '../../../typings/dictionary-enum'
+import type { DictionaryEnum as DictionaryEnumType } from '~/typings/dictionary-enum'
 
 const DictionaryEnums = (props: Props) => {
   const [isOpened, setIsOpened] = useState(false)
@@ -42,7 +42,7 @@ const DictionaryEnums = (props: Props) => {
     }
   ])
 
-  const { data, isLoading, pagination, refetch } = useTableQuery(DICTIONARY_ENUMS)
+  const { data, isLoading, pagination, refetch, onTableChange } = useTableQuery(DICTIONARY_ENUMS)
 
   const onClose = () => {
     setIsOpened(false)

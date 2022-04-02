@@ -3,15 +3,15 @@ import { useState } from 'react'
 // antd
 import { Table, Drawer, Card } from 'antd'
 // project
-import Toolbar from '../../components/Toolbar'
-import Singleton from '../../components/Singleton'
-import Dictionary from '../../components/Singleton/Dictionary'
-import DictionaryEnums from '../../components/DataSet/DictionaryEnums'
-import { getTableRowHandler, onTableChange, useTableQuery } from '../../utils/table'
+import Toolbar from '~/components/Toolbar'
+import Singleton from '~/components/Singleton'
+import Dictionary from '~/components/Singleton/Dictionary'
+import DictionaryEnums from '~/components/DataSet/DictionaryEnums'
+import { getTableRowHandler, useTableQuery } from '~/utils/table'
 import { getColumns } from '.'
-import { DICTIONARIES, remove } from '../../apis/dictionary'
-import { getInitialSingleton } from '../../components/Singleton/Dictionary'
-import type { Dictionary as DictionaryType } from '../../typings/dictionary'
+import { DICTIONARIES, remove } from '~/apis/dictionary'
+import { getInitialSingleton } from '~/components/Singleton/Dictionary'
+import type { Dictionary as DictionaryType } from '~/typings/dictionary'
 
 const Dictionaries = () => {
   const columns = getColumns([
@@ -50,7 +50,7 @@ const Dictionaries = () => {
   const [isEnumOpened, setIsEnumOpened] = useState(false)
 
   /** hooks */
-  const { data, pagination, isLoading, refetch } = useTableQuery(DICTIONARIES)
+  const { data, pagination, isLoading, refetch, onTableChange } = useTableQuery(DICTIONARIES)
 
   const onOpen =
     (dictionary: DictionaryType = getInitialSingleton()) =>

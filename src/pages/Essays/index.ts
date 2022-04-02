@@ -1,7 +1,7 @@
 // antd
 import { ColumnsType } from 'antd/lib/table'
 // project
-import { Essay } from '../../typings/essay'
+import { Essay } from '~/typings/essay'
 
 export { default } from './Essays'
 

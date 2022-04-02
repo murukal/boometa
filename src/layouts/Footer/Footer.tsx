@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom'
 // antd
 import { Image, Typography } from 'antd'
-import type { Props } from './assets'
+import type { Props } from '.'
 
 const { Text } = Typography
 

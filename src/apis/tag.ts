@@ -26,8 +26,7 @@ export const TAGS: TypedDocumentNode<
       }
       page
       limit
-      total
-      pageCount
+      totalCount
     }
   }
 `

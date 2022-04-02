@@ -3,12 +3,12 @@ import { useEffect, useState } from 'react'
 // redux
 import { useDispatch, useSelector } from 'react-redux'
 // project
-import Router from './routes/Router'
-import { authenticate, setToken } from './redux/userProfile/action'
-import { setTenant } from './redux/tenant/action'
-import { setRsaPublicKey } from './redux/encryptor/action'
-import { setMenus } from './redux/menus/action'
-import type { State } from './redux'
+import Router from './routes/Router/Router'
+import { authenticate, setToken } from './store/userProfile/action'
+import { setTenant } from './store/tenant/action'
+import { setRsaPublicKey } from './store/encryptor/action'
+import { setMenus } from './store/menus/action'
+import type { State } from './store'
 
 const App = () => {
   const dispatch = useDispatch()

@@ -1,8 +1,8 @@
 // project
-import store from '../'
-import { getMenus } from '../../apis/menu'
-import type { Menu } from '../../typings/menu'
-import { getMenuTreeFromMenus } from '../../utils/menu'
+import store from '..'
+import { getMenus } from '~/apis/menu'
+import type { Menu } from '~/typings/menu'
+import { getMenuTreeFromMenus } from '~/utils/menu'
 
 export type ActionType = 'SET_MENUS'
 

@@ -5,6 +5,8 @@ import type { FormInstance } from 'antd'
 // third
 import type { FetchResult } from '@apollo/client'
 
+export { default } from './Singleton'
+
 export interface Props<P = any, E = any> {
   title?: string
   isOpened: boolean

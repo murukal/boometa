@@ -7,8 +7,8 @@ import { useSelector } from 'react-redux'
 // antd
 import { Image } from 'antd'
 // project
-import Footer from '../../layouts/Footer'
-import type { State } from '../../redux'
+import Footer from '~/layouts/Footer'
+import type { State } from '~/store'
 // css
 import './index.css'
 

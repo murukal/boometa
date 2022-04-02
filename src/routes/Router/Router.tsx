@@ -5,10 +5,10 @@ import { useSelector } from 'react-redux'
 // router
 import { RouteObject, useRoutes } from 'react-router-dom'
 // projetc
-import Loadable from '../../components/Loadable'
-import { accountRoutes, essayRoutes, notFoundRoutes, roadmapRoutes } from './assets'
-import type { State } from '../../redux'
-import type { Menu } from '../../typings/menu'
+import Loadable from '~/components/Loadable'
+import { accountRoutes, essayRoutes, notFoundRoutes, roadmapRoutes } from '.'
+import type { State } from '~/store'
+import type { Menu } from '~/typings/menu'
 
 const Router = () => {
   const menus = useSelector<State, Menu[]>((state) => state.menus)

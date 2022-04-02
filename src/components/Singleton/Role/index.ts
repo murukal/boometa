@@ -1,4 +1,4 @@
-import type { Role } from '../../../typings/role'
+import type { Role } from '~/typings/role'
 
 export { default } from './Role'
 

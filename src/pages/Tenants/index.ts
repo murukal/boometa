@@ -3,7 +3,7 @@ import { Switch } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 import { createElement } from 'react'
 // project
-import { Tenant } from '../../typings/tenant'
+import { Tenant } from '~/typings/tenant'
 
 export { default } from './Tenants'
 

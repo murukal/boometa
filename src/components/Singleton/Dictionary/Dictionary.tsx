@@ -4,10 +4,10 @@ import { forwardRef, useMemo } from 'react'
 import { Form, FormInstance, Input, InputNumber } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 // project
-import { create, update } from '../../../apis/dictionary'
-import { SingletonProps } from '../assets'
+import { create, update } from '~/apis/dictionary'
+import { SingletonProps } from '..'
 import type { FormValues } from '.'
-import type { Dictionary as DictionaryType } from '../../../typings/dictionary'
+import type { Dictionary as DictionaryType } from '~/typings/dictionary'
 
 const { Item } = Form
 

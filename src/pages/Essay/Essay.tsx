@@ -9,11 +9,11 @@ import { useForm } from 'antd/lib/form/Form'
 // third
 import { useQuery } from '@apollo/client'
 // project
-import Editor from '../../components/Singleton/Essay/Editor'
-import { create, getEssay, update } from '../../apis/essay'
-import { TAGS } from '../../apis/tag'
-import { customRequest, getUploadParam, getValueFromEvent } from '../../utils/upload'
-import type { CreateEssayInput } from '../../typings/essay'
+import Editor from '~/components/Singleton/Essay/Editor'
+import { create, getEssay, update } from '~/apis/essay'
+import { TAGS } from '~/apis/tag'
+import { customRequest, getUploadParam, getValueFromEvent } from '~/utils/upload'
+import type { CreateEssayInput } from '~/typings/essay'
 import type { FormValues } from '.'
 
 const { Item } = Form

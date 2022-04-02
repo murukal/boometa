@@ -99,8 +99,22 @@ export const useTableQuery = <F, T = Record<string, any>>(
         page: pagination.current,
         limit: pagination.pageSize || 10
       }
+    },
+    onCompleted: (data) => {
+      // 设置条目总数
+      setPagination({
+        ...pagination,
+        total: Object.values(data).at(0).totalCount || 0
+      })
     }
   })
+
+  /**
+   * 表格变更的回调事件
+   */
+  const onTableChange = (pagination: TablePaginationConfig) => {
+    setPagination(pagination)
+  }
 
   // hooks返回
   return {
@@ -111,11 +125,7 @@ export const useTableQuery = <F, T = Record<string, any>>(
 
     // 事件
     refetch,
-    setPagination
+    setPagination,
+    onTableChange
   }
 }
-
-/**
- * 表格变更的回调事件
- */
-export const onTableChange = () => {}

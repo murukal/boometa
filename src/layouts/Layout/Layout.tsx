@@ -9,7 +9,7 @@ import { Layout as Wrapper, Image } from 'antd'
 // project
 import SiderMenu from '../SiderMenu'
 import Header from '../Header'
-import type { State } from '../../redux'
+import type { State } from '~/store'
 
 const { Content, Sider } = Wrapper
 

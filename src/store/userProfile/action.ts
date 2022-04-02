@@ -1,6 +1,6 @@
 // project
 import getInitialState, { UserProfile } from './store'
-import { whoAmI } from '../../apis/auth'
+import { whoAmI } from '~/apis/auth'
 
 export type ActionType = 'AUTHENTICATE' | 'LOGOUT' | 'SET_TOKEN'
 

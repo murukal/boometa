@@ -1,11 +1,11 @@
 // react
 import { createElement } from 'react'
 // antd
+import { Avatar } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
 import type { TableRowSelection } from 'antd/lib/table/interface'
-import { Avatar } from 'antd'
 // project
-import type { User } from '../../../typings/auth'
+import type { User } from '~/typings/auth'
 
 export { default } from './Users'
 

@@ -128,8 +128,7 @@ export const TENANTS: TypedDocumentNode<
     tenants(paginateInput: $paginateInput) {
       page
       limit
-      total
-      pageCount
+      totalCount
       items {
         id
         code

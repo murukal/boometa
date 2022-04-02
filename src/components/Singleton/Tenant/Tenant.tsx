@@ -4,10 +4,10 @@ import { forwardRef, useMemo } from 'react'
 import { Form, FormInstance, Input, Switch } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 // project
-import { create, update } from '../../../apis/tenant'
+import { create, update } from '~/apis/tenant'
 import type { FormValues } from '.'
-import type { SingletonProps } from '../assets'
-import type { Tenant as TenantType } from '../../../typings/tenant'
+import type { SingletonProps } from '..'
+import type { Tenant as TenantType } from '~/typings/tenant'
 
 const Tenant = forwardRef<FormInstance, SingletonProps<TenantType>>((props, ref) => {
   const [form] = useForm<FormValues>()

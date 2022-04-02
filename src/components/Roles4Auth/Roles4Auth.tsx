@@ -7,7 +7,7 @@ import type { CardTabListType } from 'antd/lib/card'
 //project
 import Users from './Users'
 import Authorizations from './Authorizations'
-import { ROLE } from '../../apis/role'
+import { ROLE } from '~/apis/role'
 import { createRef } from 'react'
 import { useQuery } from '@apollo/client'
 import type { Props } from '.'

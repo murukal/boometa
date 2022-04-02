@@ -5,12 +5,12 @@ import { Form, Input, InputNumber, Select } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 import type { FormInstance } from 'antd'
 // project
-import { create, update } from '../../../apis/menu'
+import { create, update } from '~/apis/menu'
 import IconSelector from '../../IconSelector'
 import { componentOptions } from '.'
-import { resultNotification } from '../../../utils/notification'
-import type { SingletonProps } from '../assets'
-import type { Menu as MenuType } from '../../../typings/menu'
+import { resultNotification } from '~/utils/notification'
+import type { SingletonProps } from '..'
+import type { Menu as MenuType } from '~/typings/menu'
 import type { ExtraProps, FormValues } from '.'
 
 const { Item } = Form

@@ -3,16 +3,16 @@ import { useState } from 'react'
 // antd
 import { Card, Table } from 'antd'
 // project
-import { getTableRowHandler, onTableChange, useTableQuery } from '../../utils/table'
+import { getTableRowHandler, useTableQuery } from '~/utils/table'
 import { getColumns } from '.'
-import { remove, ROLES } from '../../apis/role'
-import Singleton from '../../components/Singleton'
-import Role from '../../components/Singleton/Role'
-import { getInitialSingleton } from '../../components/Singleton/Role'
-import Toolbar from '../../components/Toolbar'
-import Roles4Auth from '../../components/Roles4Auth'
-import type { Role as RoleType } from '../../typings/role'
-import type { AuthType } from '../../components/Roles4Auth'
+import { remove, ROLES } from '~/apis/role'
+import Singleton from '~/components/Singleton'
+import Role from '~/components/Singleton/Role'
+import { getInitialSingleton } from '~/components/Singleton/Role'
+import Toolbar from '~/components/Toolbar'
+import Roles4Auth from '~/components/Roles4Auth'
+import type { Role as RoleType } from '~/typings/role'
+import type { AuthType } from '~/components/Roles4Auth'
 
 const Roles = () => {
   const [role, setRole] = useState(getInitialSingleton())
@@ -54,7 +54,7 @@ const Roles = () => {
   ])
 
   /** hooks */
-  const { data, isLoading, pagination, refetch } = useTableQuery(ROLES)
+  const { data, isLoading, pagination, refetch, onTableChange } = useTableQuery(ROLES)
 
   const onOpen =
     (role = getInitialSingleton()) =>

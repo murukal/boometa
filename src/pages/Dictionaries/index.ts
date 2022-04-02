@@ -1,7 +1,7 @@
 // antd
 import { ColumnsType } from 'antd/lib/table'
 // project
-import { Dictionary } from '../../typings/dictionary'
+import { Dictionary } from '~/typings/dictionary'
 
 export { default } from './Dictionaries'
 

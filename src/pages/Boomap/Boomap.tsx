@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 // antd
 import { Graph } from '@antv/x6'
 // project
-import '../../components/AntvX6/Nodes/index'
+import '~/components/AntvX6/Nodes/index'
 
 const Boomap = () => {
   useEffect(() => {
