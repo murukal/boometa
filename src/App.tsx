@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 // redux
 import { useDispatch, useSelector } from 'react-redux'
 // project
-import Router from './routes/Router/Router'
+import Router from './routes/Router'
 import { authenticate, setToken } from './store/userProfile/action'
 import { setTenant } from './store/tenant/action'
 import { setRsaPublicKey } from './store/encryptor/action'
