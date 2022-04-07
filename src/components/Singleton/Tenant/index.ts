@@ -4,7 +4,6 @@ import type { Tenant } from '~/typings/tenant'
 export { default } from './Tenant'
 
 export const getInitialTenant = (): Tenant => ({
-  id: 0,
   code: '',
   name: '',
   isAuthorizate: false

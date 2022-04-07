@@ -18,7 +18,7 @@ import { resultNotification } from '~/utils/notification'
 
 const Menus = () => {
   const [isOpened, setIsOpened] = useState(false)
-  const [tenantId, setTenantId] = useState(0)
+  const [tenantCode, setTenantCode] = useState('')
   const [parentId, setParentId] = useState<number>()
   const [menu, setMenu] = useState<MenuType>()
 
@@ -48,11 +48,11 @@ const Menus = () => {
         align: 'center',
         render: (text, menu) => (
           <Space>
-            <Button type='link' size='small' onClick={onOpen(tenant.id, undefined, menu)}>
+            <Button type='link' size='small' onClick={onOpen(tenant.code, undefined, menu)}>
               修改
             </Button>
             <Divider type='vertical' />
-            <Button type='link' size='small' onClick={onOpen(tenant.id, menu.id)}>
+            <Button type='link' size='small' onClick={onOpen(tenant.code, menu.id)}>
               添加子级菜单
             </Button>
             <Divider type='vertical' />
@@ -67,7 +67,9 @@ const Menus = () => {
       }
     ])
 
-    const menus = getMenuTreeFromMenus(data?.tenants.items?.find((tenantWithMenus) => tenantWithMenus.code === tenant.code)?.menus)
+    const menus = getMenuTreeFromMenus(
+      data?.tenants.items?.find((tenantWithMenus) => tenantWithMenus.code === tenant.code)?.menus
+    )
 
     /** 菜单表格 */
     return <Table rowKey='id' columns={menuColumns} dataSource={menus} pagination={false} bordered={true} />
@@ -80,11 +82,11 @@ const Menus = () => {
 
   /** 抽屉打开事件 */
   const onOpen =
-    (tenantId: number, parentId?: number, menu: MenuType = getInitialSingleton()) =>
+    (tenantCode: string, parentId?: number, menu: MenuType = getInitialSingleton()) =>
     () => {
       // 重置state
       setMenu(menu)
-      setTenantId(tenantId)
+      setTenantCode(tenantCode)
       setParentId(parentId)
       setIsOpened(true)
     }
@@ -119,7 +121,7 @@ const Menus = () => {
         isOpened={isOpened}
         onClose={onClose}
         extraProps={{
-          tenantId,
+          tenantCode,
           parentId
         }}
         singletonComponent={Menu}

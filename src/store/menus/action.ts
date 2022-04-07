@@ -12,7 +12,7 @@ export interface Action {
 }
 
 export const setMenus = async (): Promise<Action> => {
-  const res = await getMenus(store.getState().tenant.id)
+  const res = await getMenus(store.getState().tenant.code)
 
   // 菜单转树存到redux
   const menuTree = getMenuTreeFromMenus(res.data?.menus.items)

@@ -37,10 +37,14 @@ const Menu = forwardRef<FormInstance, SingletonProps<MenuType, ExtraProps>>((pro
       create: () =>
         create({
           ...formValues,
-          tenantId: props.extraProps.tenantId,
+          tenantCode: props.extraProps.tenantCode,
           parentId: props.extraProps.parentId
         }),
-      update: () => update(props.singleton.id, formValues)
+      update: () =>
+        update(props.singleton.id, {
+          ...formValues,
+          component: formValues.component || ''
+        })
     }
 
     // 提交表单
@@ -76,7 +80,7 @@ const Menu = forwardRef<FormInstance, SingletonProps<MenuType, ExtraProps>>((pro
       </Item>
 
       <Item label='菜单组件路径' name='component'>
-        <Select options={componentOptions} />
+        <Select options={componentOptions} allowClear />
       </Item>
 
       <Item label='菜单路由' name='to'>

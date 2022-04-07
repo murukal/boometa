@@ -6,7 +6,7 @@ import type { Menu } from '~/typings/menu'
 export { default } from './Menu'
 
 export interface ExtraProps {
-  tenantId: number
+  tenantCode: string
   parentId?: number
 }
 

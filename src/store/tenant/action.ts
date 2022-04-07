@@ -9,8 +9,8 @@ export interface Action {
   data?: Tenant | null
 }
 
-export const setTenant = async (tenantCode: string): Promise<Action> => {
-  const result = await getTenant(tenantCode)
+export const setTenant = async (code: string): Promise<Action> => {
+  const result = await getTenant(code)
 
   return {
     type: 'SET_TENANT',

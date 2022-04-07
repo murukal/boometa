@@ -14,25 +14,22 @@ const TENANT: TypedDocumentNode<
     tenant: Tenant
   },
   {
-    keyword: string
+    code: string
   }
 > = gql`
-  query Tenant($keyword: ID!) {
-    tenant(keyword: $keyword) {
-      id
-      createdAt
-      updatedAt
+  query Tenant($code: String!) {
+    tenant(code: $code) {
       code
       name
       isAuthorizate
     }
   }
 `
-export const getTenant = async (keyword: string) =>
+export const getTenant = async (code: string) =>
   await fetcher.query({
     query: TENANT,
     variables: {
-      keyword
+      code
     }
   })
 
@@ -49,9 +46,8 @@ const CREATE: TypedDocumentNode<
 > = gql`
   mutation CreateTenant($createTenantInput: CreateTenantInput!) {
     createTenant(createTenantInput: $createTenantInput) {
-      id
-      name
       code
+      name
       isAuthorizate
     }
   }
@@ -73,20 +69,20 @@ const UPDATE: TypedDocumentNode<
     updateTenant: boolean
   },
   {
-    id: number
+    code: string
     updateTenantInput: UpdateTenantInput
   }
 > = gql`
-  mutation UpdateTenant($id: Int!, $updateTenantInput: UpdateTenantInput!) {
-    updateTenant(id: $id, updateTenantInput: $updateTenantInput)
+  mutation UpdateTenant($code: String!, $updateTenantInput: UpdateTenantInput!) {
+    updateTenant(code: $code, updateTenantInput: $updateTenantInput)
   }
 `
 
-export const update = (id: number, updateTenantInput: UpdateTenantInput) =>
+export const update = (code: string, updateTenantInput: UpdateTenantInput) =>
   fetcher.mutate({
     mutation: UPDATE,
     variables: {
-      id,
+      code,
       updateTenantInput
     }
   })
@@ -99,19 +95,19 @@ const REMOVE: TypedDocumentNode<
     removeTenant: boolean
   },
   {
-    id: number
+    code: string
   }
 > = gql`
-  mutation UpdateTenant($id: Int!) {
-    removeTenant(id: $id)
+  mutation UpdateTenant($code: String!) {
+    removeTenant(code: $code)
   }
 `
 
-export const remove = (id: number) =>
+export const remove = (code: string) =>
   fetcher.mutate({
     mutation: REMOVE,
     variables: {
-      id
+      code
     }
   })
 
@@ -148,7 +144,6 @@ export const TENANTS_WITH_MENUS: TypedDocumentNode<{
   query {
     tenants {
       items {
-        id
         code
         name
         isAuthorizate
@@ -161,7 +156,6 @@ export const TENANTS_WITH_MENUS: TypedDocumentNode<{
           icon
           to
           component
-          tenantId
           parentId
         }
       }

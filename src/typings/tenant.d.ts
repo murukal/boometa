@@ -1,7 +1,6 @@
-import { Core } from '.'
 import { Menu } from './menu'
 
-export interface Tenant extends Core {
+export interface Tenant {
   code: string
   name: string
   isAuthorizate: boolean

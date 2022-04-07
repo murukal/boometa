@@ -35,7 +35,7 @@ const Tenants = () => {
             },
             label: '删除',
             danger: true,
-            onClick: onDelete(tenant.id)
+            onClick: onDelete(tenant.code)
           }
         ])
     }
@@ -59,9 +59,9 @@ const Tenants = () => {
     }
 
   // 删除客户端
-  const onDelete = (id: number) => {
+  const onDelete = (code: string) => {
     return async () => {
-      const res = await remove(id)
+      const res = await remove(code)
       res.data?.removeTenant && refetch()
     }
   }
@@ -76,9 +76,23 @@ const Tenants = () => {
     <Card>
       <Toolbar onAdd={onOpen()} onDelete={() => {}} />
 
-      <Table rowKey='code' loading={isLoading} columns={columns} dataSource={data?.tenants.items} bordered={true} pagination={false} />
+      <Table
+        rowKey='code'
+        loading={isLoading}
+        columns={columns}
+        dataSource={data?.tenants.items}
+        bordered={true}
+        pagination={false}
+      />
 
-      <Singleton title='客户端' isOpened={isOpened} onClose={onClose} singleton={tenant} singletonComponent={Tenant} onSubmitted={onSubmitted} />
+      <Singleton
+        title='客户端'
+        isOpened={isOpened}
+        onClose={onClose}
+        singleton={tenant}
+        singletonComponent={Tenant}
+        onSubmitted={onSubmitted}
+      />
     </Card>
   )
 }

@@ -107,12 +107,12 @@ const MENUS: TypedDocumentNode<
   }
 `
 
-export const getMenus = (tenantId: number) =>
+export const getMenus = (tenantCode: string) =>
   fetcher.query({
     query: MENUS,
     variables: {
       filterInput: {
-        tenantId
+        tenantCode
       }
     }
   })

@@ -27,11 +27,11 @@ const Tenant = forwardRef<FormInstance, SingletonProps<TenantType>>((props, ref)
 
     const handlers = {
       create: () => create(formValues),
-      update: () => update(props.singleton.id, formValues)
+      update: () => update(props.singleton.code, formValues)
     }
 
     // 表单提交
-    const res = await handlers[props.singleton.id ? 'update' : 'create']()
+    const res = await handlers[props.singleton.code ? 'update' : 'create']()
     // 触发回调
     props.onSubmitted(res)
   }
