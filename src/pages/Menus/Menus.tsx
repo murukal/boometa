@@ -9,12 +9,12 @@ import { getColumns as getMenuColumns } from '.'
 import { getColumns as getTenantColumns } from '../Tenants'
 import { useTableQuery } from '~/utils/table'
 import { TENANTS_WITH_MENUS } from '~/apis/tenant'
-import type { Tenant } from '~/typings/tenant'
-import type { Menu as MenuType } from '~/typings/menu'
 import { getMenuTreeFromMenus } from '~/utils/menu'
 import { getInitialSingleton } from '~/components/Singleton/Menu'
 import { remove } from '~/apis/menu'
 import { resultNotification } from '~/utils/notification'
+import type { Tenant } from '~/typings/tenant'
+import type { Menu as MenuType } from '~/typings/menu'
 
 const Menus = () => {
   const [isOpened, setIsOpened] = useState(false)
@@ -67,9 +67,7 @@ const Menus = () => {
       }
     ])
 
-    const menus = getMenuTreeFromMenus(
-      data?.tenants.items?.find((tenantWithMenus) => tenantWithMenus.code === tenant.code)?.menus
-    )
+    const menus = getMenuTreeFromMenus(data?.tenants.items?.find((tenantWithMenus) => tenantWithMenus.code === tenant.code)?.menus)
 
     /** 菜单表格 */
     return <Table rowKey='id' columns={menuColumns} dataSource={menus} pagination={false} bordered={true} />
@@ -107,7 +105,7 @@ const Menus = () => {
   return (
     <Card>
       <Table
-        rowKey='id'
+        rowKey='code'
         columns={tenantColumns}
         dataSource={data?.tenants.items}
         bordered={true}

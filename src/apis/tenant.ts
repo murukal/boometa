@@ -126,7 +126,6 @@ export const TENANTS: TypedDocumentNode<
       limit
       totalCount
       items {
-        id
         code
         name
         isAuthorizate
