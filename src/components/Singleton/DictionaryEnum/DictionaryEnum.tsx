@@ -28,11 +28,14 @@ const DictionaryEnum = forwardRef<FormInstance, SingletonProps<DictionaryEnumTyp
     const formValues = form.getFieldsValue()
 
     const handlers = {
-      create: () =>
-        create({
+      create: () => {
+        if (!props.extraProps?.parentId) return
+
+        return create({
           ...formValues,
-          parentId: props.extraProps.parentId
-        }),
+          parentId: props.extraProps?.parentId
+        })
+      },
       update: () => update(props.singleton.id, formValues)
     }
 

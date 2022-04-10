@@ -67,7 +67,9 @@ const Menus = () => {
       }
     ])
 
-    const menus = getMenuTreeFromMenus(data?.tenants.items?.find((tenantWithMenus) => tenantWithMenus.code === tenant.code)?.menus)
+    const menus = getMenuTreeFromMenus(
+      data?.tenants.items?.find((tenantWithMenus) => tenantWithMenus.code === tenant.code)?.menus
+    )
 
     /** 菜单表格 */
     return <Table rowKey='id' columns={menuColumns} dataSource={menus} pagination={false} bordered={true} />
@@ -123,7 +125,7 @@ const Menus = () => {
           parentId
         }}
         singletonComponent={Menu}
-        singleton={menu}
+        singleton={menu as MenuType}
         onSubmitted={onSubmitted}
       />
     </Card>

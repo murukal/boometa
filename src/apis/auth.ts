@@ -3,7 +3,7 @@ import { gql } from '@apollo/client'
 import type { TypedDocumentNode } from '@apollo/client'
 // project
 import { fetcher } from '.'
-import type { LoginInput, RegisterInput, User } from '~/typings/auth'
+import type { Action, AuthorizationNode, LoginInput, RegisterInput, Resource, User } from '~/typings/auth'
 import type { PaginateOutput, QueryParams } from '~/typings/api'
 
 /**
@@ -104,35 +104,53 @@ export const GET_USERS: TypedDocumentNode<
  * 查询权限树
  */
 export const AUTHORIZATION_TREE: TypedDocumentNode<{
-  authorizationTree: {
-    key: string
-    title: string
-    checkable: false
-    children: {
-      key: string
-      title: string
-      checkable: false
-      children: {
-        key: number
-        title: string
-      }[]
-    }[]
-  }[]
+  authorizationTree: AuthorizationNode[]
 }> = gql`
   query {
     authorizationTree {
       key
       title
       checkable
+      code
       children {
         key
         title
         checkable
+        code
         children {
           key
           title
+          code
         }
       }
+    }
+  }
+`
+
+/**
+ * 查询权限资源
+ */
+export const AUTHORIZATION_RESOURCES: TypedDocumentNode<{
+  authorizationResources: Resource[]
+}> = gql`
+  query {
+    authorizationResources {
+      code
+      name
+    }
+  }
+`
+
+/**
+ * 查询权限操作
+ */
+export const AUTHORIZATION_ACTIONS: TypedDocumentNode<{
+  authorizationActions: Action[]
+}> = gql`
+  query {
+    authorizationActions {
+      code
+      name
     }
   }
 `

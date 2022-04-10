@@ -34,12 +34,15 @@ const Menu = forwardRef<FormInstance, SingletonProps<MenuType, ExtraProps>>((pro
     const formValues = form.getFieldsValue()
 
     const handlers = {
-      create: () =>
-        create({
+      create: () => {
+        if (!props.extraProps?.parentId || !props.extraProps.tenantCode) return
+
+        return create({
           ...formValues,
-          tenantCode: props.extraProps.tenantCode,
-          parentId: props.extraProps.parentId
-        }),
+          tenantCode: props.extraProps?.tenantCode,
+          parentId: props.extraProps?.parentId
+        })
+      },
       update: () =>
         update(props.singleton.id, {
           ...formValues,
