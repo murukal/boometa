@@ -37,7 +37,7 @@ const Singleton = <P, E>(props: Props<P, E>) => {
 
   return (
     <Drawer
-      title={props.title || '功能区'}
+      title={props.title}
       placement='right'
       closable={false}
       maskClosable={false}

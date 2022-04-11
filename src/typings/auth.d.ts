@@ -25,11 +25,12 @@ export interface FilterInput {
 
 interface AuthorizationNode {
   // 租户层级
-  key?: string
-  title?: string
-  checkable?: false
-  code?: string
+  key: string
+  title: string
+  checkable: false
+  code: string
   children: ResourceNode[]
+  __typename: string
 }
 
 interface ResourceNode {
@@ -38,12 +39,14 @@ interface ResourceNode {
   checkable: false
   code: ResourceCode
   children: Action[]
+  __typename: string
 }
 
 interface ActionNode {
   key: string
   title: string
   code: Action
+  __typename: string
 }
 
 export interface Resource {
