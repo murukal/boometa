@@ -9,11 +9,12 @@ import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { cloneDeep } from 'lodash'
 // project
 import { useQuery } from '@apollo/client'
-import { AUTHORIZATION_ACTIONS, AUTHORIZATION_RESOURCES } from '~/apis/auth'
+import { AUTHORIZATION_ACTIONS, AUTHORIZATION_RESOURCES, setAuthorizations } from '~/apis/auth'
 import { Authorized } from '.'
 import { ResourceCode } from '..'
 import type { SingletonProps } from '~/components/Singleton'
 import type { AuthorizationNode } from '~/typings/auth'
+import { resultNotification } from '~/utils/notification'
 
 const { Panel } = Collapse
 const { Group } = Checkbox
@@ -42,36 +43,48 @@ const Tenant = forwardRef<FormInstance, SingletonProps<AuthorizationNode>>((prop
     }
   })
 
-  /** 初始化的权限分配 */
-  const initialAuthorizeds = useMemo(
-    () =>
-      props.singleton.children.map((resource) => ({
-        resourceCode: resource.code,
-        actionCodes: resource.children.map((action) => action.code)
-      })),
-    [props.children]
-  )
+  /**
+   * 初始化的权限分配
+   */
+  const initialAuthorizeds = useMemo(() => {
+    return props.singleton.children.map((resource) => ({
+      resourceCode: resource.code,
+      actionCodes: resource.children.map((action) => action.code)
+    }))
+  }, [props.singleton.children])
 
-  /** 拦截事件 */
+  /**
+   * ref事件
+   */
   useImperativeHandle(ref, () => ({
     ...form,
-    /** 重置表单 */
+    /**
+     * 重置表单
+     */
     resetFields: () => {
       setAuthorizeds(cloneDeep(initialAuthorizeds))
     }
   }))
 
-  /** 初始化 */
+  /**
+   * 初始化
+   */
   useEffect(() => {
     setAuthorizeds(cloneDeep(initialAuthorizeds))
   }, [initialAuthorizeds])
 
-  /** 表单提交事件 */
+  /**
+   * 表单提交事件
+   */
   const onSubmit = async () => {
-    console.log('authorizeds====', authorizeds)
+    const result = props.singleton.code ? await setAuthorizations(props.singleton.code, authorizeds) : undefined
+    resultNotification(result)
+    props.onSubmitted(result)
   }
 
-  /** 更改权限 */
+  /**
+   * 更改权限
+   */
   const onActionToggle = (resourceCode: ResourceCode) => (actionCodes: Array<CheckboxValueType>) => {
     setAuthorizeds((authorizeds) => {
       const resource = authorizeds.find((authorized) => authorized.resourceCode === resourceCode)

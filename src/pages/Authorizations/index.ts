@@ -1,16 +1,16 @@
 export enum ResourceCode {
-  Menu = 'menu',
-  Tenant = 'tenant',
-  Role = 'role',
-  Dictionary = 'dictionary',
-  DictionaryEnum = 'dictionary-enum'
+  Menu = 'Menu',
+  Tenant = 'Tenant',
+  Role = 'Role',
+  Dictionary = 'Dictionary',
+  DictionaryEnum = 'DictionaryEnum'
 }
 
 export enum ActionCode {
-  Create = 'create',
-  Retrieve = 'retrieve',
-  Update = 'update',
-  Delete = 'delete'
+  Create = 'Create',
+  Retrieve = 'Retrieve',
+  Update = 'Update',
+  Delete = 'Delete'
 }
 
 export { default } from './Authorizations'

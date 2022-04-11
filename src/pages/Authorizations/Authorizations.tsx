@@ -19,7 +19,7 @@ const Authorizations = () => {
   const [authorizationNode, setAuthorizationNode] = useState<AuthorizationNode>()
   const [expandedKeys, setExpandedKeys] = useState<string[]>([])
 
-  const { data } = useQuery(AUTHORIZATION_TREE, {
+  const { data, refetch } = useQuery(AUTHORIZATION_TREE, {
     onCompleted: (data) => {
       setExpandedKeys(
         data.authorizationTree.flatMap((authorizationNode) => {
@@ -57,11 +57,25 @@ const Authorizations = () => {
     setSelectedKeys([])
   }
 
+  /**
+   * 提交后的回调
+   */
+  const onSubmitted = () => {
+    onClose()
+    refetch()
+  }
+
   return (
     <Card title='分配权限'>
       <Tree treeData={data?.authorizationTree} selectedKeys={selectedKeys} onSelect={onSelect} expandedKeys={expandedKeys} />
 
-      <Singleton isOpened={isTenantDrawerOpened} singleton={authorizationNode as AuthorizationNode} singletonComponent={Tenant} onClose={onClose} />
+      <Singleton
+        isOpened={isTenantDrawerOpened}
+        singleton={authorizationNode as AuthorizationNode}
+        singletonComponent={Tenant}
+        onClose={onClose}
+        onSubmitted={onSubmitted}
+      />
 
       <Drawer visible={isResourceDrawerOpened} onClose={onClose}></Drawer>
     </Card>

@@ -5,6 +5,7 @@ import type { TypedDocumentNode } from '@apollo/client'
 import { fetcher } from '.'
 import type { Action, AuthorizationNode, LoginInput, RegisterInput, Resource, User } from '~/typings/auth'
 import type { PaginateOutput, QueryParams } from '~/typings/api'
+import { Authorized } from '~/pages/Authorizations/Singletons'
 
 /**
  * 登陆
@@ -154,3 +155,29 @@ export const AUTHORIZATION_ACTIONS: TypedDocumentNode<{
     }
   }
 `
+
+/**
+ * 分配权限树
+ */
+const SET_AUTHORIZATIONS: TypedDocumentNode<
+  {
+    setAuthorizations: boolean
+  },
+  {
+    tenantCode: string
+    authorizations: Authorized[]
+  }
+> = gql`
+  mutation SetAuthorizations($tenantCode: String!, $authorizations: [AuthorizationInput!]!) {
+    setAuthorizations(tenantCode: $tenantCode, authorizations: $authorizations)
+  }
+`
+
+export const setAuthorizations = (tenantCode: string, authorizations: Authorized[]) =>
+  fetcher.mutate({
+    mutation: SET_AUTHORIZATIONS,
+    variables: {
+      tenantCode,
+      authorizations
+    }
+  })
