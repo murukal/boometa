@@ -17,20 +17,29 @@ const Authorizations = () => {
   const [isResourceDrawerOpened, setIsResourceDrawerOpened] = useState(false)
   const [selectedKeys, setSelectedKeys] = useState<Key[]>([])
   const [authorizationNode, setAuthorizationNode] = useState<AuthorizationNode>()
+  const [expandedKeys, setExpandedKeys] = useState<string[]>([])
 
-  const { data } = useQuery(AUTHORIZATION_TREE)
+  const { data } = useQuery(AUTHORIZATION_TREE, {
+    onCompleted: (data) => {
+      setExpandedKeys(
+        data.authorizationTree.flatMap((authorizationNode) => {
+          const keys = authorizationNode.children.map((resourceNode) => resourceNode.key)
+          authorizationNode.key && keys.push(authorizationNode.key)
+          return keys
+        })
+      )
+    }
+  })
 
   /**
    * 树节点的选中事件
    */
-  const onSelect = (
-    selectedKeys: Key[],
-    { node }: { node: EventDataNode & { __typename?: NodeType; code?: string } }
-  ) => {
+  const onSelect = (selectedKeys: Key[], { node }: { node: EventDataNode & { __typename?: NodeType; code?: string } }) => {
     setSelectedKeys(selectedKeys)
 
     if (node.__typename === 'AuthorizationNode') {
       setAuthorizationNode({
+        code: node.code,
         children: node.children as []
       })
       setIsTenantDrawerOpened(true)
@@ -49,14 +58,10 @@ const Authorizations = () => {
   }
 
   return (
-    <Card>
-      <Tree treeData={data?.authorizationTree} selectedKeys={selectedKeys} onSelect={onSelect} />
+    <Card title='分配权限'>
+      <Tree treeData={data?.authorizationTree} selectedKeys={selectedKeys} onSelect={onSelect} expandedKeys={expandedKeys} />
 
-      <Singleton
-        isOpened={isTenantDrawerOpened}
-        singleton={authorizationNode as AuthorizationNode}
-        singletonComponent={Tenant}
-      />
+      <Singleton isOpened={isTenantDrawerOpened} singleton={authorizationNode as AuthorizationNode} singletonComponent={Tenant} onClose={onClose} />
 
       <Drawer visible={isResourceDrawerOpened} onClose={onClose}></Drawer>
     </Card>
