@@ -1,5 +1,6 @@
 // third
 import path from 'path-browserify'
+import { ResourceCode } from '~/pages/Authorizations'
 // project
 import type { Menu } from '~/typings/menu'
 
@@ -14,9 +15,9 @@ export interface FormValues {
   name: string
   sortBy: number
   icon?: string
-
   to?: string
   component?: string
+  resourceCodes?: ResourceCode[]
 }
 
 export const getInitialSingleton = (): Menu => ({

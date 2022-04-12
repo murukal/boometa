@@ -34,16 +34,14 @@ export const remove = (id: number) =>
  */
 const CREATE: TypedDocumentNode<
   {
-    createMenu: Menu
+    createMenu: boolean
   },
   {
     createMenuInput: CreateMenuInput
   }
 > = gql`
   mutation CreateMenu($createMenuInput: CreateMenuInput!) {
-    createMenu(createMenuInput: $createMenuInput) {
-      id
-    }
+    createMenu(createMenuInput: $createMenuInput)
   }
 `
 

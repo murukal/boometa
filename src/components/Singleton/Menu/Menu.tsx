@@ -26,7 +26,8 @@ const Menu = forwardRef<FormInstance, SingletonProps<MenuType, ExtraProps>>((pro
       sortBy: props.singleton.sortBy,
       icon: props.singleton.icon,
       to: props.singleton.to,
-      component: props.singleton.component
+      component: props.singleton.component,
+      resourceCodes: props.singleton.resourceCodes
     }),
     [props.singleton]
   )
@@ -103,7 +104,7 @@ const Menu = forwardRef<FormInstance, SingletonProps<MenuType, ExtraProps>>((pro
         <IconSelector />
       </Item>
 
-      <Item label='菜单权限通行证' name='authorizations'>
+      <Item label='权限资源' name='resourceCodes'>
         <Select
           mode='multiple'
           allowClear

@@ -156,6 +156,7 @@ export const TENANTS_WITH_MENUS: TypedDocumentNode<{
           to
           component
           parentId
+          resourceCodes
         }
       }
     }

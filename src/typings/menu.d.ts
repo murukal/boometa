@@ -1,3 +1,4 @@
+import { ResourceCode } from '~/pages/Authorizations'
 import { Core } from '.'
 
 export interface Menu extends Core {
@@ -8,6 +9,7 @@ export interface Menu extends Core {
   to?: string
   component?: string
   children?: Menu[]
+  resourceCodes?: ResourceCode[]
 }
 
 export interface CreateMenuInput extends Pick<Menu, 'name' | 'sortBy' | 'parentId' | 'to' | 'component'> {
