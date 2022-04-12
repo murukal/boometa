@@ -107,12 +107,7 @@ const Authorizations = () => {
         }}
         loading={isAuthorizationTreeLoading}
       >
-        <Tree
-          treeData={authorizationTree?.authorizationTree}
-          selectedKeys={selectedKeys}
-          onSelect={onSelect}
-          expandedKeys={expandedKeys}
-        />
+        <Tree treeData={authorizationTree?.authorizationTree} selectedKeys={selectedKeys} onSelect={onSelect} expandedKeys={expandedKeys} />
 
         <Singleton
           title='分配权限'
@@ -137,6 +132,9 @@ const Authorizations = () => {
           dataSource={resources?.authorizationResources}
           columns={getResourceColumns()}
           loading={isResourceLoading}
+          pagination={{
+            pageSize: 4
+          }}
         />
       </Card>
 
@@ -152,6 +150,9 @@ const Authorizations = () => {
           dataSource={actions?.authorizationActions}
           columns={getActionColumns()}
           loading={isActionLoading}
+          pagination={{
+            pageSize: 4
+          }}
         />
       </Card>
     </div>
