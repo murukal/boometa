@@ -11,20 +11,53 @@ import { AuthorizationNode } from '~/typings/auth'
 
 const Authorizations = forwardRef<any, Props>((props, ref) => {
   const [checkedKeys, setCheckedKeys] = useState<number[]>([])
+  const [expandedKeys, setExpandedKeys] = useState<string[]>([])
   const [tree, setTree] = useState<AuthorizationNode[]>([])
 
   /** hooks */
   useQuery(AUTHORIZATION_TREE, {
     onCompleted: (data) => {
-      data.authorizationTree.forEach((authorizationNode) => {
-        authorizationNode.children.forEach((resourceNode) => {
-          resourceNode.children.forEach((actionNode) => {
-            actionNode.checkable = true
-          })
-        })
-      })
+      const treeProfile = data.authorizationTree.reduce<{
+        treeData: AuthorizationNode[]
+        expandedKeys: string[]
+      }>(
+        (prev, current) => {
+          // 生成树节点
+          const node = {
+            ...current,
+            checkable: false,
+            children: current.children.map((resourceNode) => {
+              // 填充展开节点
+              prev.expandedKeys.push(resourceNode.key)
 
-      setTree(data.authorizationTree)
+              return {
+                ...resourceNode,
+                checkable: false,
+                children: resourceNode.children.map((actionNode) => {
+                  return {
+                    ...actionNode,
+                    checkable: true
+                  }
+                })
+              }
+            })
+          }
+
+          // 填充展开节点
+          prev.expandedKeys.push(node.key)
+          // 填充树节点
+          prev.treeData.push(node)
+
+          return prev
+        },
+        {
+          treeData: [],
+          expandedKeys: []
+        }
+      )
+
+      setTree(treeProfile.treeData)
+      setExpandedKeys(treeProfile.expandedKeys)
     }
   })
 
@@ -58,7 +91,17 @@ const Authorizations = forwardRef<any, Props>((props, ref) => {
     setCheckedKeys(props.authorizationIds)
   }, [props.authorizationIds])
 
-  return <Tree checkStrictly treeData={tree} checkedKeys={checkedKeys} checkable disabled={props.isDisabled} onCheck={onCheck} />
+  return (
+    <Tree
+      checkStrictly
+      treeData={tree}
+      checkedKeys={checkedKeys}
+      checkable
+      disabled={props.isDisabled}
+      onCheck={onCheck}
+      expandedKeys={expandedKeys}
+    />
+  )
 })
 
 export default Authorizations

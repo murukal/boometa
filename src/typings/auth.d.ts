@@ -30,6 +30,9 @@ interface AuthorizationNode {
   code: string
   children: ResourceNode[]
   __typename: string
+
+  // 前端适应树组件
+  checkable?: boolean
 }
 
 interface ResourceNode {
@@ -38,6 +41,9 @@ interface ResourceNode {
   code: ResourceCode
   children: ActionNode[]
   __typename: string
+
+  // 前端适应树组件
+  checkable?: boolean
 }
 
 interface ActionNode {
@@ -46,7 +52,7 @@ interface ActionNode {
   code: ActionCode
   __typename: string
 
-  // 适应树组件
+  // 前端适应树组件
   checkable?: boolean
 }
 
