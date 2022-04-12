@@ -11,10 +11,10 @@ import { cloneDeep } from 'lodash'
 // project
 import { useQuery } from '@apollo/client'
 import { AUTHORIZATION_ACTIONS, setAuthorizations } from '~/apis/auth'
-import { ResourceCode } from '..'
+import { ResourceCode } from '~/pages/Authorizations'
 import { resultNotification } from '~/utils/notification'
 import type { Authorized, ExtraProps } from '.'
-import type { SingletonProps } from '~/components/Singleton'
+import type { SingletonProps } from '..'
 
 const { Panel } = Collapse
 const { Group } = Checkbox
@@ -108,9 +108,7 @@ const Tenant = forwardRef<FormInstance, SingletonProps<Authorized[], ExtraProps>
    * 表单提交事件
    */
   const onSubmit = async () => {
-    const result = props.extraProps?.tenantCode
-      ? await setAuthorizations(props.extraProps?.tenantCode, authorizeds)
-      : undefined
+    const result = props.extraProps?.tenantCode ? await setAuthorizations(props.extraProps?.tenantCode, authorizeds) : undefined
     resultNotification(result)
     props.onSubmitted(result)
   }

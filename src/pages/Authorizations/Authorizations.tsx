@@ -9,8 +9,8 @@ import { useQuery } from '@apollo/client'
 import { AUTHORIZATION_ACTIONS, AUTHORIZATION_RESOURCES, AUTHORIZATION_TREE } from '~/apis/auth'
 import Singleton from '~/components/Singleton'
 import { getActionColumns, getResourceColumns } from '.'
-import Authorization from './Singletons'
-import type { Authorized, ExtraProps } from './Singletons'
+import Authorization from '~/components/Singleton/Authorization'
+import type { Authorized, ExtraProps } from '~/components/Singleton/Authorization'
 import type { AuthorizationNode } from '~/typings/auth'
 
 const Authorizations = () => {

@@ -5,7 +5,7 @@ import type { TypedDocumentNode } from '@apollo/client'
 import { fetcher } from '.'
 import type { Action, AuthorizationNode, LoginInput, RegisterInput, Resource, User } from '~/typings/auth'
 import type { PaginateOutput, QueryParams } from '~/typings/api'
-import { Authorized } from '~/pages/Authorizations/Singletons'
+import type { Authorized } from '~/components/Singleton/Authorization'
 
 /**
  * 登陆
