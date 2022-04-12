@@ -7,12 +7,26 @@ import { update } from '~/apis/role'
 import { useQuery } from '@apollo/client'
 import { AUTHORIZATION_TREE } from '~/apis/auth'
 import type { Props } from '.'
+import { AuthorizationNode } from '~/typings/auth'
 
 const Authorizations = forwardRef<any, Props>((props, ref) => {
   const [checkedKeys, setCheckedKeys] = useState<number[]>([])
+  const [tree, setTree] = useState<AuthorizationNode[]>([])
 
   /** hooks */
-  const { data } = useQuery(AUTHORIZATION_TREE)
+  useQuery(AUTHORIZATION_TREE, {
+    onCompleted: (data) => {
+      data.authorizationTree.forEach((authorizationNode) => {
+        authorizationNode.children.forEach((resourceNode) => {
+          resourceNode.children.forEach((actionNode) => {
+            actionNode.checkable = true
+          })
+        })
+      })
+
+      setTree(data.authorizationTree)
+    }
+  })
 
   /** 选择树节点 */
   const onCheck = ({ checked }: any) => {
@@ -44,7 +58,7 @@ const Authorizations = forwardRef<any, Props>((props, ref) => {
     setCheckedKeys(props.authorizationIds)
   }, [props.authorizationIds])
 
-  return <Tree checkStrictly treeData={data?.authorizationTree} checkedKeys={checkedKeys} checkable disabled={props.isDisabled} onCheck={onCheck} />
+  return <Tree checkStrictly treeData={tree} checkedKeys={checkedKeys} checkable disabled={props.isDisabled} onCheck={onCheck} />
 })
 
 export default Authorizations

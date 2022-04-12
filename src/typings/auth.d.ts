@@ -27,7 +27,6 @@ interface AuthorizationNode {
   // 租户层级
   key: string
   title: string
-  checkable: false
   code: string
   children: ResourceNode[]
   __typename: string
@@ -36,17 +35,19 @@ interface AuthorizationNode {
 interface ResourceNode {
   key: string
   title: string
-  checkable: false
   code: ResourceCode
-  children: Action[]
+  children: ActionNode[]
   __typename: string
 }
 
 interface ActionNode {
   key: string
   title: string
-  code: Action
+  code: ActionCode
   __typename: string
+
+  // 适应树组件
+  checkable?: boolean
 }
 
 export interface Resource {

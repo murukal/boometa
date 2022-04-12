@@ -111,12 +111,10 @@ export const AUTHORIZATION_TREE: TypedDocumentNode<{
     authorizationTree {
       key
       title
-      checkable
       code
       children {
         key
         title
-        checkable
         code
         children {
           key
