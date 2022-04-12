@@ -12,6 +12,8 @@ import { resultNotification } from '~/utils/notification'
 import type { SingletonProps } from '..'
 import type { Menu as MenuType } from '~/typings/menu'
 import type { ExtraProps, FormValues } from '.'
+import { useQuery } from '@apollo/client'
+import { AUTHORIZATION_RESOURCES } from '~/apis/auth'
 
 const { Item } = Form
 
@@ -29,7 +31,14 @@ const Menu = forwardRef<FormInstance, SingletonProps<MenuType, ExtraProps>>((pro
     [props.singleton]
   )
 
-  /** 表单提交事件 */
+  /**
+   * 权限资源
+   */
+  const { data: resources } = useQuery(AUTHORIZATION_RESOURCES)
+
+  /**
+   * 表单提交事件
+   */
   const onSubmit = async () => {
     const formValues = form.getFieldsValue()
 
@@ -94,9 +103,17 @@ const Menu = forwardRef<FormInstance, SingletonProps<MenuType, ExtraProps>>((pro
         <IconSelector />
       </Item>
 
-      {/* <Item label='菜单权限通行证' name='authorizations'>
-        <Select mode='multiple' allowClear options={authorizationOptions} />
-      </Item> */}
+      <Item label='菜单权限通行证' name='authorizations'>
+        <Select
+          mode='multiple'
+          allowClear
+          options={resources?.authorizationResources}
+          fieldNames={{
+            label: 'name',
+            value: 'code'
+          }}
+        />
+      </Item>
     </Form>
   )
 })
