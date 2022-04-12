@@ -50,7 +50,7 @@ const Roles4Auth = (props: Props) => {
         保存
       </Button>
     )
-  }, [props.actived, isEditable])
+  }, [props.actived, isEditable, ref])
 
   /** 抬头 */
   const title = useMemo(() => {
@@ -68,10 +68,13 @@ const Roles4Auth = (props: Props) => {
   }
 
   /** 提交结束的回调 */
-  const onSubmitted = () => {
+  const onSubmitted = (isSucceed?: boolean) => {
     setIsLoading(false)
-    setIsEditable(false)
-    refetch()
+
+    if (isSucceed) {
+      setIsEditable(false)
+      refetch()
+    }
   }
 
   /** tab 变更 */
@@ -102,7 +105,7 @@ const Roles4Auth = (props: Props) => {
           onSubmit={onSubmit}
           onSubmitted={onSubmitted}
           authorizationIds={data?.role.authorizationIds || []}
-        ></Authorizations>
+        />
       )}
     </Card>
   )

@@ -16,7 +16,7 @@ import type { AuthorizationNode } from '~/typings/auth'
 const Authorizations = () => {
   const [isAuthorizationOpened, setIsAuthorizationOpened] = useState(false)
   const [selectedKeys, setSelectedKeys] = useState<Key[]>([])
-  const [expandedKeys, setExpandedKeys] = useState<string[]>([])
+  const [expandedKeys, setExpandedKeys] = useState<Key[]>([])
   const [authorizeds, setAuthorizeds] = useState<Authorized[]>([])
   const [extraProps, setExtraProps] = useState<ExtraProps>()
 
@@ -30,10 +30,8 @@ const Authorizations = () => {
   } = useQuery(AUTHORIZATION_TREE, {
     onCompleted: (data) => {
       setExpandedKeys(
-        data.authorizationTree.flatMap((authorizationNode) => {
-          const keys = authorizationNode.children.map((resourceNode) => resourceNode.key)
-          authorizationNode.key && keys.push(authorizationNode.key)
-          return keys
+        data.authorizationTree.map((authorizationNode) => {
+          return authorizationNode.key
         })
       )
     }
@@ -91,6 +89,13 @@ const Authorizations = () => {
     refetch()
   }
 
+  /**
+   * 节点展开或者收起
+   */
+  const onExpand = (expandedKeys: Key[]) => {
+    setExpandedKeys(expandedKeys)
+  }
+
   return (
     <div
       style={{
@@ -107,7 +112,13 @@ const Authorizations = () => {
         }}
         loading={isAuthorizationTreeLoading}
       >
-        <Tree treeData={authorizationTree?.authorizationTree} selectedKeys={selectedKeys} onSelect={onSelect} expandedKeys={expandedKeys} />
+        <Tree
+          treeData={authorizationTree?.authorizationTree}
+          selectedKeys={selectedKeys}
+          onSelect={onSelect}
+          expandedKeys={expandedKeys}
+          onExpand={onExpand}
+        />
 
         <Singleton
           title='分配权限'

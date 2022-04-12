@@ -20,17 +20,17 @@ const Users = (props: Props) => {
     setIsLoading(true)
 
     // 提交事件
-    const res = await update(props.roleId, {
+    const result = await update(props.roleId, {
       userIds
     })
 
-    resultNotification(res)
+    resultNotification(result)
     setIsLoading(false)
 
-    if (res.data) {
+    if (result.data) {
       setUserIds([])
       setIsOpened(false)
-      props.onSubmitted(res)
+      props.onSubmitted(result.data.updateRole)
     }
   }
 

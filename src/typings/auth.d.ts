@@ -47,7 +47,7 @@ interface ResourceNode {
 }
 
 interface ActionNode {
-  key: string
+  key: number
   title: string
   code: ActionCode
   __typename: string

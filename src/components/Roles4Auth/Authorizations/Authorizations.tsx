@@ -1,5 +1,6 @@
 // react
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
+import type { Key } from 'react'
 // antd
 import { Tree } from 'antd'
 // project
@@ -8,13 +9,16 @@ import { useQuery } from '@apollo/client'
 import { AUTHORIZATION_TREE } from '~/apis/auth'
 import type { Props } from '.'
 import { AuthorizationNode } from '~/typings/auth'
+import { resultNotification } from '~/utils/notification'
 
 const Authorizations = forwardRef<any, Props>((props, ref) => {
   const [checkedKeys, setCheckedKeys] = useState<number[]>([])
-  const [expandedKeys, setExpandedKeys] = useState<string[]>([])
+  const [expandedKeys, setExpandedKeys] = useState<Key[]>([])
   const [tree, setTree] = useState<AuthorizationNode[]>([])
 
-  /** hooks */
+  /**
+   * 请求权限树
+   */
   useQuery(AUTHORIZATION_TREE, {
     onCompleted: (data) => {
       const treeProfile = data.authorizationTree.reduce<{
@@ -27,9 +31,6 @@ const Authorizations = forwardRef<any, Props>((props, ref) => {
             ...current,
             checkable: false,
             children: current.children.map((resourceNode) => {
-              // 填充展开节点
-              prev.expandedKeys.push(resourceNode.key)
-
               return {
                 ...resourceNode,
                 checkable: false,
@@ -61,13 +62,16 @@ const Authorizations = forwardRef<any, Props>((props, ref) => {
     }
   })
 
-  /** 选择树节点 */
+  /**
+   * 选择树节点
+   */
   const onCheck = ({ checked }: any) => {
-    // 同步树的state
     setCheckedKeys(checked)
   }
 
-  /** ref */
+  /**
+   * 事件拦截
+   */
   useImperativeHandle(
     ref,
     () => ({
@@ -76,20 +80,30 @@ const Authorizations = forwardRef<any, Props>((props, ref) => {
         // 预回调
         props.onSubmit()
         // 请求
-        await update(props.roleId, {
+        const result = await update(props.roleId, {
           authorizationIds: checkedKeys
         })
+        resultNotification(result)
         // 结束回调
-        props.onSubmitted()
+        props.onSubmitted(result.data?.updateRole)
       }
     }),
     [checkedKeys]
   )
 
-  /** 渲染 已授权 */
+  /**
+   * 渲染
+   */
   useEffect(() => {
     setCheckedKeys(props.authorizationIds)
   }, [props.authorizationIds])
+
+  /**
+   * 节点展开或者收起
+   */
+  const onExpand = (expandedKeys: Key[]) => {
+    setExpandedKeys(expandedKeys)
+  }
 
   return (
     <Tree
@@ -100,6 +114,7 @@ const Authorizations = forwardRef<any, Props>((props, ref) => {
       disabled={props.isDisabled}
       onCheck={onCheck}
       expandedKeys={expandedKeys}
+      onExpand={onExpand}
     />
   )
 })

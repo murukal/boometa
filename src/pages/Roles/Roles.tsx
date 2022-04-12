@@ -53,12 +53,15 @@ const Roles = () => {
     }
   ])
 
-  /** hooks */
+  /**
+   * 表格数据
+   */
   const { data, isLoading, pagination, refetch, onTableChange } = useTableQuery(ROLES)
 
   const onOpen =
     (role = getInitialSingleton()) =>
     () => {
+      onAuthClose()
       setRole(role)
       setIsOpened(true)
     }
@@ -72,25 +75,34 @@ const Roles = () => {
     onClose()
   }
 
-  /** 展现右侧数据卡片 */
+  /**
+   * 展现右侧数据卡片
+   */
   const onShow = (role: RoleType, actived: AuthType) => () => {
     setRole(role)
     setActived(actived)
     setIsShow(true)
   }
 
-  /** 页签变更 */
+  /**
+   * 页签变更
+   */
   const onTabChange = (actived: string) => {
     setActived(actived as AuthType)
   }
 
-  /** 删除角色 */
+  /**
+   * 删除角色
+   */
   const onDelete = (id: number) => async () => {
+    onAuthClose()
     const res = await remove(id)
     res.data?.removeRole && refetch()
   }
 
-  /** 右侧功能页面关闭 */
+  /**
+   * 右侧功能页面关闭
+   */
   const onAuthClose = () => {
     setIsShow(false)
   }
@@ -98,7 +110,6 @@ const Roles = () => {
   return (
     <div className='flex'>
       <Card
-        className='overflow-auto'
         style={{
           width: isShow ? '50%' : '100%',
           marginRight: isShow ? '6px' : '0'
@@ -120,14 +131,7 @@ const Roles = () => {
       </Card>
 
       {isShow && (
-        <Roles4Auth
-          className='w-1/2 overflow-auto'
-          roleId={role.id}
-          title={role.name}
-          actived={actived}
-          onTabChange={onTabChange}
-          onClose={onAuthClose}
-        />
+        <Roles4Auth className='w-1/2' roleId={role.id} title={role.name} actived={actived} onTabChange={onTabChange} onClose={onAuthClose} />
       )}
     </div>
   )
