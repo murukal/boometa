@@ -1,7 +1,6 @@
 // project
 import { getRsaPublicKey } from '~/apis'
-
-export type ActionType = 'SET_RSA_PUBLIC_KEY'
+import { ActionType } from '../reducer'
 
 export interface Action {
   type: ActionType
@@ -12,7 +11,7 @@ export const setRsaPublicKey = async (rsaPublicKey?: string | null): Promise<Act
   const result = await getRsaPublicKey()
 
   return {
-    type: 'SET_RSA_PUBLIC_KEY',
+    type: ActionType.SetRsaPublicKey,
     data: result.data?.rsaPublicKey
   }
 }

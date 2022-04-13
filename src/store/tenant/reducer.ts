@@ -1,9 +1,10 @@
-import { Action } from './action'
+import { ActionType } from '../reducer'
 import getInitialState from './store'
+import type { Action } from './action'
 
 const reducer = (state = getInitialState(), action: Action) => {
   switch (action.type) {
-    case 'SET_TENANT':
+    case ActionType.SetTenant:
       // 混合生成新的state
       return Object.assign({}, state, action.data)
     default:

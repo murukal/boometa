@@ -1,8 +1,7 @@
 // project
 import getInitialState, { UserProfile } from './store'
 import { whoAmI } from '~/apis/auth'
-
-export type ActionType = 'AUTHENTICATE' | 'LOGOUT' | 'SET_TOKEN'
+import { ActionType } from '../reducer'
 
 export interface Action {
   type: ActionType
@@ -19,7 +18,7 @@ export const authenticate = async (): Promise<Action> => {
 
   // 根据查询的用户信息生成redux的aciton
   return {
-    type: 'AUTHENTICATE',
+    type: ActionType.Authenticate,
     data: {
       isLogin: !!user,
       user,
@@ -32,7 +31,7 @@ export const authenticate = async (): Promise<Action> => {
  * 退出登录
  */
 export const logout = (): Action => ({
-  type: 'LOGOUT',
+  type: ActionType.Logout,
   data: { isLogin: false, user: null, token: null }
 })
 
@@ -41,7 +40,7 @@ export const logout = (): Action => ({
  */
 export const setToken = (): Action => {
   return {
-    type: 'SET_TOKEN',
+    type: ActionType.SetToken,
     data: getInitialState()
   }
 }

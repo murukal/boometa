@@ -1,15 +1,16 @@
+import { ActionType } from '../reducer'
 import { Action } from './action'
 import getInitialState from './store'
 
 const reducer = (state = getInitialState(), action: Action) => {
   switch (action.type) {
-    case 'AUTHENTICATE':
+    case ActionType.Authenticate:
       // 登录
       return action.data
-    case 'LOGOUT':
+    case ActionType.Logout:
       // 退出登录
       return action.data
-    case 'SET_TOKEN':
+    case ActionType.SetToken:
       // 初始化token
       return action.data
     default:

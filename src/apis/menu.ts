@@ -112,5 +112,6 @@ export const getMenus = (tenantCode: string) =>
       filterInput: {
         tenantCode
       }
-    }
+    },
+    fetchPolicy: 'no-cache'
   })

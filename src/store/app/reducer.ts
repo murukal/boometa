@@ -1,14 +1,14 @@
 import { ActionType } from '../reducer'
-import { Action } from './action'
 import getInitialState from './store'
+import type { Action } from './action'
 
 const reducer = (state = getInitialState(), action: Action) => {
   switch (action.type) {
-    case ActionType.SetMenus:
-      // 获取菜单数据
-      return action.data
-    case ActionType.ResetMenus:
-      return []
+    case ActionType.Initialized:
+      return {
+        ...state,
+        isInitialized: true
+      }
     default:
       // 未被识别的操作
       return state

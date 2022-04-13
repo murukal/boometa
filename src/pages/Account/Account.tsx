@@ -1,7 +1,5 @@
-// react
-import { useEffect } from 'react'
 // router
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom'
 // redux
 import { useSelector } from 'react-redux'
 // antd
@@ -13,15 +11,14 @@ import type { State } from '~/store'
 import './index.css'
 
 const Account = () => {
-  const navigate = useNavigate()
   const isLogin = useSelector<State, boolean>((state) => state.userProfile.isLogin)
 
-  useEffect(() => {
-    if (!isLogin) return
-    // 跳转路由
-    navigate('/', { replace: true })
-  }, [isLogin])
+  // 登陆后回调到主页面
+  if (isLogin) {
+    return <Navigate to='/' replace />
+  }
 
+  // 未登陆
   return (
     <div className='flex flex-col h-full'>
       <div className='flex-1 flex'>

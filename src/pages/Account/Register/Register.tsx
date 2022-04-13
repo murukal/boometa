@@ -10,7 +10,7 @@ import { useForm } from 'antd/lib/form/Form'
 import type JSEncrypt from 'jsencrypt'
 // project
 import { register } from '~/apis/auth'
-import { storeToken } from '~/utils/app'
+import { reinitialize } from '~/utils/app'
 import { toggleStyle } from '..'
 import { passwordRegex } from '.'
 import { resultNotification } from '~/utils/notification'
@@ -47,7 +47,7 @@ const Register = () => {
     })
 
     resultNotification(result)
-    storeToken(result.data?.register)
+    reinitialize(result.data?.register)
   }
 
   return (

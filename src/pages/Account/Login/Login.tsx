@@ -10,7 +10,7 @@ import { useForm } from 'antd/lib/form/Form'
 import type JSEncrypt from 'jsencrypt'
 // project
 import { login } from '~/apis/auth'
-import { storeToken } from '~/utils/app'
+import { reinitialize } from '~/utils/app'
 import { toggleStyle } from '..'
 import { resultNotification } from '~/utils/notification'
 import type { FormValues } from '.'
@@ -44,7 +44,7 @@ const Login = () => {
     })
 
     resultNotification(result)
-    storeToken(result.data?.login, formValues.isAutoLogin)
+    reinitialize(result.data?.login, formValues.isAutoLogin)
   }
 
   return (
