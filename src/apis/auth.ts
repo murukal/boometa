@@ -70,9 +70,11 @@ const WHO_AM_I: TypedDocumentNode<{
   }
 `
 
+// 强制不适用缓存
 export const whoAmI = async () =>
   await fetcher.query({
-    query: WHO_AM_I
+    query: WHO_AM_I,
+    fetchPolicy: 'no-cache'
   })
 
 /**

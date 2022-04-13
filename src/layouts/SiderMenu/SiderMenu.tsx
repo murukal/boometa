@@ -59,7 +59,7 @@ const SiderMenu = () => {
           const Icon = menu.icon && createElement(Icons[menu.icon as keyof typeof Icons])
 
           // menu 含有子节点，渲染为submenu
-          if (menu.children)
+          if (menu.children?.length)
             return (
               <SubMenu key={menu.id} title={menu.name} icon={Icon}>
                 {renderMenu(menu.children)}
@@ -67,18 +67,26 @@ const SiderMenu = () => {
             )
 
           // 渲染为item
-          return (
-            <Item key={menu.id} icon={Icon}>
-              {menu.to ? <Link to={menu.to}>{menu.name}</Link> : menu.name}
-            </Item>
-          )
+          if (menu.to)
+            return (
+              <Item key={menu.id} icon={Icon}>
+                <Link to={menu.to}>{menu.name}</Link>
+              </Item>
+            )
+
+          return null
         })}
       </>
     )
   }
 
   return (
-    <Menu mode='inline' theme='dark' defaultOpenKeys={mappedMenuKeys.defaultOpenedKeys} selectedKeys={mappedMenuKeys.defaultSelectedKeys}>
+    <Menu
+      mode='inline'
+      theme='dark'
+      defaultOpenKeys={mappedMenuKeys.defaultOpenedKeys}
+      selectedKeys={mappedMenuKeys.defaultSelectedKeys}
+    >
       {renderMenu(menus)}
     </Menu>
   )

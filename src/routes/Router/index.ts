@@ -45,7 +45,7 @@ export const notFoundRoutes: RouteObject = {
   children: [
     {
       path: '*',
-      element: Loadable('pages/Error/404')
+      element: Loadable('pages/Error/NotFound')
     }
   ]
 }
