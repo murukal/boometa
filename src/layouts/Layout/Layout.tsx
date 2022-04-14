@@ -46,7 +46,7 @@ const Layout = () => {
 
         {/* 页面正文 */}
         <Content className='overflow-y-scroll'>
-          <div className='p-3'>
+          <div className='p-3 h-full'>
             <Outlet />
           </div>
         </Content>

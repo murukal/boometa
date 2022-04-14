@@ -2,17 +2,17 @@
 import { Card, Col, Row, Statistic } from 'antd'
 import { ArrowUpOutlined } from '@ant-design/icons/lib/icons'
 // project
-import UPers from '~/components/Charts/UPer'
+import PV from '~/components/Charts/PV'
 import Hot from '~/components/Charts/Hot'
 
 const Dashboard = () => {
   return (
     <div className='h-full flex flex-col'>
-      <Row gutter={16}>
+      <Row gutter={12}>
         <Col span={6}>
           <Card>
             <Statistic
-              title='Active'
+              title='昨日新增文章'
               value={11.28}
               precision={2}
               valueStyle={{ color: '#3f8600' }}
@@ -24,7 +24,7 @@ const Dashboard = () => {
         <Col span={6}>
           <Card>
             <Statistic
-              title='Active'
+              title='今日新增文章'
               value={11.28}
               precision={2}
               valueStyle={{ color: '#3f8600' }}
@@ -36,7 +36,7 @@ const Dashboard = () => {
         <Col span={6}>
           <Card>
             <Statistic
-              title='Active'
+              title='昨日新注册用户'
               value={11.28}
               precision={2}
               valueStyle={{ color: '#3f8600' }}
@@ -48,7 +48,7 @@ const Dashboard = () => {
         <Col span={6}>
           <Card>
             <Statistic
-              title='Active'
+              title='今日新注册用户'
               value={11.28}
               precision={2}
               valueStyle={{ color: '#3f8600' }}
@@ -59,10 +59,10 @@ const Dashboard = () => {
         </Col>
       </Row>
 
-      <Row gutter={16}>
+      <Row gutter={12} className='mt-3'>
         <Col span={16}>
           <Card>
-            <UPers />
+            <PV />
           </Card>
         </Col>
         <Col span={8}>
