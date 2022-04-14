@@ -52,11 +52,12 @@ const Register = () => {
 
   return (
     <div className='flex flex-col items-center'>
-      <Title level={2}>Sign up</Title>
+      <Title level={2}>Sign Up</Title>
 
       <Form
         style={{
-          marginTop: 12
+          marginTop: 12,
+          width: 300
         }}
         form={form}
         onFinish={onRegister}

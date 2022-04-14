@@ -4,7 +4,6 @@ import { ArrowUpOutlined } from '@ant-design/icons/lib/icons'
 // project
 import UPers from '~/components/Charts/UPer'
 import Hot from '~/components/Charts/Hot'
-import Footer from '~/layouts/Footer'
 
 const Dashboard = () => {
   return (
@@ -12,22 +11,50 @@ const Dashboard = () => {
       <Row gutter={16}>
         <Col span={6}>
           <Card>
-            <Statistic title='Active' value={11.28} precision={2} valueStyle={{ color: '#3f8600' }} prefix={<ArrowUpOutlined />} suffix='%' />
+            <Statistic
+              title='Active'
+              value={11.28}
+              precision={2}
+              valueStyle={{ color: '#3f8600' }}
+              prefix={<ArrowUpOutlined />}
+              suffix='%'
+            />
           </Card>
         </Col>
         <Col span={6}>
           <Card>
-            <Statistic title='Active' value={11.28} precision={2} valueStyle={{ color: '#3f8600' }} prefix={<ArrowUpOutlined />} suffix='%' />
+            <Statistic
+              title='Active'
+              value={11.28}
+              precision={2}
+              valueStyle={{ color: '#3f8600' }}
+              prefix={<ArrowUpOutlined />}
+              suffix='%'
+            />
           </Card>
         </Col>
         <Col span={6}>
           <Card>
-            <Statistic title='Active' value={11.28} precision={2} valueStyle={{ color: '#3f8600' }} prefix={<ArrowUpOutlined />} suffix='%' />
+            <Statistic
+              title='Active'
+              value={11.28}
+              precision={2}
+              valueStyle={{ color: '#3f8600' }}
+              prefix={<ArrowUpOutlined />}
+              suffix='%'
+            />
           </Card>
         </Col>
         <Col span={6}>
           <Card>
-            <Statistic title='Active' value={11.28} precision={2} valueStyle={{ color: '#3f8600' }} prefix={<ArrowUpOutlined />} suffix='%' />
+            <Statistic
+              title='Active'
+              value={11.28}
+              precision={2}
+              valueStyle={{ color: '#3f8600' }}
+              prefix={<ArrowUpOutlined />}
+              suffix='%'
+            />
           </Card>
         </Col>
       </Row>
@@ -44,8 +71,6 @@ const Dashboard = () => {
           </Card>
         </Col>
       </Row>
-
-      <Footer className='mt-auto flex justify-between' />
     </div>
   )
 }

@@ -5,10 +5,8 @@ import { useSelector } from 'react-redux'
 // antd
 import { Image } from 'antd'
 // project
-import Footer from '~/layouts/Footer'
 import type { State } from '~/store'
-// css
-import './index.css'
+import styles from './Account.module.css'
 
 const Account = () => {
   const isLogin = useSelector<State, boolean>((state) => state.userProfile.isLogin)
@@ -20,23 +18,13 @@ const Account = () => {
 
   // 未登陆
   return (
-    <div className='flex flex-col h-full'>
-      <div className='flex-1 flex'>
-        <div className='flex-1 flex items-center justify-center'>
-          <Outlet />
-        </div>
-        <div className='flex-1 flex items-center justify-center'>
-          <Image
-            style={{
-              animation: 'up-down 2s ease-in-out infinite alternate-reverse both'
-            }}
-            preview={false}
-            src='/assets/account.png'
-          />
-        </div>
+    <div className='flex h-full'>
+      <div className='flex-1 flex items-center justify-center'>
+        <Outlet />
       </div>
-
-      <Footer className='flex justify-between' />
+      <div className='flex-1 flex items-center justify-center'>
+        <Image className={styles.float} preview={false} src='/assets/account.png' />
+      </div>
     </div>
   )
 }
