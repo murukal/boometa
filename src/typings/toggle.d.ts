@@ -1,4 +1,4 @@
 export interface DailyClout {
-  createdAtDate: Date
+  createdAtDate: String
   clout: number
 }

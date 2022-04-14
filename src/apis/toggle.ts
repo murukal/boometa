@@ -11,20 +11,20 @@ export const DAILY_CLOUTS: TypedDocumentNode<
     dailyCollectClout: DailyClout[]
   },
   {
-    from: string
-    to: string
+    from: Date
+    to: Date
   }
 > = gql`
   query DailyClouts($from: DateTime!, $to: DateTime!) {
-    dailyBrowseClout: dailyClout(type: Browse, from: $from, to: $to) {
+    dailyBrowseClout: dailyClout(type: Browse, targetType: Essay, from: $from, to: $to) {
       createdAtDate
       clout
     }
-    dailyLikeClout: dailyClout(type: Like, from: $from, to: $to) {
+    dailyLikeClout: dailyClout(type: Like, targetType: Essay, from: $from, to: $to) {
       createdAtDate
       clout
     }
-    dailyCollectClout: dailyClout(type: Collect, from: $from, to: $to) {
+    dailyCollectClout: dailyClout(type: Collect, targetType: Essay, from: $from, to: $to) {
       createdAtDate
       clout
     }
