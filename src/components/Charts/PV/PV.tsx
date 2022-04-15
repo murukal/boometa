@@ -21,14 +21,17 @@ const PV = () => {
       width: [2, 0, 0]
     },
     xaxis: {
-      categories: dates.map((date) => date.format('MM/DD'))
+      categories: dates.map((date) => date.format('M-D'))
+    },
+    title: {
+      text: '最近10天游客流量🌲'
     }
   })
 
   useQuery(DAILY_CLOUTS, {
     variables: {
-      from: dates.at(0)?.toDate() || new Date(),
-      to: dates.at(dates.length - 1)?.toDate() || new Date()
+      from: dates.at(0)?.toDate() as Date,
+      to: dates.at(dates.length - 1)?.toDate() as Date
     },
     onCompleted: (data) => {
       setSeries(

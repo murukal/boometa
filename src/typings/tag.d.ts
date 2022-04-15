@@ -15,5 +15,5 @@ export interface TopTag {
   dailyHeat: {
     createdAtDate: string
     creationCount: number
-  }
+  }[]
 }

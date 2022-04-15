@@ -64,7 +64,7 @@ const Dashboard = () => {
         <Col span={16}>
           <Card
             bodyStyle={{
-              height: 500
+              height: 400
             }}
           >
             <PV />
@@ -73,7 +73,7 @@ const Dashboard = () => {
         <Col span={8}>
           <Card
             bodyStyle={{
-              height: 500,
+              height: 400,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
@@ -84,8 +84,13 @@ const Dashboard = () => {
         </Col>
       </Row>
 
-      <Row className='mt-3'>
-        <Card className='w-full'>
+      <Row className='mt-3 flex-1'>
+        <Card
+          className='w-full'
+          bodyStyle={{
+            height: '100%'
+          }}
+        >
           <HeatMap />
         </Card>
       </Row>
