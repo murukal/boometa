@@ -3,7 +3,8 @@ import { Card, Col, Row, Statistic } from 'antd'
 import { ArrowUpOutlined } from '@ant-design/icons/lib/icons'
 // project
 import PV from '~/components/Charts/PV'
-import Hot from '~/components/Charts/Hot'
+import Ratio from '~/components/Charts/Ratio'
+import HeatMap from '~/components/Charts/HeatMap'
 
 const Dashboard = () => {
   return (
@@ -61,15 +62,32 @@ const Dashboard = () => {
 
       <Row gutter={12} className='mt-3'>
         <Col span={16}>
-          <Card>
+          <Card
+            bodyStyle={{
+              height: 500
+            }}
+          >
             <PV />
           </Card>
         </Col>
         <Col span={8}>
-          <Card>
-            <Hot />
+          <Card
+            bodyStyle={{
+              height: 500,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <Ratio />
           </Card>
         </Col>
+      </Row>
+
+      <Row className='mt-3'>
+        <Card className='w-full'>
+          <HeatMap />
+        </Card>
       </Row>
     </div>
   )

@@ -61,7 +61,7 @@ const PV = () => {
     }
   })
 
-  return <Chart options={options} series={series} height={500} />
+  return <Chart options={options} series={series} height='100%' />
 }
 
 export default PV

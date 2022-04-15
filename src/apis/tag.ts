@@ -4,7 +4,7 @@ import type { TypedDocumentNode } from '@apollo/client'
 // project
 import { fetcher } from '.'
 import type { PaginateOutput, QueryParams } from '../typings/api'
-import type { CreateTagInput, Tag, UpdateTagInput } from '../typings/tag'
+import type { CreateTagInput, Tag, TopTag, UpdateTagInput } from '../typings/tag'
 
 /**
  * 查询多个标签
@@ -106,3 +106,27 @@ export const update = (id: number, updateTagInput: UpdateTagInput) =>
       updateTagInput
     }
   })
+
+/**
+ * 标签榜单 + 日创作量
+ */
+export const TOP_TAGS: TypedDocumentNode<
+  {
+    topTags: TopTag[]
+  },
+  {
+    from: Date
+    to: Date
+  }
+> = gql`
+  query TopTags($from: DateTime!, $to: DateTime!) {
+    topTags(from: $from, to: $to) {
+      id
+      name
+      dailyHeat {
+        createdAtDate
+        creationCount
+      }
+    }
+  }
+`
