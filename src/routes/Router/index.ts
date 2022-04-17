@@ -5,7 +5,9 @@ import Loadable from '~/components/Loadable'
 
 export { default } from './Router'
 
-/** 认证 */
+/**
+ * 认证
+ */
 export const accountRoutes: RouteObject = {
   path: '/account',
   element: Loadable('pages/Account'),
@@ -15,7 +17,9 @@ export const accountRoutes: RouteObject = {
   ]
 }
 
-/** 文章 */
+/**
+ * 文章
+ */
 export const essayRoutes: RouteObject = {
   path: '/essay',
   element: Loadable('layouts/Layout'),
@@ -26,19 +30,27 @@ export const essayRoutes: RouteObject = {
       element: Loadable('pages/Essay')
     },
     {
-      path: '/essay/:id',
+      path: ':id',
       element: Loadable('pages/Essay')
+    },
+    {
+      path: 'demo',
+      element: Loadable('pages/Demo')
     }
   ]
 }
 
-/** 路线 */
+/**
+ * 路线
+ */
 export const roadmapRoutes: RouteObject = {
   path: '/boomap',
   element: Loadable('pages/Boomap')
 }
 
-/** 404 */
+/**
+ * 404
+ */
 export const notFoundRoutes: RouteObject = {
   path: '*',
   element: Loadable('pages/Error'),
