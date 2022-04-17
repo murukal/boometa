@@ -3180,6 +3180,14 @@ batch@0.6.1:
   resolved "https://registry.yarnpkg.com/batch/-/batch-0.6.1.tgz#dc34314f4e679318093fc760272525f94bf25c16"
   integrity sha1-3DQxT05nkxgJP8dgJyUl+UvyXBY=
 
+beedown@^0.0.10:
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/beedown/-/beedown-0.0.10.tgz#2a6502f4bbd2f1d965c6927f6fa039b7e3f94455"
+  integrity sha512-u6bo0b/20vMkVJjoSrsvxtOeFFDMROLciMU9kEiovyLk6/ZGPVGyWHwYVJrLH7EAU4Ci961MQIHD6iDDQLs7qw==
+  dependencies:
+    slate "^0.77.0"
+    slate-react "^0.77.0"
+
 bfj@^7.0.2:
   version "7.0.2"
   resolved "https://registry.yarnpkg.com/bfj/-/bfj-7.0.2.tgz#1988ce76f3add9ac2913fd8ba47aad9e651bfbb2"
