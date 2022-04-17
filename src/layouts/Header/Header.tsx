@@ -35,10 +35,18 @@ const Header = (props: Props) => {
   }
 
   return (
-    <Wrapper className='flex items-center'>
+    <Wrapper
+      className='flex items-center z-10'
+      style={{
+        paddingLeft: 0
+      }}
+    >
       {/* menu icon */}
       <Button
         size='large'
+        style={{
+          color: 'white'
+        }}
         icon={
           props.isFolded ? <MenuUnfoldOutlined className='text-white' /> : <MenuFoldOutlined className='text-white' />
         }
