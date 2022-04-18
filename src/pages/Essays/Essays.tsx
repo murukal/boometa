@@ -37,9 +37,7 @@ const Essays = () => {
   ])
 
   /** hooks获取数据 */
-  const { data, isLoading, pagination, refetch, onTableChange } = useTableQuery(ESSAYS, undefined, {
-    fetchPolicy: 'no-cache'
-  })
+  const { data, isLoading, pagination, refetch, onTableChange } = useTableQuery(ESSAYS)
 
   // 删除文章
   const onDelete = (id: number) => async () => {

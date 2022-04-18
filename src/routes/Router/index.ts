@@ -32,10 +32,6 @@ export const essayRoutes: RouteObject = {
     {
       path: ':id',
       element: Loadable('pages/Essay')
-    },
-    {
-      path: 'demo',
-      element: Loadable('pages/Demo')
     }
   ]
 }

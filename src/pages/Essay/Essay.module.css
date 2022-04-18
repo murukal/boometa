@@ -1,0 +1,24 @@
+.title {
+  line-height: 1.389;
+  font-size: 36px;
+  font-weight: 700;
+  border: 0;
+  border-radius: 0;
+  padding: 16px;
+}
+
+.title:focus {
+  box-shadow: none;
+}
+
+.button-save {
+  position: absolute;
+  right: 32px;
+  bottom: 32px;
+}
+
+.button-help {
+  position: absolute;
+  right: 32px;
+  bottom: 92px;
+}
