@@ -1,5 +1,5 @@
 // react
-import { useEffect, useState } from 'react'
+import { createRef, useEffect, useState } from 'react'
 import type { ChangeEvent } from 'react'
 // router
 import { useParams, useNavigate } from 'react-router-dom'
@@ -8,16 +8,16 @@ import { Input, Button, Drawer, Collapse, Form, Select, Upload, notification } f
 import { useForm } from 'antd/lib/form/Form'
 import { SaveFilled, AlignRightOutlined, PlusOutlined } from '@ant-design/icons'
 // third
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { useQuery } from '@apollo/client'
+import Beeeditor from '@fantufantu/beeeditor'
+import type { EditorInstance } from '@fantufantu/beeeditor'
 // project
-import Editor from '~/components/Beeeditor'
 import styles from './Essay.module.css'
 import { TAGS } from '~/apis/tag'
 import { customRequest, getUploadParam, getValueFromEvent } from '~/utils/upload'
+import { create, getEssay, update } from '~/apis/essay'
 import type { FormValues } from '.'
 import type { CreateEssayInput } from '~/typings/essay'
-import { create, getEssay, update } from '~/apis/essay'
 
 const { Panel } = Collapse
 const { Item } = Form
@@ -32,6 +32,7 @@ const Essay = () => {
   const navigate = useNavigate()
   const [form] = useForm<FormValues>()
   const { data } = useQuery(TAGS)
+  const editor = createRef<EditorInstance>()
 
   /**
    * 初始渲染
@@ -63,8 +64,6 @@ const Essay = () => {
    * 保存按钮
    */
   const SaveButton = () => {
-    const [editor] = useLexicalComposerContext()
-
     const onSave = async () => {
       const isValidated = await form
         .validateFields()
@@ -87,7 +86,7 @@ const Essay = () => {
       const formValues = form.getFieldsValue()
       const params: CreateEssayInput = {
         title,
-        content: JSON.stringify(editor.getEditorState().toJSON()),
+        content: JSON.stringify(editor.current?.getEditorState().toJSON()) || '',
         cover: formValues.fileList?.at(0)?.response?.data || '',
         tagIds: formValues.tagIds
       }
@@ -145,12 +144,12 @@ const Essay = () => {
 
   return (
     <>
-      <Editor defaultValue={initialContent}>
+      <Beeeditor defaultValue={initialContent} ref={editor}>
         <Input placeholder='请输入标题' className={styles.title} value={title} onChange={onTitleChange} />
 
         <HelpButton />
         <SaveButton />
-      </Editor>
+      </Beeeditor>
 
       <Drawer
         title='辅助面板'
