@@ -129,5 +129,6 @@ export const getEssay = (id: number) =>
     query: ESSAY,
     variables: {
       id
-    }
+    },
+    fetchPolicy: 'no-cache'
   })
