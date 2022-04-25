@@ -6,7 +6,7 @@
     "@antv/x6": "^1.31.1",
     "@apollo/client": "^3.5.10",
     "@craco/craco": "^6.4.3",
-    "@fantufantu/beeeditor": "^0.0.19",
+    "@fantufantu/beeeditor": "^0.0.23",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",

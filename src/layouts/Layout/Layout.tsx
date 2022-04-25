@@ -59,10 +59,8 @@ const Layout = () => {
         <Header isFolded={isFolded} onToggle={onToggle} />
 
         {/* 页面正文 */}
-        <Content className='overflow-y-scroll'>
-          <div className='p-3 h-full'>
-            <Outlet />
-          </div>
+        <Content className='p-3 overflow-y-scroll'>
+          <Outlet />
         </Content>
       </Wrapper>
     </Wrapper>
