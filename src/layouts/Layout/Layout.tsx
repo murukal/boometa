@@ -10,6 +10,7 @@ import { Layout as Wrapper, Image, Typography } from 'antd'
 import SiderMenu from '../SiderMenu'
 import Header from '../Header'
 import type { State } from '~/store'
+import { useDispatch } from '~/relax'
 
 const { Content, Sider } = Wrapper
 const { Title } = Typography
@@ -22,6 +23,9 @@ const Layout = () => {
    * 侧边导航栏折叠功能
    */
   const onToggle = () => setIsFolded((isFolded) => !isFolded)
+
+  const dispatch = useDispatch()
+  dispatch('move', {})
 
   /**
    * 未登录

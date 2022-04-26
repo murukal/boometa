@@ -11,7 +11,7 @@ import { ConfigProvider } from 'antd'
 import { ApolloProvider } from '@apollo/client'
 // project
 import App from './App'
-import store from './store'
+import store from '~/store2'
 import client from './apis'
 import reportWebVitals from './reportWebVitals'
 // css
