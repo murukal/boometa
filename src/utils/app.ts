@@ -1,11 +1,13 @@
 // project
 import { TOKEN } from '~/assets'
+import { createDispatch } from '~/relax'
 import store from '~/store'
 import { initialized } from '~/store/app/action'
 import { setRsaPublicKey } from '~/store/encryptor/action'
 import { resetMenus, setMenus } from '~/store/menus/action'
 import { setTenant } from '~/store/tenant/action'
 import { authenticate, logout, setToken } from '~/store/userProfile/action'
+import st2 from '~/store2'
 
 /**
  * 应用初始化
@@ -24,6 +26,9 @@ export const initialize = async () => {
   dispatch(await authenticate())
   // 在redux中存储应用初始化标识
   dispatch(initialized())
+
+  createDispatch(st2)('ss', 'initialized')
+  createDispatch(st2)('ss', 'initialized')
 }
 
 /**

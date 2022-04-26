@@ -5,10 +5,10 @@ import { useSelector } from 'react-redux'
 // project
 import Router from './routes/Router'
 import { initialize } from './utils/app'
-import type { State } from './store'
+import type { State } from './store2'
 
 const App = () => {
-  const isInitialized = useSelector<State, boolean>((state) => state.app.isInitialized)
+  const isInitialized = useSelector<State, boolean>((state) => state.App.isInitialized)
 
   /**
    * 初始化渲染

@@ -1,9 +1,14 @@
 import { PlatformTool } from './PlatformTool'
 
+export interface Type<T = any> extends Function {
+  new (...args: any[]): T
+}
+
 /**
  * 模块
  */
 export interface Module {
+  target: Type
   name: string
 }
 

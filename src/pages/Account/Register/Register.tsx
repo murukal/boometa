@@ -7,7 +7,7 @@ import { LockOutlined, UserOutlined, EyeTwoTone, EyeInvisibleOutlined, MailOutli
 import { Button, Divider, Form, Input, notification, Typography } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 // third
-import type JSEncrypt from 'jsencrypt'
+import JSEncrypt from 'jsencrypt'
 // project
 import { register } from '~/apis/auth'
 import { reinitialize } from '~/utils/app'
@@ -15,14 +15,14 @@ import { toggleStyle } from '..'
 import { passwordRegex } from '.'
 import { resultNotification } from '~/utils/notification'
 import type { FormValues } from '.'
-import type { State } from '~/store'
+import type { State } from '~/store2'
 
 const { Item } = Form
 const { Title, Text } = Typography
 const { Password } = Input
 
 const Register = () => {
-  const encryptor = useSelector<State, JSEncrypt>((state) => state.encryptor)
+  const encryptor = useSelector<State, JSEncrypt>((state) => new JSEncrypt())
 
   const [form] = useForm<FormValues>()
 

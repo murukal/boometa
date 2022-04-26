@@ -14,5 +14,6 @@ export class App {
   @Action()
   initialized() {
     this.isInitialized = true
+    return this
   }
 }

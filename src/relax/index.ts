@@ -1,33 +1,44 @@
-import { useStore } from 'react-redux'
-import { getMetadataStorage } from './MetadataStorage'
-import * as redux from 'redux'
-import { ClassDeclaration } from 'typescript'
+import * as ReactRedux from 'react-redux'
+import * as Redux from 'redux'
+import { getMetadataStorage, Type } from './MetadataStorage'
 
-type Dispatch = (name: string, param: any) => void
+type Dispatch = <P>(module: string, actionName: string, params?: P) => void
 
-export const useDispatch = (): Dispatch => {
-  const dispatch = useStore().dispatch
-  const actions = getMetadataStorage().actions
-
-  return async (name, params) => {
-    const action = actions.find((action) => action.actionName === name)
-
+/**
+ * dispatch
+ */
+export const createDispatch = (store: Redux.Store): Dispatch => {
+  return async (module, actionName, params) => {
+    // 寻找 action
+    const action = getMetadataStorage().actions.find((action) => action.actionName === actionName)
+    // action 不存在
     if (!action || !action.trigger) return
-
+    // 触发 action
     const state = await action.trigger(params)
 
-    dispatch({
-      type: action.actionName,
-      state
+    console.log('sssssssss====', store.getState().App.initialized())
+
+    // 发起redux变更
+    store.dispatch({
+      type: action.actionName
     })
   }
 }
 
 /**
+ * hooks
+ */
+export const useDispatch = (): Dispatch => {
+  const store = ReactRedux.useStore()
+  return createDispatch(store)
+}
+
+/**
  * reducer
  */
-const reducer = (state: any) => {
+const createReducer = (name: string) => (state: any, action: any) => {
   console.log('state=====', state)
+  console.log('action=====', action)
 
   /**
    * 抛弃原生的reducer
@@ -39,10 +50,26 @@ const reducer = (state: any) => {
    * 根据action传入的type，对state进行实例化
    */
   if (!state) {
-  }
+    const target = getMetadataStorage().modules.find((module) => module.name === name)?.target
 
-  return state
+    if (!target) {
+      console.error(`没有对module: ${name}使用装饰器！`)
+      return null
+    }
+
+    return new target()
+  } else {
+    return state
+  }
 }
 
-export const createStore = (...args: Function[]) =>
-  redux.createStore(redux.combineReducers(Object.fromEntries(args.map((arg) => [arg.name, reducer]))))
+export const createStore = (...args: Type[]) =>
+  Redux.createStore(
+    Redux.combineReducers(
+      Object.fromEntries(
+        args.map((arg) => {
+          return [arg.name, createReducer(arg.name)]
+        })
+      )
+    )
+  )

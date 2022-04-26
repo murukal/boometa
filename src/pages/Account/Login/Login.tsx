@@ -7,21 +7,21 @@ import { Button, Checkbox, Divider, Form, Input, notification, Typography } from
 import { EyeTwoTone, EyeInvisibleOutlined, UserOutlined, LockOutlined } from '@ant-design/icons'
 import { useForm } from 'antd/lib/form/Form'
 // third
-import type JSEncrypt from 'jsencrypt'
+import JSEncrypt from 'jsencrypt'
 // project
 import { login } from '~/apis/auth'
 import { reinitialize } from '~/utils/app'
 import { toggleStyle } from '..'
 import { resultNotification } from '~/utils/notification'
 import type { FormValues } from '.'
-import type { State } from '~/store'
+import type { State } from '~/store2'
 
 const { Title, Text } = Typography
 const { Item } = Form
 const { Password } = Input
 
 const Login = () => {
-  const encryptor = useSelector<State, JSEncrypt>((state) => state.encryptor)
+  const encryptor = useSelector<State, JSEncrypt>((state) => new JSEncrypt())
   const [form] = useForm<FormValues>()
 
   // 执行登录

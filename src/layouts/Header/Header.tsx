@@ -7,13 +7,13 @@ import { EditOutlined, ApiOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from 
 // project
 import { signOut } from '~/utils/app'
 import type { Props } from '.'
-import type { State } from '~/store'
+import type { State } from '~/store2'
 import type { User } from '~/typings/auth'
 
 const { Title } = Typography
 
 const Header = (props: Props) => {
-  const user = useSelector<State, User | undefined | null>((state) => state.userProfile.user)
+  const user = useSelector<State, User | undefined | null>((state) => undefined)
 
   const getMenu = () => {
     return (

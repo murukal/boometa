@@ -9,12 +9,12 @@ import { Menu } from 'antd'
 import * as Icons from '@ant-design/icons/lib/icons'
 // project
 import type { Menu as MenuType } from '~/typings/menu'
-import type { State } from '~/store'
+import type { State } from '~/store2'
 
 const { Item, SubMenu } = Menu
 
 const SiderMenu = () => {
-  const menus = useSelector<State, MenuType[]>((state) => state.menus)
+  const menus = useSelector<State, MenuType[]>((state) => [])
   const route = useLocation()
 
   // 渲染默认选中的条目

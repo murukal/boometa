@@ -5,11 +5,11 @@ import { useSelector } from 'react-redux'
 // antd
 import { Image } from 'antd'
 // project
-import type { State } from '~/store'
+import type { State } from '~/store2'
 import styles from './Account.module.css'
 
 const Account = () => {
-  const isLogin = useSelector<State, boolean>((state) => state.userProfile.isLogin)
+  const isLogin = useSelector<State, boolean>((state) => false)
 
   // 登陆后回调到主页面
   if (isLogin) {

@@ -1,8 +1,9 @@
-import { getMetadataStorage } from './MetadataStorage'
+import { getMetadataStorage, Type } from './MetadataStorage'
 
-export const Module = (): ClassDecorator => {
-  const decorator = (target: Function) => {
+export const Module = () => {
+  const decorator = (target: Type) => {
     getMetadataStorage().modules.push({
+      target,
       name: target.name
     })
   }

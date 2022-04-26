@@ -9,7 +9,7 @@ import { Layout as Wrapper, Image, Typography } from 'antd'
 // project
 import SiderMenu from '../SiderMenu'
 import Header from '../Header'
-import type { State } from '~/store'
+import type { State } from '~/store2'
 import { useDispatch } from '~/relax'
 
 const { Content, Sider } = Wrapper
@@ -17,7 +17,7 @@ const { Title } = Typography
 
 const Layout = () => {
   const [isFolded, setIsFolded] = useState(false)
-  const isLogin = useSelector<State>((state) => state.userProfile.isLogin)
+  const isLogin = useSelector<State>((state) => false)
 
   /**
    * 侧边导航栏折叠功能
@@ -25,7 +25,7 @@ const Layout = () => {
   const onToggle = () => setIsFolded((isFolded) => !isFolded)
 
   const dispatch = useDispatch()
-  dispatch('move', {})
+  dispatch('', 'move')
 
   /**
    * 未登录
