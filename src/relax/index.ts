@@ -2,26 +2,28 @@ import * as ReactRedux from 'react-redux'
 import * as Redux from 'redux'
 import { getMetadataStorage, Type } from './MetadataStorage'
 
-type Dispatch = <P>(module: string, actionName: string, params?: P) => void
+type Dispatch = <P>(moduleKey: string, actionKey: string, params?: P) => void
 
 /**
  * dispatch
  */
 export const createDispatch = (store: Redux.Store): Dispatch => {
-  return async (module, actionName, params) => {
-    // 寻找 action
-    const action = getMetadataStorage().actions.find((action) => action.actionName === actionName)
-    // action 不存在
-    if (!action || !action.trigger) return
-    // 触发 action
-    const state = await action.trigger(params)
+  return async (moduleKey, actionKey, params) => {
+    const state = store.getState()
+    const module = state[moduleKey]
 
-    console.log('sssssssss====', store.getState().App.initialized())
+    if (!module) return
+
+    const action = module[actionKey]
+
+    if (!action) return
+
+    await action(params)
 
     // 发起redux变更
-    store.dispatch({
-      type: action.actionName
-    })
+    // store.dispatch({
+    //   type: actionName
+    // })
   }
 }
 

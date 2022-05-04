@@ -1,4 +1,3 @@
-import { Action } from '~/relax/Action'
 import { Module } from '~/relax/Module'
 
 @Module()
@@ -11,9 +10,7 @@ export class App {
   /**
    * method
    */
-  @Action()
   initialized() {
     this.isInitialized = true
-    return this
   }
 }

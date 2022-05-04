@@ -13,21 +13,10 @@ export interface Module {
 }
 
 /**
- * 事件
- */
-export interface Action {
-  moduleName: string
-  actionName: string
-
-  trigger?: Function
-}
-
-/**
  * 数据源
  */
 export class MetadataStorage {
   readonly modules: Module[] = []
-  readonly actions: Action[] = []
 }
 
 /**
