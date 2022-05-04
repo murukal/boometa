@@ -8,6 +8,7 @@ import { resetMenus, setMenus } from '~/store/menus/action'
 import { setTenant } from '~/store/tenant/action'
 import { authenticate, logout, setToken } from '~/store/userProfile/action'
 import st2 from '~/store2'
+import { App } from '~/store2/App'
 
 /**
  * 应用初始化
@@ -27,8 +28,7 @@ export const initialize = async () => {
   // 在redux中存储应用初始化标识
   dispatch(initialized())
 
-  createDispatch(st2)('ss', 'initialized')
-  createDispatch(st2)('ss', 'initialized')
+  createDispatch(st2)(App.name, App.prototype.initialized.name)
 }
 
 /**

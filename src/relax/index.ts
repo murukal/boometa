@@ -1,47 +1,10 @@
-import * as ReactRedux from 'react-redux'
 import * as Redux from 'redux'
 import { getMetadataStorage, Type } from './MetadataStorage'
-
-type Dispatch = <P>(moduleKey: string, actionKey: string, params?: P) => void
-
-/**
- * dispatch
- */
-export const createDispatch = (store: Redux.Store): Dispatch => {
-  return async (moduleKey, actionKey, params) => {
-    const state = store.getState()
-    const module = state[moduleKey]
-
-    if (!module) return
-
-    const action = module[actionKey]
-
-    if (!action) return
-
-    await action(params)
-
-    // 发起redux变更
-    // store.dispatch({
-    //   type: actionName
-    // })
-  }
-}
-
-/**
- * hooks
- */
-export const useDispatch = (): Dispatch => {
-  const store = ReactRedux.useStore()
-  return createDispatch(store)
-}
 
 /**
  * reducer
  */
 const createReducer = (name: string) => (state: any, action: any) => {
-  console.log('state=====', state)
-  console.log('action=====', action)
-
   /**
    * 抛弃原生的reducer
    * 原因：没有办法处理异步操作
@@ -61,10 +24,13 @@ const createReducer = (name: string) => (state: any, action: any) => {
 
     return new target()
   } else {
-    return state
+    return { ...state }
   }
 }
 
+/**
+ * 创建全局上下文
+ */
 export const createStore = (...args: Type[]) =>
   Redux.createStore(
     Redux.combineReducers(
@@ -75,3 +41,13 @@ export const createStore = (...args: Type[]) =>
       )
     )
   )
+
+/**
+ * hooks
+ */
+export * from './hooks'
+
+/**
+ * decorators
+ */
+export * from './decorators'

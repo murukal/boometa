@@ -2,6 +2,7 @@
 import { useEffect } from 'react'
 // redux
 import { useSelector } from 'react-redux'
+import {} from '~/relax'
 // project
 import Router from './routes/Router'
 import { initialize } from './utils/app'

@@ -1,4 +1,4 @@
-import { Module } from '~/relax/Module'
+import { Module } from '~/relax'
 
 @Module()
 export class App {
