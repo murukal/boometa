@@ -2,14 +2,13 @@
 import { useEffect } from 'react'
 // redux
 import { useSelector } from 'react-redux'
-import {} from '~/relax'
 // project
 import Router from './routes/Router'
 import { initialize } from './utils/app'
-import type { State } from './store2'
+import type { State } from './redux'
 
 const App = () => {
-  const isInitialized = useSelector<State, boolean>((state) => state.App.isInitialized)
+  const isInitialized = useSelector<State, boolean>((state) => state.app.isInitialized)
 
   /**
    * 初始化渲染

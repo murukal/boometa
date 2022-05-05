@@ -5,12 +5,10 @@ export { default } from './Tenant'
 
 export const getInitialTenant = (): Tenant => ({
   code: '',
-  name: '',
-  isAuthorizate: false
+  name: ''
 })
 
 export interface FormValues {
   code: string
   name: string
-  isAuthorizate: boolean
 }

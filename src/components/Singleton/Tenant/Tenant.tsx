@@ -16,8 +16,7 @@ const Tenant = forwardRef<FormInstance, SingletonProps<TenantType>>((props, ref)
   const initialValues = useMemo<FormValues>(
     () => ({
       code: props.singleton.code,
-      name: props.singleton.name,
-      isAuthorizate: props.singleton.isAuthorizate
+      name: props.singleton.name
     }),
     [props.singleton]
   )

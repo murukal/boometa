@@ -9,7 +9,7 @@ import { Menu } from 'antd'
 import * as Icons from '@ant-design/icons/lib/icons'
 // project
 import type { Menu as MenuType } from '~/typings/menu'
-import type { State } from '~/store2'
+import type { State } from '~/redux'
 
 const { Item, SubMenu } = Menu
 

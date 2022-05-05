@@ -7,7 +7,7 @@ import { EditOutlined, ApiOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from 
 // project
 import { signOut } from '~/utils/app'
 import type { Props } from '.'
-import type { State } from '~/store2'
+import type { State } from '~/redux'
 import type { User } from '~/typings/auth'
 
 const { Title } = Typography

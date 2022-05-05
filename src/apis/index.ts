@@ -15,7 +15,7 @@ import {
 import { setContext } from '@apollo/client/link/context'
 import type { TypedDocumentNode } from '@apollo/client'
 // project
-import store from '~/store'
+import { store } from '~/redux'
 import { GraphQLError } from 'graphql'
 import { RcFile } from 'antd/lib/upload'
 
@@ -30,7 +30,6 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-
       ...(token && {
         Authorization: `Bearer ${token}`
       })

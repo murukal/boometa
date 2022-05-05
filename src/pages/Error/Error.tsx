@@ -2,7 +2,7 @@
 import { useSelector } from 'react-redux'
 import { Outlet, Navigate } from 'react-router-dom'
 // project
-import type { State } from '~/store2'
+import type { State } from '~/redux'
 
 const Error = () => {
   const isLogin = useSelector<State>((state) => true)

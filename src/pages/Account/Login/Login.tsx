@@ -14,7 +14,7 @@ import { reinitialize } from '~/utils/app'
 import { toggleStyle } from '..'
 import { resultNotification } from '~/utils/notification'
 import type { FormValues } from '.'
-import type { State } from '~/store2'
+import type { State } from '~/redux'
 
 const { Title, Text } = Typography
 const { Item } = Form

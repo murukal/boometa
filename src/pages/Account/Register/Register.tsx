@@ -15,7 +15,7 @@ import { toggleStyle } from '..'
 import { passwordRegex } from '.'
 import { resultNotification } from '~/utils/notification'
 import type { FormValues } from '.'
-import type { State } from '~/store2'
+import type { State } from '~/redux'
 
 const { Item } = Form
 const { Title, Text } = Typography

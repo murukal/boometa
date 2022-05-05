@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 // antd
 import { Image } from 'antd'
 // project
-import type { State } from '~/store2'
+import type { State } from '~/redux'
 import styles from './Account.module.css'
 
 const Account = () => {

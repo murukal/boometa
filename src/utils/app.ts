@@ -1,14 +1,10 @@
 // project
 import { TOKEN } from '~/assets'
-import { createDispatch } from '~/relax'
-import store from '~/store'
-import { initialized } from '~/store/app/action'
-import { setRsaPublicKey } from '~/store/encryptor/action'
-import { resetMenus, setMenus } from '~/store/menus/action'
-import { setTenant } from '~/store/tenant/action'
-import { authenticate, logout, setToken } from '~/store/userProfile/action'
-import st2 from '~/store2'
-import { App } from '~/store2/App'
+import { store } from '~/redux'
+import { initialized } from '~/redux/app'
+import { setRsaPublicKey } from '~/redux/encryptor'
+import { authenticate } from '~/redux/user-profile'
+import { initialize as initializeMenu } from '~/redux/menu'
 
 /**
  * 应用初始化
@@ -16,19 +12,15 @@ import { App } from '~/store2/App'
 export const initialize = async () => {
   const dispatch = store.dispatch
   // 在redux中存储token
-  dispatch(setToken())
+  // dispatch(setToken())
   // 在redux中存储rsa公钥
-  dispatch(await setRsaPublicKey())
-  // 在redux中存储租户信息
-  dispatch(await setTenant(store.getState().tenant.code))
+  dispatch(setRsaPublicKey())
   // 在redux中存储菜单信息
-  dispatch(await setMenus())
+  dispatch(initializeMenu('BOOMETA'))
   // 在redux中存储用户信息
-  dispatch(await authenticate())
+  dispatch(authenticate())
   // 在redux中存储应用初始化标识
   dispatch(initialized())
-
-  createDispatch(st2)(App.name, App.prototype.initialized.name)
 }
 
 /**
@@ -42,13 +34,13 @@ export const reinitialize = async (token?: string, isAutoLogin?: boolean) => {
     sessionStorage.setItem(TOKEN, token)
   }
 
-  const dispatch = store.dispatch
-  // 在redux中存储token
-  dispatch(setToken())
-  // 用户信息
-  dispatch(await authenticate())
-  // 在redux中存储菜单信息
-  dispatch(await setMenus())
+  // const dispatch = store.dispatch
+  // // 在redux中存储token
+  // dispatch(setToken())
+  // // 用户信息
+  // dispatch(await authenticate())
+  // // 在redux中存储菜单信息
+  // dispatch(await setMenus())
 }
 
 /**
@@ -59,9 +51,9 @@ export const signOut = async () => {
   localStorage.removeItem(TOKEN)
   sessionStorage.removeItem(TOKEN)
 
-  const dispatch = store.dispatch
-  // 在redux中退出登陆
-  dispatch(logout())
-  // 在redux中重置菜单信息
-  dispatch(resetMenus())
+  // const dispatch = store.dispatch
+  // // 在redux中退出登陆
+  // dispatch(logout())
+  // // 在redux中重置菜单信息
+  // dispatch(resetMenus())
 }
