@@ -20,13 +20,21 @@ const slice = createSlice({
       state.isLogin = false
       state.user = undefined
       state.token = ''
+    },
+
+    setToken: (state) => {
+      state.token = localStorage.getItem(TOKEN) || sessionStorage.getItem(TOKEN)
     }
   },
   extraReducers: (builder) =>
     builder.addCase(authenticate.fulfilled, (state, action) => {
+      console.log('action===', action)
+
       state.isLogin = !!action.payload
       state.user = action.payload
     })
 })
+
+export const { logout, setToken } = slice.actions
 
 export default slice.reducer

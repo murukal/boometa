@@ -11,7 +11,7 @@ import type { State } from '~/redux'
 import type { Menu } from '~/typings/menu'
 
 const Router = () => {
-  const menus = useSelector<State, Menu[]>((state) => [])
+  const menus = useSelector<State, Menu[]>((state) => state.menu.menus)
 
   /** 认证权限后动态生成路由 */
   const authorizatedRoutes = useMemo<RouteObject>(() => {

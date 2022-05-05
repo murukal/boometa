@@ -21,7 +21,7 @@ const { Item } = Form
 const { Password } = Input
 
 const Login = () => {
-  const encryptor = useSelector<State, JSEncrypt>((state) => new JSEncrypt())
+  const rsaPublicKey = useSelector<State, string | undefined>((state) => state.app.rsaPublicKey)
   const [form] = useForm<FormValues>()
 
   // 执行登录
@@ -29,6 +29,8 @@ const Login = () => {
     const formValues = form.getFieldsValue()
 
     // 利用公钥对密码进行加密
+    const encryptor = new JSEncrypt()
+    rsaPublicKey && encryptor.setPublicKey(rsaPublicKey)
     const encryptedPassword = encryptor.encrypt(formValues.password)
 
     if (!encryptedPassword) {

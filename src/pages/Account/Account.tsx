@@ -9,7 +9,7 @@ import type { State } from '~/redux'
 import styles from './Account.module.css'
 
 const Account = () => {
-  const isLogin = useSelector<State, boolean>((state) => false)
+  const isLogin = useSelector<State, boolean>((state) => state.userProfile.isLogin)
 
   // 登陆后回调到主页面
   if (isLogin) {

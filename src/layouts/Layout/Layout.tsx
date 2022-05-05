@@ -16,7 +16,7 @@ const { Title } = Typography
 
 const Layout = () => {
   const [isFolded, setIsFolded] = useState(false)
-  const isLogin = useSelector<State>((state) => false)
+  const isLogin = useSelector<State>((state) => state.userProfile.isLogin)
 
   /**
    * 侧边导航栏折叠功能

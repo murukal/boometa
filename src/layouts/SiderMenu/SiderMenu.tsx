@@ -14,7 +14,7 @@ import type { State } from '~/redux'
 const { Item, SubMenu } = Menu
 
 const SiderMenu = () => {
-  const menus = useSelector<State, MenuType[]>((state) => [])
+  const menus = useSelector<State, MenuType[]>((state) => state.menu.menus)
   const route = useLocation()
 
   // 渲染默认选中的条目
