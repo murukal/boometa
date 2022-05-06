@@ -9,11 +9,11 @@ import IconSelector from '../../IconSelector'
 import { create, update } from '~/apis/menu'
 import { componentOptions } from '.'
 import { resultNotification } from '~/utils/notification'
+import { useQuery } from '@apollo/client'
+import { AUTHORIZATION_RESOURCES } from '~/apis/auth'
 import type { SingletonProps } from '..'
 import type { Menu as MenuType } from '~/typings/menu'
 import type { ExtraProps, FormValues } from '.'
-import { useQuery } from '@apollo/client'
-import { AUTHORIZATION_RESOURCES } from '~/apis/auth'
 
 const { Item } = Form
 
@@ -45,7 +45,8 @@ const Menu = forwardRef<FormInstance, SingletonProps<MenuType, ExtraProps>>((pro
 
     const handlers = {
       create: () => {
-        if (!props.extraProps?.parentId || !props.extraProps.tenantCode) return
+        // 每个菜单都必须有对应的租户code
+        if (!props.extraProps?.tenantCode) return
 
         return create({
           ...formValues,
@@ -56,7 +57,8 @@ const Menu = forwardRef<FormInstance, SingletonProps<MenuType, ExtraProps>>((pro
       update: () =>
         update(props.singleton.id, {
           ...formValues,
-          component: formValues.component || ''
+          component: formValues.component || '',
+          icon: formValues.icon || ''
         })
     }
 

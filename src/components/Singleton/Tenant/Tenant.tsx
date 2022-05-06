@@ -1,7 +1,7 @@
 // react
 import { forwardRef, useMemo } from 'react'
 // antd
-import { Form, FormInstance, Input, Switch } from 'antd'
+import { Form, FormInstance, Input } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 // project
 import { create, update } from '~/apis/tenant'
@@ -59,10 +59,6 @@ const Tenant = forwardRef<FormInstance, SingletonProps<TenantType>>((props, ref)
         ]}
       >
         <Input />
-      </Form.Item>
-
-      <Form.Item label='是否鉴权' name='isAuthorizate' valuePropName='checked'>
-        <Switch />
       </Form.Item>
     </Form>
   )

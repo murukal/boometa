@@ -10,7 +10,7 @@ const { Option } = Select
 
 export const IconSelector = (props: Props) => {
   return (
-    <Select value={props.value} onChange={props.onChange}>
+    <Select value={props.value} onChange={props.onChange} allowClear>
       {Object.keys(Icons).map((key) => {
         return (
           <Option key={key} value={key}>

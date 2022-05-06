@@ -10,8 +10,7 @@ import * as Icons from '@ant-design/icons/lib/icons'
 // project
 import type { Menu as MenuType } from '~/typings/menu'
 import type { State } from '~/redux'
-
-const { Item, SubMenu } = Menu
+import type { ItemType } from 'antd/lib/menu/hooks/useItems'
 
 const SiderMenu = () => {
   const menus = useSelector<State, MenuType[]>((state) => state.menu.menus)
@@ -48,47 +47,29 @@ const SiderMenu = () => {
     }
   }, [route, menus])
 
-  /**
-   * menu的子项需要递归渲染
-   */
-  const renderMenu = (menus: MenuType[]) => {
-    return (
-      <>
-        {menus.map((menu) => {
-          // 创建动态图标
-          const Icon = menu.icon && createElement(Icons[menu.icon as keyof typeof Icons])
+  const menuItems = useMemo(() => {
+    // 递归
+    const getMenusMetadata = (menus?: MenuType[]): ItemType[] | undefined =>
+      menus?.map((menu) => ({
+        key: menu.id,
+        icon: menu.icon && createElement(Icons[menu.icon as keyof typeof Icons]),
+        label: menu.to ? <Link to={menu.to}>{menu.name}</Link> : menu.name,
+        children: getMenusMetadata(menu.children)
+      }))
 
-          // menu 含有子节点，渲染为submenu
-          if (menu.children?.length)
-            return (
-              <SubMenu key={menu.id} title={menu.name} icon={Icon}>
-                {renderMenu(menu.children)}
-              </SubMenu>
-            )
-
-          // 渲染为item
-          if (menu.to)
-            return (
-              <Item key={menu.id} icon={Icon}>
-                <Link to={menu.to}>{menu.name}</Link>
-              </Item>
-            )
-
-          return null
-        })}
-      </>
-    )
-  }
+    return getMenusMetadata(menus)
+  }, [menus])
 
   return (
-    <Menu
-      mode='inline'
-      theme='dark'
-      defaultOpenKeys={mappedMenuKeys.defaultOpenedKeys}
-      selectedKeys={mappedMenuKeys.defaultSelectedKeys}
-    >
-      {renderMenu(menus)}
-    </Menu>
+    <>
+      <Menu
+        mode='inline'
+        theme='dark'
+        defaultOpenKeys={mappedMenuKeys.defaultOpenedKeys}
+        selectedKeys={mappedMenuKeys.defaultSelectedKeys}
+        items={menuItems}
+      />
+    </>
   )
 }
 

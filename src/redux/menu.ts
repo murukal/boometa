@@ -1,6 +1,7 @@
 import { Menu as MenuType } from '~/typings/menu'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getMenus } from '~/apis/menu'
+import { getMenuTreeFromMenus } from '~/utils/menu'
 
 export class Menu {
   menus: MenuType[] = []
@@ -20,7 +21,7 @@ const slice = createSlice({
   },
   extraReducers: (builder) =>
     builder.addCase(initialize.fulfilled, (state, action) => {
-      state.menus = action.payload
+      state.menus = getMenuTreeFromMenus(action.payload)
     })
 })
 

@@ -13,7 +13,7 @@ import type { User } from '~/typings/auth'
 const { Title } = Typography
 
 const Header = (props: Props) => {
-  const user = useSelector<State, User | undefined | null>((state) => undefined)
+  const user = useSelector<State, User | undefined>((state) => state.userProfile.user)
 
   const getMenu = () => {
     return (

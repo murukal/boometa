@@ -7,7 +7,7 @@ import { User } from '~/typings/auth'
 export class UserProfile {
   isLogin = false
   user?: User = undefined
-  token = localStorage.getItem(TOKEN) || sessionStorage.getItem(TOKEN)
+  token: string | null = null
 }
 
 export const authenticate = createAsyncThunk('authenticate', async () => (await whoAmI()).data?.whoAmI)
@@ -28,8 +28,6 @@ const slice = createSlice({
   },
   extraReducers: (builder) =>
     builder.addCase(authenticate.fulfilled, (state, action) => {
-      console.log('action===', action)
-
       state.isLogin = !!action.payload
       state.user = action.payload
     })

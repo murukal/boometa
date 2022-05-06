@@ -20,7 +20,7 @@ const Menus = () => {
   const [isOpened, setIsOpened] = useState(false)
   const [tenantCode, setTenantCode] = useState('')
   const [parentId, setParentId] = useState<number>()
-  const [menu, setMenu] = useState<MenuType>()
+  const [menu, setMenu] = useState<MenuType>(getInitialSingleton())
 
   /** hooks 请求数据 */
   const { data, isLoading, refetch } = useTableQuery(TENANTS_WITH_MENUS)
@@ -29,10 +29,10 @@ const Menus = () => {
     {
       title: '操作',
       align: 'center',
-      dataIndex: 'id',
-      render: (tenantId) => (
+      dataIndex: 'code',
+      render: (tenantCode) => (
         <Space>
-          <Button type='link' size='small' onClick={onOpen(tenantId)}>
+          <Button type='link' size='small' onClick={onOpen(tenantCode)}>
             添加菜单
           </Button>
         </Space>
@@ -125,7 +125,7 @@ const Menus = () => {
           parentId
         }}
         singletonComponent={Menu}
-        singleton={menu as MenuType}
+        singleton={menu}
         onSubmitted={onSubmitted}
       />
     </Card>

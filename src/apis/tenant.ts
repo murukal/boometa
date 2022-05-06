@@ -21,7 +21,6 @@ const TENANT: TypedDocumentNode<
     tenant(code: $code) {
       code
       name
-      isAuthorizate
     }
   }
 `
@@ -48,7 +47,6 @@ const CREATE: TypedDocumentNode<
     createTenant(createTenantInput: $createTenantInput) {
       code
       name
-      isAuthorizate
     }
   }
 `
@@ -128,7 +126,6 @@ export const TENANTS: TypedDocumentNode<
       items {
         code
         name
-        isAuthorizate
       }
     }
   }
@@ -145,7 +142,6 @@ export const TENANTS_WITH_MENUS: TypedDocumentNode<{
       items {
         code
         name
-        isAuthorizate
         menus {
           id
           createdAt

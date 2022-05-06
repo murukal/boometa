@@ -21,13 +21,14 @@ const Router = () => {
         menu.children && getRoutesFromMenus(menu.children, total)
 
         // 菜单存在路由，添加到路由表中
-        menu.to &&
-          menu.component &&
+        if (menu.to && menu.component) {
           total.push({
             path: menu.to,
             element: Loadable(menu.component)
           })
+        }
 
+        // 返回
         return total
       }, routes)
 

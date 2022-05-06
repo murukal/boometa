@@ -29,6 +29,10 @@ export const initialize = async () => {
 export const reinitialize = async (token?: string, isAutoLogin?: boolean) => {
   if (!token) return
 
+  // 清除浏览器缓存中的token
+  localStorage.removeItem(TOKEN)
+  sessionStorage.removeItem(TOKEN)
+
   if (isAutoLogin) {
     localStorage.setItem(TOKEN, token)
   } else {

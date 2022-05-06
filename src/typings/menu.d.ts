@@ -12,7 +12,7 @@ export interface Menu extends Core {
   resourceCodes?: ResourceCode[]
 }
 
-export interface CreateMenuInput extends Pick<Menu, 'name' | 'sortBy' | 'parentId' | 'to' | 'component'> {
+export interface CreateMenuInput extends Pick<Menu, 'name' | 'sortBy' | 'parentId' | 'to' | 'component' | 'icon'> {
   tenantCode: string
 }
 
