@@ -17,7 +17,6 @@ import type { TypedDocumentNode } from '@apollo/client'
 // project
 import { store } from '~/redux'
 import { GraphQLError } from 'graphql'
-import { RcFile } from 'antd/lib/upload'
 
 const httpLink = createHttpLink({
   uri: '/graphql'
@@ -81,24 +80,4 @@ const RSA_PUBLIC_KEY: TypedDocumentNode<{
 export const getRsaPublicKey = () =>
   fetcher.query({
     query: RSA_PUBLIC_KEY
-  })
-
-/** 上传附件 */
-const UPLOAD: TypedDocumentNode<
-  { upload: string },
-  {
-    file: string | Blob | RcFile
-  }
-> = gql`
-  mutation Upload($file: Upload!) {
-    upload(file: $file)
-  }
-`
-
-export const upload = (file: string | Blob | RcFile) =>
-  fetcher.mutate({
-    mutation: UPLOAD,
-    variables: {
-      file
-    }
   })
