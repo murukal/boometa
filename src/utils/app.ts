@@ -14,11 +14,11 @@ export const initialize = async () => {
   // 在redux中存储token
   dispatch(setToken())
   // 在redux中存储rsa公钥
-  dispatch(setRsaPublicKey())
+  await dispatch(setRsaPublicKey())
   // 在redux中存储菜单信息
-  dispatch(initializeMenu(TENANT_CODE))
+  await dispatch(initializeMenu(TENANT_CODE))
   // 在redux中存储用户信息
-  dispatch(authenticate())
+  await dispatch(authenticate())
   // 在redux中存储应用初始化标识
   dispatch(initialized())
 }
@@ -43,9 +43,9 @@ export const reinitialize = async (token?: string, isAutoLogin?: boolean) => {
   // 在redux中存储token
   dispatch(setToken())
   // 用户信息
-  dispatch(authenticate())
+  await dispatch(authenticate())
   // 在redux中存储菜单信息
-  dispatch(initializeMenu(TENANT_CODE))
+  await dispatch(initializeMenu(TENANT_CODE))
 }
 
 /**
