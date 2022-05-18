@@ -2,17 +2,16 @@
 import { ChangeEvent, useEffect, useMemo, useState } from 'react'
 // antd
 import { Col, Input, Modal, Row, Tabs, Tag, Typography, Space, Button } from 'antd'
-import * as Icons from '@ant-design/icons/lib/icons'
 // project
-import { metadatas } from '.'
-import type { IconKey, Props } from '.'
+import { metadatas, AntDIcons, MDIcons, MDIconKey, getIcon } from '.'
+import type { Props, IconKey, AntDIconKey } from '.'
 
 const { TabPane } = Tabs
 const { CheckableTag } = Tag
 const { Text } = Typography
 
 export const IconSelector = (props: Props) => {
-  const SettingOutlined = Icons.SettingOutlined
+  const SettingOutlined = AntDIcons.SettingOutlined
   const [isOpened, setIsOpened] = useState(false)
   const [checked, setChecked] = useState<IconKey>()
 
@@ -33,10 +32,13 @@ export const IconSelector = (props: Props) => {
   }
 
   const CurrentChecked = useMemo(() => {
+    // 值不存在，直接返回null
     if (!checked) return null
-    const Icon = Icons[checked]
+    // 匹配
+    const Icon = AntDIcons[checked as AntDIconKey] || MDIcons[checked as MDIconKey]
+    // 按钮不存在
     if (!Icon) return null
-
+    // 返回UI
     return (
       <Icon
         style={{
@@ -110,7 +112,8 @@ export const IconSelector = (props: Props) => {
             >
               <Row gutter={[0, 4]}>
                 {metadata.icons?.map((icon) => {
-                  const Icon = Icons[icon]
+                  const Icon = getIcon(icon)
+
                   return (
                     <Col
                       key={icon}

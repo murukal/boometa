@@ -1,4 +1,7 @@
-import * as Icons from '@ant-design/icons/lib/icons'
+import * as AntDIcons from '@ant-design/icons/lib/icons'
+import * as MDIcons from 'react-icons/md'
+
+export { AntDIcons, MDIcons }
 
 export { default } from './IconSelector'
 
@@ -7,11 +10,17 @@ export interface Props {
   onChange?: (value?: string) => void
 }
 
-export type IconKey = keyof typeof Icons
+export type AntDIconKey = keyof typeof AntDIcons
+export type MDIconKey = keyof typeof MDIcons
+export type IconKey = AntDIconKey | MDIconKey
 
 export interface Metadata {
   title: string
   icons?: IconKey[]
+}
+
+export const getIcon = (iconKey: AntDIconKey | MDIconKey) => {
+  return AntDIcons[iconKey as AntDIconKey] || MDIcons[iconKey as MDIconKey]
 }
 
 export const metadatas: Metadata[] = [
@@ -464,5 +473,9 @@ export const metadatas: Metadata[] = [
       'WifiOutlined',
       'WomanOutlined'
     ]
+  },
+  {
+    title: 'Material Design',
+    icons: Object.keys(MDIcons) as MDIconKey[]
   }
 ]
