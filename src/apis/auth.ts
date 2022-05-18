@@ -46,6 +46,7 @@ const REGISTER: TypedDocumentNode<
     register(registerInput: $registerInput)
   }
 `
+
 export const register = (registerInput: RegisterInput) =>
   fetcher.mutate({
     mutation: REGISTER,
