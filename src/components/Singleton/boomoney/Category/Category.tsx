@@ -2,6 +2,7 @@ import { Form, FormInstance, Input } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 import { forwardRef, useMemo } from 'react'
 import { create, update } from '~/apis/boomoney/category'
+import IconSelector from '~/components/IconSelector'
 import { Category as CategoryType } from '~/typings/boomoney/category'
 import { resultNotification } from '~/utils/notification'
 import { FormValues } from '.'
@@ -59,7 +60,7 @@ const Category = forwardRef<FormInstance, SingletonProps<CategoryType>>((props, 
           }
         ]}
       >
-        <Input />
+        <IconSelector />
       </Item>
     </Form>
   )
