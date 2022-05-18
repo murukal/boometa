@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { CATEGORIES, remove } from '~/apis/boomoney/category'
 import Singleton from '~/components/Singleton'
 import Category, { getInitialSingleton } from '~/components/Singleton/boomoney/Category'
+import Toolbar from '~/components/Toolbar'
 import { Category as CategoryType } from '~/typings/boomoney/category'
 import { getTableRowHandler, useTableQuery } from '~/utils/table'
 import { useColumns } from '.'
@@ -75,6 +76,8 @@ const Categories = () => {
 
   return (
     <Card>
+      <Toolbar onAdd={onOpen()} />
+
       <Table
         rowKey='id'
         columns={columns}

@@ -3,3 +3,7 @@ export interface Category {
   name: string
   icon: string
 }
+
+export interface CreateCategoryInput extends Omit<Category, 'id'> {}
+
+export interface UpdateCategoryInput extends CreateCategoryInput {}

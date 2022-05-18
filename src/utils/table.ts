@@ -101,8 +101,6 @@ export const useTableQuery = <F, T = Record<string, any>>(
       }
     },
     onCompleted: (data) => {
-      console.log('data===', data)
-
       // 设置条目总数
       setPagination({
         ...pagination,

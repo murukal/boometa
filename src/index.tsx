@@ -16,6 +16,7 @@ import client from './apis'
 import reportWebVitals from './reportWebVitals'
 // css
 import './styles/index.less'
+import '@fontsource/noto-sans-sc'
 
 ReactDOM.render(
   <ApolloProvider client={client}>

@@ -7,3 +7,8 @@ export const getInitialSingleton = (): Category => ({
   name: '',
   icon: ''
 })
+
+export interface FormValues {
+  name: string
+  icon: string
+}

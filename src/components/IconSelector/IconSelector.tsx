@@ -1,27 +1,159 @@
 // react
-import { createElement } from 'react'
+import { ChangeEvent, useEffect, useMemo, useState } from 'react'
 // antd
-import { Select } from 'antd'
+import { Col, Input, Modal, Row, Tabs, Tag, Typography, Space, Button } from 'antd'
 import * as Icons from '@ant-design/icons/lib/icons'
 // project
-import type { Props } from '.'
+import { metadatas } from '.'
+import type { IconKey, Props } from '.'
 
-const { Option } = Select
+const { TabPane } = Tabs
+const { CheckableTag } = Tag
+const { Text } = Typography
 
 export const IconSelector = (props: Props) => {
+  const SettingOutlined = Icons.SettingOutlined
+  const [isOpened, setIsOpened] = useState(false)
+  const [checked, setChecked] = useState<IconKey>()
+
+  useEffect(() => {
+    setChecked(props.value as IconKey)
+  }, [props.value])
+
+  const onOpen = () => {
+    setIsOpened(true)
+  }
+
+  const onClose = () => {
+    setIsOpened(false)
+  }
+
+  const onCheck = (icon: IconKey) => () => {
+    setChecked(icon)
+  }
+
+  const CurrentChecked = useMemo(() => {
+    if (!checked) return null
+    const Icon = Icons[checked]
+    if (!Icon) return null
+
+    return (
+      <Icon
+        style={{
+          fontSize: 24
+        }}
+      />
+    )
+  }, [checked])
+
+  /**
+   * 对话框确认
+   */
+  const onSubmit = () => {
+    props.onChange && props.onChange(checked)
+    onClose()
+  }
+
+  /**
+   * 输入
+   */
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setChecked(e.target.value as IconKey)
+    props.onChange && props.onChange(e.target.value)
+  }
+
   return (
-    <Select value={props.value} onChange={props.onChange} allowClear>
-      {Object.keys(Icons).map((key) => {
-        return (
-          <Option key={key} value={key}>
-            <div className='flex items-center'>
-              {createElement(Icons[key as keyof typeof Icons])}
-              <p className='ml-1 mb-0'>{key}</p>
+    <>
+      <Input addonAfter={<SettingOutlined onClick={onOpen} />} value={checked} onChange={onChange} />
+
+      <Modal
+        visible={isOpened}
+        onCancel={onClose}
+        closable={false}
+        width={800}
+        footer={
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}
+          >
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center'
+              }}
+            >
+              <Text>当前选择：</Text>
+              {CurrentChecked}
             </div>
-          </Option>
-        )
-      })}
-    </Select>
+
+            <Space>
+              <Button onClick={onClose}>取消</Button>
+              <Button type='primary' onClick={onSubmit}>
+                确认
+              </Button>
+            </Space>
+          </div>
+        }
+      >
+        <Tabs>
+          {metadatas.map((metadata, index) => (
+            <TabPane
+              tab={metadata.title}
+              key={index}
+              style={{
+                maxHeight: 500,
+                overflowY: 'scroll'
+              }}
+            >
+              <Row gutter={[0, 4]}>
+                {metadata.icons?.map((icon) => {
+                  const Icon = Icons[icon]
+                  return (
+                    <Col
+                      key={icon}
+                      span={3}
+                      style={{
+                        textAlign: 'center'
+                      }}
+                    >
+                      <CheckableTag
+                        checked={(checked || props.value) === icon}
+                        onClick={onCheck(icon)}
+                        style={{
+                          padding: 4
+                        }}
+                      >
+                        <Icon
+                          style={{
+                            fontSize: 32
+                          }}
+                        />
+                      </CheckableTag>
+                    </Col>
+                  )
+                })}
+              </Row>
+            </TabPane>
+          ))}
+        </Tabs>
+      </Modal>
+    </>
+
+    // <Select value={props.value} onChange={props.onChange} allowClear>
+    //   {Object.keys(Icons).map((key) => {
+    //     return (
+    //       <Option key={key} value={key}>
+    //         <div className='flex items-center'>
+    //           {createElement(Icons[key as keyof typeof Icons])}
+    //           <p className='ml-1 mb-0'>{key}</p>
+    //         </div>
+    //       </Option>
+    //     )
+    //   })}
+    // </Select>
   )
 }
 

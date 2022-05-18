@@ -1,6 +1,6 @@
 import { gql, TypedDocumentNode } from '@apollo/client'
 import { PaginateInput, PaginateOutput } from '~/typings/api'
-import { Category } from '~/typings/boomoney/category'
+import { Category, CreateCategoryInput, UpdateCategoryInput } from '~/typings/boomoney/category'
 import { fetcher } from '..'
 
 export const CATEGORIES: TypedDocumentNode<
@@ -46,5 +46,55 @@ export const remove = (id: number) =>
     mutation: REMOVE,
     variables: {
       id
+    }
+  })
+
+/**
+ * 创建分类
+ */
+const CREATE: TypedDocumentNode<
+  {
+    createCategory: Category
+  },
+  {
+    createCategoryInput: CreateCategoryInput
+  }
+> = gql`
+  mutation ($createCategoryInput: CreateCategoryInput!) {
+    createCategory(createCategoryInput: $createCategoryInput) {
+      id
+    }
+  }
+`
+
+export const create = (createCategoryInput: CreateCategoryInput) =>
+  fetcher.mutate({
+    mutation: CREATE,
+    variables: {
+      createCategoryInput
+    }
+  })
+
+/**
+ * 更新分类
+ */
+const UPDATE: TypedDocumentNode<
+  { updateCategory: boolean },
+  {
+    id: number
+    updateCategoryInput: UpdateCategoryInput
+  }
+> = gql`
+  mutation ($id: Int!, $updateCategoryInput: UpdateCategoryInput!) {
+    updateCategory(id: $id, updateCategoryInput: $updateCategoryInput)
+  }
+`
+
+export const update = (id: number, updateCategoryInput: UpdateCategoryInput) =>
+  fetcher.mutate({
+    mutation: UPDATE,
+    variables: {
+      id,
+      updateCategoryInput
     }
   })
