@@ -1,8 +1,8 @@
 const CracoLessPlugin = require('craco-less')
 const path = require('path')
 
-// const server_location = 'http://localhost:9000'
-const server_location = 'https://admin.fantufantu.com'
+const server_location = 'http://localhost:9000'
+// const server_location = 'https://admin.fantufantu.com'
 
 module.exports = {
   devServer: {

@@ -13,7 +13,9 @@ import type { Menu } from '~/typings/menu'
 const Router = () => {
   const menus = useSelector<State, Menu[]>((state) => state.menu.menus)
 
-  /** 认证权限后动态生成路由 */
+  /**
+   * 认证权限后动态生成路由
+   */
   const authorizatedRoutes = useMemo<RouteObject>(() => {
     const getRoutesFromMenus = (menus: Menu[], routes: RouteObject[] = []) =>
       menus.reduce((total, menu) => {

@@ -15,7 +15,7 @@ export const TAGS: TypedDocumentNode<
   },
   QueryParams
 > = gql`
-  query Tags($paginateInput: PaginateInput) {
+  query ($paginateInput: PaginateInput) {
     tags(paginateInput: $paginateInput) {
       items {
         id
@@ -42,7 +42,7 @@ const REMOVE: TypedDocumentNode<
     id: number
   }
 > = gql`
-  mutation RemoveTag($id: Int!) {
+  mutation ($id: Int!) {
     removeTag(id: $id)
   }
 `
@@ -66,7 +66,7 @@ const CREATE: TypedDocumentNode<
     createTagInput: CreateTagInput
   }
 > = gql`
-  mutation CreateTag($createTagInput: CreateTagInput!) {
+  mutation ($createTagInput: CreateTagInput!) {
     createTag(createTagInput: $createTagInput) {
       id
       name
@@ -93,7 +93,7 @@ const UPDATE: TypedDocumentNode<
     updateTagInput: UpdateTagInput
   }
 > = gql`
-  mutation UpdateTag($id: Int!, $updateTagInput: UpdateTagInput!) {
+  mutation ($id: Int!, $updateTagInput: UpdateTagInput!) {
     updateTag(id: $id, updateTagInput: $updateTagInput)
   }
 `
@@ -119,7 +119,7 @@ export const TOP_TAGS: TypedDocumentNode<
     to: Date
   }
 > = gql`
-  query TopTags($from: DateTime!, $to: DateTime!) {
+  query ($from: DateTime!, $to: DateTime!) {
     topTags(from: $from, to: $to) {
       id
       name
