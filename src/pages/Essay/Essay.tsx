@@ -13,7 +13,7 @@ import Beeeditor from '@fantufantu/beeeditor'
 import type { EditorInstance } from '@fantufantu/beeeditor'
 // project
 import styles from './Essay.module.css'
-import { TAGS } from '~/apis/tag'
+import { TAGS } from '~/apis/boomart/tag'
 import { customRequest, getUploadParam, getValueFromEvent } from '~/utils/upload'
 import { create, getEssay, update } from '~/apis/boomart/essay'
 import type { FormValues } from '.'

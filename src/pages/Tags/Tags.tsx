@@ -6,7 +6,7 @@ import { Table } from 'antd'
 import Toolbar from '~/components/Toolbar'
 import Singleton from '~/components/Singleton'
 import Tag from '~/components/Singleton/Tag'
-import { remove, TAGS } from '~/apis/tag'
+import { remove, TAGS } from '~/apis/boomart/tag'
 import { getTableRowHandler, useTableQuery } from '~/utils/table'
 import { getColumns } from '.'
 import { getInitialSingleton } from '~/components/Singleton/Tag'
@@ -84,7 +84,14 @@ const Tags = () => {
         loading={isLoading}
       />
 
-      <Singleton title='标签' isOpened={isOpened} onClose={onClose} singleton={tag} singletonComponent={Tag} onSubmitted={onSubmitted} />
+      <Singleton
+        title='标签'
+        isOpened={isOpened}
+        onClose={onClose}
+        singleton={tag}
+        singletonComponent={Tag}
+        onSubmitted={onSubmitted}
+      />
     </>
   )
 }

@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client'
 import { ApexOptions } from 'apexcharts'
 import { useState } from 'react'
 import Chart from 'react-apexcharts'
-import { TOP_TAGS } from '~/apis/tag'
+import { TOP_TAGS } from '~/apis/boomart/tag'
 import { initializeDates } from '.'
 
 const HeatMap = () => {

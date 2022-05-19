@@ -6,7 +6,7 @@ import { PlusOutlined } from '@ant-design/icons'
 import { useForm } from 'antd/lib/form/Form'
 import type { FormInstance } from 'antd'
 // project
-import { create, update } from '~/apis/tag'
+import { create, update } from '~/apis/boomart/tag'
 import { SingletonProps } from '..'
 import { customRequest, getUploadParam, getValueFromEvent } from '~/utils/upload'
 import type { Tag as TagType } from '~/typings/tag'
