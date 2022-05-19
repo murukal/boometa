@@ -6,7 +6,7 @@ import { Card, Table } from 'antd'
 import Toolbar from '~/components/Toolbar'
 import { getColumns } from '.'
 import { getTableRowHandler, useTableQuery } from '~/utils/table'
-import { ESSAYS, remove } from '~/apis/essay'
+import { ESSAYS, remove } from '~/apis/boomart/essay'
 
 const Essays = () => {
   const navigate = useNavigate()
