@@ -5,7 +5,7 @@ import { Card, Table } from 'antd'
 // project
 import { getTableRowHandler, useTableQuery } from '~/utils/table'
 import { getColumns } from '.'
-import { remove, ROLES } from '~/apis/role'
+import { remove, ROLES } from '~/apis/boomemory/role'
 import Singleton from '~/components/Singleton'
 import Role from '~/components/Singleton/Role'
 import { getInitialSingleton } from '~/components/Singleton/Role'
@@ -127,11 +127,25 @@ const Roles = () => {
           loading={isLoading}
         />
 
-        <Singleton title='角色' isOpened={isOpened} onClose={onClose} onSubmitted={onSubmitted} singleton={role} singletonComponent={Role} />
+        <Singleton
+          title='角色'
+          isOpened={isOpened}
+          onClose={onClose}
+          onSubmitted={onSubmitted}
+          singleton={role}
+          singletonComponent={Role}
+        />
       </Card>
 
       {isShow && (
-        <Roles4Auth className='w-1/2' roleId={role.id} title={role.name} actived={actived} onTabChange={onTabChange} onClose={onAuthClose} />
+        <Roles4Auth
+          className='w-1/2'
+          roleId={role.id}
+          title={role.name}
+          actived={actived}
+          onTabChange={onTabChange}
+          onClose={onAuthClose}
+        />
       )}
     </div>
   )

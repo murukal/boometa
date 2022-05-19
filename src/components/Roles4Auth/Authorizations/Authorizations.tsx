@@ -4,7 +4,7 @@ import type { Key } from 'react'
 // antd
 import { Tree } from 'antd'
 // project
-import { update } from '~/apis/role'
+import { update } from '~/apis/boomemory/role'
 import { useQuery } from '@apollo/client'
 import { AUTHORIZATION_TREE } from '~/apis/boomemory/auth'
 import type { Props } from '.'

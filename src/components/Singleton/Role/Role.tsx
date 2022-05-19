@@ -5,7 +5,7 @@ import type { ChangeEvent } from 'react'
 import { Form, Input } from 'antd'
 import type { FormInstance } from 'antd'
 // project
-import { create, update } from '~/apis/role'
+import { create, update } from '~/apis/boomemory/role'
 import type { SingletonProps } from '..'
 import type { Role as RoleType } from '~/typings/role'
 

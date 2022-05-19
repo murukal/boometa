@@ -7,7 +7,7 @@ import type { CardTabListType } from 'antd/lib/card'
 //project
 import Users from './Users'
 import Authorizations from './Authorizations'
-import { ROLE } from '~/apis/role'
+import { ROLE } from '~/apis/boomemory/role'
 import { createRef } from 'react'
 import { useQuery } from '@apollo/client'
 import type { Props } from '.'
@@ -57,7 +57,13 @@ const Roles4Auth = (props: Props) => {
     return (
       <div className='flex justify-between'>
         {props.title}
-        <Button shape='circle' type='link' icon={<CloseOutlined />} danger onClick={() => props.onClose && props.onClose()} />
+        <Button
+          shape='circle'
+          type='link'
+          icon={<CloseOutlined />}
+          danger
+          onClick={() => props.onClose && props.onClose()}
+        />
       </div>
     )
   }, [props.title, props.onClose])
@@ -94,7 +100,9 @@ const Roles4Auth = (props: Props) => {
       loading={isQueryLoading}
     >
       {/* 用户 */}
-      {props.actived === 'user' && <Users roleId={props.roleId} userIds={data?.role.userIds || []} onSubmitted={onSubmitted} />}
+      {props.actived === 'user' && (
+        <Users roleId={props.roleId} userIds={data?.role.userIds || []} onSubmitted={onSubmitted} />
+      )}
 
       {/* 权限 */}
       {props.actived === 'authorization' && (

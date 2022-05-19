@@ -6,7 +6,7 @@ import { Modal } from 'antd'
 // project
 import UserDataSet from '../../DataSet/Users'
 import Toolbar from '../../Toolbar'
-import { update } from '~/apis/role'
+import { update } from '~/apis/boomemory/role'
 import { resultNotification } from '~/utils/notification'
 import type { Props } from '.'
 
@@ -46,7 +46,14 @@ const Users = (props: Props) => {
     <>
       <Toolbar onAddUser={() => setIsOpened(true)} />
       <UserDataSet ids={props.userIds} />
-      <Modal visible={isOpened} maskClosable={false} closable={false} onCancel={onClose} onOk={onSubmit} confirmLoading={isLoading}>
+      <Modal
+        visible={isOpened}
+        maskClosable={false}
+        closable={false}
+        onCancel={onClose}
+        onOk={onSubmit}
+        confirmLoading={isLoading}
+      >
         <UserDataSet
           excludeUserIds={props.userIds}
           rowSelection={{
