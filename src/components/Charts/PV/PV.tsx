@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/client'
 import Chart from 'react-apexcharts'
 import type { ApexOptions } from 'apexcharts'
 // project
-import { DAILY_CLOUTS } from '~/apis/toggle'
+import { DAILY_CLOUTS } from '~/apis/boomart/toggle'
 import { initializeDates } from '.'
 
 const PV = () => {
