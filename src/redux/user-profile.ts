@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { whoAmI } from '~/apis/auth'
+import { whoAmI } from '~/apis/boomemory/auth'
 import { TOKEN } from '~/assets'
 
 import { User } from '~/typings/auth'

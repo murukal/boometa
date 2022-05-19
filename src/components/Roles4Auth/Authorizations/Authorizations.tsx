@@ -6,7 +6,7 @@ import { Tree } from 'antd'
 // project
 import { update } from '~/apis/role'
 import { useQuery } from '@apollo/client'
-import { AUTHORIZATION_TREE } from '~/apis/auth'
+import { AUTHORIZATION_TREE } from '~/apis/boomemory/auth'
 import type { Props } from '.'
 import { AuthorizationNode } from '~/typings/auth'
 import { resultNotification } from '~/utils/notification'

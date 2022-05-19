@@ -9,7 +9,7 @@ import { useForm } from 'antd/lib/form/Form'
 // third
 import JSEncrypt from 'jsencrypt'
 // project
-import { register } from '~/apis/auth'
+import { register } from '~/apis/boomemory/auth'
 import { reinitialize } from '~/utils/app'
 import { toggleStyle } from '..'
 import { passwordRegex } from '.'

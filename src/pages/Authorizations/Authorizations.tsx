@@ -6,7 +6,7 @@ import { Card, Table, Tree } from 'antd'
 // third
 import { useQuery } from '@apollo/client'
 // project
-import { AUTHORIZATION_ACTIONS, AUTHORIZATION_RESOURCES, AUTHORIZATION_TREE } from '~/apis/auth'
+import { AUTHORIZATION_ACTIONS, AUTHORIZATION_RESOURCES, AUTHORIZATION_TREE } from '~/apis/boomemory/auth'
 import Singleton from '~/components/Singleton'
 import { getActionColumns, getResourceColumns } from '.'
 import Authorization from '~/components/Singleton/Authorization'

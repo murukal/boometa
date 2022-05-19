@@ -3,7 +3,7 @@ import { Table } from 'antd'
 // project
 import { getColumns } from '.'
 import { useTableQuery } from '~/utils/table'
-import { GET_USERS } from '~/apis/auth'
+import { GET_USERS } from '~/apis/boomemory/auth'
 import type { Props } from '.'
 import type { FilterInput } from '~/typings/auth'
 
