@@ -4,7 +4,7 @@ import { forwardRef, useMemo } from 'react'
 import { Form, FormInstance, Input } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 // project
-import { create, update } from '~/apis/tenant'
+import { create, update } from '~/apis/boomemory/tenant'
 import type { FormValues } from '.'
 import type { SingletonProps } from '..'
 import type { Tenant as TenantType } from '~/typings/tenant'
