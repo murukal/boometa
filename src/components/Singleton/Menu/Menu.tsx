@@ -6,7 +6,7 @@ import { useForm } from 'antd/lib/form/Form'
 import type { FormInstance } from 'antd'
 // project
 import IconSelector from '../../IconSelector'
-import { create, update } from '~/apis/menu'
+import { create, update } from '~/apis/boomemory/menu'
 import { componentOptions } from '.'
 import { resultNotification } from '~/utils/notification'
 import { useQuery } from '@apollo/client'
