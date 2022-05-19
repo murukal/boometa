@@ -24,7 +24,7 @@ const PV = () => {
       categories: dates.map((date) => date.format('M-D'))
     },
     title: {
-      text: '最近10天游客流量🌲'
+      text: '最近10天游客流量 🌲'
     }
   })
 

@@ -1,5 +1,5 @@
 // project
-import { ActionCode, ResourceCode } from '~/pages/Authorizations'
+import { ActionCode, ResourceCode } from '~/pages/boomemory/Authorizations'
 import type { Resource } from '~/typings/auth'
 
 export { default } from './Authorization'

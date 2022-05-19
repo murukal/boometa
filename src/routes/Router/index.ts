@@ -10,10 +10,10 @@ export { default } from './Router'
  */
 export const accountRoutes: RouteObject = {
   path: '/account',
-  element: Loadable('pages/Account'),
+  element: Loadable('pages/boomemory/Account'),
   children: [
-    { path: 'login', element: Loadable('pages/Account/Login') },
-    { path: 'register', element: Loadable('pages/Account/Register') }
+    { path: 'login', element: Loadable('pages/boomemory/Account/Login') },
+    { path: 'register', element: Loadable('pages/boomemory/Account/Register') }
   ]
 }
 
@@ -27,11 +27,11 @@ export const essayRoutes: RouteObject = {
     {
       path: '',
       index: true,
-      element: Loadable('pages/Essay')
+      element: Loadable('pages/boomart/Essay')
     },
     {
       path: ':id',
-      element: Loadable('pages/Essay')
+      element: Loadable('pages/boomart/Essay')
     }
   ]
 }
@@ -41,7 +41,7 @@ export const essayRoutes: RouteObject = {
  */
 export const roadmapRoutes: RouteObject = {
   path: '/boomap',
-  element: Loadable('pages/Boomap')
+  element: Loadable('pages/boomemory/Boomap')
 }
 
 /**
@@ -49,11 +49,11 @@ export const roadmapRoutes: RouteObject = {
  */
 export const notFoundRoutes: RouteObject = {
   path: '*',
-  element: Loadable('pages/Error'),
+  element: Loadable('pages/boomemory/Error'),
   children: [
     {
       path: '*',
-      element: Loadable('pages/Error/NotFound')
+      element: Loadable('pages/boomemory/Error/NotFound')
     }
   ]
 }

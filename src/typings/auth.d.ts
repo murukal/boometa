@@ -1,4 +1,4 @@
-import { ActionCode, ResourceCode } from '~/pages/Authorizations'
+import { ActionCode, ResourceCode } from '~/pages/boomemory/Authorizations'
 import { Core } from '.'
 
 export interface User extends Core {

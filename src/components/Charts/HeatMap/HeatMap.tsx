@@ -11,7 +11,7 @@ const HeatMap = () => {
   const [options] = useState<ApexCharts.ApexOptions>({
     colors: ['#008FFB'],
     title: {
-      text: '最近30天创作热度🔥'
+      text: '最近30天创作热度 🔥'
     },
     dataLabels: {
       enabled: false

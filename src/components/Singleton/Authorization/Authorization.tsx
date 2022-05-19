@@ -11,7 +11,7 @@ import { cloneDeep } from 'lodash'
 // project
 import { useQuery } from '@apollo/client'
 import { AUTHORIZATION_ACTIONS, setAuthorizations } from '~/apis/boomemory/auth'
-import { ResourceCode } from '~/pages/Authorizations'
+import { ResourceCode } from '~/pages/boomemory/Authorizations'
 import { resultNotification } from '~/utils/notification'
 import type { Authorized, ExtraProps } from '.'
 import type { SingletonProps } from '..'

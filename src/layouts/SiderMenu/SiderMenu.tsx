@@ -1,5 +1,5 @@
 // react
-import { useMemo, createElement } from 'react'
+import { useMemo, createElement, useEffect } from 'react'
 // redux
 import { useSelector } from 'react-redux'
 // react
@@ -7,10 +7,13 @@ import { Link, useLocation } from 'react-router-dom'
 // antd
 import { Menu } from 'antd'
 import * as Icons from '@ant-design/icons/lib/icons'
+// third
+import PerfectScrollbar from 'perfect-scrollbar'
 // project
 import type { Menu as MenuType } from '~/typings/menu'
 import type { State } from '~/redux'
 import type { ItemType } from 'antd/lib/menu/hooks/useItems'
+import styles from './SiderMenu.module.css'
 
 const SiderMenu = () => {
   const menus = useSelector<State, MenuType[]>((state) => state.menu.menus)
@@ -60,8 +63,16 @@ const SiderMenu = () => {
     return getMenusMetadata(menus)
   }, [menus])
 
+  useEffect(() => {
+    // 初始化渲染滚动条
+    const ps = new PerfectScrollbar('#side-menu-wrapper')
+    return () => {
+      ps.destroy()
+    }
+  }, [])
+
   return (
-    <>
+    <div id='side-menu-wrapper' className={`relative overflow-hidden ${styles['side-menu-wrapper']}`}>
       <Menu
         mode='inline'
         theme='dark'
@@ -69,7 +80,7 @@ const SiderMenu = () => {
         selectedKeys={mappedMenuKeys.defaultSelectedKeys}
         items={menuItems}
       />
-    </>
+    </div>
   )
 }
 

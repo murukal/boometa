@@ -1,6 +1,6 @@
 // third
 import path from 'path-browserify'
-import { ResourceCode } from '~/pages/Authorizations'
+import { ResourceCode } from '~/pages/boomemory/Authorizations'
 // project
 import type { Menu } from '~/typings/menu'
 
