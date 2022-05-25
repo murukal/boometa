@@ -34,7 +34,7 @@ module.exports = {
         lessLoaderOptions: {
           lessOptions: {
             modifyVars: {
-              'font-family': '"Noto Sans SC"'
+              'font-family': '"Noto Sans Mono"'
             },
             javascriptEnabled: true
           }

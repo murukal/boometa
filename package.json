@@ -7,7 +7,7 @@
     "@apollo/client": "^3.6.2",
     "@craco/craco": "^6.4.3",
     "@fantufantu/beeeditor": "^0.0.35",
-    "@fontsource/noto-sans-sc": "^4.5.10",
+    "@fontsource/noto-sans-mono": "^4.5.8",
     "@reduxjs/toolkit": "^1.8.1",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^12.1.4",

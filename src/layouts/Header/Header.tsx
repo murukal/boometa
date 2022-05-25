@@ -17,15 +17,26 @@ const Header = (props: Props) => {
 
   const getMenu = () => {
     return (
-      <Menu>
-        <Menu.Item className='text-center' key='1' icon={<EditOutlined />}>
-          完善用户信息
-        </Menu.Item>
-        <Menu.Divider />
-        <Menu.Item className='text-center' key='2' icon={<ApiOutlined />} onClick={signOut}>
-          注销
-        </Menu.Item>
-      </Menu>
+      <Menu
+        items={[
+          {
+            key: '1',
+            label: '完善用户信息',
+            icon: <EditOutlined />,
+            className: 'text-center'
+          },
+          {
+            type: 'divider'
+          },
+          {
+            key: '2',
+            label: '注销',
+            icon: <ApiOutlined />,
+            className: 'text-center',
+            onClick: signOut
+          }
+        ]}
+      />
     )
   }
 

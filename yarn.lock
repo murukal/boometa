@@ -1189,10 +1189,10 @@
     "@lexical/react" "^0.2.9"
     lexical "^0.2.9"
 
-"@fontsource/noto-sans-sc@^4.5.10":
-  version "4.5.10"
-  resolved "https://registry.yarnpkg.com/@fontsource/noto-sans-sc/-/noto-sans-sc-4.5.10.tgz#526d10dbfe98f981024a5f2500941f817ee92a93"
-  integrity sha512-bLLu4nXaJgHjrB4gXmEFhuuPlpZw5u2TosC6eikkDy2gRYIJnmYD63fo4oQvgN8JONX/dgIy5EIpg3iQWqltyg==
+"@fontsource/noto-sans-mono@^4.5.8":
+  version "4.5.8"
+  resolved "https://registry.yarnpkg.com/@fontsource/noto-sans-mono/-/noto-sans-mono-4.5.8.tgz#0385d1a738a2e703ebfd151d49531749fc51f6ca"
+  integrity sha512-pTfgoLRlumB547fMqc6oCxhAHZY98u1gTlT0PTjy+qLwu/GXoq4u7SkRcVCGwpxO/jdNxMqJIwgUl6IqwqmWFg==
 
 "@graphql-typed-document-node/core@^3.1.1":
   version "3.1.1"
