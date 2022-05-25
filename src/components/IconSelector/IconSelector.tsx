@@ -3,15 +3,15 @@ import { ChangeEvent, useEffect, useMemo, useState } from 'react'
 // antd
 import { Col, Input, Modal, Row, Tabs, Tag, Typography, Space, Button } from 'antd'
 // project
-import { metadatas, AntDIcons, MDIcons, MDIconKey, getIcon } from '.'
-import type { Props, IconKey, AntDIconKey } from '.'
+import { metadatas, Icons, getIcon } from '.'
+import type { Props, IconKey } from '.'
 
 const { TabPane } = Tabs
 const { CheckableTag } = Tag
 const { Text } = Typography
 
 export const IconSelector = (props: Props) => {
-  const SettingOutlined = AntDIcons.SettingOutlined
+  const SettingOutlined = Icons.SettingOutlined
   const [isOpened, setIsOpened] = useState(false)
   const [checked, setChecked] = useState<IconKey>()
 
@@ -19,14 +19,27 @@ export const IconSelector = (props: Props) => {
     setChecked(props.value as IconKey)
   }, [props.value])
 
+  /**
+   * 打开弹窗
+   */
   const onOpen = () => {
-    setIsOpened(true)
+    if (props.type === 'ant-design') {
+      setIsOpened(true)
+    } else {
+      window.open('https://materialdesignicons.com/')
+    }
   }
 
+  /**
+   * 关闭弹窗
+   */
   const onClose = () => {
     setIsOpened(false)
   }
 
+  /**
+   * 选择图标
+   */
   const onCheck = (icon: IconKey) => () => {
     setChecked(icon)
   }
@@ -35,7 +48,7 @@ export const IconSelector = (props: Props) => {
     // 值不存在，直接返回null
     if (!checked) return null
     // 匹配
-    const Icon = AntDIcons[checked as AntDIconKey] || MDIcons[checked as MDIconKey]
+    const Icon = Icons[checked]
     // 按钮不存在
     if (!Icon) return null
     // 返回UI
@@ -66,7 +79,7 @@ export const IconSelector = (props: Props) => {
 
   return (
     <>
-      <Input addonAfter={<SettingOutlined onClick={onOpen} />} value={checked} onChange={onChange} />
+      <Input addonAfter={<SettingOutlined onClick={onOpen} />} value={props.value} onChange={onChange} />
 
       <Modal
         visible={isOpened}
@@ -144,19 +157,6 @@ export const IconSelector = (props: Props) => {
         </Tabs>
       </Modal>
     </>
-
-    // <Select value={props.value} onChange={props.onChange} allowClear>
-    //   {Object.keys(Icons).map((key) => {
-    //     return (
-    //       <Option key={key} value={key}>
-    //         <div className='flex items-center'>
-    //           {createElement(Icons[key as keyof typeof Icons])}
-    //           <p className='ml-1 mb-0'>{key}</p>
-    //         </div>
-    //       </Option>
-    //     )
-    //   })}
-    // </Select>
   )
 }
 

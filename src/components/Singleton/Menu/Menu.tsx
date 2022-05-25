@@ -103,7 +103,7 @@ const Menu = forwardRef<FormInstance, SingletonProps<MenuType, ExtraProps>>((pro
       </Item>
 
       <Item label='菜单图标' name='icon'>
-        <IconSelector />
+        <IconSelector type='ant-design' />
       </Item>
 
       <Item label='权限资源' name='resourceCodes'>

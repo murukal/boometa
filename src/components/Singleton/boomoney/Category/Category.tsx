@@ -60,7 +60,7 @@ const Category = forwardRef<FormInstance, SingletonProps<CategoryType>>((props, 
           }
         ]}
       >
-        <IconSelector />
+        <IconSelector type='material-design' />
       </Item>
     </Form>
   )
