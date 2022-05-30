@@ -3,8 +3,8 @@ import { TENANT_CODE, TOKEN } from '~/assets'
 import { store } from '~/redux'
 import { initialized } from '~/redux/app'
 import { setRsaPublicKey } from '~/redux/app'
-import { authenticate, logout, setToken } from '~/redux/user-profile'
-import { clear, initialize as initializeMenu } from '~/redux/menu'
+import { authenticate, setToken } from '~/redux/user-profile'
+import { initialize as initializeMenu } from '~/redux/menu'
 
 /**
  * 应用初始化
@@ -56,9 +56,5 @@ export const signOut = async () => {
   localStorage.removeItem(TOKEN)
   sessionStorage.removeItem(TOKEN)
 
-  const dispatch = store.dispatch
-  // 在redux中退出登陆
-  dispatch(logout())
-  // 在redux中重置菜单信息
-  dispatch(clear())
+  window.location.replace('/account/login')
 }

@@ -16,12 +16,6 @@ const slice = createSlice({
   name: 'user-profile',
   initialState: { ...new UserProfile() },
   reducers: {
-    logout: (state) => {
-      state.isLogin = false
-      state.user = undefined
-      state.token = ''
-    },
-
     setToken: (state) => {
       state.token = localStorage.getItem(TOKEN) || sessionStorage.getItem(TOKEN)
     }
@@ -33,6 +27,6 @@ const slice = createSlice({
     })
 })
 
-export const { logout, setToken } = slice.actions
+export const { setToken } = slice.actions
 
 export default slice.reducer

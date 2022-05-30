@@ -14,17 +14,11 @@ export const initialize = createAsyncThunk('getMenus', async (tenantCode: string
 const slice = createSlice({
   name: 'menu',
   initialState: { ...new Menu() },
-  reducers: {
-    clear(state) {
-      state.menus = []
-    }
-  },
+  reducers: {},
   extraReducers: (builder) =>
     builder.addCase(initialize.fulfilled, (state, action) => {
       state.menus = getMenuTreeFromMenus(action.payload)
     })
 })
-
-export const { clear } = slice.actions
 
 export default slice.reducer
