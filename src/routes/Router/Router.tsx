@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 import { RouteObject, useRoutes } from 'react-router-dom'
 // projetc
 import Loadable from '~/components/Loadable'
-import { accountRoutes, essayRoutes, notFoundRoutes, roadmapRoutes } from '.'
+import { accountRoutes, essayRoutes, notFoundRoutes, roadmapRoutes, userRoutes } from '.'
 import type { State } from '~/redux'
 import type { Menu } from '~/typings/boomemory/menu'
 
@@ -42,7 +42,7 @@ const Router = () => {
   }, [menus])
 
   // 渲染路由
-  const routes = useRoutes([authorizatedRoutes, accountRoutes, essayRoutes, roadmapRoutes, notFoundRoutes])
+  const routes = useRoutes([authorizatedRoutes, accountRoutes, userRoutes, essayRoutes, roadmapRoutes, notFoundRoutes])
 
   /** 直接利用router hooks 返回对应的dom */
   return routes

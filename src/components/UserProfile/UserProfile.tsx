@@ -8,8 +8,10 @@ import Overlay from './Overlay'
 import styles from './UserProfile.module.css'
 import { MenuClickEventHandler } from 'rc-menu/lib/interface'
 import { signOut } from '~/utils/app'
+import { useNavigate } from 'react-router-dom'
 
 const UserProfile = (props: Props) => {
+  const navigate = useNavigate()
   const user = useSelector<State, User | undefined>((state) => state.userProfile.user)
   const [isVisiable, setIsVisiable] = useState(false)
 
@@ -77,14 +79,14 @@ const UserProfile = (props: Props) => {
     }
 
     // 修改个人设置
-    if (key === 'settings') {
-      console.log('settings')
+    if (key === 'setting') {
+      navigate('/user/setting')
       return
     }
 
     // 查看个人主页
     if (key === 'profile') {
-      console.log('profile')
+      navigate('/user/profile')
       return
     }
   }

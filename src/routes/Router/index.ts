@@ -18,6 +18,15 @@ export const accountRoutes: RouteObject = {
 }
 
 /**
+ * 用户界面
+ */
+export const userRoutes: RouteObject = {
+  path: '/user',
+  element: Loadable('layouts/Layout'),
+  children: [{ path: 'setting', element: Loadable('pages/boomemory/Account/Setting') }]
+}
+
+/**
  * 文章
  */
 export const essayRoutes: RouteObject = {
