@@ -162,14 +162,8 @@ const Essay = () => {
       >
         <Collapse defaultActiveKey={['1']}>
           <Panel header='额外信息' key='1'>
-            <Form form={form} initialValues={initialValues}>
-              <Item
-                label='文章封面'
-                name='fileList'
-                labelCol={{ span: 6 }}
-                valuePropName='fileList'
-                getValueFromEvent={getValueFromEvent}
-              >
+            <Form form={form} initialValues={initialValues} labelCol={{ span: 6 }}>
+              <Item label='文章封面' name='fileList' valuePropName='fileList' getValueFromEvent={getValueFromEvent}>
                 <Upload listType='picture-card' customRequest={customRequest}>
                   <PlusOutlined />
                 </Upload>
@@ -178,7 +172,6 @@ const Essay = () => {
               <Item
                 label='文章标签'
                 name='tagIds'
-                labelCol={{ span: 6 }}
                 rules={[
                   {
                     required: true
