@@ -8,7 +8,7 @@ import { RouteObject, useRoutes } from 'react-router-dom'
 import Loadable from '~/components/Loadable'
 import { accountRoutes, essayRoutes, notFoundRoutes, roadmapRoutes } from '.'
 import type { State } from '~/redux'
-import type { Menu } from '~/typings/menu'
+import type { Menu } from '~/typings/boomemory/menu'
 
 const Router = () => {
   const menus = useSelector<State, Menu[]>((state) => state.menu.menus)

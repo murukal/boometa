@@ -4,7 +4,7 @@ import type { TypedDocumentNode } from '@apollo/client'
 // project
 import { fetcher } from '..'
 import type { PaginateOutput, QueryParams } from '../../typings/api'
-import type { CreateTagInput, Tag, TopTag, UpdateTagInput } from '../../typings/tag'
+import type { CreateTagInput, Tag, TopTag, UpdateTagInput } from '../../typings/boomart/tag'
 
 /**
  * 查询多个标签

@@ -17,7 +17,7 @@ import { TAGS } from '~/apis/boomart/tag'
 import { customRequest, getUploadParam, getValueFromEvent } from '~/utils/upload'
 import { create, getEssay, update } from '~/apis/boomart/essay'
 import type { FormValues } from '.'
-import type { CreateEssayInput } from '~/typings/essay'
+import type { CreateEssayInput } from '~/typings/boomart/essay'
 
 const { Panel } = Collapse
 const { Item } = Form

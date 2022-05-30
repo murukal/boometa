@@ -1,7 +1,7 @@
 // antd
 import { ColumnsType } from 'antd/lib/table'
 // project
-import { Role } from '~/typings/role'
+import { Role } from '~/typings/boomemory/role'
 
 export { default } from './Roles'
 

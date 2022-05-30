@@ -4,7 +4,7 @@ import { createElement } from 'react'
 import type { ColumnsType } from 'antd/lib/table'
 import { Image } from 'antd'
 // project
-import type { Tag } from '~/typings/tag'
+import type { Tag } from '~/typings/boomart/tag'
 
 export { default } from './Tags'
 

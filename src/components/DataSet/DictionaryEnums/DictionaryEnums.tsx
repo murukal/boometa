@@ -11,7 +11,7 @@ import { DICTIONARY_ENUMS, remove } from '~/apis/boomemory/dictionary-enum'
 import { getTableRowHandler, useTableQuery } from '~/utils/table'
 import { getInitialSingleton } from '../../Singleton/DictionaryEnum'
 import type { Props } from '.'
-import type { DictionaryEnum as DictionaryEnumType } from '~/typings/dictionary-enum'
+import type { DictionaryEnum as DictionaryEnumType } from '~/typings/boomemory/dictionary-enum'
 
 const DictionaryEnums = (props: Props) => {
   const [isOpened, setIsOpened] = useState(false)

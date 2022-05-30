@@ -4,7 +4,7 @@ import type { TypedDocumentNode } from '@apollo/client'
 // project
 import { fetcher } from '..'
 import type { PaginateOutput, QueryParams } from '~/typings/api'
-import type { Dictionary, CreateDictionaryInput } from '~/typings/dictionary'
+import type { Dictionary, CreateDictionaryInput } from '~/typings/boomemory/dictionary'
 
 /**
  * 查询多个字典

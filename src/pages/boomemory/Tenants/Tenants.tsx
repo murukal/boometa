@@ -10,7 +10,7 @@ import { getColumns } from '.'
 import { remove, TENANTS } from '~/apis/boomemory/tenant'
 import { getInitialTenant } from '~/components/Singleton/Tenant'
 import { getTableRowHandler, useTableQuery } from '~/utils/table'
-import type { Tenant as TenantType } from '~/typings/tenant'
+import type { Tenant as TenantType } from '~/typings/boomemory/tenant'
 
 const Tenants = () => {
   const [isOpened, setIsOpened] = useState(false)

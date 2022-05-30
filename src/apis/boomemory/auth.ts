@@ -3,7 +3,7 @@ import { gql } from '@apollo/client'
 import type { TypedDocumentNode } from '@apollo/client'
 // project
 import { fetcher } from '..'
-import type { Action, AuthorizationNode, LoginInput, RegisterInput, Resource, User } from '~/typings/auth'
+import type { Action, AuthorizationNode, LoginInput, RegisterInput, Resource, User } from '~/typings/boomemory/auth'
 import type { PaginateOutput, QueryParams } from '~/typings/api'
 import type { Authorized } from '~/components/Singleton/Authorization'
 

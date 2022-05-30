@@ -1,7 +1,7 @@
 // antd
 import { ColumnsType } from 'antd/lib/table'
 // project
-import { Tenant } from '~/typings/tenant'
+import { Tenant } from '~/typings/boomemory/tenant'
 
 export { default } from './Tenants'
 

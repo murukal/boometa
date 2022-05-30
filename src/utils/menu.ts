@@ -1,5 +1,5 @@
 // project
-import type { Menu } from '../typings/menu'
+import type { Menu } from '../typings/boomemory/menu'
 
 /**
  * 递归函数

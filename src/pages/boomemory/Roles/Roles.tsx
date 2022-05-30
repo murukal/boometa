@@ -11,7 +11,7 @@ import Role from '~/components/Singleton/Role'
 import { getInitialSingleton } from '~/components/Singleton/Role'
 import Toolbar from '~/components/Toolbar'
 import Roles4Auth from '~/components/Roles4Auth'
-import type { Role as RoleType } from '~/typings/role'
+import type { Role as RoleType } from '~/typings/boomemory/role'
 import type { AuthType } from '~/components/Roles4Auth'
 
 const Roles = () => {

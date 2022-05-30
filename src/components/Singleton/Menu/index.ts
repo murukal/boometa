@@ -2,7 +2,7 @@
 import path from 'path-browserify'
 import { ResourceCode } from '~/pages/boomemory/Authorizations'
 // project
-import type { Menu } from '~/typings/menu'
+import type { Menu } from '~/typings/boomemory/menu'
 
 export { default } from './Menu'
 

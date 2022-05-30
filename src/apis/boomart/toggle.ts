@@ -2,7 +2,7 @@
 import { gql } from '@apollo/client'
 import type { TypedDocumentNode } from '@apollo/client'
 // project
-import type { DailyClout } from '~/typings/toggle'
+import type { DailyClout } from '~/typings/boomart/toggle'
 
 export const DAILY_CLOUTS: TypedDocumentNode<
   {

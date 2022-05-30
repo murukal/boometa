@@ -8,7 +8,7 @@ import { update } from '~/apis/boomemory/role'
 import { useQuery } from '@apollo/client'
 import { AUTHORIZATION_TREE } from '~/apis/boomemory/auth'
 import type { Props } from '.'
-import { AuthorizationNode } from '~/typings/auth'
+import { AuthorizationNode } from '~/typings/boomemory/auth'
 import { resultNotification } from '~/utils/notification'
 
 const Authorizations = forwardRef<any, Props>((props, ref) => {

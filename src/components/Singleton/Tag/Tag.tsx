@@ -9,7 +9,7 @@ import type { FormInstance } from 'antd'
 import { create, update } from '~/apis/boomart/tag'
 import { SingletonProps } from '..'
 import { customRequest, getUploadParam, getValueFromEvent } from '~/utils/upload'
-import type { Tag as TagType } from '~/typings/tag'
+import type { Tag as TagType } from '~/typings/boomart/tag'
 import type { FormValues } from '.'
 import type { UploadFile } from 'antd/lib/upload/interface'
 

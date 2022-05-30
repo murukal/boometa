@@ -11,7 +11,7 @@ import { getTableRowHandler, useTableQuery } from '~/utils/table'
 import { getColumns } from '.'
 import { DICTIONARIES, remove } from '~/apis/boomemory/dictionary'
 import { getInitialSingleton } from '~/components/Singleton/Dictionary'
-import type { Dictionary as DictionaryType } from '~/typings/dictionary'
+import type { Dictionary as DictionaryType } from '~/typings/boomemory/dictionary'
 
 const Dictionaries = () => {
   const columns = getColumns([

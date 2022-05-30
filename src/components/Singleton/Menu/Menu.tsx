@@ -12,7 +12,7 @@ import { resultNotification } from '~/utils/notification'
 import { useQuery } from '@apollo/client'
 import { AUTHORIZATION_RESOURCES } from '~/apis/boomemory/auth'
 import type { SingletonProps } from '..'
-import type { Menu as MenuType } from '~/typings/menu'
+import type { Menu as MenuType } from '~/typings/boomemory/menu'
 import type { ExtraProps, FormValues } from '.'
 
 const { Item } = Form

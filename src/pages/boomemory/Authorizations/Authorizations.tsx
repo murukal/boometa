@@ -11,7 +11,7 @@ import Singleton from '~/components/Singleton'
 import { getActionColumns, getResourceColumns } from '.'
 import Authorization from '~/components/Singleton/Authorization'
 import type { Authorized, ExtraProps } from '~/components/Singleton/Authorization'
-import type { AuthorizationNode } from '~/typings/auth'
+import type { AuthorizationNode } from '~/typings/boomemory/auth'
 
 const Authorizations = () => {
   const [isAuthorizationOpened, setIsAuthorizationOpened] = useState(false)

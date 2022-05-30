@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { whoAmI } from '~/apis/boomemory/auth'
 import { TOKEN } from '~/assets'
 
-import { User } from '~/typings/auth'
+import { User } from '~/typings/boomemory/auth'
 
 export class UserProfile {
   isLogin = false

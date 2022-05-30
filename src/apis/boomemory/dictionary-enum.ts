@@ -4,7 +4,11 @@ import type { TypedDocumentNode } from '@apollo/client'
 // project
 import { fetcher } from '..'
 import type { PaginateOutput, QueryParams } from '~/typings/api'
-import type { CreateDictionaryEnumInput, DictionaryEnum, UpdateDictionaryEnumInput } from '~/typings/dictionary-enum'
+import type {
+  CreateDictionaryEnumInput,
+  DictionaryEnum,
+  UpdateDictionaryEnumInput
+} from '~/typings/boomemory/dictionary-enum'
 
 /**
  * 查询多个字典枚举

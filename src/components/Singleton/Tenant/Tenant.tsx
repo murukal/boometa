@@ -7,7 +7,7 @@ import { useForm } from 'antd/lib/form/Form'
 import { create, update } from '~/apis/boomemory/tenant'
 import type { FormValues } from '.'
 import type { SingletonProps } from '..'
-import type { Tenant as TenantType } from '~/typings/tenant'
+import type { Tenant as TenantType } from '~/typings/boomemory/tenant'
 
 const Tenant = forwardRef<FormInstance, SingletonProps<TenantType>>((props, ref) => {
   const [form] = useForm<FormValues>()

@@ -1,7 +1,7 @@
 // antd
 import { ColumnsType } from 'antd/lib/table'
 // project
-import type { DictionaryEnum } from '~/typings/dictionary-enum'
+import type { DictionaryEnum } from '~/typings/boomemory/dictionary-enum'
 
 export { default } from './DictionaryEnums'
 

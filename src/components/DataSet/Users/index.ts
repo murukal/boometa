@@ -5,7 +5,7 @@ import { Avatar } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
 import type { TableRowSelection } from 'antd/lib/table/interface'
 // project
-import type { User } from '~/typings/auth'
+import type { User } from '~/typings/boomemory/auth'
 
 export { default } from './Users'
 

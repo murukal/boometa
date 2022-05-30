@@ -1,7 +1,7 @@
 import { gql, TypedDocumentNode } from '@apollo/client'
 import { fetcher } from '..'
 import { PaginateOutput, QueryParams } from '~/typings/api'
-import { CreateEssayInput, Essay, UpdateEssayInput } from '~/typings/essay'
+import { CreateEssayInput, Essay, UpdateEssayInput } from '~/typings/boomart/essay'
 
 /** 查询多个文章 */
 export const ESSAYS: TypedDocumentNode<

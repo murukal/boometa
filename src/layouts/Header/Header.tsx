@@ -8,7 +8,7 @@ import { EditOutlined, ApiOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from 
 import { signOut } from '~/utils/app'
 import type { Props } from '.'
 import type { State } from '~/redux'
-import type { User } from '~/typings/auth'
+import type { User } from '~/typings/boomemory/auth'
 
 const { Title } = Typography
 

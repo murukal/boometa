@@ -1,7 +1,7 @@
 // antd
 import type { ColumnsType } from 'antd/lib/table'
 // project
-import type { Action, Resource } from '~/typings/auth'
+import type { Action, Resource } from '~/typings/boomemory/auth'
 
 export enum ResourceCode {
   Menu = 'Menu',

@@ -1,5 +1,5 @@
 import { ActionCode, ResourceCode } from '~/pages/boomemory/Authorizations'
-import { Core } from '.'
+import { Core } from '..'
 
 export interface User extends Core {
   username: string

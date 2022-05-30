@@ -10,7 +10,7 @@ import { remove, TAGS } from '~/apis/boomart/tag'
 import { getTableRowHandler, useTableQuery } from '~/utils/table'
 import { getColumns } from '.'
 import { getInitialSingleton } from '~/components/Singleton/Tag'
-import type { Tag as TagType } from '~/typings/tag'
+import type { Tag as TagType } from '~/typings/boomart/tag'
 
 const Tags = () => {
   const [isOpened, setIsOpened] = useState(false)

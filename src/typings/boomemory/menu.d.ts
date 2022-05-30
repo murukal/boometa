@@ -1,5 +1,5 @@
 import { ResourceCode } from '~/pages/boomemory/Authorizations'
-import { Core } from '.'
+import { Core } from '..'
 
 export interface Menu extends Core {
   name: string

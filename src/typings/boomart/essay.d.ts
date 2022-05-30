@@ -1,7 +1,7 @@
 // project
-import { Core } from '.'
+import { Core } from '..'
 import { Tag } from './tag'
-import { User } from './auth'
+import { User } from '../boomemory/auth'
 
 export interface Essay extends Core {
   title: string

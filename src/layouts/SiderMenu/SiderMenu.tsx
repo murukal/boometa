@@ -10,7 +10,7 @@ import * as Icons from '@ant-design/icons/lib/icons'
 // third
 import PerfectScrollbar from 'perfect-scrollbar'
 // project
-import type { Menu as MenuType } from '~/typings/menu'
+import type { Menu as MenuType } from '~/typings/boomemory/menu'
 import type { State } from '~/redux'
 import type { ItemType } from 'antd/lib/menu/hooks/useItems'
 import styles from './SiderMenu.module.css'

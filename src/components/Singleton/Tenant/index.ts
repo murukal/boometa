@@ -1,5 +1,5 @@
 // project
-import type { Tenant } from '~/typings/tenant'
+import type { Tenant } from '~/typings/boomemory/tenant'
 
 export { default } from './Tenant'
 

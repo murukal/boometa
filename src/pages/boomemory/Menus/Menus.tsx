@@ -13,8 +13,8 @@ import { getMenuTreeFromMenus } from '~/utils/menu'
 import { getInitialSingleton } from '~/components/Singleton/Menu'
 import { remove } from '~/apis/boomemory/menu'
 import { resultNotification } from '~/utils/notification'
-import type { Tenant } from '~/typings/tenant'
-import type { Menu as MenuType } from '~/typings/menu'
+import type { Tenant } from '~/typings/boomemory/tenant'
+import type { Menu as MenuType } from '~/typings/boomemory/menu'
 
 const Menus = () => {
   const [isOpened, setIsOpened] = useState(false)

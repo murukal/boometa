@@ -1,7 +1,7 @@
 // antd
 import type { UploadFile } from 'antd/lib/upload/interface'
 // project
-import type { Tag } from '~/typings/tag'
+import type { Tag } from '~/typings/boomart/tag'
 
 export { default } from './Tag'
 

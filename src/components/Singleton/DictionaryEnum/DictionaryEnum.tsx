@@ -7,7 +7,7 @@ import { useForm } from 'antd/lib/form/Form'
 import { create, update } from '~/apis/boomemory/dictionary-enum'
 import { SingletonProps } from '..'
 import type { ExtraProps, FormValues } from '.'
-import type { DictionaryEnum as DictionaryEnumType } from '~/typings/dictionary-enum'
+import type { DictionaryEnum as DictionaryEnumType } from '~/typings/boomemory/dictionary-enum'
 
 const { Item } = Form
 

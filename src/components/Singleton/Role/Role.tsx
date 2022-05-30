@@ -7,7 +7,7 @@ import type { FormInstance } from 'antd'
 // project
 import { create, update } from '~/apis/boomemory/role'
 import type { SingletonProps } from '..'
-import type { Role as RoleType } from '~/typings/role'
+import type { Role as RoleType } from '~/typings/boomemory/role'
 
 const { Item } = Form
 

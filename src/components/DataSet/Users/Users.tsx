@@ -5,7 +5,7 @@ import { getColumns } from '.'
 import { useTableQuery } from '~/utils/table'
 import { GET_USERS } from '~/apis/boomemory/auth'
 import type { Props } from '.'
-import type { FilterInput } from '~/typings/auth'
+import type { FilterInput } from '~/typings/boomemory/auth'
 
 const Users = (props: Props) => {
   const columns = getColumns()
