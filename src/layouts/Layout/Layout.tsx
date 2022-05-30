@@ -26,7 +26,9 @@ const Layout = () => {
   /**
    * 未登录
    */
-  if (!isLogin) return <Navigate to='/account/login' replace={true} />
+  if (!isLogin) {
+    return <Navigate to='/account/login' replace={true} />
+  }
 
   return (
     <Wrapper className='h-full'>

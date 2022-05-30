@@ -1,0 +1,38 @@
+.wrapper {
+  width: 32px;
+  height: 32px;
+}
+
+.dropdown-position-wrapper {
+  position: absolute;
+  width: 64px;
+  height: 32px;
+}
+
+.avatar-wrapper {
+  position: relative;
+  transition: all 300ms ease;
+  z-index: 1051;
+}
+
+.avatar-wrapper-unhover {
+  height: 32px;
+  width: 32px;
+  font-size: 8px;
+}
+
+.avatar-wrapper-hovered {
+  height: 64px;
+  width: 64px;
+  font-size: 20px;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: aliceblue;
+}
