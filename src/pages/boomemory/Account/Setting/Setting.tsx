@@ -1,5 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons'
-import { Card, Col, Form, Input, Row, Upload } from 'antd'
+import { Button, Card, Col, Form, Input, Row, Upload } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
@@ -17,6 +17,13 @@ const Setting = () => {
     form.setFieldsValue(user)
   }, [])
 
+  /**
+   * 基本信息保存
+   */
+  const onBaseSave = () => {
+    console.log('12321')
+  }
+
   return (
     <>
       <Card
@@ -24,6 +31,11 @@ const Setting = () => {
         style={{
           marginBottom: 16
         }}
+        extra={
+          <Button onClick={onBaseSave} type='primary'>
+            保存
+          </Button>
+        }
       >
         <Form form={form} labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
           <Row gutter={[32, 8]}>
