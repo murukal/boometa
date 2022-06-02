@@ -1,6 +1,7 @@
 // antd
 import type { UploadChangeParam } from 'antd/lib/upload'
 import type { UploadRequestOption } from 'rc-upload/lib/interface'
+import { store } from '~/redux'
 
 export interface FileProfile {
   url?: string
@@ -31,12 +32,18 @@ export const getValueFromEvent = (e: UploadChangeParam) => {
 
 /** 自定义的上传事件 */
 export const customRequest = async (options: UploadRequestOption) => {
+  const token = store.getState().userProfile.token
   const form = new FormData()
   form.append('file', options.file)
 
   const res = await fetch('/api/upload', {
     method: 'post',
-    body: form
+    body: form,
+    headers: {
+      ...(token && {
+        Authorization: `Bearer ${token}`
+      })
+    }
   })
 
   options.onSuccess && options.onSuccess(await res.text())
