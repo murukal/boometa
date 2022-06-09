@@ -3,6 +3,7 @@ import { gql } from '@apollo/client'
 import type { TypedDocumentNode } from '@apollo/client'
 // project
 import { fetcher } from '..'
+import { AppID } from '~/assets'
 import type { PaginateOutput, QueryParams } from '../../typings/api'
 import type { CreateTagInput, Tag, TopTag, UpdateTagInput } from '../../typings/boomart/tag'
 
@@ -52,6 +53,9 @@ export const remove = (id: number) =>
     mutation: REMOVE,
     variables: {
       id
+    },
+    context: {
+      appId: AppID.Boomart
     }
   })
 
@@ -80,6 +84,9 @@ export const create = (createTagInput: CreateTagInput) =>
     mutation: CREATE,
     variables: {
       createTagInput
+    },
+    context: {
+      appId: AppID.Boomart
     }
   })
 
@@ -104,6 +111,9 @@ export const update = (id: number, updateTagInput: UpdateTagInput) =>
     variables: {
       id,
       updateTagInput
+    },
+    context: {
+      appId: AppID.Boomart
     }
   })
 

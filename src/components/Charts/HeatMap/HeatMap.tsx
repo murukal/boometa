@@ -3,6 +3,7 @@ import { ApexOptions } from 'apexcharts'
 import { useState } from 'react'
 import Chart from 'react-apexcharts'
 import { TOP_TAGS } from '~/apis/boomart/tag'
+import { AppID } from '~/assets'
 import { initializeDates } from '.'
 
 const HeatMap = () => {
@@ -41,6 +42,9 @@ const HeatMap = () => {
           }))
           .reverse()
       )
+    },
+    context: {
+      appId: AppID.Boomart
     }
   })
 

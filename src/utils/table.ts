@@ -75,7 +75,7 @@ export const getTableRowHandler = (handlers: TableRowHandler[]) => {
 export const useTableQuery = <F, T = Record<string, any>>(
   query: TypedDocumentNode<T, QueryParams>,
   params?: Omit<QueryParams<F>, 'paginateInput'>,
-  options?: Pick<QueryHookOptions, 'fetchPolicy'>
+  options?: Pick<QueryHookOptions, 'fetchPolicy' | 'context'>
 ) => {
   // 初始化表格的分页参数
   const [pagination, setPagination] = useState<TablePaginationConfig>({

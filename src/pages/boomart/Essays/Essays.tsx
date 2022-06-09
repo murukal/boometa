@@ -7,6 +7,7 @@ import Toolbar from '~/components/Toolbar'
 import { getColumns } from '.'
 import { getTableRowHandler, useTableQuery } from '~/utils/table'
 import { ESSAYS, remove } from '~/apis/boomart/essay'
+import { AppID } from '~/assets'
 
 const Essays = () => {
   const navigate = useNavigate()
@@ -36,17 +37,27 @@ const Essays = () => {
     }
   ])
 
-  /** hooks获取数据 */
+  /**
+   * hooks获取数据
+   */
   const { data, isLoading, pagination, refetch, onTableChange } = useTableQuery(ESSAYS, undefined, {
-    fetchPolicy: 'no-cache'
+    fetchPolicy: 'no-cache',
+    context: {
+      appId: AppID.Boomart
+    }
   })
 
-  // 删除文章
+  /**
+   * 删除文章
+   */
   const onDelete = (id: number) => async () => {
     const res = await remove(id)
     res.data?.removeEssay && refetch()
   }
 
+  /**
+   * 跳转文章详情
+   */
   const onNavigate = (id?: number) => () => {
     if (id) {
       navigate(`/essay/${id}`)

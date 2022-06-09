@@ -13,18 +13,35 @@ import {
   QueryOptions
 } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
+import { GraphQLError } from 'graphql'
 import type { TypedDocumentNode } from '@apollo/client'
 // project
 import { store } from '~/redux'
-import { GraphQLError } from 'graphql'
+import { AppID } from '~/assets'
 
 const httpLink = createHttpLink({
-  uri: '/graphql'
+  uri: (operation) => {
+    // 根据请求客户端appId标识不同，获取不同的请求地址
+    // 后端对不同的api进行了服务隔离
+    const context = operation.getContext()
+    const appId = context.appId
+
+    // 根据appId获取环境变量中对应的后端api地址
+    const apiUrl =
+      appId === AppID.Boomart
+        ? process.env.REACT_APP_BOOMART_API_URL
+        : appId === AppID.Boomoney
+        ? process.env.REACT_APP_BOOMONEY_API_URL
+        : process.env.REACT_APP_BOOMEMORY_API_URL
+
+    // 返回指定的URL
+    return `${apiUrl}/graphql`
+  }
 })
 
 const authLink = setContext((_, { headers }) => {
-  // get the authentication token from local storage if it exists
   const token = store.getState().userProfile.token
+
   // return the headers to the context so httpLink can read them
   return {
     headers: {

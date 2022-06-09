@@ -1,7 +1,10 @@
+// third
 import { gql, TypedDocumentNode } from '@apollo/client'
+// project
+import { AppID } from '~/assets'
 import { fetcher } from '..'
-import { PaginateOutput, QueryParams } from '~/typings/api'
-import { CreateEssayInput, Essay, UpdateEssayInput } from '~/typings/boomart/essay'
+import type { PaginateOutput, QueryParams } from '~/typings/api'
+import type { CreateEssayInput, Essay, UpdateEssayInput } from '~/typings/boomart/essay'
 
 /** 查询多个文章 */
 export const ESSAYS: TypedDocumentNode<
@@ -44,7 +47,10 @@ const REMOVE: TypedDocumentNode<
 export const remove = (id: number) =>
   fetcher.mutate({
     mutation: REMOVE,
-    variables: { id }
+    variables: { id },
+    context: {
+      appId: AppID.Boomart
+    }
   })
 
 /**
@@ -73,6 +79,9 @@ export const create = (createEssayInput: CreateEssayInput) =>
     mutation: CREATE,
     variables: {
       createEssayInput
+    },
+    context: {
+      appId: AppID.Boomart
     }
   })
 
@@ -99,6 +108,9 @@ export const update = (id: number, updateEssayInput: UpdateEssayInput) =>
     variables: {
       id,
       updateEssayInput
+    },
+    context: {
+      appId: AppID.Boomart
     }
   })
 
@@ -130,5 +142,8 @@ export const getEssay = (id: number) =>
     variables: {
       id
     },
-    fetchPolicy: 'no-cache'
+    fetchPolicy: 'no-cache',
+    context: {
+      appId: AppID.Boomart
+    }
   })

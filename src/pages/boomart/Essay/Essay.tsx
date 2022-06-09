@@ -13,6 +13,7 @@ import Beeeditor from '@fantufantu/beeeditor'
 import type { EditorInstance } from '@fantufantu/beeeditor'
 // project
 import styles from './Essay.module.css'
+import { AppID } from '~/assets'
 import { TAGS } from '~/apis/boomart/tag'
 import { customRequest, getUploadParam, getValueFromEvent } from '~/utils/upload'
 import { create, getEssay, update } from '~/apis/boomart/essay'
@@ -31,7 +32,11 @@ const Essay = () => {
   const urlParams = useParams()
   const navigate = useNavigate()
   const [form] = useForm<FormValues>()
-  const { data } = useQuery(TAGS)
+  const { data } = useQuery(TAGS, {
+    context: {
+      appId: AppID.Boomart
+    }
+  })
   const editor = createRef<EditorInstance>()
 
   /**

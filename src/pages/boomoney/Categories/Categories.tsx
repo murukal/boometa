@@ -3,6 +3,7 @@ import { Card, Table } from 'antd'
 import { useState } from 'react'
 // project
 import { CATEGORIES, remove } from '~/apis/boomoney/category'
+import { AppID } from '~/assets'
 import Singleton from '~/components/Singleton'
 import Category, { getInitialSingleton } from '~/components/Singleton/boomoney/Category'
 import Toolbar from '~/components/Toolbar'
@@ -39,7 +40,11 @@ const Categories = () => {
     }
   ])
 
-  const { data, isLoading, pagination, onTableChange, refetch } = useTableQuery(CATEGORIES)
+  const { data, isLoading, pagination, onTableChange, refetch } = useTableQuery(CATEGORIES, undefined, {
+    context: {
+      appId: AppID.Boomoney
+    }
+  })
 
   /**
    * 打开侧边栏

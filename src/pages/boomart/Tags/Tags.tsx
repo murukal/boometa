@@ -3,6 +3,7 @@ import { useState } from 'react'
 // antd
 import { Table } from 'antd'
 // project
+import { AppID } from '~/assets'
 import Toolbar from '~/components/Toolbar'
 import Singleton from '~/components/Singleton'
 import Tag from '~/components/Singleton/Tag'
@@ -16,10 +17,18 @@ const Tags = () => {
   const [isOpened, setIsOpened] = useState(false)
   const [tag, setTag] = useState<TagType>(getInitialSingleton())
 
-  /** table hooks */
-  const { data, isLoading, pagination, refetch, onTableChange } = useTableQuery(TAGS)
+  /**
+   * table hooks
+   */
+  const { data, isLoading, pagination, refetch, onTableChange } = useTableQuery(TAGS, undefined, {
+    context: {
+      appId: AppID.Boomart
+    }
+  })
 
-  /** table column */
+  /**
+   * table column
+   */
   const columns = getColumns([
     {
       title: '操作',

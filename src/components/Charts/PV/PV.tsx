@@ -7,6 +7,7 @@ import type { ApexOptions } from 'apexcharts'
 // project
 import { DAILY_CLOUTS } from '~/apis/boomart/toggle'
 import { initializeDates } from '.'
+import { AppID } from '~/assets'
 
 const PV = () => {
   const [dates] = useState(initializeDates)
@@ -32,6 +33,9 @@ const PV = () => {
     variables: {
       from: dates.at(0)?.toDate() as Date,
       to: dates.at(dates.length - 1)?.toDate() as Date
+    },
+    context: {
+      appId: AppID.Boomart
     },
     onCompleted: (data) => {
       setSeries(
