@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import type { Key } from 'react'
 // antd
-import { Card, Table, Tree } from 'antd'
+import { Card, Table, Tree, Typography } from 'antd'
 // third
 import { useQuery } from '@apollo/client'
 // project
@@ -12,6 +12,8 @@ import { getActionColumns, getResourceColumns } from '.'
 import Authorization from '~/components/Singleton/Authorization'
 import type { Authorized, ExtraProps } from '~/components/Singleton/Authorization'
 import type { AuthorizationNode } from '~/typings/boomemory/auth'
+
+const { Text, Link } = Typography
 
 const Authorizations = () => {
   const [isAuthorizationOpened, setIsAuthorizationOpened] = useState(false)
@@ -117,6 +119,18 @@ const Authorizations = () => {
           onSelect={onSelect}
           expandedKeys={expandedKeys}
           onExpand={onExpand}
+          titleRender={(node) => {
+            if (node.__typename === 'AuthorizationNode') {
+              return (
+                <Link>
+                  {node.title}
+                  {node.children?.length ? ` (${node.children.length})` : ''}
+                </Link>
+              )
+            } else {
+              return <Text>{node.title}</Text>
+            }
+          }}
         />
 
         <Singleton
