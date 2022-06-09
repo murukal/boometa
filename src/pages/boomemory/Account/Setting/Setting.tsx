@@ -20,9 +20,7 @@ const Setting = () => {
   /**
    * 基本信息保存
    */
-  const onBaseSave = () => {
-    console.log('12321')
-  }
+  const onBaseSave = () => {}
 
   return (
     <>
