@@ -52,40 +52,38 @@ const Tag = forwardRef<FormInstance, SingletonProps<TagType>>((props, ref) => {
   }
 
   return (
-    <>
-      <Form form={form} ref={ref} onFinish={onSubmit} labelCol={{ span: 6 }} initialValues={initialValues}>
-        <Item
-          label='标签名称'
-          name='name'
-          rules={[
-            {
-              required: true
-            }
-          ]}
-        >
-          <Input />
-        </Item>
+    <Form form={form} ref={ref} onFinish={onSubmit} labelCol={{ span: 6 }} initialValues={initialValues}>
+      <Item
+        label='标签名称'
+        name='name'
+        rules={[
+          {
+            required: true
+          }
+        ]}
+      >
+        <Input />
+      </Item>
 
-        <Item
-          label='封面图'
-          name='fileList'
-          valuePropName='fileList'
-          rules={[
-            {
-              required: true,
-              validator: async (_, fileList?: UploadFile[]) => {
-                if (!fileList?.length) throw new Error('请输入封面图')
-              }
+      <Item
+        label='封面图'
+        name='fileList'
+        valuePropName='fileList'
+        rules={[
+          {
+            required: true,
+            validator: async (_, fileList?: UploadFile[]) => {
+              if (!fileList?.length) throw new Error('请输入封面图')
             }
-          ]}
-          getValueFromEvent={getValueFromEvent}
-        >
-          <Upload listType='picture-card' maxCount={1} customRequest={customRequest}>
-            <PlusOutlined />
-          </Upload>
-        </Item>
-      </Form>
-    </>
+          }
+        ]}
+        getValueFromEvent={getValueFromEvent}
+      >
+        <Upload listType='picture-card' maxCount={1} customRequest={customRequest}>
+          <PlusOutlined />
+        </Upload>
+      </Item>
+    </Form>
   )
 })
 
