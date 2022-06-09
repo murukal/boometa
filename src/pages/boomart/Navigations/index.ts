@@ -1,7 +1,7 @@
 import { ColumnsType } from 'antd/lib/table'
 import { Navigation } from '~/typings/boomart/navigation'
 
-export { default } from './Navigation'
+export { default } from './Navigations'
 
 type NavigationColumns = ColumnsType<Navigation>
 
