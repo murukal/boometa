@@ -1,14 +1,17 @@
-import { Card, Table } from 'antd'
+// react
 import { useState } from 'react'
+// antd
+import { Card, Table } from 'antd'
+// project
+import { useColumns } from '.'
 import { NAVIGATIONS, remove } from '~/apis/boomart/navigation'
 import { AppID } from '~/assets'
 import Singleton from '~/components/Singleton'
 import Navigation, { getInitialSingleton } from '~/components/Singleton/boomart/Navigation'
 import Toolbar from '~/components/Toolbar'
-import { Navigation as NavigationType } from '~/typings/boomart/navigation'
 import { resultNotification } from '~/utils/notification'
 import { getTableRowHandler, useTableQuery } from '~/utils/table'
-import { useColumns } from '.'
+import type { Navigation as NavigationType } from '~/typings/boomart/navigation'
 
 const Navigations = () => {
   const [isOpened, setIsOpened] = useState(false)
