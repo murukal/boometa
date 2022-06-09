@@ -99,7 +99,6 @@ const Authorizations = () => {
   return (
     <div
       style={{
-        height: '100%',
         display: 'grid',
         grid: '"authorizations resources" "authorizations actions"',
         gap: '12px'
