@@ -6,7 +6,9 @@ import { fetcher } from '..'
 import type { PaginateOutput, QueryParams } from '~/typings/api'
 import type { CreateEssayInput, Essay, UpdateEssayInput } from '~/typings/boomart/essay'
 
-/** 查询多个文章 */
+/**
+ * 分页查询文章
+ */
 export const ESSAYS: TypedDocumentNode<
   {
     essays: PaginateOutput<Essay>

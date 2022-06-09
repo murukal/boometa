@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Card, Table } from 'antd'
 // project
 import { getTableRowHandler, useTableQuery } from '~/utils/table'
-import { getColumns } from '.'
+import { useColumns } from '.'
 import { remove, ROLES } from '~/apis/boomemory/role'
 import Singleton from '~/components/Singleton'
 import Role from '~/components/Singleton/Role'
@@ -15,12 +15,12 @@ import type { Role as RoleType } from '~/typings/boomemory/role'
 import type { AuthType } from '~/components/Roles4Auth'
 
 const Roles = () => {
-  const [role, setRole] = useState(getInitialSingleton())
+  const [role, setRole] = useState(getInitialSingleton)
   const [isOpened, setIsOpened] = useState(false)
   const [isShow, setIsShow] = useState(false)
   const [actived, setActived] = useState<AuthType>('user')
 
-  const columns = getColumns([
+  const columns = useColumns([
     {
       title: '操作',
       width: 100,

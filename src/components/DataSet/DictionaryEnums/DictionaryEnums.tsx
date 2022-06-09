@@ -6,7 +6,7 @@ import { Table } from 'antd'
 import Singleton from '../../Singleton'
 import DictionaryEnum from '../../Singleton/DictionaryEnum'
 import Toolbar from '../../Toolbar'
-import { getColumns } from '.'
+import { useColumns } from '.'
 import { DICTIONARY_ENUMS, remove } from '~/apis/boomemory/dictionary-enum'
 import { getTableRowHandler, useTableQuery } from '~/utils/table'
 import { getInitialSingleton } from '../../Singleton/DictionaryEnum'
@@ -15,9 +15,9 @@ import type { DictionaryEnum as DictionaryEnumType } from '~/typings/boomemory/d
 
 const DictionaryEnums = (props: Props) => {
   const [isOpened, setIsOpened] = useState(false)
-  const [dictionaryEnum, setDictionaryEnum] = useState<DictionaryEnumType>(getInitialSingleton())
+  const [dictionaryEnum, setDictionaryEnum] = useState<DictionaryEnumType>(getInitialSingleton)
 
-  const columns = getColumns([
+  const columns = useColumns([
     {
       title: '操作',
       width: 100,

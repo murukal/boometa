@@ -13,7 +13,7 @@ export { default } from './Tags'
  * @param columns
  * @returns
  */
-export const getColumns = <T = Tag>(columns?: ColumnsType<T>): ColumnsType<T> => [
+export const useColumns = <T = Tag>(columns?: ColumnsType<T>): ColumnsType<T> => [
   {
     title: '标签名称',
     dataIndex: 'name',

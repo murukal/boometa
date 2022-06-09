@@ -6,7 +6,7 @@ import { Card, Table } from 'antd'
 import Tenant from '~/components/Singleton/Tenant'
 import Toolbar from '~/components/Toolbar'
 import Singleton from '~/components/Singleton'
-import { getColumns } from '.'
+import { useColumns } from '.'
 import { remove, TENANTS } from '~/apis/boomemory/tenant'
 import { getInitialTenant } from '~/components/Singleton/Tenant'
 import { getTableRowHandler, useTableQuery } from '~/utils/table'
@@ -16,7 +16,7 @@ const Tenants = () => {
   const [isOpened, setIsOpened] = useState(false)
   const [tenant, setTenant] = useState<TenantType>(getInitialTenant())
 
-  const columns = getColumns([
+  const columns = useColumns([
     {
       title: '操作',
       align: 'center',

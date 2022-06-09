@@ -10,7 +10,7 @@ export { default } from './Tenants'
  * @param columns
  * @returns
  */
-export const getColumns = <T = Tenant>(columns?: ColumnsType<T>): ColumnsType<T> => [
+export const useColumns = <T = Tenant>(columns?: ColumnsType<T>): ColumnsType<T> => [
   {
     title: '租户代码',
     dataIndex: 'code',

@@ -13,7 +13,7 @@ import { useColumns } from '.'
 
 const Categories = () => {
   const [isOpened, setIsOpened] = useState(false)
-  const [category, setCategory] = useState<CategoryType>(getInitialSingleton())
+  const [category, setCategory] = useState<CategoryType>(getInitialSingleton)
 
   const columns = useColumns([
     {

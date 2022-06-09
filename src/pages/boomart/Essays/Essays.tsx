@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { Card, Table } from 'antd'
 // project
 import Toolbar from '~/components/Toolbar'
-import { getColumns } from '.'
+import { useColumns } from '.'
 import { getTableRowHandler, useTableQuery } from '~/utils/table'
 import { ESSAYS, remove } from '~/apis/boomart/essay'
 import { AppID } from '~/assets'
@@ -12,7 +12,7 @@ import { AppID } from '~/assets'
 const Essays = () => {
   const navigate = useNavigate()
 
-  const columns = getColumns([
+  const columns = useColumns([
     {
       title: '操作',
       width: 100,

@@ -5,8 +5,8 @@ import { Button, Divider, Space, Table, Popconfirm, Card } from 'antd'
 // project
 import Menu from '~/components/Singleton/Menu'
 import Singleton from '~/components/Singleton'
-import { getColumns as getMenuColumns } from '.'
-import { getColumns as getTenantColumns } from '../Tenants'
+import { useColumns as getMenuColumns } from '.'
+import { useColumns as getTenantColumns } from '../Tenants'
 import { useTableQuery } from '~/utils/table'
 import { TENANTS_WITH_MENUS } from '~/apis/boomemory/tenant'
 import { getMenuTreeFromMenus } from '~/utils/menu'
@@ -20,7 +20,7 @@ const Menus = () => {
   const [isOpened, setIsOpened] = useState(false)
   const [tenantCode, setTenantCode] = useState('')
   const [parentId, setParentId] = useState<number>()
-  const [menu, setMenu] = useState<MenuType>(getInitialSingleton())
+  const [menu, setMenu] = useState<MenuType>(getInitialSingleton)
 
   /** hooks 请求数据 */
   const { data, isLoading, refetch } = useTableQuery(TENANTS_WITH_MENUS)
@@ -80,7 +80,9 @@ const Menus = () => {
     setIsOpened(false)
   }
 
-  /** 抽屉打开事件 */
+  /**
+   * 抽屉打开事件
+   */
   const onOpen =
     (tenantCode: string, parentId?: number, menu: MenuType = getInitialSingleton()) =>
     () => {

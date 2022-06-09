@@ -11,10 +11,8 @@ export interface Props {
 
 /**
  * 获取字典枚举表格列
- * @param columns
- * @returns
  */
-export const getColumns = <T = DictionaryEnum>(columns?: ColumnsType<T>): ColumnsType<T> => [
+export const useColumns = <T = DictionaryEnum>(columns?: ColumnsType<T>): ColumnsType<T> => [
   {
     title: '枚举描述',
     dataIndex: 'description',

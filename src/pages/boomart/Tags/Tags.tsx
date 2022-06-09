@@ -9,13 +9,13 @@ import Singleton from '~/components/Singleton'
 import Tag from '~/components/Singleton/Tag'
 import { remove, TAGS } from '~/apis/boomart/tag'
 import { getTableRowHandler, useTableQuery } from '~/utils/table'
-import { getColumns } from '.'
+import { useColumns } from '.'
 import { getInitialSingleton } from '~/components/Singleton/Tag'
 import type { Tag as TagType } from '~/typings/boomart/tag'
 
 const Tags = () => {
   const [isOpened, setIsOpened] = useState(false)
-  const [tag, setTag] = useState<TagType>(getInitialSingleton())
+  const [tag, setTag] = useState<TagType>(getInitialSingleton)
 
   /**
    * table hooks
@@ -29,7 +29,7 @@ const Tags = () => {
   /**
    * table column
    */
-  const columns = getColumns([
+  const columns = useColumns([
     {
       title: '操作',
       width: 100,
@@ -54,7 +54,9 @@ const Tags = () => {
     }
   ])
 
-  /** 打开抽屉 */
+  /**
+   * 打开抽屉
+   */
   const onOpen =
     (tag = getInitialSingleton()) =>
     () => {

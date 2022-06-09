@@ -10,7 +10,7 @@ export { default } from './Essays'
  * @param columns
  * @returns
  */
-export const getColumns = <T = Essay>(columns?: ColumnsType<T>): ColumnsType<T> => [
+export const useColumns = <T = Essay>(columns?: ColumnsType<T>): ColumnsType<T> => [
   {
     title: '文章标题',
     dataIndex: 'title',

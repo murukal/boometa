@@ -10,7 +10,7 @@ export { default } from './Roles'
  * @param columns
  * @returns
  */
-export const getColumns = <T = Role>(columns?: ColumnsType<T>): ColumnsType<T> => [
+export const useColumns = <T = Role>(columns?: ColumnsType<T>): ColumnsType<T> => [
   {
     title: '角色名称',
     dataIndex: 'name',

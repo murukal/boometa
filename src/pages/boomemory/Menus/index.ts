@@ -7,10 +7,8 @@ export { default } from './Menus'
 
 /**
  * 获取菜单表格列
- * @param columns
- * @returns
  */
-export const getColumns = <T = Menu>(columns?: ColumnsType<T>): ColumnsType<T> => [
+export const useColumns = <T = Menu>(columns?: ColumnsType<T>): ColumnsType<T> => [
   {
     title: '菜单描述',
     dataIndex: 'name',

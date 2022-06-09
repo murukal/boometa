@@ -17,10 +17,8 @@ export interface Props {
 
 /**
  * 获取的用户清单的列
- * @param columns
- * @returns
  */
-export const getColumns = <T = User>(columns?: ColumnsType<T>): ColumnsType<T> => [
+export const useColumns = <T = User>(columns?: ColumnsType<T>): ColumnsType<T> => [
   {
     title: '用户名',
     dataIndex: 'username',

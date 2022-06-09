@@ -7,10 +7,8 @@ export { default } from './Dictionaries'
 
 /**
  * 获取字典表格列
- * @param columns
- * @returns
  */
-export const getColumns = <T = Dictionary>(columns?: ColumnsType<T>): ColumnsType<T> => [
+export const useColumns = <T = Dictionary>(columns?: ColumnsType<T>): ColumnsType<T> => [
   {
     title: '字典Code',
     dataIndex: 'code',

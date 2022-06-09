@@ -30,7 +30,9 @@ const Tag = forwardRef<FormInstance, SingletonProps<TagType>>((props, ref) => {
     }
   }, [props.singleton])
 
-  /** 表单提交事件 */
+  /**
+   * 表单提交事件
+   */
   const onSubmit = async () => {
     const formValues = form.getFieldsValue()
 

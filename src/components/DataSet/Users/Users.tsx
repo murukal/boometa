@@ -1,14 +1,14 @@
 // antd
 import { Table } from 'antd'
 // project
-import { getColumns } from '.'
+import { useColumns } from '.'
 import { useTableQuery } from '~/utils/table'
 import { GET_USERS } from '~/apis/boomemory/auth'
 import type { Props } from '.'
 import type { FilterInput } from '~/typings/boomemory/auth'
 
 const Users = (props: Props) => {
-  const columns = getColumns()
+  const columns = useColumns()
 
   const { data, isLoading, pagination, onTableChange } = useTableQuery<FilterInput>(GET_USERS, {
     filterInput: {
