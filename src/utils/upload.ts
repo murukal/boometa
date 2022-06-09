@@ -1,6 +1,8 @@
 // antd
 import type { UploadChangeParam } from 'antd/lib/upload'
+import type { UploadFile } from 'antd/lib/upload/interface'
 import type { UploadRequestOption } from 'rc-upload/lib/interface'
+// project
 import { store } from '~/redux'
 
 export interface FileProfile {
@@ -13,7 +15,7 @@ export interface FileProfile {
 export const getUploadParam = (fileProfile: FileProfile): UploadChangeParam | undefined => {
   if (!fileProfile.url) return
 
-  const file = {
+  const file: UploadFile = {
     uid: fileProfile.id.toString(),
     name: fileProfile.name,
     thumbUrl: fileProfile.url
