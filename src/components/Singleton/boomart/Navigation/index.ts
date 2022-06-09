@@ -11,5 +11,5 @@ export const getInitialSingleton = (): Navigation => ({
 export interface FormValues {
   title: string
   fileList: UploadFile[]
-  tagIds: number[]
+  tagIds?: number[]
 }

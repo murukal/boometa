@@ -38,7 +38,7 @@ export const customRequest = async (options: UploadRequestOption) => {
   const form = new FormData()
   form.append('file', options.file)
 
-  const res = await fetch('/api/upload', {
+  const res = await fetch(process.env.REACT_APP_BOOMEMORY_API_URL + '/upload', {
     method: 'post',
     body: form,
     headers: {
