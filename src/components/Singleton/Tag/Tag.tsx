@@ -12,6 +12,7 @@ import { customRequest, getUploadParam, getValueFromEvent } from '~/utils/upload
 import type { Tag as TagType } from '~/typings/boomart/tag'
 import type { FormValues } from '.'
 import type { UploadFile } from 'antd/lib/upload/interface'
+import { resultNotification } from '~/utils/notification'
 
 const { Item } = Form
 
@@ -33,26 +34,24 @@ const Tag = forwardRef<FormInstance, SingletonProps<TagType>>((props, ref) => {
   /**
    * 表单提交事件
    */
-  const onSubmit = async () => {
-    const formValues = form.getFieldsValue()
-
-    const params = {
-      name: formValues.name,
-      image: formValues.fileList.at(0)?.response
+  const onFinish = async (values: FormValues) => {
+    const tagInput = {
+      name: values.name,
+      image: values.fileList.at(0)?.response || values.fileList.at(0)?.thumbUrl || ''
     }
 
     const handlers = {
-      create: () => create(params),
-      update: () => update(props.singleton.id, params)
+      create: () => create(tagInput),
+      update: () => update(props.singleton.id, tagInput)
     }
 
-    const handler = handlers[props.singleton.id ? 'update' : 'create']
-    const res = await handler()
-    props.onSubmitted(res)
+    const result = await handlers[props.singleton.id ? 'update' : 'create']()
+    resultNotification(result)
+    result.data && props.onSubmitted(result)
   }
 
   return (
-    <Form form={form} ref={ref} onFinish={onSubmit} labelCol={{ span: 6 }} initialValues={initialValues}>
+    <Form form={form} ref={ref} onFinish={onFinish} labelCol={{ span: 6 }} initialValues={initialValues}>
       <Item
         label='标签名称'
         name='name'

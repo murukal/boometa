@@ -27,12 +27,16 @@ export const getUploadParam = (fileProfile: FileProfile): UploadChangeParam | un
   }
 }
 
-/** 上传组件参数解析 */
+/**
+ * 上传组件参数解析
+ */
 export const getValueFromEvent = (e: UploadChangeParam) => {
   return e.fileList
 }
 
-/** 自定义的上传事件 */
+/**
+ * 自定义的上传事件
+ */
 export const customRequest = async (options: UploadRequestOption) => {
   const token = store.getState().userProfile.token
   const form = new FormData()

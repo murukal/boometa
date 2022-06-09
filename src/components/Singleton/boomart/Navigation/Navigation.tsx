@@ -9,6 +9,8 @@ import { PlusOutlined } from '@ant-design/icons'
 import { useQuery } from '@apollo/client'
 import { TAGS } from '~/apis/boomart/tag'
 import { AppID } from '~/assets'
+import { create, update } from '~/apis/boomart/navigation'
+import { resultNotification } from '~/utils/notification'
 
 const Navigation = forwardRef<FormInstance, SingletonProps<NavigationType>>((props, ref) => {
   const [form] = useForm<FormValues>()
@@ -32,7 +34,7 @@ const Navigation = forwardRef<FormInstance, SingletonProps<NavigationType>>((pro
   /**
    * 标签列表
    */
-  const { data: tags } = useQuery(TAGS, {
+  const { data: tags, loading: isTagsLoading } = useQuery(TAGS, {
     context: {
       appId: AppID.Boomart
     }
@@ -41,7 +43,23 @@ const Navigation = forwardRef<FormInstance, SingletonProps<NavigationType>>((pro
   /**
    * 表单提交
    */
-  const onFinish = (values: FormValues) => {}
+  const onFinish = async (values: FormValues) => {
+    // 生成需要的提交数据
+    const navigationInput = {
+      title: values.title,
+      tagIds: values.tagIds || [],
+      cover: values.fileList.at(0)?.response || values.fileList.at(0)?.thumbUrl || ''
+    }
+
+    const handlers = {
+      create: () => create(navigationInput),
+      update: () => update(props.singleton.id, navigationInput)
+    }
+
+    const result = await handlers[props.singleton.id ? 'update' : 'create']()
+    resultNotification(result)
+    result.data && props.onSubmitted(result)
+  }
 
   /**
    * UI
@@ -71,6 +89,7 @@ const Navigation = forwardRef<FormInstance, SingletonProps<NavigationType>>((pro
       >
         <Select
           mode='multiple'
+          loading={isTagsLoading}
           options={tags?.tags.items?.map((tag) => ({
             value: tag.id,
             label: tag.name

@@ -89,19 +89,16 @@ const Essay = () => {
 
       // 处理需要提交的数据
       const formValues = form.getFieldsValue()
-      const params: CreateEssayInput = {
+      const essayInput: CreateEssayInput = {
         title,
         content: JSON.stringify(editor.current?.getEditorState().toJSON()) || '',
-        cover: formValues.fileList?.at(0)?.response?.data || '',
+        cover: formValues.fileList?.at(0)?.response || formValues.fileList?.at(0)?.thumbUrl || '',
         tagIds: formValues.tagIds
       }
 
       const handlers = {
-        create: () => create(params),
-        update: () => {
-          if (!urlParams.id) return
-          return update(Number(urlParams.id), params)
-        }
+        create: () => create(essayInput),
+        update: () => update(Number(urlParams.id), essayInput)
       }
 
       const result = await handlers[urlParams.id ? 'update' : 'create']()

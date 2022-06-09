@@ -7,3 +7,17 @@ export interface Navigation {
   // 关联的标签
   tags?: Tag[]
 }
+
+/**
+ * 创建导航
+ */
+export interface CreateNavigationInput {
+  title: string
+  cover?: string
+  tagIds: number[]
+}
+
+/**
+ * 更新导航
+ */
+export interface UpdateNavigationInput extends Partial<CreateNavigationInput> {}
