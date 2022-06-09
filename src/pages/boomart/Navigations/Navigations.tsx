@@ -1,6 +1,6 @@
 import { Card, Table } from 'antd'
 import { useState } from 'react'
-import { NAVIGATIONS } from '~/apis/boomart/navigations'
+import { NAVIGATIONS } from '~/apis/boomart/navigation'
 import { AppID } from '~/assets'
 import Singleton from '~/components/Singleton'
 import Navigation, { getInitialSingleton } from '~/components/Singleton/boomart/Navigation'

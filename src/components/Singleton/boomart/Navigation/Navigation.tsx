@@ -39,10 +39,15 @@ const Navigation = forwardRef<FormInstance, SingletonProps<NavigationType>>((pro
   })
 
   /**
+   * 表单提交
+   */
+  const onFinish = (values: FormValues) => {}
+
+  /**
    * UI
    */
   return (
-    <Form form={form} initialValues={initialValues} ref={ref} labelCol={{ span: 6 }}>
+    <Form form={form} initialValues={initialValues} ref={ref} labelCol={{ span: 6 }} onFinish={onFinish}>
       <Form.Item
         label='导航标题'
         name='title'
