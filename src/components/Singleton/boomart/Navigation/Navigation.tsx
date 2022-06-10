@@ -1,16 +1,22 @@
-import { Form, FormInstance, Input, Select, Upload } from 'antd'
+// react
 import { forwardRef, useMemo } from 'react'
-import { SingletonProps } from '../..'
-import { Navigation as NavigationType } from '~/typings/boomart/navigation'
-import { useForm } from 'antd/lib/form/Form'
-import { FormValues } from '.'
-import { customRequest, getUploadParam, getValueFromEvent } from '~/utils/upload'
+// antd
+import { Form, FormInstance, Input, Select, Upload } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
+import { useForm } from 'antd/lib/form/Form'
+// third
 import { useQuery } from '@apollo/client'
+// project
+import { customRequest, getUploadParam, getValueFromEvent } from '~/utils/upload'
 import { TAGS } from '~/apis/boomart/tag'
 import { AppID } from '~/assets'
 import { create, update } from '~/apis/boomart/navigation'
 import { resultNotification } from '~/utils/notification'
+import type { SingletonProps } from '../..'
+import type { Navigation as NavigationType } from '~/typings/boomart/navigation'
+import type { FormValues } from '.'
+
+const { TextArea } = Input
 
 const Navigation = forwardRef<FormInstance, SingletonProps<NavigationType>>((props, ref) => {
   const [form] = useForm<FormValues>()
@@ -27,7 +33,8 @@ const Navigation = forwardRef<FormInstance, SingletonProps<NavigationType>>((pro
           name: props.singleton.title,
           url: props.singleton.cover
         })?.fileList || [],
-      tagIds: props.singleton.tags?.map((tag) => tag.id)
+      tagIds: props.singleton.tags?.map((tag) => tag.id),
+      link: props.singleton.link
     }
   }, [props.singleton])
 
@@ -48,7 +55,8 @@ const Navigation = forwardRef<FormInstance, SingletonProps<NavigationType>>((pro
     const navigationInput = {
       title: values.title,
       tagIds: values.tagIds || [],
-      cover: values.fileList.at(0)?.response || values.fileList.at(0)?.thumbUrl || ''
+      cover: values.fileList.at(0)?.response || values.fileList.at(0)?.thumbUrl || '',
+      link: values.link
     }
 
     const handlers = {
@@ -101,6 +109,18 @@ const Navigation = forwardRef<FormInstance, SingletonProps<NavigationType>>((pro
         <Upload listType='picture-card' maxCount={1} customRequest={customRequest}>
           <PlusOutlined />
         </Upload>
+      </Form.Item>
+
+      <Form.Item
+        label='导航地址'
+        name='link'
+        rules={[
+          {
+            required: true
+          }
+        ]}
+      >
+        <TextArea autoSize={{ minRows: 3, maxRows: 8 }} />
       </Form.Item>
     </Form>
   )

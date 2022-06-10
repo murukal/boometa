@@ -2,10 +2,10 @@
 import { gql } from '@apollo/client'
 import type { TypedDocumentNode } from '@apollo/client'
 // project
-import type { PaginateOutput, QueryParams } from '~/typings/api'
-import type { CreateNavigationInput, Navigation, UpdateNavigationInput } from '~/typings/boomart/navigation'
 import { fetcher } from '..'
 import { AppID } from '~/assets'
+import type { PaginateOutput, QueryParams } from '~/typings/api'
+import type { CreateNavigationInput, Navigation, UpdateNavigationInput } from '~/typings/boomart/navigation'
 
 /**
  * 分页查询文章
@@ -22,6 +22,7 @@ export const NAVIGATIONS: TypedDocumentNode<
         id
         title
         cover
+        link
         tags {
           id
           name

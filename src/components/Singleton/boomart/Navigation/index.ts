@@ -5,11 +5,13 @@ export { default } from './Navigation'
 
 export const getInitialSingleton = (): Navigation => ({
   id: 0,
-  title: ''
+  title: '',
+  link: ''
 })
 
 export interface FormValues {
   title: string
   fileList: UploadFile[]
   tagIds?: number[]
+  link: string
 }

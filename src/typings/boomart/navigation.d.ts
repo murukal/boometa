@@ -4,6 +4,7 @@ export interface Navigation {
   id: number
   title: string
   cover?: string
+  link: string
   // 关联的标签
   tags?: Tag[]
 }
@@ -14,6 +15,7 @@ export interface Navigation {
 export interface CreateNavigationInput {
   title: string
   cover?: string
+  link: string
   tagIds: number[]
 }
 
