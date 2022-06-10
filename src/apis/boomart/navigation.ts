@@ -21,6 +21,7 @@ export const NAVIGATIONS: TypedDocumentNode<
       items {
         id
         title
+        subtitle
         cover
         link
         tags {
