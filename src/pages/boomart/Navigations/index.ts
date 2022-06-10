@@ -15,7 +15,7 @@ type NavigationColumns = ColumnsType<Navigation>
 
 export const useColumns = (columns?: NavigationColumns): NavigationColumns => [
   {
-    title: '名称',
+    title: '标题',
     dataIndex: 'title',
     width: 100,
     render: (value, navigation) =>
@@ -24,6 +24,11 @@ export const useColumns = (columns?: NavigationColumns): NavigationColumns => [
         children: value,
         target: '_blank'
       })
+  },
+  {
+    title: '副标题',
+    dataIndex: 'subtitle',
+    width: 100
   },
   {
     title: '关联标签',

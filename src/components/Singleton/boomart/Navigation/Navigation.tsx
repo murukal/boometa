@@ -27,6 +27,7 @@ const Navigation = forwardRef<FormInstance, SingletonProps<NavigationType>>((pro
   const initialValues = useMemo<FormValues>(() => {
     return {
       title: props.singleton.title,
+      subtitle: props.singleton.subtitle,
       fileList:
         getUploadParam({
           id: props.singleton.id,
@@ -54,6 +55,7 @@ const Navigation = forwardRef<FormInstance, SingletonProps<NavigationType>>((pro
     // 生成需要的提交数据
     const navigationInput = {
       title: values.title,
+      subtitle: values.subtitle,
       tagIds: values.tagIds || [],
       cover: values.fileList.at(0)?.response || values.fileList.at(0)?.thumbUrl || '',
       link: values.link
@@ -75,7 +77,7 @@ const Navigation = forwardRef<FormInstance, SingletonProps<NavigationType>>((pro
   return (
     <Form form={form} initialValues={initialValues} ref={ref} labelCol={{ span: 6 }} onFinish={onFinish}>
       <Form.Item
-        label='导航标题'
+        label='标题'
         name='title'
         rules={[
           {
@@ -87,7 +89,19 @@ const Navigation = forwardRef<FormInstance, SingletonProps<NavigationType>>((pro
       </Form.Item>
 
       <Form.Item
-        label='导航标签'
+        label='副标题'
+        name='subtitle'
+        rules={[
+          {
+            required: true
+          }
+        ]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        label='标签'
         name='tagIds'
         rules={[
           {
@@ -105,14 +119,14 @@ const Navigation = forwardRef<FormInstance, SingletonProps<NavigationType>>((pro
         />
       </Form.Item>
 
-      <Form.Item label='导航封面' name='fileList' valuePropName='fileList' getValueFromEvent={getValueFromEvent}>
+      <Form.Item label='封面' name='fileList' valuePropName='fileList' getValueFromEvent={getValueFromEvent}>
         <Upload listType='picture-card' maxCount={1} customRequest={customRequest}>
           <PlusOutlined />
         </Upload>
       </Form.Item>
 
       <Form.Item
-        label='导航地址'
+        label='外链'
         name='link'
         rules={[
           {

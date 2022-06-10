@@ -3,6 +3,7 @@ import { Tag } from './tag'
 export interface Navigation {
   id: number
   title: string
+  subtitle: string
   cover?: string
   link: string
   // 关联的标签
@@ -14,6 +15,7 @@ export interface Navigation {
  */
 export interface CreateNavigationInput {
   title: string
+  subtitle: string
   cover?: string
   link: string
   tagIds: number[]
