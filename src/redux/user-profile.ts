@@ -1,8 +1,9 @@
+// redux
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { whoAmI } from '~/apis/boomemory/auth'
+// project
+import { whoAmI } from '~/apis/boomemory/user'
 import { TOKEN } from '~/assets'
-
-import { User } from '~/typings/boomemory/auth'
+import type { User } from '~/typings/boomemory/auth'
 
 export class UserProfile {
   isLogin = false

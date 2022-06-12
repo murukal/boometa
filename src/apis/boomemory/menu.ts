@@ -2,7 +2,7 @@
 import { gql, TypedDocumentNode } from '@apollo/client'
 // project
 import { fetcher } from '..'
-import { PaginateOutput } from '~/typings/api'
+import type { PaginateOutput } from '~/typings/api'
 import type { Menu, CreateMenuInput, UpdateMenuInput, FilterInput } from '~/typings/boomemory/menu'
 
 /**
