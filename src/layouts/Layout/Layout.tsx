@@ -16,7 +16,7 @@ const { Title } = Typography
 
 const Layout = () => {
   const [isFolded, setIsFolded] = useState(false)
-  const isLogin = useSelector<State>((state) => state.userProfile.isLogin)
+  const isLoggedIn = useSelector<State>((state) => state.userProfile.isLoggedIn)
 
   /**
    * 侧边导航栏折叠功能
@@ -26,7 +26,7 @@ const Layout = () => {
   /**
    * 未登录
    */
-  if (!isLogin) {
+  if (!isLoggedIn) {
     return <Navigate to='/account/login' replace={true} />
   }
 

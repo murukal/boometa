@@ -9,10 +9,10 @@ import type { State } from '~/redux'
 import styles from './Account.module.css'
 
 const Account = () => {
-  const isLogin = useSelector<State, boolean>((state) => state.userProfile.isLogin)
+  const isLoggedIn = useSelector<State, boolean>((state) => state.userProfile.isLoggedIn)
 
   // 登陆后回调到主页面
-  if (isLogin) {
+  if (isLoggedIn) {
     return <Navigate to='/' replace />
   }
 

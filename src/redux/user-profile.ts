@@ -6,7 +6,7 @@ import { TOKEN } from '~/assets'
 import type { User } from '~/typings/boomemory/user'
 
 export class UserProfile {
-  isLogin = false
+  isLoggedIn = false
   user?: User = undefined
   token: string | null = null
 }
@@ -23,7 +23,7 @@ const slice = createSlice({
   },
   extraReducers: (builder) =>
     builder.addCase(authenticate.fulfilled, (state, action) => {
-      state.isLogin = !!action.payload
+      state.isLoggedIn = !!action.payload
       state.user = action.payload
     })
 })
