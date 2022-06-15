@@ -46,7 +46,14 @@ const Login = () => {
     })
 
     resultNotification(result)
-    reinitialize(result.data?.login, formValues.isAutoLogin)
+
+    // 用户待验证，跳转到验证页
+    if (!result.data?.login.isVerified) {
+      return
+    }
+
+    // 初始化token
+    reinitialize(result.data?.login.token, formValues.isAutoLogin)
   }
 
   return (

@@ -3,7 +3,14 @@ import { gql } from '@apollo/client'
 import type { TypedDocumentNode } from '@apollo/client'
 // project
 import { fetcher } from '..'
-import type { Action, AuthorizationNode, LoginInput, RegisterInput, Resource } from '~/typings/boomemory/auth'
+import type {
+  Action,
+  AuthenticatedProfile,
+  AuthorizationNode,
+  LoginInput,
+  RegisterInput,
+  Resource
+} from '~/typings/boomemory/auth'
 import type { Authorized } from '~/components/Singleton/Authorization'
 
 /**
@@ -11,14 +18,17 @@ import type { Authorized } from '~/components/Singleton/Authorization'
  */
 const LOGIN: TypedDocumentNode<
   {
-    login: string
+    login: AuthenticatedProfile
   },
   {
     loginInput: LoginInput
   }
 > = gql`
   mutation Login($loginInput: LoginInput!) {
-    login(loginInput: $loginInput)
+    login(loginInput: $loginInput) {
+      token
+      isVerified
+    }
   }
 `
 
@@ -35,14 +45,17 @@ export const login = (loginInput: LoginInput) =>
  */
 const REGISTER: TypedDocumentNode<
   {
-    register: string
+    register: AuthenticatedProfile
   },
   {
     registerInput: RegisterInput
   }
 > = gql`
   mutation Register($registerInput: RegisterInput!) {
-    register(registerInput: $registerInput)
+    register(registerInput: $registerInput) {
+      token
+      isVerified
+    }
   }
 `
 

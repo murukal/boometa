@@ -47,7 +47,14 @@ const Register = () => {
     })
 
     resultNotification(result)
-    reinitialize(result.data?.register)
+
+    // 用户待验证，跳转到验证页
+    if (!result.data?.register.isVerified) {
+      return
+    }
+
+    // 初始化token
+    reinitialize(result.data?.register.token)
   }
 
   return (

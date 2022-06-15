@@ -16,13 +16,12 @@ const WHO_AM_I: TypedDocumentNode<{
     whoAmI {
       id
       username
-      email
+      emailAddress
       avatar
     }
   }
 `
 
-// 强制不适用缓存
 export const whoAmI = async () =>
   await fetcher.query({
     query: WHO_AM_I,
@@ -48,7 +47,7 @@ export const GET_USERS: TypedDocumentNode<
         createdAt
         updatedAt
         username
-        email
+        emailAddress
         avatar
       }
     }
