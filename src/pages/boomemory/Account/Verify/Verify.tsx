@@ -1,32 +1,40 @@
-import { Button, Form, InputNumber, Typography } from 'antd'
-import { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useMutation } from '@apollo/client'
+import { Button, Form, Input, Typography } from 'antd'
+import { useDispatch, useSelector } from 'react-redux'
+import { SEND_CAPTCHA, verify } from '~/apis/boomemory/auth'
 import { State } from '~/redux'
+import { verified } from '~/redux/user-profile'
+import { resultNotification } from '~/utils/notification'
+import { FormValues } from '.'
 
 const { Title, Text, Paragraph } = Typography
 const { Item } = Form
 
 const Verify = () => {
   const emailAddress = useSelector<State, string | undefined>((state) => state.userProfile.user?.emailAddress)
+  const dispatch = useDispatch()
 
   /**
    * 发送验证码邮件
    */
-  const sendVerificationCode = async () => {
-    const result = await fetch('/api/boomemory/auth/send-verification-code', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        emailAddress
-      })
-    })
-    const data = await result.json()
-    return data
-  }
+  useMutation(SEND_CAPTCHA, {
+    variables: {
+      emailAddress: emailAddress || ''
+    },
+    fetchPolicy: 'no-cache'
+  })
 
-  useEffect(() => {}, [])
+  /**
+   * 表单提交
+   */
+  const onFinish = async (values: FormValues) => {
+    // 验证请求
+    const result = await verify(values)
+    // 验证结果通知
+    resultNotification(result)
+    // 设置全局store状态
+    result.data?.verify && dispatch(verified())
+  }
 
   return (
     <div className='flex flex-col shadow-lg m-10 p-10'>
@@ -44,6 +52,7 @@ const Verify = () => {
         wrapperCol={{
           span: 24
         }}
+        onFinish={onFinish}
       >
         <Item
           name='captcha'
@@ -51,23 +60,16 @@ const Verify = () => {
           rules={[
             {
               required: true,
-              validator: async (rule, value: string | number | null) => {
+              validator: async (rule, value) => {
                 if (!value) {
                   throw new Error('请输入验证码')
                 }
-
-                const captcha = value.toString()
-
-                if (captcha.length !== 6) {
-                  throw new Error('验证码必须是6位数字')
-                }
-
                 return
               }
             }
           ]}
         >
-          <InputNumber controls={false} style={{ width: '100%' }} precision={0} />
+          <Input />
         </Item>
 
         <Item noStyle>

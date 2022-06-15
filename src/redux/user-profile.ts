@@ -19,15 +19,22 @@ const slice = createSlice({
   reducers: {
     setToken: (state) => {
       state.token = localStorage.getItem(TOKEN) || sessionStorage.getItem(TOKEN)
+    },
+
+    verified: (state) => {
+      if (state.user) {
+        state.user.isVerified = true
+      }
+      state.isLoggedIn = !!state.user?.isVerified
     }
   },
   extraReducers: (builder) =>
     builder.addCase(authenticate.fulfilled, (state, action) => {
-      state.isLoggedIn = !!action.payload && action.payload.isVerified
       state.user = action.payload
+      state.isLoggedIn = !!state.user?.isVerified
     })
 })
 
-export const { setToken } = slice.actions
+export const { setToken, verified } = slice.actions
 
 export default slice.reducer

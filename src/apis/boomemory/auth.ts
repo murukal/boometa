@@ -3,7 +3,14 @@ import { gql } from '@apollo/client'
 import type { TypedDocumentNode } from '@apollo/client'
 // project
 import { fetcher } from '..'
-import type { Action, AuthorizationNode, LoginInput, RegisterInput, Resource } from '~/typings/boomemory/auth'
+import type {
+  Action,
+  AuthorizationNode,
+  LoginInput,
+  RegisterInput,
+  Resource,
+  VerifyInput
+} from '~/typings/boomemory/auth'
 import type { Authorized } from '~/components/Singleton/Authorization'
 
 /**
@@ -130,5 +137,45 @@ export const setAuthorizations = (tenantCode: string, authorizations: Authorized
     variables: {
       tenantCode,
       authorizations
+    }
+  })
+
+/**
+ * 发送验证码
+ */
+export const SEND_CAPTCHA: TypedDocumentNode<
+  {
+    sendCaptcha: boolean
+  },
+  {
+    emailAddress: string
+  }
+> = gql`
+  mutation SendCaptcha($emailAddress: String!) {
+    sendCaptcha(emailAddress: $emailAddress)
+  }
+`
+
+/**
+ * 验证
+ */
+const VERIFY: TypedDocumentNode<
+  {
+    verify: boolean
+  },
+  {
+    verifyInput: VerifyInput
+  }
+> = gql`
+  mutation Verify($verifyInput: VerifyInput!) {
+    verify(verifyInput: $verifyInput)
+  }
+`
+
+export const verify = (verifyInput: VerifyInput) =>
+  fetcher.mutate({
+    mutation: VERIFY,
+    variables: {
+      verifyInput
     }
   })

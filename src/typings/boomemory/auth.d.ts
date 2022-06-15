@@ -61,3 +61,10 @@ export interface Action {
 }
 
 export type NodeType = 'AuthorizationNode' | 'ResourceNode' | 'ActionNode'
+
+/**
+ * 验证请求入参
+ */
+export interface VerifyInput {
+  captcha: string
+}
