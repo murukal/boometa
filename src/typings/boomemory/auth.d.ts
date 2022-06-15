@@ -61,11 +61,3 @@ export interface Action {
 }
 
 export type NodeType = 'AuthorizationNode' | 'ResourceNode' | 'ActionNode'
-
-/**
- * 登录 or 注册后，服务端返回的数据结构
- */
-export interface AuthenticatedProfile {
-  token?: string
-  isVerified: boolean
-}

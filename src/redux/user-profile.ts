@@ -23,7 +23,7 @@ const slice = createSlice({
   },
   extraReducers: (builder) =>
     builder.addCase(authenticate.fulfilled, (state, action) => {
-      state.isLoggedIn = !!action.payload
+      state.isLoggedIn = !!action.payload && action.payload.isVerified
       state.user = action.payload
     })
 })

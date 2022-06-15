@@ -18,6 +18,7 @@ const WHO_AM_I: TypedDocumentNode<{
       username
       emailAddress
       avatar
+      isVerified
     }
   }
 `

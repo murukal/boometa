@@ -13,7 +13,8 @@ export const accountRoutes: RouteObject = {
   element: Loadable('pages/boomemory/Account'),
   children: [
     { path: 'login', element: Loadable('pages/boomemory/Account/Login') },
-    { path: 'register', element: Loadable('pages/boomemory/Account/Register') }
+    { path: 'register', element: Loadable('pages/boomemory/Account/Register') },
+    { path: 'verify', element: Loadable('pages/boomemory/Account/Verify') }
   ]
 }
 

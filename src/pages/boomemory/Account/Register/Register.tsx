@@ -1,7 +1,7 @@
 // redux
 import { useSelector } from 'react-redux'
 // router
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 // antd
 import { LockOutlined, UserOutlined, EyeTwoTone, EyeInvisibleOutlined, MailOutlined } from '@ant-design/icons'
 import { Button, Divider, Form, Input, notification, Typography } from 'antd'
@@ -23,6 +23,8 @@ const { Password } = Input
 
 const Register = () => {
   const encryptor = useSelector<State, JSEncrypt>((state) => new JSEncrypt())
+  const isVerified = useSelector<State, boolean | undefined>((state) => state.userProfile.user?.isVerified)
+  const navigate = useNavigate()
 
   const [form] = useForm<FormValues>()
 
@@ -48,13 +50,13 @@ const Register = () => {
 
     resultNotification(result)
 
-    // 用户待验证，跳转到验证页
-    if (!result.data?.register.isVerified) {
-      return
-    }
-
     // 初始化token
-    reinitialize(result.data?.register.token)
+    await reinitialize(result.data?.register)
+
+    // 用户待验证，跳转到验证页
+    if (!isVerified) {
+      navigate('/account/verify')
+    }
   }
 
   return (
