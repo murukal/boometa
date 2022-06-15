@@ -3,8 +3,8 @@ import { gql } from '@apollo/client'
 import type { TypedDocumentNode } from '@apollo/client'
 // project
 import { fetcher } from '..'
-import type { CreateTenantInput, Tenant, UpdateTenantInput } from '../../typings/boomemory/tenant'
-import type { PaginateOutput, QueryParams } from '../../typings/api'
+import type { CreateTenantInput, Tenant, UpdateTenantInput } from '~/typings/boomemory/tenant'
+import type { PaginateOutput, QueryParams } from '~/typings/api'
 
 /**
  * 查询单个租户

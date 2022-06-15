@@ -1,7 +1,7 @@
 // redux
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 // project
-import { whoAmI } from '~/apis/boomemory/auth'
+import { whoAmI } from '~/apis/boomemory/user'
 import { TOKEN } from '~/assets'
 import type { User } from '~/typings/boomemory/user'
 
