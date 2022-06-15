@@ -7,9 +7,9 @@ import { Tree } from 'antd'
 import { update } from '~/apis/boomemory/role'
 import { useQuery } from '@apollo/client'
 import { AUTHORIZATION_TREE } from '~/apis/boomemory/auth'
-import type { Props } from '.'
-import { AuthorizationNode } from '~/typings/boomemory/auth'
 import { resultNotification } from '~/utils/notification'
+import type { Props } from '.'
+import type { AuthorizationNode } from '~/typings/boomemory/auth'
 
 const Authorizations = forwardRef<any, Props>((props, ref) => {
   const [checkedKeys, setCheckedKeys] = useState<number[]>([])

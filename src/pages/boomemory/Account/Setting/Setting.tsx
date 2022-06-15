@@ -4,7 +4,7 @@ import { useForm } from 'antd/lib/form/Form'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { State } from '~/redux'
-import { User } from '~/typings/boomemory/auth'
+import { User } from '~/typings/boomemory/user'
 import { customRequest, getValueFromEvent } from '~/utils/upload'
 
 const { Item } = Form

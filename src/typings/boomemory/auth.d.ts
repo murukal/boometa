@@ -1,11 +1,5 @@
+// project
 import { ActionCode, ResourceCode } from '~/pages/boomemory/Authorizations'
-import { Core } from '..'
-
-export interface User extends Core {
-  username: string
-  email: string
-  avatar: string
-}
 
 export interface LoginInput {
   keyword: string
