@@ -1,12 +1,16 @@
-import { Button, Form, Input, Typography } from 'antd'
+// react
 import { useEffect } from 'react'
+// redux
 import { useDispatch, useSelector } from 'react-redux'
+// antd
+import { Button, Form, Input, Typography } from 'antd'
+// project
 import { verify } from '~/apis/schemas/boomemory/auth'
 import { useSendCaptcha } from '~/apis/hooks/boomemory/auth'
-import { State } from '~/redux'
 import { verified } from '~/redux/user-profile'
 import { resultNotification } from '~/utils/notification'
-import { FormValues } from '.'
+import type { FormValues } from '.'
+import type { State } from '~/redux'
 
 const { Title, Text, Paragraph } = Typography
 const { Item } = Form
