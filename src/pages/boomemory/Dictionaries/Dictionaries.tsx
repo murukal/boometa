@@ -9,7 +9,7 @@ import Dictionary from '~/components/Singleton/Dictionary'
 import DictionaryEnums from '~/components/DataSet/DictionaryEnums'
 import { getTableRowHandler, useTableQuery } from '~/utils/table'
 import { useColumns } from '.'
-import { DICTIONARIES, remove } from '~/apis/boomemory/dictionary'
+import { DICTIONARIES, remove } from '~/apis/schemas/boomemory/dictionary'
 import { getInitialSingleton } from '~/components/Singleton/Dictionary'
 import type { Dictionary as DictionaryType } from '~/typings/boomemory/dictionary'
 

@@ -2,7 +2,7 @@
 import { gql } from '@apollo/client'
 import type { TypedDocumentNode } from '@apollo/client'
 // project
-import { fetcher } from '..'
+import { fetcher } from '../..'
 import type {
   Action,
   AuthorizationNode,
@@ -143,16 +143,11 @@ export const setAuthorizations = (tenantCode: string, authorizations: Authorized
 /**
  * 发送验证码
  */
-export const SEND_CAPTCHA: TypedDocumentNode<
-  {
-    sendCaptcha: boolean
-  },
-  {
-    emailAddress: string
-  }
-> = gql`
-  mutation SendCaptcha($emailAddress: String!) {
-    sendCaptcha(emailAddress: $emailAddress)
+export const SEND_CAPTCHA: TypedDocumentNode<{
+  sendCaptcha: boolean
+}> = gql`
+  mutation SendCaptcha {
+    sendCaptcha
   }
 `
 

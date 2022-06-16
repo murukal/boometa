@@ -1,6 +1,6 @@
 import { Menu as MenuType } from '~/typings/boomemory/menu'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getMenus } from '~/apis/boomemory/menu'
+import { getMenus } from '~/apis/schemas/boomemory/menu'
 import { getMenuTreeFromMenus } from '~/utils/menu'
 
 export class Menu {

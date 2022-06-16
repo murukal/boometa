@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Card, Table } from 'antd'
 // project
 import { useColumns } from '.'
-import { NAVIGATIONS, remove } from '~/apis/boomart/navigation'
+import { NAVIGATIONS, remove } from '~/apis/schemas/boomart/navigation'
 import { AppID } from '~/assets'
 import Singleton from '~/components/Singleton'
 import Navigation, { getInitialSingleton } from '~/components/Singleton/boomart/Navigation'

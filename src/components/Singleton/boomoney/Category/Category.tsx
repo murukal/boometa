@@ -1,12 +1,16 @@
-import { Form, FormInstance, Input } from 'antd'
-import { useForm } from 'antd/lib/form/Form'
+// react
 import { forwardRef, useMemo } from 'react'
-import { create, update } from '~/apis/boomoney/category'
+// antd
+import { Form, Input } from 'antd'
+import { useForm } from 'antd/lib/form/Form'
+import type { FormInstance } from 'antd'
+// project
+import { create, update } from '~/apis/schemas/boomoney/category'
 import IconSelector from '~/components/IconSelector'
-import { Category as CategoryType } from '~/typings/boomoney/category'
 import { resultNotification } from '~/utils/notification'
-import { FormValues } from '.'
-import { SingletonProps } from '../..'
+import type { Category as CategoryType } from '~/typings/boomoney/category'
+import type { FormValues } from '.'
+import type { SingletonProps } from '../..'
 
 const { Item } = Form
 

@@ -6,7 +6,7 @@ import { Card, Table } from 'antd'
 import Toolbar from '~/components/Toolbar'
 import { useColumns } from '.'
 import { getTableRowHandler, useTableQuery } from '~/utils/table'
-import { ESSAYS, remove } from '~/apis/boomart/essay'
+import { ESSAYS, remove } from '~/apis/schemas/boomart/essay'
 import { AppID } from '~/assets'
 
 const Essays = () => {

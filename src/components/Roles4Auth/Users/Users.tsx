@@ -6,7 +6,7 @@ import { Modal } from 'antd'
 // project
 import UserDataSet from '../../DataSet/Users'
 import Toolbar from '../../Toolbar'
-import { update } from '~/apis/boomemory/role'
+import { update } from '~/apis/schemas/boomemory/role'
 import { resultNotification } from '~/utils/notification'
 import type { Props } from '.'
 

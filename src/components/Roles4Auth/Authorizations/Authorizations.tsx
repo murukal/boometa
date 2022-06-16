@@ -3,10 +3,11 @@ import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 import type { Key } from 'react'
 // antd
 import { Tree } from 'antd'
-// project
-import { update } from '~/apis/boomemory/role'
+// third
 import { useQuery } from '@apollo/client'
-import { AUTHORIZATION_TREE } from '~/apis/boomemory/auth'
+// project
+import { update } from '~/apis/schemas/boomemory/role'
+import { AUTHORIZATION_TREE } from '~/apis/schemas/boomemory/auth'
 import { resultNotification } from '~/utils/notification'
 import type { Props } from '.'
 import type { AuthorizationNode } from '~/typings/boomemory/auth'

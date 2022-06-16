@@ -1,11 +1,12 @@
 // react
 import { forwardRef, useMemo } from 'react'
 // antd
-import { Form, FormInstance, Input, InputNumber } from 'antd'
+import { Form, Input, InputNumber } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
+import type { FormInstance } from 'antd'
 // project
-import { create, update } from '~/apis/boomemory/dictionary'
-import { SingletonProps } from '..'
+import { create, update } from '~/apis/schemas/boomemory/dictionary'
+import type { SingletonProps } from '..'
 import type { FormValues } from '.'
 import type { Dictionary as DictionaryType } from '~/typings/boomemory/dictionary'
 

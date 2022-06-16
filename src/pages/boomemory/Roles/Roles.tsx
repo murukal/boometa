@@ -5,7 +5,7 @@ import { Card, Table } from 'antd'
 // project
 import { getTableRowHandler, useTableQuery } from '~/utils/table'
 import { useColumns } from '.'
-import { remove, ROLES } from '~/apis/boomemory/role'
+import { remove, ROLES } from '~/apis/schemas/boomemory/role'
 import Singleton from '~/components/Singleton'
 import Role from '~/components/Singleton/Role'
 import { getInitialSingleton } from '~/components/Singleton/Role'

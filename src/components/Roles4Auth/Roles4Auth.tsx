@@ -1,15 +1,15 @@
 // react
-import { useMemo, useState } from 'react'
+import { useMemo, useState, createRef } from 'react'
 // antd
 import { Button, Card } from 'antd'
 import { CloseOutlined } from '@ant-design/icons/lib/icons'
 import type { CardTabListType } from 'antd/lib/card'
+// third
+import { useQuery } from '@apollo/client'
 //project
 import Users from './Users'
 import Authorizations from './Authorizations'
-import { ROLE } from '~/apis/boomemory/role'
-import { createRef } from 'react'
-import { useQuery } from '@apollo/client'
+import { ROLE } from '~/apis/schemas/boomemory/role'
 import type { Props } from '.'
 
 const Roles4Auth = (props: Props) => {

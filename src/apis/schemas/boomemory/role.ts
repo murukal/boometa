@@ -2,7 +2,7 @@
 import { gql } from '@apollo/client'
 import type { TypedDocumentNode } from '@apollo/client'
 // project
-import { fetcher } from '..'
+import { fetcher } from '../..'
 import type { PaginateOutput, QueryParams } from '~/typings/api'
 import type { CreateRoleInput, Role, UpdateRoleInput } from '~/typings/boomemory/role'
 

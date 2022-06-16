@@ -2,7 +2,7 @@
 import { gql, TypedDocumentNode } from '@apollo/client'
 // project
 import { AppID } from '~/assets'
-import { fetcher } from '..'
+import { fetcher } from '../..'
 import type { PaginateOutput, QueryParams } from '~/typings/api'
 import type { CreateEssayInput, Essay, UpdateEssayInput } from '~/typings/boomart/essay'
 

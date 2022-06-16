@@ -14,9 +14,9 @@ import type { EditorInstance } from '@fantufantu/beeeditor'
 // project
 import styles from './Essay.module.css'
 import { AppID } from '~/assets'
-import { TAGS } from '~/apis/boomart/tag'
+import { TAGS } from '~/apis/schemas/boomart/tag'
 import { customRequest, getUploadParam, getValueFromEvent } from '~/utils/upload'
-import { create, getEssay, update } from '~/apis/boomart/essay'
+import { create, getEssay, update } from '~/apis/schemas/boomart/essay'
 import type { FormValues } from '.'
 import type { CreateEssayInput } from '~/typings/boomart/essay'
 

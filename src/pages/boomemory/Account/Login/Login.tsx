@@ -9,7 +9,7 @@ import { useForm } from 'antd/lib/form/Form'
 // third
 import JSEncrypt from 'jsencrypt'
 // project
-import { login } from '~/apis/boomemory/auth'
+import { login } from '~/apis/schemas/boomemory/auth'
 import { reinitialize } from '~/utils/app'
 import { toggleStyle } from '..'
 import { resultNotification } from '~/utils/notification'

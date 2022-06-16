@@ -1,15 +1,16 @@
+// react
+import { useState } from 'react'
 // antd
 import { Card, Table } from 'antd'
-import { useState } from 'react'
 // project
-import { CATEGORIES, remove } from '~/apis/boomoney/category'
+import { CATEGORIES, remove } from '~/apis/schemas/boomoney/category'
 import { AppID } from '~/assets'
 import Singleton from '~/components/Singleton'
 import Category, { getInitialSingleton } from '~/components/Singleton/boomoney/Category'
 import Toolbar from '~/components/Toolbar'
-import { Category as CategoryType } from '~/typings/boomoney/category'
 import { getTableRowHandler, useTableQuery } from '~/utils/table'
 import { useColumns } from '.'
+import type { Category as CategoryType } from '~/typings/boomoney/category'
 
 const Categories = () => {
   const [isOpened, setIsOpened] = useState(false)
