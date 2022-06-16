@@ -25,7 +25,7 @@ const Verify = () => {
    */
   useEffect(() => {
     // 发送验证码
-    // sendCaptcha()
+    sendCaptcha()
   }, [])
 
   /**
