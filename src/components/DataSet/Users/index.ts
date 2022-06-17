@@ -37,7 +37,7 @@ export const useColumns = <T = User>(columns?: ColumnsType<T>): ColumnsType<T> =
 
   {
     title: '邮箱',
-    dataIndex: 'email',
+    dataIndex: 'emailAddress',
     width: 100
   },
 

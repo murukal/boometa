@@ -35,4 +35,6 @@
   align-items: center;
   justify-content: center;
   background-color: aliceblue;
+  user-select: none;
+  cursor: pointer;
 }
