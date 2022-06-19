@@ -2,7 +2,8 @@ export { default } from './Register'
 
 export interface FormValues {
   username: string
-  email: string
+  emailAddress: string
+  captcha: string
   password: string
   repeatPassword: string
 }

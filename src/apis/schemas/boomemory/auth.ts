@@ -9,6 +9,7 @@ import type {
   LoginInput,
   RegisterInput,
   Resource,
+  SendCaptchaInput,
   VerifyInput
 } from '~/typings/boomemory/auth'
 import type { Authorized } from '~/components/Singleton/Authorization'
@@ -40,7 +41,7 @@ export const login = (loginInput: LoginInput) =>
 /**
  * 注册
  */
-const REGISTER: TypedDocumentNode<
+export const REGISTER: TypedDocumentNode<
   {
     register: string
   },
@@ -52,14 +53,6 @@ const REGISTER: TypedDocumentNode<
     register(registerInput: $registerInput)
   }
 `
-
-export const register = (registerInput: RegisterInput) =>
-  fetcher.mutate({
-    mutation: REGISTER,
-    variables: {
-      registerInput
-    }
-  })
 
 /**
  * 查询权限树
@@ -143,11 +136,16 @@ export const setAuthorizations = (tenantCode: string, authorizations: Authorized
 /**
  * 发送验证码
  */
-export const SEND_CAPTCHA: TypedDocumentNode<{
-  sendCaptcha: boolean
-}> = gql`
-  mutation SendCaptcha {
-    sendCaptcha
+export const SEND_CAPTCHA: TypedDocumentNode<
+  {
+    sendCaptcha: boolean
+  },
+  {
+    sendCaptchaInput: SendCaptchaInput
+  }
+> = gql`
+  mutation SendCaptcha($sendCaptchaInput: SendCaptchaInput!) {
+    sendCaptcha(sendCaptchaInput: $sendCaptchaInput)
   }
 `
 

@@ -8,7 +8,8 @@ export interface LoginInput {
 
 export interface RegisterInput {
   username: string
-  email: string
+  emailAddress: string
+  captcha: string
   password: string
 }
 
@@ -67,4 +68,11 @@ export type NodeType = 'AuthorizationNode' | 'ResourceNode' | 'ActionNode'
  */
 export interface VerifyInput {
   captcha: string
+}
+
+/**
+ * 发送验证码
+ */
+export interface SendCaptchaInput {
+  emailAddress: string
 }

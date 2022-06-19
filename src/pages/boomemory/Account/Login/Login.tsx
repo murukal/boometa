@@ -11,7 +11,6 @@ import JSEncrypt from 'jsencrypt'
 // project
 import { login } from '~/apis/schemas/boomemory/auth'
 import { reinitialize } from '~/utils/app'
-import { toggleStyle } from '..'
 import { resultNotification } from '~/utils/notification'
 import type { FormValues } from '.'
 import type { State } from '~/redux'
@@ -71,13 +70,12 @@ const Login = () => {
         onFinish={onLogin}
       >
         <Item name='keyword' rules={[{ required: true, message: '用户名/邮箱必输！' }]}>
-          <Input size='large' style={toggleStyle} prefix={<UserOutlined />} placeholder='用户名/邮箱' />
+          <Input size='large' prefix={<UserOutlined />} placeholder='用户名/邮箱' />
         </Item>
 
         <Item name='password' rules={[{ required: true, message: '密码必输！' }]}>
           <Password
             size='large'
-            style={toggleStyle}
             placeholder='密码'
             prefix={<LockOutlined />}
             iconRender={(isPasswordVisible: boolean) => (isPasswordVisible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}

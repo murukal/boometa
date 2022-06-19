@@ -12,7 +12,7 @@ import { initialize as initializeMenu } from '~/redux/menu'
 export const initialize = async () => {
   const dispatch = store.dispatch
   // 在redux中存储token
-  dispatch(setToken())
+  dispatch(setToken(localStorage.getItem(TOKEN) || sessionStorage.getItem(TOKEN)))
   // 在redux中存储rsa公钥
   await dispatch(setRsaPublicKey())
   // 在redux中存储菜单信息
@@ -41,7 +41,7 @@ export const reinitialize = async (token?: string, isAutoLogin?: boolean) => {
 
   const dispatch = store.dispatch
   // 在redux中存储token
-  dispatch(setToken())
+  dispatch(setToken(token))
   // 用户信息
   await dispatch(authenticate())
   // 在redux中存储菜单信息

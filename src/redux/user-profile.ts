@@ -1,8 +1,7 @@
 // redux
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 // project
 import { whoAmI } from '~/apis/schemas/boomemory/user'
-import { TOKEN } from '~/assets'
 import type { User } from '~/typings/boomemory/user'
 
 export class UserProfile {
@@ -17,24 +16,17 @@ const slice = createSlice({
   name: 'user-profile',
   initialState: { ...new UserProfile() },
   reducers: {
-    setToken: (state) => {
-      state.token = localStorage.getItem(TOKEN) || sessionStorage.getItem(TOKEN)
-    },
-
-    verified: (state) => {
-      if (state.user) {
-        state.user.isVerified = true
-      }
-      state.isLoggedIn = !!state.user?.isVerified
+    setToken: (state, action: PayloadAction<string | null>) => {
+      state.token = action.payload
     }
   },
   extraReducers: (builder) =>
     builder.addCase(authenticate.fulfilled, (state, action) => {
       state.user = action.payload
-      state.isLoggedIn = !!state.user?.isVerified
+      state.isLoggedIn = !!state.user
     })
 })
 
-export const { setToken, verified } = slice.actions
+export const { setToken } = slice.actions
 
 export default slice.reducer

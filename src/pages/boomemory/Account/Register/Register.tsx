@@ -1,19 +1,17 @@
 // redux
 import { useSelector } from 'react-redux'
 // router
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 // antd
-import { LockOutlined, UserOutlined, EyeTwoTone, EyeInvisibleOutlined, MailOutlined } from '@ant-design/icons'
 import { Button, Divider, Form, Input, notification, Typography } from 'antd'
+import { LockOutlined, UserOutlined, EyeTwoTone, EyeInvisibleOutlined, MailOutlined } from '@ant-design/icons'
 import { useForm } from 'antd/lib/form/Form'
 // third
 import JSEncrypt from 'jsencrypt'
 // project
-import { register } from '~/apis/schemas/boomemory/auth'
+import { useRegister, useSendCaptcha } from '~/apis/hooks/boomemory/auth'
 import { reinitialize } from '~/utils/app'
-import { toggleStyle } from '..'
 import { passwordRegex } from '.'
-import { resultNotification } from '~/utils/notification'
 import type { FormValues } from '.'
 import type { State } from '~/redux'
 
@@ -23,12 +21,17 @@ const { Password } = Input
 
 const Register = () => {
   const encryptor = useSelector<State, JSEncrypt>((state) => new JSEncrypt())
-  const isVerified = useSelector<State, boolean | undefined>((state) => state.userProfile.user?.isVerified)
-  const navigate = useNavigate()
 
   const [form] = useForm<FormValues>()
 
-  // 用户注册
+  // 发送验证码hooks
+  const [sendCaptcha] = useSendCaptcha()
+  // 注册hooks
+  const [register] = useRegister()
+
+  /**
+   * 用户注册
+   */
   const onRegister = async () => {
     const formValues = form.getFieldsValue()
 
@@ -42,21 +45,46 @@ const Register = () => {
       return
     }
 
-    const result = await register({
-      username: formValues.username,
-      email: formValues.email,
-      password: encryptedPassword
+    const res = await register({
+      variables: {
+        registerInput: {
+          username: formValues.username,
+          emailAddress: formValues.emailAddress,
+          captcha: formValues.captcha,
+          password: encryptedPassword
+        }
+      }
+    }).catch((error: Error) => {
+      notification.error({
+        message: error.message
+      })
+      return null
     })
 
-    resultNotification(result)
+    if (!res?.data?.register) return
 
     // 初始化token
-    await reinitialize(result.data?.register)
+    await reinitialize(res.data?.register)
+  }
 
-    // 用户待验证，跳转到验证页
-    if (!isVerified) {
-      navigate('/account/verify')
-    }
+  /**
+   * 获取验证码
+   */
+  const onGetCaptcha = async () => {
+    // 校验邮箱填写
+    const isValid = await form.validateFields(['email']).catch(() => false)
+
+    if (!isValid) return
+
+    await sendCaptcha({
+      variables: {
+        sendCaptchaInput: form.getFieldValue('email')
+      }
+    }).catch((error: Error) => {
+      notification.error({
+        message: error.message
+      })
+    })
   }
 
   return (
@@ -80,7 +108,7 @@ const Register = () => {
             }
           ]}
         >
-          <Input style={toggleStyle} size='large' prefix={<UserOutlined />} placeholder='用户名' maxLength={20} />
+          <Input size='large' prefix={<UserOutlined />} placeholder='用户名' maxLength={20} />
         </Item>
 
         <Item
@@ -96,7 +124,16 @@ const Register = () => {
             }
           ]}
         >
-          <Input style={toggleStyle} size='large' prefix={<MailOutlined />} placeholder='邮箱' />
+          <Input
+            size='large'
+            prefix={<MailOutlined />}
+            placeholder='邮箱'
+            suffix={
+              <Button type='link' onClick={onGetCaptcha}>
+                获取验证码
+              </Button>
+            }
+          />
         </Item>
 
         <Item
@@ -116,7 +153,6 @@ const Register = () => {
           ]}
         >
           <Password
-            style={toggleStyle}
             size='large'
             placeholder='密码'
             prefix={<LockOutlined />}
@@ -142,7 +178,6 @@ const Register = () => {
           ]}
         >
           <Password
-            style={toggleStyle}
             size='large'
             placeholder='请再次输入密码'
             prefix={<LockOutlined />}
@@ -151,7 +186,7 @@ const Register = () => {
         </Item>
 
         <Item>
-          <Button block htmlType='submit' shape='round' size='large' type='primary'>
+          <Button block htmlType='submit' size='large' type='primary'>
             注册
           </Button>
         </Item>

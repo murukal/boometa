@@ -20,7 +20,9 @@ const Account = () => {
   return (
     <div className='flex h-full'>
       <div className='flex-1 flex items-center justify-center'>
-        <Outlet />
+        <div className='shadow-lg rounded-lg p-10'>
+          <Outlet />
+        </div>
       </div>
       <div className='flex-1 flex items-center justify-center'>
         <Image className={styles.float} preview={false} src='/assets/account.png' />
