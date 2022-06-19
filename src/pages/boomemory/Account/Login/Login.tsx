@@ -9,9 +9,8 @@ import { useForm } from 'antd/lib/form/Form'
 // third
 import JSEncrypt from 'jsencrypt'
 // project
-import { login } from '~/apis/schemas/boomemory/auth'
+import { useLogin } from '~/apis/hooks/boomemory/auth'
 import { reinitialize } from '~/utils/app'
-import { resultNotification } from '~/utils/notification'
 import type { FormValues } from '.'
 import type { State } from '~/redux'
 
@@ -22,8 +21,11 @@ const { Password } = Input
 const Login = () => {
   const rsaPublicKey = useSelector<State, string | undefined>((state) => state.app.rsaPublicKey)
   const [form] = useForm<FormValues>()
+  const [login] = useLogin()
 
-  // 执行登录
+  /**
+   * 执行登录
+   */
   const onLogin = async () => {
     const formValues = form.getFieldsValue()
 
@@ -39,15 +41,24 @@ const Login = () => {
       return
     }
 
-    const result = await login({
-      keyword: formValues.keyword,
-      password: encryptedPassword
+    const res = await login({
+      variables: {
+        loginInput: {
+          keyword: formValues.keyword,
+          password: encryptedPassword
+        }
+      }
+    }).catch((error: Error) => {
+      notification.error({
+        message: error.message
+      })
+      return null
     })
 
-    resultNotification(result)
+    if (!res?.data?.login) return
 
     // 初始化token
-    await reinitialize(result.data?.login, formValues.isAutoLogin)
+    await reinitialize(res.data.login, formValues.isAutoLogin)
   }
 
   return (
@@ -84,7 +95,7 @@ const Login = () => {
         </div>
 
         <Item>
-          <Button block htmlType='submit' shape='round' size='large' type='primary'>
+          <Button block htmlType='submit' size='large' type='primary'>
             登录
           </Button>
         </Item>

@@ -95,7 +95,7 @@ const Register = () => {
     if (!res?.data?.register) return
 
     // 初始化token
-    await reinitialize(res.data?.register)
+    await reinitialize(res.data.register)
   }
 
   /**
@@ -103,13 +103,13 @@ const Register = () => {
    */
   const onGetCaptcha = async () => {
     // 校验邮箱填写
-    const isValid = await form.validateFields(['email']).catch(() => false)
+    const isValid = await form.validateFields(['emailAddress']).catch(() => false)
 
     if (!isValid) return
 
     const isSent = await sendCaptcha({
       variables: {
-        emailAddress: form.getFieldValue('email')
+        emailAddress: form.getFieldValue('emailAddress')
       }
     }).catch((error: Error) => {
       notification.error({
@@ -169,7 +169,7 @@ const Register = () => {
         </Item>
 
         <Item
-          name='email'
+          name='emailAddress'
           rules={[
             {
               required: true,

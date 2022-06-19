@@ -26,9 +26,7 @@ export const initialize = async () => {
 /**
  * 应用再次初始化
  */
-export const reinitialize = async (token?: string, isAutoLogin?: boolean) => {
-  if (!token) return
-
+export const reinitialize = async (token: string, isAutoLogin?: boolean) => {
   // 清除浏览器缓存中的token
   localStorage.removeItem(TOKEN)
   sessionStorage.removeItem(TOKEN)

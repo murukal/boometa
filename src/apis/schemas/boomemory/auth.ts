@@ -17,7 +17,7 @@ import type { Authorized } from '~/components/Singleton/Authorization'
 /**
  * 登陆
  */
-const LOGIN: TypedDocumentNode<
+export const LOGIN: TypedDocumentNode<
   {
     login: string
   },
@@ -29,14 +29,6 @@ const LOGIN: TypedDocumentNode<
     login(loginInput: $loginInput)
   }
 `
-
-export const login = (loginInput: LoginInput) =>
-  fetcher.mutate({
-    mutation: LOGIN,
-    variables: {
-      loginInput
-    }
-  })
 
 /**
  * 注册
