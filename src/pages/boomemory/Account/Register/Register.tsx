@@ -1,10 +1,20 @@
+// react
+import { useEffect, useMemo, useState } from 'react'
+import type { CSSProperties } from 'react'
 // redux
 import { useSelector } from 'react-redux'
 // router
 import { Link } from 'react-router-dom'
 // antd
 import { Button, Divider, Form, Input, notification, Typography } from 'antd'
-import { LockOutlined, UserOutlined, EyeTwoTone, EyeInvisibleOutlined, MailOutlined } from '@ant-design/icons'
+import {
+  LockOutlined,
+  UserOutlined,
+  EyeTwoTone,
+  EyeInvisibleOutlined,
+  MailOutlined,
+  BorderlessTableOutlined
+} from '@ant-design/icons'
 import { useForm } from 'antd/lib/form/Form'
 // third
 import JSEncrypt from 'jsencrypt'
@@ -21,13 +31,34 @@ const { Password } = Input
 
 const Register = () => {
   const encryptor = useSelector<State, JSEncrypt>((state) => new JSEncrypt())
-
   const [form] = useForm<FormValues>()
+  const [timing, setTiming] = useState(false)
+  const [count, setCount] = useState(60)
 
   // 发送验证码hooks
   const [sendCaptcha] = useSendCaptcha()
   // 注册hooks
   const [register] = useRegister()
+
+  /**
+   * 计时器
+   */
+  useEffect(() => {
+    if (!timing) return
+
+    const interval = setInterval(() => {
+      setCount((preCount) => {
+        if (preCount <= 1) {
+          setTiming(false)
+          clearInterval(interval)
+          return 60
+        }
+        return preCount - 1
+      })
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [timing])
 
   /**
    * 用户注册
@@ -76,16 +107,42 @@ const Register = () => {
 
     if (!isValid) return
 
-    await sendCaptcha({
+    const isSent = await sendCaptcha({
       variables: {
-        sendCaptchaInput: form.getFieldValue('email')
+        emailAddress: form.getFieldValue('email')
       }
     }).catch((error: Error) => {
       notification.error({
         message: error.message
       })
+
+      return null
     })
+
+    if (!isSent) return
+    // 发送成功，进行计时
+    setTiming(true)
   }
+
+  /**
+   * 验证码触发组件
+   */
+  const CaptchaTrigger = useMemo(() => {
+    const styles: CSSProperties = {
+      fontSize: '8px',
+      padding: 0
+    }
+
+    // 未在倒计时，返回获取验证码按钮
+    if (!timing)
+      return (
+        <Button style={styles} type='link' onClick={onGetCaptcha}>
+          获取验证码
+        </Button>
+      )
+
+    return <Text style={styles}>{`${count} 秒后重新获取`}</Text>
+  }, [timing, count])
 
   return (
     <div className='flex flex-col items-center'>
@@ -104,7 +161,7 @@ const Register = () => {
           rules={[
             {
               required: true,
-              message: '用户名必输！'
+              message: '请输入用户名'
             }
           ]}
         >
@@ -116,24 +173,27 @@ const Register = () => {
           rules={[
             {
               required: true,
-              message: '邮箱必输！'
+              message: '请输入邮箱地址'
             },
             {
               type: 'email',
-              message: '邮箱不符合规范！'
+              message: '邮箱地址不符合规范'
             }
           ]}
         >
-          <Input
-            size='large'
-            prefix={<MailOutlined />}
-            placeholder='邮箱'
-            suffix={
-              <Button type='link' onClick={onGetCaptcha}>
-                获取验证码
-              </Button>
+          <Input size='large' prefix={<MailOutlined />} placeholder='邮箱地址' suffix={CaptchaTrigger} />
+        </Item>
+
+        <Item
+          name='captcha'
+          rules={[
+            {
+              required: true,
+              message: '请输入验证码'
             }
-          />
+          ]}
+        >
+          <Input size='large' prefix={<BorderlessTableOutlined />} placeholder='验证码' />
         </Item>
 
         <Item
@@ -141,7 +201,7 @@ const Register = () => {
           rules={[
             {
               required: true,
-              message: '密码必输！'
+              message: '请输入密码'
             },
             {
               validator: async (rule, value) => {
@@ -179,7 +239,7 @@ const Register = () => {
         >
           <Password
             size='large'
-            placeholder='请再次输入密码'
+            placeholder='确认密码'
             prefix={<LockOutlined />}
             iconRender={(isPasswordVisible: boolean) => (isPasswordVisible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
           />

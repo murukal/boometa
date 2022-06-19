@@ -71,8 +71,8 @@ export interface VerifyInput {
 }
 
 /**
- * 发送验证码
+ * 发送验证码参数
  */
-export interface SendCaptchaInput {
+export interface SendCaptchaArgs {
   emailAddress: string
 }

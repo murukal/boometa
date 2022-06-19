@@ -1,7 +1,7 @@
 // redux
 import { useSelector } from 'react-redux'
 // router
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 // antd
 import { Button, Checkbox, Divider, Form, Input, notification, Typography } from 'antd'
 import { EyeTwoTone, EyeInvisibleOutlined, UserOutlined, LockOutlined } from '@ant-design/icons'
@@ -21,9 +21,7 @@ const { Password } = Input
 
 const Login = () => {
   const rsaPublicKey = useSelector<State, string | undefined>((state) => state.app.rsaPublicKey)
-  const isVerified = useSelector<State, boolean | undefined>((state) => state.userProfile.user?.isVerified)
   const [form] = useForm<FormValues>()
-  const navigate = useNavigate()
 
   // 执行登录
   const onLogin = async () => {
@@ -50,11 +48,6 @@ const Login = () => {
 
     // 初始化token
     await reinitialize(result.data?.login, formValues.isAutoLogin)
-
-    // 用户待验证，跳转到验证页
-    if (!isVerified) {
-      navigate('/account/verify')
-    }
   }
 
   return (

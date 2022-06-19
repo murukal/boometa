@@ -9,7 +9,7 @@ import type {
   LoginInput,
   RegisterInput,
   Resource,
-  SendCaptchaInput,
+  SendCaptchaArgs,
   VerifyInput
 } from '~/typings/boomemory/auth'
 import type { Authorized } from '~/components/Singleton/Authorization'
@@ -138,14 +138,12 @@ export const setAuthorizations = (tenantCode: string, authorizations: Authorized
  */
 export const SEND_CAPTCHA: TypedDocumentNode<
   {
-    sendCaptcha: boolean
+    sendCaptcha: Date
   },
-  {
-    sendCaptchaInput: SendCaptchaInput
-  }
+  SendCaptchaArgs
 > = gql`
-  mutation SendCaptcha($sendCaptchaInput: SendCaptchaInput!) {
-    sendCaptcha(sendCaptchaInput: $sendCaptchaInput)
+  mutation SendCaptcha($emailAddress: String!) {
+    sendCaptcha(emailAddress: $emailAddress)
   }
 `
 
