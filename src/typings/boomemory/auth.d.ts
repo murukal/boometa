@@ -64,13 +64,6 @@ export interface Action {
 export type NodeType = 'AuthorizationNode' | 'ResourceNode' | 'ActionNode'
 
 /**
- * 验证请求入参
- */
-export interface VerifyInput {
-  captcha: string
-}
-
-/**
  * 发送验证码参数
  */
 export interface SendCaptchaArgs {

@@ -9,8 +9,7 @@ import type {
   LoginInput,
   RegisterInput,
   Resource,
-  SendCaptchaArgs,
-  VerifyInput
+  SendCaptchaArgs
 } from '~/typings/boomemory/auth'
 import type { Authorized } from '~/components/Singleton/Authorization'
 
@@ -138,27 +137,3 @@ export const SEND_CAPTCHA: TypedDocumentNode<
     sendCaptcha(emailAddress: $emailAddress)
   }
 `
-
-/**
- * 验证
- */
-const VERIFY: TypedDocumentNode<
-  {
-    verify: boolean
-  },
-  {
-    verifyInput: VerifyInput
-  }
-> = gql`
-  mutation Verify($verifyInput: VerifyInput!) {
-    verify(verifyInput: $verifyInput)
-  }
-`
-
-export const verify = (verifyInput: VerifyInput) =>
-  fetcher.mutate({
-    mutation: VERIFY,
-    variables: {
-      verifyInput
-    }
-  })
