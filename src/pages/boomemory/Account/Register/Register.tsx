@@ -32,7 +32,7 @@ const { Password } = Input
 const Register = () => {
   const encryptor = useSelector<State, JSEncrypt>((state) => new JSEncrypt())
   const [form] = useForm<FormValues>()
-  const [timing, setTiming] = useState(false)
+  const [isTiming, setIsTiming] = useState(false)
   const [count, setCount] = useState(60)
 
   // 发送验证码hooks
@@ -44,12 +44,12 @@ const Register = () => {
    * 计时器
    */
   useEffect(() => {
-    if (!timing) return
+    if (!isTiming) return
 
     const interval = setInterval(() => {
       setCount((preCount) => {
         if (preCount <= 1) {
-          setTiming(false)
+          setIsTiming(false)
           clearInterval(interval)
           return 60
         }
@@ -58,7 +58,7 @@ const Register = () => {
     }, 1000)
 
     return () => clearInterval(interval)
-  }, [timing])
+  }, [isTiming])
 
   /**
    * 用户注册
@@ -121,7 +121,7 @@ const Register = () => {
 
     if (!isSent) return
     // 发送成功，进行计时
-    setTiming(true)
+    setIsTiming(true)
   }
 
   /**
@@ -134,7 +134,7 @@ const Register = () => {
     }
 
     // 未在倒计时，返回获取验证码按钮
-    if (!timing)
+    if (!isTiming)
       return (
         <Button style={styles} type='link' onClick={onGetCaptcha}>
           获取验证码
@@ -142,7 +142,7 @@ const Register = () => {
       )
 
     return <Text style={styles}>{`${count} 秒后重新获取`}</Text>
-  }, [timing, count])
+  }, [isTiming, count])
 
   return (
     <div className='flex flex-col items-center'>
