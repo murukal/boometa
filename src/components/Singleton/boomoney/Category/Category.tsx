@@ -18,7 +18,11 @@ const { Item } = Form
 
 const Category = forwardRef<FormInstance, SingletonProps<CategoryType>>((props, ref) => {
   const [form] = useForm<FormValues>()
-  const [create] = useMutation(CREATE, {})
+  const [create] = useMutation(CREATE, {
+    context: {
+      appId: AppID.Boomoney
+    }
+  })
   const [update] = useMutation(UPDATE, {
     context: {
       appId: AppID.Boomoney
