@@ -1,13 +1,15 @@
 // react
 import { forwardRef, useMemo } from 'react'
 // antd
-import { Form, Input } from 'antd'
+import { Form, Input, notification } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 import type { FormInstance } from 'antd'
+// third
+import { useMutation } from '@apollo/client'
 // project
-import { create, update } from '~/apis/schemas/boomoney/category'
+import { CREATE, UPDATE } from '~/apis/schemas/boomoney/category'
 import IconSelector from '~/components/IconSelector'
-import { resultNotification } from '~/utils/notification'
+import { AppID } from '~/assets'
 import type { Category as CategoryType } from '~/typings/boomoney/category'
 import type { FormValues } from '.'
 import type { SingletonProps } from '../..'
@@ -16,6 +18,12 @@ const { Item } = Form
 
 const Category = forwardRef<FormInstance, SingletonProps<CategoryType>>((props, ref) => {
   const [form] = useForm<FormValues>()
+  const [create] = useMutation(CREATE, {})
+  const [update] = useMutation(UPDATE, {
+    context: {
+      appId: AppID.Boomoney
+    }
+  })
 
   const initialValues = useMemo<FormValues>(() => {
     return {
@@ -31,14 +39,30 @@ const Category = forwardRef<FormInstance, SingletonProps<CategoryType>>((props, 
     const formValues = form.getFieldsValue()
 
     const handlers = {
-      create: () => create(formValues),
-      update: () => update(props.singleton.id, formValues)
+      create: () =>
+        create({
+          variables: {
+            createCategoryInput: formValues
+          }
+        }),
+      update: () =>
+        update({
+          variables: {
+            id: props.singleton.id,
+            updateCategoryInput: formValues
+          }
+        })
     }
 
-    const result = await handlers[props.singleton.id ? 'update' : 'create']()
+    // 发起请求
+    const res = await handlers[props.singleton.id ? 'update' : 'create']().catch((error: Error) => {
+      notification.error({
+        message: error.message
+      })
+      return null
+    })
 
-    resultNotification(result)
-    result.data && props.onSubmitted()
+    res?.data && props.onSubmitted()
   }
 
   return (

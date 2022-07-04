@@ -57,7 +57,7 @@ export const remove = (id: number) =>
 /**
  * 创建分类
  */
-const CREATE: TypedDocumentNode<
+export const CREATE: TypedDocumentNode<
   {
     createCategory: Category
   },
@@ -72,18 +72,10 @@ const CREATE: TypedDocumentNode<
   }
 `
 
-export const create = (createCategoryInput: CreateCategoryInput) =>
-  fetcher.mutate({
-    mutation: CREATE,
-    variables: {
-      createCategoryInput
-    }
-  })
-
 /**
  * 更新分类
  */
-const UPDATE: TypedDocumentNode<
+export const UPDATE: TypedDocumentNode<
   { updateCategory: boolean },
   {
     id: number
@@ -94,12 +86,3 @@ const UPDATE: TypedDocumentNode<
     updateCategory(id: $id, updateCategoryInput: $updateCategoryInput)
   }
 `
-
-export const update = (id: number, updateCategoryInput: UpdateCategoryInput) =>
-  fetcher.mutate({
-    mutation: UPDATE,
-    variables: {
-      id,
-      updateCategoryInput
-    }
-  })
